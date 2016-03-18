@@ -31,10 +31,16 @@ clean_aire <- function(tipo, parametro, anio) {
 
   df[df == "nr"] <- NA
   df[,2:ncol(df)] <- apply(df[,2:ncol(df)], 2, as.numeric)
-  df$max <- apply(df[ ,2:ncol(df)], 1, max, na.rm = TRUE)
-  df$min <- apply(df[ ,2:ncol(df)], 1, min, na.rm = TRUE)
-  df$mean <- apply(df[ ,2:ncol(df)], 1, mean, na.rm = TRUE)
-  df$median <- apply(df[ ,2:ncol(df)], 1, median, na.rm = TRUE)
+  # when the data is HORARIOS the second column corresponds to the hour
+  if(parametro != "HORARIOS") {
+    idx = 2
+  } else {
+    idx = 3
+  }
+  df$max <- apply(df[ ,idx:ncol(df)], 1, max, na.rm = TRUE)
+  df$min <- apply(df[ ,idx:ncol(df)], 1, min, na.rm = TRUE)
+  df$mean <- apply(df[ ,idx:ncol(df)], 1, mean, na.rm = TRUE)
+  df$median <- apply(df[ ,idx:ncol(df)], 1, median, na.rm = TRUE)
   return(df)
 }
 
@@ -69,8 +75,8 @@ get_pollution_data <- function(tipo, parametro, anio) {
   stopifnot(min(anio)>=2005)
   years <- anio
   ll <- mapply(clean_aire,
-               tipo = rep("MAXIMOS", length(years)),
-               parametro = rep("pm10", length(years)),
+               tipo = rep(tipo, length(years)),
+               parametro = rep(parametro, length(years)),
                anio = years,
                SIMPLIFY = FALSE)
   df <- rbindlist(ll)
