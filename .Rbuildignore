@@ -2,7 +2,8 @@
 ^\.Rproj\.user$
 ^\.travis\.yml$
 .travis.yml
-README.Rmd
-README.html
-README_files
+readme.Rmd
+readme.md
+readme.html
+readme_files
 ^cran-comments\.md$
