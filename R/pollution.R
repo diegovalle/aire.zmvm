@@ -19,10 +19,11 @@ clean_aire <- function(tipo, parametro, anio) {
                "qmes=")
   poll_table <- read_html(url)
 
-  df <- poll_table %>%
-    html_nodes("table")%>%
-    .[[1]] %>%
-    html_table(header = TRUE)
+  df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE)
+  # df <- poll_table %>%
+  #   html_nodes("table")%>%
+  #   .[[1]] %>%
+  #   html_table(header = TRUE)
   names(df) <- df[1,]
   names(df)[1] <- "date"
   names(df) <- str_replace_all(names(df), "\\s", "")
@@ -37,23 +38,26 @@ clean_aire <- function(tipo, parametro, anio) {
   return(df)
 }
 
-#' Download pollution data from the aire.df.gob.mx server.
-#' http://www.aire.df.gob.mx/estadisticas-consultas/concentraciones/index.php
+#' Download pollution data
+#'
+#' retrieve pollution data from the air quality server at \url{
+#' http://www.aire.df.gob.mx/estadisticas-consultas/concentraciones/index.php}
 #'
 #' @param tipo Type of data to download. Can be "HORARIOS" for hourly averages, "MAXIMOS" for the
 #' daily maximum and "MINIMOS" for the daily minimum
 #' @param parametro The type of pollutant to download. Can be of type "so2", "co", "nox", "no2",
 #' "no", "o3", "pm10", "pm2", "wsp", "wdr", "tmp", "rh"
-#' @param anio The years to download
+#' @param anio a vector containing the years for which to download data
 #'
-#' @return data.frame with pollution data
+#' @return a data.frame with pollution data
 #' @export
 #' @importFrom data.table rbindlist
 #' @importFrom lubridate dmy
 #'
 #' @examples
 #' \dontrun{
-#' #Download daily maximum pm10 data from 2005 to 2016
+#' # Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
+#' # from 2005 to 2016
 #' df <- get_pollution_data("MAXIMOS", "pm10", 2005:2016)
 #' head(df)
 #' }

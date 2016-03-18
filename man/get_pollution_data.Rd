@@ -2,8 +2,7 @@
 % Please edit documentation in R/pollution.R
 \name{get_pollution_data}
 \alias{get_pollution_data}
-\title{Download pollution data from the aire.df.gob.mx server.
-http://www.aire.df.gob.mx/estadisticas-consultas/concentraciones/index.php}
+\title{Download pollution data}
 \usage{
 get_pollution_data(tipo, parametro, anio)
 }
@@ -14,18 +13,19 @@ daily maximum and "MINIMOS" for the daily minimum}
 \item{parametro}{The type of pollutant to download. Can be of type "so2", "co", "nox", "no2",
 "no", "o3", "pm10", "pm2", "wsp", "wdr", "tmp", "rh"}
 
-\item{anio}{The years to download}
+\item{anio}{a vector containing the years for which to download data}
 }
 \value{
-data.frame with pollution data
+a data.frame with pollution data
 }
 \description{
-Download pollution data from the aire.df.gob.mx server.
-http://www.aire.df.gob.mx/estadisticas-consultas/concentraciones/index.php
+retrieve pollution data from the air quality server at \url{
+http://www.aire.df.gob.mx/estadisticas-consultas/concentraciones/index.php}
 }
 \examples{
 \dontrun{
-#Download daily maximum pm10 data from 2005 to 2016
+# Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
+# from 2005 to 2016
 df <- get_pollution_data("MAXIMOS", "pm10", 2005:2016)
 head(df)
 }
