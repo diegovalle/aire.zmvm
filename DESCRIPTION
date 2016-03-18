@@ -9,10 +9,11 @@ Description: Downloads pollution data for the Mexico City metro area. This packa
     in the Zona Metropolitana del Valle de Mexico.
 License: BSD_3_clause + file LICENSE
 LazyData: TRUE
-Suggests:
+Suggests: 
     knitr,
-    rmarkdown
-Imports:
+    rmarkdown,
+    testthat
+Imports: 
     data.table,
     lubridate,
     dplyr,
