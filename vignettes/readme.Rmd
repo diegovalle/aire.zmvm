@@ -1,0 +1,60 @@
+---
+title: "Mexico Choropleths"
+author: "Diego Valle-Jones"
+date: "February 11, 2016"
+output: 
+ github_document:
+          toc: true
+          fig_width: 8
+          fig_height: 5
+---
+
+Master: [![Travis-CI Build Status](https://travis-ci.org/diegovalle/mxmaps.svg?branch=master)](https://travis-ci.org/diegovalle/mxmaps) 
+
+## What does it do?
+
+This package downloads pollution data for the Mexico City metro area. It can download the daily maximum, minimum, or average for each of the pollution measuring stations in the Zona Metropolitana del Valle de Mexico
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Installation
+
+For the moment this package is only available from github. For the development version:
+
+```r
+if (!require(devtools)) {
+    install.packages("devtools")
+}
+devtools::install_github('diegovalle/aire.zmvm')
+```
+
+## Quick Example
+
+```{r, fig.show='hold'}
+library("aire.zmvm")
+library("dplyr")
+library("lubridate")
+library("seasonal")
+
+
+years <- 2005:2016
+#Download pm10 data for the years 2005:2016
+pm_10 <- get_pollution_data("MAXIMOS", "pm10", years)
+#Notice the data.frame already has columns max, min, mean, median
+knitr::kable(head(pm_10))
+# Monthly median of maximums
+pm10_m <- pm_10 %>%
+  group_by(month(date), year(date)) %>%
+  summarise(max = median(max, na.rm = TRUE))
+
+
+pm10 <- ts(pm10_m$max, start = years[1], freq = 12)
+
+#Seasonally adjusted (by trading day and easter holiday)
+m <- seas(pm10,
+          regression.variables = c("td1coef", "easter[1]"))
+plot(m)
+```

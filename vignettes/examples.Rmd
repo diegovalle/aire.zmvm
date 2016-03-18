@@ -1,0 +1,36 @@
+---
+title: "Vignette Title"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Figures
+
+The figure sizes have been customised so that you can easily put two images side-by-side. 
+
+```{r, fig.show='hold'}
+library("aire.zmvm")
+library("dplyr")
+library("lubridate")
+#library("seasonal")
+
+
+years <- 2010:2016
+pm_10 <- get_pollution_data("MAXIMOS", "pm10", years) 
+pm10_m <- pm_10 %>%
+  group_by(month(date), year(date)) %>%
+  summarise(max = median(max, na.rm = TRUE))
+
+
+pm10 <- ts(pm10_m$max, start = years[1], freq = 12)
+
+#m <- seas(pm10,
+#          regression.variables = c("td1coef", "easter[1]"))
+#plot(m)
+```
+

@@ -1,0 +1,23 @@
+Package: aire.zmvm
+Type: Package
+Title: Download pollution data for the Zona Metropolitana del Valle de Mexico
+Version: 0.1.0
+Author: Diego Valle-Jones
+Maintainer: Diego Valle-Jones <diego@diegovalle.net>
+Description: Downloads pollution data for the Mexico City metro area. This package can download
+    the daily maximum, minimum, or average for each of the pollution measuring stations
+    in the Zona Metropolitana del Valle de Mexico.
+License: CC0
+LazyData: TRUE
+Suggests:
+    knitr,
+    rmarkdown
+Imports:
+    data.table,
+    lubridate,
+    dplyr,
+    rvest,
+    stringr,
+    xml2
+VignetteBuilder: knitr
+RoxygenNote: 5.0.0
