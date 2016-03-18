@@ -41,7 +41,7 @@ devtools::install_github('diegovalle/aire.zmvm')
 
 ## Quick Example
 
-```{r, fig.show='hold'}
+```{r, fig.show='hold', warning=FALSE}
 library("aire.zmvm")
 library("dplyr")
 library("lubridate")
@@ -59,10 +59,10 @@ pm10_m <- pm_10 %>%
   summarise(max = median(max, na.rm = TRUE))
 
 
-pm10 <- ts(pm10_m$max, start = years[1], freq = 12)
+pm10_ts <- ts(pm10_m$max, start = years[1], freq = 12)
 
 #Seasonally adjusted (by trading day and easter holiday)
-m <- seas(pm10,
+m <- seas(pm10_ts,
           regression.variables = c("td1coef", "easter[1]"))
 plot(m)
 ```
