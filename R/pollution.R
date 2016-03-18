@@ -32,7 +32,7 @@ clean_aire <- function(tipo, parametro, anio) {
   df[df == "nr"] <- NA
   df[,2:ncol(df)] <- apply(df[,2:ncol(df)], 2, as.numeric)
   # when the data is HORARIOS the second column corresponds to the hour
-  if(parametro != "HORARIOS") {
+  if(tipo != "HORARIOS") {
     idx = 2
   } else {
     idx = 3
