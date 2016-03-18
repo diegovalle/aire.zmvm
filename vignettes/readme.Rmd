@@ -1,5 +1,5 @@
 ---
-title: "Mexico Choropleths"
+title: "Mexico City Pollution Data"
 author: "Diego Valle-Jones"
 date: "February 11, 2016"
 output: 
@@ -9,7 +9,15 @@ output:
           fig_height: 5
 ---
 
-Master: [![Travis-CI Build Status](https://travis-ci.org/diegovalle/mxmaps.svg?branch=master)](https://travis-ci.org/diegovalle/mxmaps) 
+Master: [![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.svg?branch=master)](https://travis-ci.org/diegovalle/aire.zmvm) 
+
+|              |          |
+|--------------|---------------|
+| __Author:__ | Diego Valle-Jones |
+| __License:__ | [BSD_3](https://opensource.org/licenses/BSD-3-Clause) |
+| __Status:__ | alpha |
+| __Website:__ | [https://github.com/diegovalle/aire.zmvm](https://github.com/diegovalle/aire.zmvm) |
+
 
 ## What does it do?
 
