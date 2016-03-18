@@ -18,6 +18,6 @@ test_that("data downloaded matches api", {
   expect_equal(unname(unlist(df_horarios[1,])),
                c(1262304000, 1, NA, NA, NA, NA, 62, NA, NA, NA, NA, NA, 81,
                  NA, 107, NA, NA, 115, 104, NA, 83, NA, 129, NA, NA, 225, 73,
-                 71, NA, 98, 182, NA, NA, NA, 275, 195, NA, 275, 1, 122.176470588235,
-                 105.5))
+                 71, NA, 98, 182, NA, NA, NA, 275, 195, NA, 275, 62, 133.5625,
+                 107))
 })
