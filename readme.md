@@ -76,9 +76,12 @@ library("seasonal")
 
 
 years <- 2005:2016
-#Download pm10 data for the years 2005:2016
+# Download pm10 data for the years 2005:2016
+# The type of data can be: MAXIMOS, MINIMOS or HORARIOS (hourly average)
+# The type of pollutant can be: "so2", "co", "nox", "no2",
+#                               "no", "o3", "pm10", "pm2", "wsp", "wdr", "tmp", "rh"
 pm_10 <- get_pollution_data("MAXIMOS", "pm10", years)
-#Notice the data.frame already has columns max, min, mean, median
+# Notice the data.frame already has columns max, min, mean, median
 knitr::kable(head(pm_10))
 ```
 
@@ -98,10 +101,10 @@ pm10_m <- pm_10 %>%
   summarise(max = median(max, na.rm = TRUE))
 
 
-pm10 <- ts(pm10_m$max, start = years[1], freq = 12)
+pm10_ts <- ts(pm10_m$max, start = years[1], freq = 12)
 
 #Seasonally adjusted (by trading day and easter holiday)
-m <- seas(pm10,
+m <- seas(pm10_ts,
           regression.variables = c("td1coef", "easter[1]"))
 plot(m)
 ```
