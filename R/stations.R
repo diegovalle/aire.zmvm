@@ -12,5 +12,5 @@
 #'   \item{id_station}{id of the station}
 #'
 #' }
-#' @source \url{http://www.aire.df.gob.mx/default.php?opc=%27aKBhnmI=%27&opcion=Zg==}
+#' @source \url{http://148.243.232.112:8080/opendata/catalogos/cat_estacion.csv}
 "stations"
