@@ -36,6 +36,7 @@ clean_aire <- function(tipo, parametro, anio) {
     idx = 2
   } else {
     idx = 3
+    names(df)[2] <- "hour"
   }
   df$max <- apply(df[ ,idx:ncol(df)], 1, max, na.rm = TRUE)
   df$min <- apply(df[ ,idx:ncol(df)], 1, min, na.rm = TRUE)
