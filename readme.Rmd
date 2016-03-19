@@ -1,7 +1,7 @@
 ---
 title: "Mexico City Pollution Data"
 author: "Diego Valle-Jones"
-date: "February 11, 2016"
+date: "March 18, 2016"
 output: 
  github_document:
           toc: true
@@ -46,6 +46,7 @@ library("aire.zmvm")
 library("dplyr")
 library("lubridate")
 library("seasonal")
+library("ggplot2")
 
 
 years <- 2005:2016
@@ -68,4 +69,9 @@ pm10_ts <- ts(pm10_m$max, start = years[1], freq = 12)
 m <- seas(pm10_ts,
           regression.variables = c("td1coef", "easter[1]"))
 plot(m)
+
+ggplot(pm_10, aes(date, max)) +
+  geom_line(color = "gray") +
+  geom_smooth(method = "gam", formula = y ~ s(x, k = 30)) +
+  theme_bw()
 ```
