@@ -4,9 +4,9 @@ Title: Download pollution data for the Zona Metropolitana del Valle de Mexico
 Version: 0.1.0
 Author: Diego Valle-Jones
 Maintainer: Diego Valle-Jones <diego@diegovalle.net>
-Description: Downloads pollution data for the Mexico City metro area. This package can download
-    the daily maximum, minimum, or hourly average for each of the pollution measuring stations
-    in the Zona Metropolitana del Valle de Mexico.
+Description: This package can download the daily maximum, minimum, or hourly average for each
+    of the pollution measuring stations or zones in the Zona Metropolitana del Valle de Mexico.
+    It also contains the locations of each of the stations.
 License: BSD_3_clause + file LICENSE
 LazyData: TRUE
 Suggests:
