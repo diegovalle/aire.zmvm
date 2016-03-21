@@ -54,34 +54,22 @@ devtools::install_github('diegovalle/aire.zmvm')
 Quick Example
 -------------
 
-The package mainly consists of two functions: `get_zone_data` to download data for each of the 5 geographic zones of Mexico City and `get_station_data` to download data for each of the pollution (and wind and temperature) measuring stations.
+The package consists mainly of two functions:
+
+-   `get_zone_data` to download data for each of the 5 geographic zones of Mexico City and
+-   `get_station_data` to download data for each of the pollution (and wind and temperature) measuring stations.
 
 ``` r
 library("aire.zmvm")
 library("dplyr")
-```
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
 library("ggplot2")
 
-
-years <- 2005:2016
-# Download pm10 data for the years 2005:2016
-# The type of data can be: MAXIMOS, MINIMOS or HORARIOS (hourly average)
-# The type of pollutant can be: "so2", "co", "nox", "no2",
-#                               "no", "o3", "pm10", "pm2", "wsp", "wdr", "tmp", "rh"
-pm_10 <- get_zone_data("MAXIMOS", "PM10", "TZ", "2008-01-01", "2016-03-19")
+# Download pm10 data since 2008 for all available zones ("TZ")
+pm_10 <- get_zone_data(criterion = "MAXIMOS", # Can be MAXIMOS (daily maximum) or HORARIOS (hourly average)
+                       pollutant = "PM10", # "SO2", "CO", "NO2", "O3", "PM10", "TC" (All pollutants)
+                       zone = "TZ", # "NO", "NE", "CE", "SO", "SE", "TZ" (All zones)
+                       start_date = "2008-01-01", # Can't be earlier than 2008-01-01
+                       end_date = "2016-03-19") # Can be up to the current date
 # Notice the data.frame already has columns max, min, mean, median
 knitr::kable(head(pm_10))
 ```
@@ -96,6 +84,7 @@ knitr::kable(head(pm_10))
 | 2008-01-06 | NO   | PM10      |     63|
 
 ``` r
+# Plot the overall highest maximum pm10 level with trendline
 ggplot(pm_10 %>% group_by(date) %>% summarise(max = max(value, na.rm = TRUE)), 
        aes(date, max, group = 1)) +
   geom_line(color = "gray") +
