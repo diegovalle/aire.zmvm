@@ -62,7 +62,7 @@ knitr::kable(head(pm_10))
 # Plot the overall highest maximum pm10 level with trendline
 ggplot(pm_10 %>% group_by(date) %>% summarise(max = max(value, na.rm = TRUE)), 
        aes(date, max, group = 1)) +
-  geom_line(color = "gray") +
-  geom_smooth(method = "gam", formula = y ~ s(x, k = 50)) +
+  geom_line(color = "darkgray", size = .2) +
+  geom_smooth(method = "gam", formula = y ~ s(x, k = 50), se = FALSE) +
   theme_bw()
 ```

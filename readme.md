@@ -56,7 +56,7 @@ Quick Example
 
 The package consists mainly of two functions:
 
--   `get_zone_data` to download data for each of the 5 geographic zones of Mexico City and
+-   `get_zone_data` to download data for each of the 5 geographic zones of Mexico City
 -   `get_station_data` to download data for each of the pollution (and wind and temperature) measuring stations.
 
 ``` r
@@ -70,7 +70,6 @@ pm_10 <- get_zone_data(criterion = "MAXIMOS", # Can be MAXIMOS (daily maximum) o
                        zone = "TZ", # "NO", "NE", "CE", "SO", "SE", "TZ" (All zones)
                        start_date = "2008-01-01", # Can't be earlier than 2008-01-01
                        end_date = "2016-03-19") # Can be up to the current date
-# Notice the data.frame already has columns max, min, mean, median
 knitr::kable(head(pm_10))
 ```
 
@@ -87,8 +86,8 @@ knitr::kable(head(pm_10))
 # Plot the overall highest maximum pm10 level with trendline
 ggplot(pm_10 %>% group_by(date) %>% summarise(max = max(value, na.rm = TRUE)), 
        aes(date, max, group = 1)) +
-  geom_line(color = "gray") +
-  geom_smooth(method = "gam", formula = y ~ s(x, k = 50)) +
+  geom_line(color = "darkgray", size = .2) +
+  geom_smooth(method = "gam", formula = y ~ s(x, k = 50), se = FALSE) +
   theme_bw()
 ```
 
