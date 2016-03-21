@@ -66,7 +66,7 @@ clean_aire <- function(criterion, pollutant, year) {
 #'  \item{"TMP"}{ - Temperatura ambiente}
 #'  \item{"RH"}{ - Humedad relativa}
 #' }
-#' @param year a numeric vector containing the years for which to download data
+#' @param year a numeric vector containing the years for which to download data (the earliest possible value is 2005)
 #'
 #' @return a data.frame with pollution data
 #'
