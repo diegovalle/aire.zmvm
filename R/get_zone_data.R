@@ -103,13 +103,21 @@ get_zone_data <- function(criterion, pollutant, zone, start_date, end_date) {
     stop("You need to specify a start date (YYYY-MM-DD)")
   if (start_date < "2008-01-01")
     stop("start_date should be after 2008-01-01")
+
+  # standarize on uppercase since the station api expects upper but zone api expects lower
   criterion <- toupper(criterion)
   stopifnot(length(base::setdiff(pollutant,
                                  c("SO2", "CO", "NO2", "O3", "PM10", "TC"))) == 0)
   stopifnot(length(base::setdiff(zone,
                                  c("NO", "NE", "CE", "SO", "SE", "TZ"))) == 0)
   stopifnot(criterion %in% c("HORARIOS", "MAXIMOS"))
+  # the API expects lowercase letters
   criterion <- tolower(criterion)
+
+  # If pollutants are O3 or PM10 issua a warning that the way of calculating the index changed
+  if(length(base::intersect(pollutant, c("O3", "PM10", "TZ"))) > 0)
+    warning("\n*******************\nStarting October 28, 2014 the index values for O3 and PM10 are computed using NOM-020-SSA1-2014
+and NOM-025-SSA1-2014\n*******************")
 
   df <- download_zone(criterion, pollutant, zone, start_date, end_date)
 
