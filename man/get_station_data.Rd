@@ -16,18 +16,18 @@ get_station_data(criterion, pollutant, year)
 
 \item{pollutant}{The type of pollutant to download.
 \itemize{
- \item{"SO2"}{ - Dioxido de azufre}
- \item{"CO"}{ - Monoxido de carbono}
- \item{"NOX"}{ - Oxidos de nitrogeno}
- \item{"NO2"}{ - Dioxido de nitrogeno}
- \item{"NO"}{ - Oxido nitrico}
- \item{"O3"}{ - Ozono}
- \item{"PM10"}{ - Particulas menores a 10 micrometros}
- \item{"PM2"}{ - Particulas menores a 2.5 micrometros}
- \item{"WSP"}{ - Velocidad del viento}
- \item{"WDR"}{ - Direccion del viento}
- \item{"TMP"}{ - Temperatura ambiente}
- \item{"RH"}{ - Humedad relativa}
+ \item{"SO2"}{ - Dioxido de azufre (partes por billon)}
+ \item{"CO"}{ - Monoxido de carbono (partes por millon)}
+ \item{"NOX"}{ - Oxidos de nitrogeno (partes por billon)}
+ \item{"NO2"}{ - Dioxido de nitrogeno (partes por billon)}
+ \item{"NO"}{ - Oxido nitrico (partes por billon)}
+ \item{"O3"}{ - Ozono (partes por billon)}
+ \item{"PM10"}{ - Particulas menores a 10 micrometros (microgramos por metro cubico)}
+ \item{"PM2"}{ - Particulas menores a 2.5 micrometros (microgramos por metro cubico)}
+ \item{"WSP"}{ - Velocidad del viento (metros por segundo)}
+ \item{"WDR"}{ - Direccion del viento (grados)}
+ \item{"TMP"}{ - Temperatura ambiente (grados Celsius)}
+ \item{"RH"}{ - Humedad relativa (porcentaje)}
 }}
 
 \item{year}{a numeric vector containing the years for which to download data (the earliest possible value is 2005)}
