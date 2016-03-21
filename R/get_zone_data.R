@@ -46,6 +46,8 @@ download_zone <- function(criterion, pollutant, zone, start_date, end_date) {
 
 #' Download pollution data by zone
 #'
+#' retrieve pollution data by geographic zone from the air quality server at \url{http://www.aire.df.gob.mx/default.php?opc='aqBjnmU='}
+#'
 #' @param pollutant The type of pollutant to download
 #' \itemize{
 #'  \item{"SO2"}{ - Dioxido de azufre}

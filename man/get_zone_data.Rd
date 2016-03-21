@@ -20,7 +20,7 @@ get_zone_data(criterion, pollutant, zone, start_date, end_date)
  \item{"NO2"}{ - Dioxido de nitrogeno}
  \item{"O3"}{ - Ozono}
  \item{"PM10"}{ - Particulas menores a 10 micrometros}
- \item{"TC"}{All the pollutants}
+ \item{"TC"}{- All the pollutants}
 }}
 
 \item{zone}{The geographic zone for which to download data
@@ -41,12 +41,12 @@ get_zone_data(criterion, pollutant, zone, start_date, end_date)
 A data.frame with pollution data measured in IMECAS, by geographic zone
 }
 \description{
-Download pollution data by zone
+retrieve pollution data by geographic zone from the air quality server at \url{http://www.aire.df.gob.mx/default.php?opc='aqBjnmU='}
 }
 \examples{
 \dontrun{
 # Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
-# from 2015-01-01 to 2016-03-20
+# from 2015-01-01 to 2016-03-20 for all geo zones
 df <- get_zone_data("MAXIMOS", "PM10", "TZ", "2015-01-01", "2016-03-20")
 head(df)
 }

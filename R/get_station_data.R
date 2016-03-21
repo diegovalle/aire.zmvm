@@ -42,7 +42,7 @@ clean_aire <- function(criterion, pollutant, year) {
 
 #' Download pollution data
 #'
-#' retrieve pollution data from the air quality server at \url{
+#' retrieve pollution data by station from the air quality server at \url{
 #' http://www.aire.df.gob.mx/estadisticas-consultas/concentraciones/index.php}
 #'
 #' @param criterion Type of data to download.

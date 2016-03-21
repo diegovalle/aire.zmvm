@@ -30,13 +30,13 @@ get_station_data(criterion, pollutant, year)
  \item{"RH"}{ - Humedad relativa}
 }}
 
-\item{year}{a numeric vector containing the years for which to download data}
+\item{year}{a numeric vector containing the years for which to download data (the earliest possible value is 2005)}
 }
 \value{
 a data.frame with pollution data
 }
 \description{
-retrieve pollution data from the air quality server at \url{
+retrieve pollution data by station from the air quality server at \url{
 http://www.aire.df.gob.mx/estadisticas-consultas/concentraciones/index.php}
 }
 \examples{
