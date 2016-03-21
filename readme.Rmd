@@ -41,11 +41,11 @@ devtools::install_github('diegovalle/aire.zmvm')
 
 ## Quick Example
 
+The package mainly consists of two functions: ```get_zone_data``` to download data for each of the 5 geographic zones of Mexico City and ```get_station_data``` to download data for each of the pollution (and wind and temperature) measuring stations.
+
 ```{r, fig.show='hold', warning=FALSE}
 library("aire.zmvm")
 library("dplyr")
-library("lubridate")
-library("seasonal")
 library("ggplot2")
 
 
@@ -54,24 +54,14 @@ years <- 2005:2016
 # The type of data can be: MAXIMOS, MINIMOS or HORARIOS (hourly average)
 # The type of pollutant can be: "so2", "co", "nox", "no2",
 #                               "no", "o3", "pm10", "pm2", "wsp", "wdr", "tmp", "rh"
-pm_10 <- get_pollution_data("MAXIMOS", "pm10", years)
+pm_10 <- get_zone_data("MAXIMOS", "PM10", "TZ", "2008-01-01", "2016-03-19")
 # Notice the data.frame already has columns max, min, mean, median
 knitr::kable(head(pm_10))
-# Monthly median of maximums
-pm10_m <- pm_10 %>%
-  group_by(month(date), year(date)) %>%
-  summarise(max = median(max, na.rm = TRUE))
 
 
-pm10_ts <- ts(pm10_m$max, start = years[1], freq = 12)
-
-#Seasonally adjusted (by trading day and easter holiday)
-m <- seas(pm10_ts,
-          regression.variables = c("td1coef", "easter[1]"))
-plot(m)
-
-ggplot(pm_10, aes(date, max)) +
+ggplot(pm_10 %>% group_by(date) %>% summarise(max = max(value, na.rm = TRUE)), 
+       aes(date, max, group = 1)) +
   geom_line(color = "gray") +
-  geom_smooth(method = "gam", formula = y ~ s(x, k = 30)) +
+  geom_smooth(method = "gam", formula = y ~ s(x, k = 50)) +
   theme_bw()
 ```

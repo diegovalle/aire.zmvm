@@ -1,7 +1,7 @@
 Mexico City Pollution Data
 ================
 Diego Valle-Jones
-February 11, 2016
+March 18, 2016
 
 -   [What does it do?](#what-does-it-do)
 -   [Installation](#installation)
@@ -54,6 +54,8 @@ devtools::install_github('diegovalle/aire.zmvm')
 Quick Example
 -------------
 
+The package mainly consists of two functions: `get_zone_data` to download data for each of the 5 geographic zones of Mexico City and `get_station_data` to download data for each of the pollution (and wind and temperature) measuring stations.
+
 ``` r
 library("aire.zmvm")
 library("dplyr")
@@ -71,8 +73,7 @@ library("dplyr")
     ##     intersect, setdiff, setequal, union
 
 ``` r
-library("lubridate")
-library("seasonal")
+library("ggplot2")
 
 
 years <- 2005:2016
@@ -80,33 +81,26 @@ years <- 2005:2016
 # The type of data can be: MAXIMOS, MINIMOS or HORARIOS (hourly average)
 # The type of pollutant can be: "so2", "co", "nox", "no2",
 #                               "no", "o3", "pm10", "pm2", "wsp", "wdr", "tmp", "rh"
-pm_10 <- get_pollution_data("MAXIMOS", "pm10", years)
+pm_10 <- get_zone_data("MAXIMOS", "PM10", "TZ", "2008-01-01", "2016-03-19")
 # Notice the data.frame already has columns max, min, mean, median
 knitr::kable(head(pm_10))
 ```
 
-| date       |  ACO|  AJU|  ATI|  CAM|  CES|  CHA|  CHO|  COY|  CUA|  CUT|  FAC|  HGM|  IZT|  LLA|  LPR|  LVI|  MER|  NEZ|  PED|  PLA|  SAG|  SFE|  SJA|  SUR|  TAH|  TAX|  TEC|  TLA|  TLI|  TPN|  UAX|  UIZ|  VIF|  XAL|  CCA|  max|  min|      mean|  median|
-|:-----------|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|----:|---------:|-------:|
-| 2005-01-01 |   NA|   NA|   NA|   NA|  308|   NA|   NA|   NA|   NA|   NA|  238|   NA|   NA|   NA|   NA|  372|  302|   NA|  206|  207|  396|   NA|   NA|  312|   NA|  298|   NA|  225|   NA|   NA|   NA|   NA|  683|  502|   NA|  683|  206|  352.7143|     308|
-| 2005-01-02 |   NA|   NA|   NA|   NA|  112|   NA|   NA|   NA|   NA|   NA|   99|   NA|   NA|   NA|   NA|  137|  115|   NA|   66|   88|  118|   NA|   NA|   96|   NA|  132|   NA|   98|   NA|   NA|   NA|   NA|  137|  133|   NA|  137|   66|  109.5714|     112|
-| 2005-01-03 |   NA|   NA|   NA|   NA|  109|   NA|   NA|   NA|   NA|   NA|  165|   NA|   NA|   NA|   NA|  118|  130|   NA|   76|  135|  173|   NA|   NA|  136|   NA|  106|   NA|  156|   NA|   NA|   NA|   NA|  229|  191|   NA|  229|   76|  144.9286|     136|
-| 2005-01-04 |   NA|   NA|   NA|   NA|  120|   NA|   NA|   NA|   NA|   NA|  166|   NA|   NA|   NA|   NA|  150|  157|   NA|   80|  150|  235|   NA|   NA|  108|   NA|  118|   NA|  178|   NA|   NA|   NA|   NA|  304|  232|   NA|  304|   80|  170.1429|     157|
-| 2005-01-05 |   NA|   NA|   NA|   NA|  143|   NA|   NA|   NA|   NA|   NA|  182|   NA|   NA|   NA|   NA|  176|  151|   NA|  139|  189|  186|   NA|   NA|  185|   NA|  281|   NA|  160|   NA|   NA|   NA|   NA|  323|  231|   NA|  323|  139|  200.5714|     185|
-| 2005-01-06 |   NA|   NA|   NA|   NA|  157|   NA|   NA|   NA|   NA|   NA|  146|   NA|   NA|   NA|   NA|  201|  155|   NA|  122|  161|  274|   NA|   NA|  121|   NA|  121|   NA|  129|   NA|   NA|   NA|   NA|  272|  285|   NA|  285|  121|  182.1429|     157|
+| date       | zone | pollutant |  value|
+|:-----------|:-----|:----------|------:|
+| 2008-01-01 | NO   | PM10      |     70|
+| 2008-01-02 | NO   | PM10      |     57|
+| 2008-01-03 | NO   | PM10      |     48|
+| 2008-01-04 | NO   | PM10      |     68|
+| 2008-01-05 | NO   | PM10      |     72|
+| 2008-01-06 | NO   | PM10      |     63|
 
 ``` r
-# Monthly median of maximums
-pm10_m <- pm_10 %>%
-  group_by(month(date), year(date)) %>%
-  summarise(max = median(max, na.rm = TRUE))
-
-
-pm10_ts <- ts(pm10_m$max, start = years[1], freq = 12)
-
-#Seasonally adjusted (by trading day and easter holiday)
-m <- seas(pm10_ts,
-          regression.variables = c("td1coef", "easter[1]"))
-plot(m)
+ggplot(pm_10 %>% group_by(date) %>% summarise(max = max(value, na.rm = TRUE)), 
+       aes(date, max, group = 1)) +
+  geom_line(color = "gray") +
+  geom_smooth(method = "gam", formula = y ~ s(x, k = 50)) +
+  theme_bw()
 ```
 
 ![](readme_files/figure-markdown_github/unnamed-chunk-1-1.png)<!-- -->
