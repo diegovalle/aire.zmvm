@@ -12,7 +12,9 @@ LazyData: TRUE
 Suggests:
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    ggplot2,
+    seasonal
 Imports:
     data.table,
     lubridate,
