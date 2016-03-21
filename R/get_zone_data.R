@@ -53,7 +53,7 @@ download_zone <- function(criterion, pollutant, zone, start_date, end_date) {
 #'  \item{"NO2"}{ - Dioxido de nitrogeno}
 #'  \item{"O3"}{ - Ozono}
 #'  \item{"PM10"}{ - Particulas menores a 10 micrometros}
-#'  \item{"TC"}{All the pollutants}
+#'  \item{"TC"}{- All the pollutants}
 #' }
 #' @param zone The geographic zone for which to download data
 #' \itemize{
@@ -83,7 +83,7 @@ download_zone <- function(criterion, pollutant, zone, start_date, end_date) {
 #' @examples
 #' \dontrun{
 #' # Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
-#' # from 2015-01-01 to 2016-03-20
+#' # from 2015-01-01 to 2016-03-20 for all geo zones
 #' df <- get_zone_data("MAXIMOS", "PM10", "TZ", "2015-01-01", "2016-03-20")
 #' head(df)
 #' }
@@ -99,6 +99,8 @@ get_zone_data <- function(criterion, pollutant, zone, start_date, end_date) {
     stop("You need to specify an end date (YYYY-MM-DD)")
   if (missing(start_date))
     stop("You need to specify a start date (YYYY-MM-DD)")
+  if (start_date < "2008-01-01")
+    stop("start_date should be after 2008-01-01")
   criterion <- toupper(criterion)
   stopifnot(length(base::setdiff(pollutant,
                                  c("SO2", "CO", "NO2", "O3", "PM10", "TC"))) == 0)
