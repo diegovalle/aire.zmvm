@@ -21,13 +21,29 @@ library("lubridate")
 
 
 years <- 2010:2016
-pm_10 <- get_pollution_data("MAXIMOS", "pm10", years) 
+pm_10 <- get_station_data("MAXIMOS", "pm10", years) 
 pm10_m <- pm_10 %>%
   group_by(month(date), year(date)) %>%
-  summarise(max = median(max, na.rm = TRUE))
+  summarise(max = median(value, na.rm = TRUE))
 
 
 pm10 <- ts(pm10_m$max, start = years[1], freq = 12)
+
+# Monthly median of maximums
+# pm10_m <- pm_10 %>%
+#   group_by(date) %>%
+#   summarise(max = max(value, na.rm = TRUE)) %>%
+#   ungroup() %>%
+#   group_by(month(date), year(date)) %>%
+#   summarise(max = max(max))
+# 
+# 
+# pm10_ts <- ts(pm10_m$max, start = years[1], freq = 12)
+# 
+# #Seasonally adjusted (by trading day and easter holiday)
+# m <- seas(pm10_ts,
+#           regression.variables = c("td1coef", "easter[1]"))
+# plot(m)
 
 #m <- seas(pm10,
 #          regression.variables = c("td1coef", "easter[1]"))
