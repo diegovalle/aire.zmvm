@@ -1,6 +1,6 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "Introduction to the aire.zmvm package"
+author: "Diego Valle-Jones"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -18,21 +18,64 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The figure sizes have been customised so that you can easily put two images side-by-side. 
 
-```{r, fig.show='hold'}
+get_zone_data
+
+```{r, fig.show='hold',  message=FALSE}
 library("aire.zmvm")
 library("dplyr")
-library("lubridate")
-#library("seasonal")
+library("ggplot2")
 
+# Download pm10 data since 2008 for all available zones ("TZ")
+pm_10 <- get_zone_data(criterion = "MAXIMOS", # Can be MAXIMOS (daily maximum) or HORARIOS (hourly average)
+                       pollutant = "PM10", # "SO2", "CO", "NO2", "O3", "PM10", "TC" (All pollutants)
+                       zone = "TZ", # "NO", "NE", "CE", "SO", "SE", "TZ" (All zones)
+                       start_date = "2008-01-01", # Can't be earlier than 2008-01-01
+                       end_date = "2016-03-19") # Can be up to the current date
+knitr::kable(head(pm_10))
 
-years <- 2010:2016
-pm_10 <- get_station_data("MAXIMOS", "pm10", years) 
-pm10_m <- pm_10 %>%
-  group_by(month(date), year(date)) %>%
-  summarise(max = median(value, na.rm = TRUE))
+# Plot the overall highest maximum pm10 level with trendline
+ggplot(pm_10 %>% group_by(date) %>% summarise(max = max(value, na.rm = TRUE)), 
+       aes(date, max, group = 1)) +
+  geom_line(color = "darkgray", size = .2) +
+  geom_smooth(method = "gam", formula = y ~ s(x, k = 50), se = FALSE) +
+  ggtitle("Daily maximum PM10 levels in IMECAS") +
+  theme_bw()
 
+```
 
-pm10 <- ts(pm10_m$max, start = years[1], freq = 12)
+get_station_data
+
+```{r, fig.show='hold',  message=FALSE}
+o3 <- get_station_data(criterion = "MAXIMOS", # Can be MAXIMOS (daily maximum), MINIMOS (daily minimum), or HORARIOS (hourly average)
+                       pollutant = "O3", # "so2", "co", "nox", "no2",
+                             # "no", "o3", "pm10", "pm2",
+                             # "wsp", "wdr", "tmp", "rh"
+                       year = 2008:2016) # The earliest available year is 2005 
+
+knitr::kable(head(o3))
+
+# Plot the overall highest maximum ozone level with trendline
+ggplot(o3 %>% group_by(date) %>% summarise(max = max(value, na.rm = TRUE)), 
+       aes(date, max, group = 1)) +
+  geom_line(color = "darkgray", size = .2) +
+  geom_smooth(method = "gam", formula = y ~ s(x, k = 50), se = FALSE) +
+  ggtitle("Daily maximum ozone levels in ppb") +
+  theme_bw()
+
+# library("aire.zmvm")
+# library("dplyr")
+# library("lubridate")
+# #library("seasonal")
+# 
+# 
+# years <- 2010:2016
+# pm_10 <- get_station_data("MAXIMOS", "pm10", years) 
+# pm10_m <- pm_10 %>%
+#   group_by(month(date), year(date)) %>%
+#   summarise(max = median(value, na.rm = TRUE))
+# 
+# 
+# pm10 <- ts(pm10_m$max, start = years[1], freq = 12)
 
 # Monthly median of maximums
 # pm10_m <- pm_10 %>%
@@ -55,3 +98,9 @@ pm10 <- ts(pm10_m$max, start = years[1], freq = 12)
 #plot(m)
 ```
 
+available stations
+
+```{r}
+data("stations")
+knitr::kable(head(stations))
+```
