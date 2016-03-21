@@ -58,44 +58,36 @@ knitr::kable(head(o3))
 ggplot(o3 %>% group_by(date) %>% summarise(max = max(value, na.rm = TRUE)), 
        aes(date, max, group = 1)) +
   geom_line(color = "darkgray", size = .2) +
-  geom_smooth(method = "gam", formula = y ~ s(x, k = 50), se = FALSE) +
+  geom_smooth(method = "gam", formula = y ~ s(x, k = 10), se = FALSE) +
   ggtitle("Daily maximum ozone levels in ppb") +
   theme_bw()
+```
 
-# library("aire.zmvm")
-# library("dplyr")
-# library("lubridate")
-# #library("seasonal")
-# 
-# 
-# years <- 2010:2016
-# pm_10 <- get_station_data("MAXIMOS", "pm10", years) 
-# pm10_m <- pm_10 %>%
-#   group_by(month(date), year(date)) %>%
-#   summarise(max = median(value, na.rm = TRUE))
-# 
-# 
-# pm10 <- ts(pm10_m$max, start = years[1], freq = 12)
+```{r}
+library("seasonal")
+library("lubridate")
+
+
+pm_10 <- get_zone_data("MAXIMOS", "PM10", "TZ", "2008-01-01", "2016-03-19")
+pm10_m <- pm_10 %>%
+  group_by(month(date), year(date)) %>%
+  summarise(max = median(value, na.rm = TRUE))
 
 # Monthly median of maximums
-# pm10_m <- pm_10 %>%
-#   group_by(date) %>%
-#   summarise(max = max(value, na.rm = TRUE)) %>%
-#   ungroup() %>%
-#   group_by(month(date), year(date)) %>%
-#   summarise(max = max(max))
-# 
-# 
-# pm10_ts <- ts(pm10_m$max, start = years[1], freq = 12)
-# 
-# #Seasonally adjusted (by trading day and easter holiday)
-# m <- seas(pm10_ts,
-#           regression.variables = c("td1coef", "easter[1]"))
-# plot(m)
+pm10_m <- pm_10 %>%
+  group_by(date) %>%
+  summarise(max = max(value, na.rm = TRUE)) %>%
+  ungroup() %>%
+  group_by(month(date), year(date)) %>%
+  summarise(max = max(max))
 
-#m <- seas(pm10,
-#          regression.variables = c("td1coef", "easter[1]"))
-#plot(m)
+
+pm10_ts <- ts(pm10_m$max, start = 2008, freq = 12)
+
+# #Seasonally adjusted (by trading day and easter holiday)
+m <- seas(pm10_ts,
+          regression.variables = c("td1coef", "easter[1]"))
+plot(m) 
 ```
 
 available stations
