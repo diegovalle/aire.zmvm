@@ -37,7 +37,7 @@ Master: [![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.sv
 What does it do?
 ----------------
 
-This package downloads pollution data for the Mexico City metro area. It can download the daily maximum, minimum, or average for each of the pollution measuring stations in the Zona Metropolitana del Valle de Mexico
+This package downloads pollution data for the Mexico City metro area. It can download the daily maximum, minimum, or average for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de Mexico (greater Mexico City)
 
 Installation
 ------------
@@ -64,31 +64,28 @@ library("aire.zmvm")
 library("dplyr")
 library("ggplot2")
 
-# Download pm10 data since 2008 for all available zones ("TZ")
-pm_10 <- get_zone_data(criterion = "MAXIMOS", # Can be MAXIMOS (daily maximum) or HORARIOS (hourly average)
-                       pollutant = "PM10", # "SO2", "CO", "NO2", "O3", "PM10", "TC" (All pollutants)
-                       zone = "TZ", # "NO", "NE", "CE", "SO", "SE", "TZ" (All zones)
-                       start_date = "2008-01-01", # Can't be earlier than 2008-01-01
-                       end_date = "2016-03-19") # Can be up to the current date
+pm_10 <- get_station_data(criterion = "MAXIMOS", # Can be MAXIMOS (daily maximum), MINIMOS (daily minimum), or HORARIOS (hourly average)
+                       pollutant = "PM10", # "SO2", "CO", "NOX", "NO2", "NO", "O3", "PM10", "PM2", "WSP", "WDR", "TMP", "RH"
+                       year = 2005:2016) # The earliest year allowed is 2005
 knitr::kable(head(pm_10))
 ```
 
-| date       | zone | pollutant |  value|
-|:-----------|:-----|:----------|------:|
-| 2008-01-01 | NO   | PM10      |     70|
-| 2008-01-02 | NO   | PM10      |     57|
-| 2008-01-03 | NO   | PM10      |     48|
-| 2008-01-04 | NO   | PM10      |     68|
-| 2008-01-05 | NO   | PM10      |     72|
-| 2008-01-06 | NO   | PM10      |     63|
+| date       | station |  value|
+|:-----------|:--------|------:|
+| 2005-01-01 | ACO     |     NA|
+| 2005-01-02 | ACO     |     NA|
+| 2005-01-03 | ACO     |     NA|
+| 2005-01-04 | ACO     |     NA|
+| 2005-01-05 | ACO     |     NA|
+| 2005-01-06 | ACO     |     NA|
 
 ``` r
-# Plot the overall highest maximum pm10 level with trendline
+# Plot the daily highest pm10 level with trendline
 ggplot(pm_10 %>% group_by(date) %>% summarise(max = max(value, na.rm = TRUE)), 
        aes(date, max, group = 1)) +
   geom_line(color = "darkgray", size = .2) +
   geom_smooth(method = "gam", formula = y ~ s(x, k = 50), se = FALSE) +
-  ggtitle("Daily maximum PM10 levels in IMECAS") +
+  ggtitle("Daily maximum PM10 levels in ppb") +
   theme_bw()
 ```
 
