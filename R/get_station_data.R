@@ -101,6 +101,8 @@ get_station_data <- function(criterion, pollutant, year) {
   } else {
     val_cols <- base::setdiff(names(df), c("date", "hour"))
   }
-  gather_(df, "station", "value", val_cols)
+  df <- gather_(df, "station_code", "value", val_cols)
+  df$station_code <- as.character(df$station_code)
+  df
 }
 
