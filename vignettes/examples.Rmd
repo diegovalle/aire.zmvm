@@ -68,13 +68,14 @@ library("seasonal")
 library("lubridate")
 
 
-pm_10 <- get_zone_data("MAXIMOS", "PM10", "TZ", "2008-01-01", "2016-03-19")
-pm10_m <- pm_10 %>%
-  group_by(month(date), year(date)) %>%
-  summarise(max = median(value, na.rm = TRUE))
+
+pm10_stations <- get_station_data("MAXIMOS", "PM10", 2008:2016)
+
+
+
 
 # Monthly median of maximums
-pm10_m <- pm_10 %>%
+pm10_m <- pm10_stations %>%
   group_by(date) %>%
   summarise(max = max(value, na.rm = TRUE)) %>%
   ungroup() %>%
@@ -95,4 +96,53 @@ available stations
 ```{r}
 data("stations")
 knitr::kable(head(stations))
+
+library("ggmap")
+library("viridis")
+library("gstat")
+library("sp")
+
+qmplot(lon, lat, data = stations, maptype = "toner-background")
+
+o3_stations <- get_station_data("MAXIMOS", "O3", 2016)
+phase_i <- filter(o3_stations, date == "2016-03-14") %>%
+  left_join(stations)
+phase_i <- na.omit(phase_i)
+
+qmplot(lon, lat, data = na.omit(phase_i), maptype = "toner-background" ) +
+  geom_point(aes(color = value), size = 8) +
+  scale_color_viridis()
+
+geog.o3 <- phase_i[,c("lat", "lon", "value")]
+coordinates(geog.o3) <- ~lon+lat
+spplot(geog.o3)
+
+pixels = 50
+geog.grd <- expand.grid(x=seq((min(coordinates(geog.o3)[,1])-.2),
+                          (max(coordinates(geog.o3)[,1])+.2),
+                          length.out=pixels),
+                        y=seq((min(coordinates(geog.o3)[,2])-.2),
+                          (max(coordinates(geog.o3)[,2])+.2),
+                          length.out=pixels))
+
+grd.pts <- SpatialPixels(SpatialPoints((geog.grd)))
+grd.pts <- as(grd.pts, "SpatialGrid")
+plot(grd.pts, cex = 1.5, col = "grey")
+points(geog.o3, pch = 1, col = "red", cex = 1)
+
+geog.idw <- idw(value ~ 1, geog.o3, grd.pts, idp=6)
+
+spplot(geog.idw["var1.pred"])
+
+idw = as.data.frame(geog.idw)
+names(idw) <- c("var1.pred", "var1.var", "lon", "lat") 
+
+qmplot(x, y, data = geog.grd, geom = "blank", 
+       maptype = "terrain", source = "google")  +
+  geom_tile(data = idw, aes(x = lon, y = lat, fill = var1.pred), alpha = .5) + 
+  scale_fill_viridis("Ozone levels\n(ppb)") +
+  geom_point(data = phase_i, aes(x = lon, y = lat), shape = 21, 
+             colour = "black") +
+  ggtitle("Peak Ozone levels during the Phase I alert in Mexico City")
+
 ```
