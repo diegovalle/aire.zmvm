@@ -19,7 +19,7 @@ Suggests:
     viridis,
     gstat,
     sp,
-    ggmapp
+    ggmap
 Imports:
     data.table,
     lubridate,
