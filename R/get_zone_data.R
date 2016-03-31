@@ -116,8 +116,7 @@ get_zone_data <- function(criterion, pollutant, zone, start_date, end_date) {
 
   # If pollutants are O3 or PM10 issua a warning that the way of calculating the index changed
   if(length(base::intersect(pollutant, c("O3", "PM10", "TZ"))) > 0)
-    warning("\n*******************\nStarting October 28, 2014 the index values for O3 and PM10 are computed using NOM-020-SSA1-2014
-and NOM-025-SSA1-2014\n*******************")
+    warning("\n*******************\nStarting October 28, 2014 the index values for O3 and PM10 are computed using NOM-020-SSA1-2014 and NOM-025-SSA1-2014\n*******************")
 
   df <- download_zone(criterion, pollutant, zone, start_date, end_date)
 
