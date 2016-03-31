@@ -4,14 +4,14 @@ author: "Diego Valle-Jones"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Introduction to the aire.zmvm package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.height=5, fig.width = 8)
 ```
 
 ## Figures
@@ -29,7 +29,7 @@ library("ggplot2")
 pm_10 <- get_zone_data(criterion = "MAXIMOS", # Can be MAXIMOS (daily maximum) or HORARIOS (hourly average)
                        pollutant = "PM10", # "SO2", "CO", "NO2", "O3", "PM10", "TC" (All pollutants)
                        zone = "TZ", # "NO", "NE", "CE", "SO", "SE", "TZ" (All zones)
-                       start_date = "2008-01-01", # Can't be earlier than 2008-01-01
+                       start_date = "2015-01-01", # Can't be earlier than 2008-01-01
                        end_date = "2016-03-19") # Can be up to the current date
 knitr::kable(head(pm_10))
 
@@ -50,7 +50,7 @@ o3 <- get_station_data(criterion = "MAXIMOS", # Can be MAXIMOS (daily maximum), 
                        pollutant = "O3", # "so2", "co", "nox", "no2",
                              # "no", "o3", "pm10", "pm2",
                              # "wsp", "wdr", "tmp", "rh"
-                       year = 2008:2016) # The earliest available year is 2005 
+                       year = 2015:2016) # The earliest available year is 2005 
 
 knitr::kable(head(o3))
 
@@ -61,34 +61,58 @@ ggplot(o3 %>% group_by(date) %>% summarise(max = max(value, na.rm = TRUE)),
   geom_smooth(method = "gam", formula = y ~ s(x, k = 10), se = FALSE) +
   ggtitle("Daily maximum ozone levels in ppb") +
   theme_bw()
+
+
+
+o3 <- get_station_data(criterion = "HORARIOS", # Can be MAXIMOS (daily maximum), MINIMOS (daily minimum), or HORARIOS (hourly average)
+                       pollutant = "O3", # "so2", "co", "nox", "no2",
+                             # "no", "o3", "pm10", "pm2",
+                             # "wsp", "wdr", "tmp", "rh"
+                       year = 2016) 
+o3 <- o3 %>% group_by(date) %>% summarise(max = max(value, na.rm = TRUE), 
+                                          hour = hour[which.max(value)])
+ggplot(o3, aes(as.factor(hour), max)) +
+  geom_boxplot()+
+  geom_jitter()
+
+
+
+pm10 <- get_station_data(criterion = "HORARIOS", # Can be MAXIMOS (daily maximum), MINIMOS (daily minimum), or HORARIOS (hourly average)
+                       pollutant = "PM10", # "so2", "co", "nox", "no2",
+                             # "no", "o3", "pm10", "pm2",
+                             # "wsp", "wdr", "tmp", "rh"
+                       year = 2016) 
+pm10 <- pm10 %>% group_by(date) %>% summarise(max = max(value, na.rm = TRUE), 
+                                          hour = hour[which.max(value)])
+ggplot(pm10, aes(as.factor(hour), max)) +
+  geom_boxplot() +
+  geom_jitter()
+
 ```
 
 ```{r}
-library("seasonal")
-library("lubridate")
-
-
-
-pm10_stations <- get_station_data("MAXIMOS", "PM10", 2008:2016)
-
-
-
-
-# Monthly median of maximums
-pm10_m <- pm10_stations %>%
-  group_by(date) %>%
-  summarise(max = max(value, na.rm = TRUE)) %>%
-  ungroup() %>%
-  group_by(month(date), year(date)) %>%
-  summarise(max = max(max))
-
-
-pm10_ts <- ts(pm10_m$max, start = 2008, freq = 12)
-
-# #Seasonally adjusted (by trading day and easter holiday)
-m <- seas(pm10_ts,
-          regression.variables = c("td1coef", "easter[1]"))
-plot(m) 
+# library("seasonal")
+# library("lubridate")
+# 
+# 
+# 
+# pm10_stations <- get_station_data("MAXIMOS", "PM10", 2015:2016)
+# 
+# # Monthly median of maximums
+# pm10_m <- pm10_stations %>%
+#   group_by(date) %>%
+#   summarise(max = max(value, na.rm = TRUE)) %>%
+#   ungroup() %>%
+#   group_by(year(date), month(date)) %>%
+#   summarise(max = median(max))
+# 
+# 
+# pm10_ts <- ts(pm10_m$max, start = 2008, freq = 12)
+# 
+# # #Seasonally adjusted (by trading day and easter holiday)
+# m <- seas(pm10_ts,
+#           regression.variables = c("td1coef", "easter[1]"))
+# plot(m) 
 ```
 
 available stations
@@ -104,31 +128,37 @@ library("sp")
 
 qmplot(lon, lat, data = stations, maptype = "toner-background")
 
-o3_stations <- get_station_data("MAXIMOS", "O3", 2016)
-phase_i <- filter(o3_stations, date == "2016-03-14") %>%
-  left_join(stations)
-phase_i <- na.omit(phase_i)
 
-qmplot(lon, lat, data = na.omit(phase_i), maptype = "toner-background" ) +
+
+mxc <- get_latest_data()
+mxc <- na.omit(left_join(mxc, stations))
+
+
+qmplot(lon, lat, data = na.omit(mxc), maptype = "toner-background" ) +
   geom_point(aes(color = value), size = 8) +
   scale_color_viridis()
 
-geog.o3 <- phase_i[,c("lat", "lon", "value")]
+
+geog.o3 <- mxc[,c("lat", "lon", "value")]
 coordinates(geog.o3) <- ~lon+lat
-spplot(geog.o3)
+#spplot(geog.o3)
 
 pixels = 50
-geog.grd <- expand.grid(x=seq((min(coordinates(geog.o3)[,1])-.2),
-                          (max(coordinates(geog.o3)[,1])+.2),
+geog.grd <- expand.grid(x=seq((min(coordinates(geog.o3)[,1])-.15),
+                          (max(coordinates(geog.o3)[,1])+.15),
                           length.out=pixels),
-                        y=seq((min(coordinates(geog.o3)[,2])-.2),
-                          (max(coordinates(geog.o3)[,2])+.2),
+                        y=seq((min(coordinates(geog.o3)[,2])-.15),
+                          (max(coordinates(geog.o3)[,2])+.15),
                           length.out=pixels))
 
 grd.pts <- SpatialPixels(SpatialPoints((geog.grd)))
 grd.pts <- as(grd.pts, "SpatialGrid")
+
 plot(grd.pts, cex = 1.5, col = "grey")
 points(geog.o3, pch = 1, col = "red", cex = 1)
+tmp <- data.frame(lon=-98.73609, lat=19.87219)
+coordinates(tmp) <- ~lon+lat
+points(tmp, pch = 1, col = "red", cex = 1)
 
 geog.idw <- idw(value ~ 1, geog.o3, grd.pts, idp=6)
 
@@ -137,12 +167,107 @@ spplot(geog.idw["var1.pred"])
 idw = as.data.frame(geog.idw)
 names(idw) <- c("var1.pred", "var1.var", "lon", "lat") 
 
+
 qmplot(x, y, data = geog.grd, geom = "blank", 
-       maptype = "terrain", source = "google")  +
+       maptype = "roadmap", source = "google")  +
   geom_tile(data = idw, aes(x = lon, y = lat, fill = var1.pred), alpha = .5) + 
-  scale_fill_viridis("Ozone levels\n(ppb)") +
-  geom_point(data = phase_i, aes(x = lon, y = lat), shape = 21, 
-             colour = "black") +
-  ggtitle("Peak Ozone levels during the Phase I alert in Mexico City")
+  scale_fill_viridis("IMECAS", limits = c(0,200), option = "magma") +
+  geom_point(data = mxc, aes(x = lon, y = lat, color = quality), size = 2, alpha = .5) +
+  #scale_color_viridis("IMECAS", discrite = TRUE, limits = c(0,200), option = "magma") +
+  scale_color_manual(breaks = c("BUENA", "REGULAR", "MALA", "MUY MALA",
+                                "EXTREMADAMENTE MALA"),
+                     values = viridis(5, option = "magma")) +
+  ggtitle("Pollution in MXC")
+
+qmplot(x, y, data = geog.grd[1:51,], geom = "blank", 
+       maptype = "roadmap", source = "google")  +
+  geom_tile(data = idw[1:51,], aes(lon, lat, fill = var1.pred), alpha = .5)+ 
+  scale_fill_viridis("IMECAS", limits = c(0,200), option = "magma") 
+
+# 
+# toJSON(idw, dataframe = "values")
+# 
+# 
+# 
+# 
+# 
+# library(caTools)
+# last_24 <- c(79, 39,41,39,44,63,112,122,107,61,69,68,37,89,79,72,92,84,46,37,23,22,27,36,43)
+# length(last_24)
+# convert_imeca("PM10", mean(last_24))
+# 
+# 
+# pm10_stations <- get_station_data("HORARIOS", "PM10", 2016)
+# pm10_stations$contaminant <- "PM10"
+# o3_stations <- get_station_data("HORARIOS", "O3", 2016)
+# o3_stations$contaminant <- "O3"
+# 
+# pm10_stations <- pm10_stations %>%
+#   group_by(station_code) %>%
+#   do(mutate(., imeca = convert_imeca("PM10", runmean(value, 24, align = "right")))) %>%
+#   as.data.frame()
+# 
+# o3_stations <- o3_stations %>%
+#   group_by(station_code) %>%
+#   do(mutate(., imeca = convert_imeca("O3",
+#                                value))) %>%
+#   as.data.frame()
+# 
+# pollution <- do.call(rbind, list(o3_stations,
+#                     pm10_stations))
+#                     #pm2_stations,
+#                     #so2_stations,
+#                     #no2_stations,
+#                     #co_stations))
+# 
+# max_date <- max(pollution$date)
+# max_hour <- max(pollution[pollution$date == max_date,]$hour)
+# phase_i <- dplyr::filter(pollution, date == max_date & hour == max_hour) %>%
+#   full_join(stations, by = "station_code") %>%
+#   na.omit() %>%
+#   group_by(station_code) %>%
+#   summarise(max_imeca = max(imeca, na.rm = TRUE),
+#             lat = lat[1],
+#             lon = lon[1],
+#             value = value[which(imeca == max(imeca, na.rm = TRUE))][1],
+#             contaminant = contaminant[which(imeca == max(imeca, na.rm = TRUE))][1]) %>%
+#   as.data.frame()
+# 
+# 
+# 
+# tail(filter(pm10_stations, station_code == "VIF"), 25)
+# pm10_to_imeca_2014(mean(tail(filter(pm10_stations, station_code == "VIF"), 24)$value, na.rm=T))
+# runmean(tail(filter(pm10_stations, station_code == "VIF"), 24)$value, 24, align = "right")
+# tail(runmean(filter(pm10_stations, station_code == "VIF")$value, 24, align = "right"))
+# pm10_to_imeca_2014(98.2)
+# 
+# v = tail(filter(pm10_stations, station_code == "CUT"), 90)$value
+# ma <- function(x,n=24){stats::filter(x,rep(1/n,n), sides=2)}
+# ma(v)
+# colMeans(matrix(v, nrow=24), na.rm = TRUE)
+# 
+# 
+# 
+# 
+# o3_to_imeca(15) == 11
+# o3_to_imeca(17) == 12
+# 
+# so2_to_imeca(195) == 150
+# no2_to_imeca(23) == 11
+# pm10_to_imeca_2014(26) == 29
+# pm10_to_imeca_2014(50)
+# last_24 <- c(67,58,49,49,31,138,81,89,93,83,73,83,85,97,105,101,125,107,74,40,28,15,24,35,49)
+# length(last_24)
+# 
+# m <- mean((o3_stations %>%
+#   filter(station_code == "ATI") %>%
+#   do(tail(., n=24)))$value,
+#   na.rm = TRUE)
+# 
+# convert_imeca("PM10", mean(last_24))
+```
+
+
+```{r}
 
 ```
