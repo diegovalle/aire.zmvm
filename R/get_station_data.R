@@ -22,6 +22,7 @@ clean_aire <- function(criterion, pollutant, year) {
   names(df) <- df[1,]
   names(df)[1] <- "date"
   names(df) <- str_replace_all(names(df), "\\s", "")
+  stopifnot(nrow(df) > 2)
   df <- df[2:nrow(df),]
 
   df[df == "nr"] <- NA
