@@ -25,7 +25,7 @@ get_latest_data <- function() {
                    'agosto'='august','septiembre'='september',
                    'octubre'='october','noviembre'='november','diciembre'='december')
   hour <- str_replace_all(hour, month_names)
-  time <- as.character(strptime(hour, "%H:%M h%d de %B de %Y ", tz = "MX"))
+  time <- as.character(strptime(hour, "%H:%M h%d de %B de %Y ", tz = "America/Mexico_City"))
 
   df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE, fill = TRUE)
   names(df) <- c("station_code", "municipio", "quality", "contaminant", "value")
