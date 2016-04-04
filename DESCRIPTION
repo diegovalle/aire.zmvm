@@ -23,13 +23,13 @@ Suggests:
     sp,
     ggmap
 Imports:
-    data.table,
     lubridate,
     dplyr,
     rvest,
     tidyr,
     stringr,
     xml2,
-    httr
+    httr,
+    readr
 VignetteBuilder: knitr
 RoxygenNote: 5.0.0

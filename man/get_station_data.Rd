@@ -4,7 +4,7 @@
 \alias{get_station_data}
 \title{Download pollution data}
 \usage{
-get_station_data(criterion, pollutant, year)
+get_station_data(criterion, pollutant, year, progress = interactive())
 }
 \arguments{
 \item{criterion}{Type of data to download.
@@ -31,6 +31,8 @@ get_station_data(criterion, pollutant, year)
 }}
 
 \item{year}{a numeric vector containing the years for which to download data (the earliest possible value is 2005)}
+
+\item{progress}{Wether to display a progress bar (TRUE or FALSE). By default it will only display in an interactive session.}
 }
 \value{
 a data.frame with pollution data
