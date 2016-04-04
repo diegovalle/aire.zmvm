@@ -72,13 +72,17 @@ pm10_max <- pm10 %>%
 ggplot(pm10_max, 
        aes(as.Date(date), max, group = 1)) +
   geom_point(color = "black", size = .2, alpha = .4) +
-  geom_smooth(method = "gam", formula = y ~ s(x, k = 40)) +
+  geom_smooth(method = "gam", formula = y ~ s(x, bs = "cc", k = 25)) +
   ggtitle("Daily maximum O3 levels") +
   ylab("maximum daily O3 value in ppb") +
   xlab("date") +
   geom_vline(xintercept = as.numeric(as.Date("1989-11-20"))) +
+  geom_vline(xintercept = as.numeric(as.Date("2015-07-01"))) +
   annotate("text", label = "hoy no circula", 
            x = as.Date("1987-03-20"),
            y = 480) +
+  annotate("text", label = "supreme court ruling", 
+           x = as.Date("2011-06-20"),
+           y = 380) +
   theme_bw()
 ```
