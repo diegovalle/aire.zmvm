@@ -71,7 +71,7 @@ download_zone <- function(criterion, pollutant, zone, start_date, end_date) {
 #'  \item{"HORARIOS"}{ - Hourly data}
 #'  \item{"MAXIMOS""}{ - Daily maximums}
 #' }
-#' @param start_date The start date in YYYY-MM-DD format.
+#' @param start_date The start date in YYYY-MM-DD format (earliest possible value is 2008-01-01).
 #' @param end_date The end date in YYYY-MM-DD format.
 #'
 #' @return A data.frame with pollution data measured in IMECAS, by geographic zone

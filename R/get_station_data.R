@@ -137,7 +137,7 @@ download_data <- function(criterion, pollutant, year) {
 #'  \item{"TMP"}{ - Temperatura ambiente (grados Celsius)}
 #'  \item{"RH"}{ - Humedad relativa (porcentaje)}
 #' }
-#' @param year a numeric vector containing the years for which to download data (the earliest possible value is 2005)
+#' @param year a numeric vector containing the years for which to download data (the earliest possible value is 1986)
 #' @param progress Wether to display a progress bar (TRUE or FALSE). By default it will only display in an interactive session.
 #'
 #' @return a data.frame with pollution data
