@@ -1,5 +1,8 @@
 #' Pollution measuring stations in Mexico City
 #'
+#' This data set contains all pollution measuring stations in Mexico City. AJM, INN, MGH and GAM
+#' were added manually (locations were determinded using Google Maps) since the official
+#' source data set was missing them.
 #'
 #' @format A data frame with 63 rows and 7 variables:
 #' \describe{
