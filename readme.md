@@ -65,13 +65,13 @@ library("aire.zmvm")
 library("dplyr")
 library("ggplot2")
 
-pm10 <- get_station_data(criterion = "MAXIMOS", # Can be MAXIMOS (daily maximum), 
+o3 <- get_station_data(criterion = "MAXIMOS", # Can be MAXIMOS (daily maximum), 
                                                 # MINIMOS (daily minimum), 
                                                 # or HORARIOS (hourly average)
                        pollutant = "O3", # "SO2", "CO", "NOX", "NO2", "NO", "O3", 
-                                         # "PM10", "PM2", "WSP", "WDR", "TMP", "RH"
+                                         # "PM10", "PM25", "WSP", "WDR", "TMP", "RH"
                        year = 1986:2016) # The earliest year allowed is 1986
-knitr::kable(head(pm10))
+knitr::kable(head(o3))
 ```
 
 | date       | station\_code |  value|
@@ -85,7 +85,7 @@ knitr::kable(head(pm10))
 
 ``` r
 # Daily max among all base stations
-pm10_max <- pm10 %>% 
+o3_max <- o3 %>% 
   group_by(date) %>% 
   summarise(max = ifelse(all(is.na(value)),
                          NA,
@@ -93,10 +93,10 @@ pm10_max <- pm10 %>%
   na.omit()
 
 # Plot the daily highest pm10 level with trendline
-ggplot(pm10_max, 
-       aes(as.Date(date), max, group = 1)) +
+ggplot(o3_max, 
+       aes(date, max, group = 1)) +
   geom_point(color = "black", size = .2, alpha = .4) +
-  geom_smooth(method = "gam", formula = y ~ s(x, bs = "cc", k = 25)) +
+  geom_smooth(method = "gam", formula = y ~ s(x, k = 25)) +
   ggtitle("Daily maximum O3 levels") +
   ylab("maximum daily O3 value in ppb") +
   xlab("date") +
@@ -107,7 +107,7 @@ ggplot(pm10_max,
            y = 480) +
   annotate("text", label = "supreme court ruling", 
            x = as.Date("2011-06-20"),
-           y = 380) +
+           y = 350) +
   theme_bw()
 ```
 
