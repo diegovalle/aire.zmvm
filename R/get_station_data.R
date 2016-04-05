@@ -12,10 +12,21 @@
 #'
 download_old_station_data <- function(pollutant, year) {
   upollutant <- toupper(pollutant)
+  if(upollutant == "PM25")
+    upollutant <- "PM2.5"
   base_url <- "http://148.243.232.112:8080/opendata/anuales_horarios_gz/contaminantes_"
   df <- read_csv(str_c(base_url, year, ".csv.gz"),
                  skip = 10, progress = FALSE)
   names(df) <- c("date", "station_code", "pollutant", "value", "unit")
+  if(!upollutant %in% unique(df$pollutant)) {
+    warning(str_c("No data for '", upollutant, "' in the year of ", year))
+    return(data.frame(date = as.Date(character()),
+                      hour = character(),
+                      station_code = character(),
+                      value= numeric(),
+                      stringsAsFactors=FALSE)
+           )
+  }
   df <- dplyr::filter(df, pollutant == upollutant)
 
   df$hour <- as.numeric(str_sub(df$date, 12,13))
@@ -26,9 +37,11 @@ download_old_station_data <- function(pollutant, year) {
                    str_sub(df$date, 1, 2))
   #df$date <- fast_strptime(df$date, "%Y-%m-%d")
   df$value <- as.numeric(df$value)
+  df$date <- as.Date(df$date)
   df$unit <- NULL
   df$pollutant <- NULL
-  df[,c("date", "hour", "station_code", "value")]
+  df <- df[,c("date", "hour", "station_code", "value")]
+  as.data.frame(df)
 }
 
 #' Title
@@ -44,6 +57,8 @@ download_old_station_data <- function(pollutant, year) {
 #' @importFrom lubridate fast_strptime
 #'
 download_current_station_data <- function(criterion, pollutant, year) {
+  if(pollutant == "pm25")
+    pollutant <- "pm2"
   base_url = "http://www.aire.df.gob.mx/estadisticas-consultas/concentraciones/respuesta.php?"
   url <- str_c(base_url, "qtipo=", criterion, "&",
                "parametro=", pollutant, "&",
@@ -64,7 +79,12 @@ download_current_station_data <- function(criterion, pollutant, year) {
     names(df)[2] <- "hour"
   }
 
-  df$date <- as.character(fast_strptime(df$date, "%d-%m-%Y"))
+  #df$date <- as.character(fast_strptime(df$date, "%d-%m-%Y"))
+  df$date <- str_c(str_sub(df$date, 7, 10), "-",
+                   str_sub(df$date, 4, 5), "-",
+                   str_sub(df$date, 1, 2))
+
+  df$date <- as.Date(df$date)
   if(criterion != "HORARIOS") {
     val_cols <- base::setdiff(names(df), c("date"))
   } else {
@@ -72,7 +92,8 @@ download_current_station_data <- function(criterion, pollutant, year) {
   }
   df <- gather_(df, "station_code", "value", val_cols)
   df$station_code <- as.character(df$station_code)
-  return(df)
+
+  as.data.frame(df)
 }
 
 #' Title
@@ -131,7 +152,7 @@ download_data <- function(criterion, pollutant, year) {
 #'  \item{"NO"}{ - Oxido nitrico (partes por billon)}
 #'  \item{"O3"}{ - Ozono (partes por billon)}
 #'  \item{"PM10"}{ - Particulas menores a 10 micrometros (microgramos por metro cubico)}
-#'  \item{"PM2"}{ - Particulas menores a 2.5 micrometros (microgramos por metro cubico)}
+#'  \item{"PM25"}{ - Particulas menores a 2.5 micrometros (microgramos por metro cubico)}
 #'  \item{"WSP"}{ - Velocidad del viento (metros por segundo)}
 #'  \item{"WDR"}{ - Direccion del viento (grados)}
 #'  \item{"TMP"}{ - Temperatura ambiente (grados Celsius)}
@@ -154,10 +175,12 @@ download_data <- function(criterion, pollutant, year) {
 #' head(df)
 #' }
 get_station_data <- function(criterion, pollutant, year, progress = interactive()) {
+  if(length(pollutant) > 1)
+    stop("You can only download one pollutant at a time")
   stopifnot(criterion %in% c("HORARIOS", "MAXIMOS", "MINIMOS"))
   pollutant <- tolower(pollutant)
   stopifnot(pollutant %in% c("so2", "co", "nox", "no2",
-                             "no", "o3", "pm10", "pm2",
+                             "no", "o3", "pm10", "pm25",
                              "wsp", "wdr", "tmp", "rh"))
   if(all(pollutant %in% c("wsp", "wdr", "tmp", "rh") & year < 2015))
     stop("WSP, WDR, TMP or RH are only available after 2015. However you can visit <http://www.aire.df.gob.mx/default.php?opc=%27aKBhnmI=%27&opcion=Zw==> to download older data")
@@ -172,12 +195,10 @@ get_station_data <- function(criterion, pollutant, year, progress = interactive(
   #              SIMPLIFY = FALSE)
   df <- data.frame()
   for(i in year){
-    df <- rbind(df, download_data(criterion, pollutant, i))
+    df <- rbind(df,  download_data(criterion, pollutant, i))
     if(progress)
       p$tick()$print()
   }
-  #df <- do.call(rbind, ll)
-
-  df
+  as.data.frame(df)
 }
 

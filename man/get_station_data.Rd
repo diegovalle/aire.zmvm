@@ -23,14 +23,14 @@ get_station_data(criterion, pollutant, year, progress = interactive())
  \item{"NO"}{ - Oxido nitrico (partes por billon)}
  \item{"O3"}{ - Ozono (partes por billon)}
  \item{"PM10"}{ - Particulas menores a 10 micrometros (microgramos por metro cubico)}
- \item{"PM2"}{ - Particulas menores a 2.5 micrometros (microgramos por metro cubico)}
+ \item{"PM25"}{ - Particulas menores a 2.5 micrometros (microgramos por metro cubico)}
  \item{"WSP"}{ - Velocidad del viento (metros por segundo)}
  \item{"WDR"}{ - Direccion del viento (grados)}
  \item{"TMP"}{ - Temperatura ambiente (grados Celsius)}
  \item{"RH"}{ - Humedad relativa (porcentaje)}
 }}
 
-\item{year}{a numeric vector containing the years for which to download data (the earliest possible value is 2005)}
+\item{year}{a numeric vector containing the years for which to download data (the earliest possible value is 1986)}
 
 \item{progress}{Wether to display a progress bar (TRUE or FALSE). By default it will only display in an interactive session.}
 }
