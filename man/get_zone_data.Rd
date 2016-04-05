@@ -33,7 +33,7 @@ get_zone_data(criterion, pollutant, zone, start_date, end_date)
  \item{"TZ"}{ - All the zones}
 }}
 
-\item{start_date}{The start date in YYYY-MM-DD format.}
+\item{start_date}{The start date in YYYY-MM-DD format (earliest possible value is 2008-01-01).}
 
 \item{end_date}{The end date in YYYY-MM-DD format.}
 }
