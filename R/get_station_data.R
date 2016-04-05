@@ -102,7 +102,7 @@ download_current_station_data <- function(criterion, pollutant, year) {
 #' @param pollutant type of pollutant
 #' @param year year to download
 #'
-#' @importFrom dplyr %>% group_by_ summarise_
+#' @importFrom dplyr %>% group_by_ summarise_ ungroup
 #'
 download_data <- function(criterion, pollutant, year) {
   if(criterion == "HORARIOS") {
@@ -118,7 +118,8 @@ download_data <- function(criterion, pollutant, year) {
       group_by_("date", "station_code") %>%
       summarise_(value = "ifelse(all(is.na(value)),
                                NA,
-                               base::max(value, na.rm = TRUE))")
+                               base::max(value, na.rm = TRUE))") %>%
+      ungroup()
   } else if(criterion == "MINIMOS") {
     if(year > 2015) {
       download_current_station_data(criterion, pollutant, year)
@@ -127,7 +128,8 @@ download_data <- function(criterion, pollutant, year) {
       group_by_("date", "station_code") %>%
       summarise_(value = "ifelse(all(is.na(value)),
                                NA,
-                               base::min(value, na.rm = TRUE))")
+                               base::min(value, na.rm = TRUE))") %>%
+      ungroup()
   }
 }
 
@@ -135,7 +137,9 @@ download_data <- function(criterion, pollutant, year) {
 #' Download pollution data
 #'
 #' retrieve pollution data by station from the air quality server at \url{
-#' http://www.aire.df.gob.mx/estadisticas-consultas/concentraciones/index.php}
+#' http://www.aire.df.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016 data.
+#' For earlier years the archive files from \url{http://www.aire.df.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
+#' are used
 #'
 #' @param criterion Type of data to download.
 #' \itemize{

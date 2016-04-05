@@ -39,7 +39,9 @@ a data.frame with pollution data
 }
 \description{
 retrieve pollution data by station from the air quality server at \url{
-http://www.aire.df.gob.mx/estadisticas-consultas/concentraciones/index.php}
+http://www.aire.df.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016 data.
+For earlier years the archive files from \url{http://www.aire.df.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
+are used
 }
 \examples{
 \dontrun{
