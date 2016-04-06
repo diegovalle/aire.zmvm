@@ -65,23 +65,23 @@ library("aire.zmvm")
 library("dplyr")
 library("ggplot2")
 
-o3 <- get_station_data(criterion = "MAXIMOS", # Can be MAXIMOS (daily maximum), 
+o3 <- get_station_data(criterion = "MAXIMOS", # Can be one of MAXIMOS (daily maximum), 
                                                 # MINIMOS (daily minimum), 
                                                 # or HORARIOS (hourly average)
-                       pollutant = "O3", # "SO2", "CO", "NOX", "NO2", "NO", "O3", 
+                       pollutant = "O3", # Can be one of "SO2", "CO", "NOX", "NO2", "NO", "O3", 
                                          # "PM10", "PM25", "WSP", "WDR", "TMP", "RH"
-                       year = 1986:2016) # The earliest year allowed is 1986
+                       year = 2015:2016) # A numeric vector, the earliest year allowed is 1986
 knitr::kable(head(o3))
 ```
 
-| date       | station\_code |  value|
-|:-----------|:--------------|------:|
-| 1986-01-01 | AZC           |     NA|
-| 1986-01-01 | CES           |     NA|
-| 1986-01-01 | HAN           |     NA|
-| 1986-01-01 | MER           |     NA|
-| 1986-01-01 | PED           |     NA|
-| 1986-01-01 | PLA           |     NA|
+| date       | station\_code | pollutant | unit |  value|
+|:-----------|:--------------|:----------|:-----|------:|
+| 2015-01-01 | ACO           | O3        | ppb  |     54|
+| 2015-01-01 | AJM           | O3        | ppb  |     83|
+| 2015-01-01 | AJU           | O3        | ppb  |     42|
+| 2015-01-01 | ATI           | O3        | ppb  |     98|
+| 2015-01-01 | CAM           | O3        | ppb  |     75|
+| 2015-01-01 | CCA           | O3        | ppb  |     75|
 
 ``` r
 # Daily max among all base stations
