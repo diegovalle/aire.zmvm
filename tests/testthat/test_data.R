@@ -1,3 +1,11 @@
+test_that("convert time correctly parses string", {
+  expect_equal(convert_time("11:00 h, miércoles 06 de abril de 2016"),
+               "2016-04-06 11:00:00")
+  expect_equal(convert_time("11:00 h,
+				miércoles 06 de abril de 2016
+			"),  "2016-04-06 11:00:00")
+})
+
 test_that("station pollution data matches api", {
   df_min_2016 <- get_station_data("MINIMOS", "PM10", 2016)
   df_max_2016 <- get_station_data("MAXIMOS", "PM10", 2016)
@@ -75,3 +83,5 @@ test_that("zone pollution data matches api", {
   expect_equal(unique(df_horarios$zone), c("NO", "NE", "CE"))
   expect_equal(unique(df_horarios$pollutant), c("O3", "PM10"))
 })
+
+
