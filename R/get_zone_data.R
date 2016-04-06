@@ -140,7 +140,13 @@ get_zone_data <- function(criterion, pollutant, zone, start_date, end_date) {
   df[which(df$value == "M"), "value"] <- NA
   df$value <- as.numeric(df$value)
   df$date <- as.Date(df$date)
-  df
+  df$unit <- "IMECA"
+  if(criterion != tolower("HORARIOS")) {
+    as.data.frame(df[ ,c("date", "zone", "pollutant", "unit", "value")])
+  } else {
+    as.data.frame(df[ ,c("date", "hour", "zone", "pollutant", "unit", "value")])
+  }
+
 }
 
 

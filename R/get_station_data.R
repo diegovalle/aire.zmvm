@@ -9,6 +9,7 @@
 #' @importFrom readr read_csv
 #' @importFrom dplyr filter
 #' @importFrom lubridate fast_strptime
+#' @importFrom car recode
 #'
 download_old_station_data <- function(pollutant, year) {
   upollutant <- toupper(pollutant)
@@ -17,13 +18,16 @@ download_old_station_data <- function(pollutant, year) {
   base_url <- "http://148.243.232.112:8080/opendata/anuales_horarios_gz/contaminantes_"
   df <- read_csv(str_c(base_url, year, ".csv.gz"),
                  skip = 10, progress = FALSE)
+
   names(df) <- c("date", "station_code", "pollutant", "value", "unit")
   if(!upollutant %in% unique(df$pollutant)) {
     warning(str_c("No data for '", upollutant, "' in the year of ", year))
     return(data.frame(date = as.Date(character()),
                       hour = character(),
                       station_code = character(),
+                      pollutant = character(),
                       value= numeric(),
+                      unit = character(),
                       stringsAsFactors=FALSE)
            )
   }
@@ -38,9 +42,11 @@ download_old_station_data <- function(pollutant, year) {
   #df$date <- fast_strptime(df$date, "%Y-%m-%d")
   df$value <- as.numeric(df$value)
   df$date <- as.Date(df$date)
-  df$unit <- NULL
-  df$pollutant <- NULL
-  df <- df[,c("date", "hour", "station_code", "value")]
+
+  df$unit <- car::recode(df$unit, '15 = "ppm"; 1 = "ppb"; 2 = "\u00B5g/m\u00B3"')
+  df$pollutant <- upollutant
+
+  df <- df[,c("date", "hour", "station_code", "pollutant", "unit", "value")]
   as.data.frame(df)
 }
 
@@ -55,6 +61,7 @@ download_old_station_data <- function(pollutant, year) {
 #' @importFrom xml2 read_html
 #' @importFrom dplyr %>%
 #' @importFrom lubridate fast_strptime
+#' @importFrom car recode
 #'
 download_current_station_data <- function(criterion, pollutant, year) {
   if(pollutant == "pm25")
@@ -93,6 +100,21 @@ download_current_station_data <- function(criterion, pollutant, year) {
   df <- gather_(df, "station_code", "value", val_cols)
   df$station_code <- as.character(df$station_code)
 
+  df$unit <- car::recode(pollutant, '"pm2" = "\u00B5g/m\u00B3"; "so2" = "ppb"; "co" = "ppm";
+                         "nox" = "ppb"; "no2"="ppb"; "no"="ppb"; "o3"="ppb";
+                         "pm10"="\u00B5g/m\u00B3"; "pm25"="\u00B5g/m\u00B3"; "wsp"="m/s";
+                         "wdr"="\u00B0";
+                         "tmp"="\u00B0C"; "rh"="%"')
+  df$pollutant <- car::recode(pollutant, '"pm2" = "PM25"; "so2" = "SO2"; "co" = "CO";
+                         "nox" = "NOX"; "no2"="NO2"; "no"="NO"; "o3"="O3";
+                         "pm10"="PM10"; "pm25"="PM25"; "wsp"="WSP"; "wdr"="WDR";
+                         "tmp"="TMP"; "rh"="RH"')
+  if(criterion != "HORARIOS") {
+    df <- df[,c("date", "station_code", "pollutant", "unit", "value")]
+  } else {
+    df <- df[,c("date", "hour", "station_code", "pollutant", "unit", "value")]
+  }
+
   as.data.frame(df)
 }
 
@@ -115,7 +137,7 @@ download_data <- function(criterion, pollutant, year) {
       download_current_station_data(criterion, pollutant, year)
     } else
       download_old_station_data(pollutant, year) %>%
-      group_by_("date", "station_code") %>%
+      group_by_("date", "station_code", "pollutant", "unit") %>%
       summarise_(value = "ifelse(all(is.na(value)),
                                NA,
                                base::max(value, na.rm = TRUE))") %>%
@@ -125,7 +147,7 @@ download_data <- function(criterion, pollutant, year) {
       download_current_station_data(criterion, pollutant, year)
     } else
       download_old_station_data(pollutant, year) %>%
-      group_by_("date", "station_code") %>%
+      group_by_("date", "station_code", "pollutant", "unit") %>%
       summarise_(value = "ifelse(all(is.na(value)),
                                NA,
                                base::min(value, na.rm = TRUE))") %>%
