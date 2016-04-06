@@ -17,11 +17,6 @@ Suggests:
     rmarkdown,
     testthat,
     ggplot2,
-    seasonal,
-    viridis,
-    gstat,
-    sp,
-    ggmap
 Imports:
     lubridate,
     dplyr,
@@ -30,5 +25,6 @@ Imports:
     stringr,
     xml2,
     httr,
-    readr
+    readr,
+    car
 RoxygenNote: 5.0.0
