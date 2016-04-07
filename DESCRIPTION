@@ -16,7 +16,7 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    ggplot2,
+    ggplot2
 Imports:
     lubridate,
     dplyr,
