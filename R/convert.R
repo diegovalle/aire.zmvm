@@ -94,7 +94,16 @@ co_to_imeca <- function(value){
   } else if (value > 22.00) {
     ret <- value*201/22.01
   }
-  return(round(ret))
+  return(ret)
+}
+
+round2 = function(x, n = 0) {
+  posneg = sign(x)
+  z = abs(x)*10^n
+  z = z + 0.5
+  z = trunc(z)
+  z = z/10^n
+  z*posneg
 }
 
 to_imeca <- function(contaminant, value) {
@@ -121,6 +130,13 @@ to_imeca <- function(contaminant, value) {
   return(ret)
 }
 
-convert_imeca <- function(contaminant, value) {
-  as.vector(unname(mapply(to_imeca, contaminant = contaminant, value = value)))
+#' Title
+#'
+#' @param pollutant type of pollutant
+#' @param value value to convert to IMECAS
+#'
+#' @return value in IMECAS
+#' @export
+convert_to_imeca <- function(pollutant, value) {
+  as.vector(unname(mapply(to_imeca, contaminant = pollutant, value = value)))
 }
