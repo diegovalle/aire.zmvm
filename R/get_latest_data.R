@@ -36,12 +36,12 @@ get_latest_data <- function() {
   time <- convert_time(html_text(html_nodes(poll_table, "div#textohora")))
 
   df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE, fill = TRUE)
-  names(df) <- c("station_code", "municipio", "quality", "contaminant", "value")
+  names(df) <- c("station_code", "municipio", "quality", "pollutant", "value")
   df <- df[2:nrow(df),]
   df$value <- sapply(df$value, function(x) URLdecode(str_match(URLdecode(x),"'(\\d+)'")[[2]]))
 
   edomex <- html_table(html_nodes(poll_table, "table")[[2]], header = TRUE, fill = TRUE)
-  names(edomex) <- c("station_code", "municipio", "quality", "contaminant", "value")
+  names(edomex) <- c("station_code", "municipio", "quality", "pollutant", "value")
   edomex <- edomex[2:nrow(edomex),]
   edomex$value <- sapply(edomex$value,
                          function(x) URLdecode(str_match(URLdecode(x),"'(\\d+)'")[[2]]))
