@@ -85,6 +85,13 @@ download_current_station_data <- function(criterion, pollutant, year) {
   if(criterion == "HORARIOS") {
     names(df)[2] <- "hour"
   }
+  # The website messed up and changed the station_name of the Montecillo (Texcoco) station
+  # to CHA instead of MON
+  if("CHA" %in% names(df)) {
+    if(!"MON" %in% names(df)) {
+      names(df)[which(names(df) == "CHA")] <- "MON"
+    }
+  }
 
   #df$date <- as.character(fast_strptime(df$date, "%d-%m-%Y"))
   df$date <- str_c(str_sub(df$date, 7, 10), "-",
