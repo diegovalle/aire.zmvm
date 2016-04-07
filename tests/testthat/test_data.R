@@ -6,6 +6,25 @@ test_that("convert time correctly parses string", {
 			"),  "2016-04-06 11:00:00")
 })
 
+test_that(("convert units"), {
+  expect_equal(convert_to_imeca("NO2", 90), 43)
+  expect_equal(convert_to_imeca("NO2", 75), 36)
+
+  expect_equal(convert_to_imeca("O3", 48), 34)
+  expect_equal(convert_to_imeca("O3", 67), 48)
+  expect_equal(convert_to_imeca("O3", 77), 63)
+  expect_equal(convert_to_imeca("O3", 205), 201)
+  expect_equal(convert_to_imeca("O3", 72), 53)
+  expect_equal(convert_to_imeca("O3", 98), 103)
+  expect_equal(convert_to_imeca("O3", 170), 166)
+
+  # expect_equal(convert_to_imeca("CO", 1.5), 14)
+  # expect_equal(convert_to_imeca("CO", 6), 55)
+  # expect_equal(convert_to_imeca("CO", 12), 109)
+  # expect_equal(convert_to_imeca("CO", 18), 164)
+  # expect_equal(convert_to_imeca("CO", 24), 218)
+})
+
 test_that("station pollution data matches api", {
   df_min_2016 <- get_station_data("MINIMOS", "PM10", 2016)
   df_max_2016 <- get_station_data("MAXIMOS", "PM10", 2016)
@@ -13,6 +32,9 @@ test_that("station pollution data matches api", {
   df_max_2015 <- get_station_data("MAXIMOS", "O3", 2015)
   df_horarios_2010 <- get_station_data("HORARIOS", "PM10", 2010)
   df_horarios_2016 <- get_station_data("HORARIOS", "O3", 2016)
+
+  expect_false("CHA" %in% unique(df_max_2015$station_code))
+  expect_true("MON" %in% unique(df_max_2015$station_code))
 
   expect_equal(unname(unlist(subset(df_min_2016, date == as.Date("2016-01-03"))$value)),
                c(21, 26, NA, 4, 26, 22, NA, NA, NA, 17, NA, 6, 6, 3, NA, 29,
