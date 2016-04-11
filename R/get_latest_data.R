@@ -17,7 +17,8 @@ convert_time <- function(time){
 
 #' Get the latest pollution values for each station
 #'
-#' @return A data.frame with pollution values in IMECAs
+#' @return A data.frame with pollution values in IMECAs, the time corresponds to the
+#' America/Mexico_City timezone
 #' @export
 #' @importFrom utils URLdecode
 #' @importFrom rvest html_nodes html_text
@@ -49,7 +50,9 @@ get_latest_data <- function() {
   mxc <- rbind(df, edomex)
   mxc$value[mxc$value=="NA"] <- NA
   mxc$value <- as.numeric(mxc$value)
-  mxc$time <- time
+  mxc$datetime <- time
+  mxc$unit <- "IMECA"
+  mxc <- mxc[,c("station_code", "municipio", "quality", "pollutant", "unit", "value", "datetime")]
 
   mxc[!is.na(mxc$station_code),]
 }
