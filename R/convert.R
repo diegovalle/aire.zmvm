@@ -71,18 +71,21 @@ no2_to_imeca <- function(value){
   } else if (value > 0.420) {
     ret <- value*201/0.421
   }
+  #ret <- (value * 100)/0.21
   return(round(ret))
 }
 
 so2_to_imeca <- function(value){
+  if(value < 0)
+    return(NA)
+  if(is.na(value))
+    return(NA)
   value = value /1000
   ret <- value*100/0.13
   return(round(ret))
 }
 
 co_to_imeca <- function(value){
-  if(value < 0)
-    return(NA)
   if (value >= 0.000 & value <=  5.50){
     ret <-value*50/5.50
   } else if (value > 5.50  & value <= 11.00){
@@ -108,6 +111,8 @@ round2 = function(x, n = 0) {
 
 to_imeca <- function(contaminant, value) {
   if(is.na(value))
+    return(NA)
+  if(value < 0)
     return(NA)
   if (contaminant == "O3") {
     ret <- o3_to_imeca(value)
@@ -137,6 +142,8 @@ to_imeca <- function(contaminant, value) {
 #'
 #' @return value in IMECAS
 #' @export
-convert_to_imeca <- function(pollutant, value) {
+convert_to_imeca <- function(value, pollutant) {
+  pollutant <- toupper(pollutant)
+  stopifnot(pollutant %in% c("O3", "NO2", "PM10"))
   as.vector(unname(mapply(to_imeca, contaminant = pollutant, value = value)))
 }

@@ -7,22 +7,45 @@ test_that("convert time correctly parses string", {
 })
 
 test_that(("convert units"), {
-  expect_equal(convert_to_imeca("NO2", 90), 43)
-  expect_equal(convert_to_imeca("NO2", 75), 36)
+  # df_max_zone <- get_zone_data("MAXIMOS", c("NO2"), c("TZ"),
+  #               "2015-01-01", "2015-12-31")
+  # df_max_station <- get_station_data("MAXIMOS", "NO2", 2015)
+  #
+  # library(dplyr)
+  # zone_max <- df_max_zone %>%
+  #   group_by(date) %>%
+  #   summarise(max = max(value, na.rm = TRUE))
+  # station_max <- df_max_station %>%
+  #   group_by(date) %>%
+  #   summarise(max = max(value, na.rm = TRUE)) %>%
+  #   mutate(max_imeca = convert_to_imeca(max, "NO2"))
+  #
+  # expect_equal(zone_max$max, station_max$max_imeca)
+  expect_equal(convert_to_imeca(-1, "NO2"), NA)
+  expect_equal(convert_to_imeca(NA, "NO2"), NA)
+  expect_equal(convert_to_imeca(c(450, 350, 250), "NO2"), c(215,167,119))
+  expect_equal(convert_to_imeca(c(450, 350, 48), c("NO2", "NO2", "O3")), c(215,167,34))
 
-  expect_equal(convert_to_imeca("O3", 48), 34)
-  expect_equal(convert_to_imeca("O3", 67), 48)
-  expect_equal(convert_to_imeca("O3", 77), 63)
-  expect_equal(convert_to_imeca("O3", 205), 201)
-  expect_equal(convert_to_imeca("O3", 72), 53)
-  expect_equal(convert_to_imeca("O3", 98), 103)
-  expect_equal(convert_to_imeca("O3", 170), 166)
+  expect_equal(convert_to_imeca(90, "NO2"), 43)
+  expect_equal(convert_to_imeca(75, "NO2"), 36)
+  #expect_equal(convert_to_imeca(150, "NO2"), 71)
+  expect_equal(convert_to_imeca(250, "NO2"), 119)
+  expect_equal(convert_to_imeca(350, "NO2"), 167)
+  expect_equal(convert_to_imeca(450, "NO2"), 215)
 
-  # expect_equal(convert_to_imeca("CO", 1.5), 14)
-  # expect_equal(convert_to_imeca("CO", 6), 55)
-  # expect_equal(convert_to_imeca("CO", 12), 109)
-  # expect_equal(convert_to_imeca("CO", 18), 164)
-  # expect_equal(convert_to_imeca("CO", 24), 218)
+  expect_equal(convert_to_imeca(48, "O3"), 34)
+  expect_equal(convert_to_imeca(67, "O3"), 48)
+  expect_equal(convert_to_imeca(77, "O3"), 63)
+  expect_equal(convert_to_imeca(205, "O3"), 201)
+  expect_equal(convert_to_imeca(72, "O3"), 53)
+  expect_equal(convert_to_imeca(98, "O3"), 103)
+  expect_equal(convert_to_imeca(170, "O3"), 166)
+
+  # expect_equal(convert_to_imeca(1.5, "CO"), 14)
+  # expect_equal(convert_to_imeca(6, "CO"), 55)
+  # expect_equal(convert_to_imeca(12, "CO"), 109)
+  # expect_equal(convert_to_imeca(18, "CO"), 164)
+  # expect_equal(convert_to_imeca(24, "CO"), 218)
 })
 
 test_that("station pollution data matches api", {
