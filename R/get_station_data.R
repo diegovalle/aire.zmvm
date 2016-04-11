@@ -76,6 +76,7 @@ download_current_station_data <- function(criterion, pollutant, year, month = ""
   df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE)
   names(df) <- df[1,]
   names(df)[1] <- "date"
+  names(df) <- iconv(names(df), from="UTF-8", to="ASCII", sub="")
   names(df) <- str_replace_all(names(df), "\\s", "")
   if(!nrow(df) > 2)
     stop("something went wrong when downloading the data")
