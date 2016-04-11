@@ -55,6 +55,7 @@ download_old_station_data <- function(pollutant, year) {
 #' @param criterion type of data to download
 #' @param pollutant type of pollutant to download
 #' @param year year to download
+#' @param month month to download
 #'
 #' @importFrom stringr str_c  str_replace_all
 #' @importFrom rvest html_nodes html_table
@@ -63,20 +64,21 @@ download_old_station_data <- function(pollutant, year) {
 #' @importFrom lubridate fast_strptime
 #' @importFrom car recode
 #'
-download_current_station_data <- function(criterion, pollutant, year) {
+download_current_station_data <- function(criterion, pollutant, year, month = "") {
   if(pollutant == "pm25")
     pollutant <- "pm2"
   base_url = "http://www.aire.df.gob.mx/estadisticas-consultas/concentraciones/respuesta.php?"
   url <- str_c(base_url, "qtipo=", criterion, "&",
                "parametro=", pollutant, "&",
                "anio=", year, "&",
-               "qmes=")
+               "qmes=", month)
   poll_table <- read_html(url)
   df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE)
   names(df) <- df[1,]
   names(df)[1] <- "date"
   names(df) <- str_replace_all(names(df), "\\s", "")
-  stopifnot(nrow(df) > 2)
+  if(!nrow(df) > 2)
+    stop("something went wrong when downloading the data")
   df <- df[2:nrow(df),]
 
   df[df == "nr"] <- NA
@@ -194,7 +196,8 @@ download_data <- function(criterion, pollutant, year) {
 #' @param year a numeric vector containing the years for which to download data (the earliest possible value is 1986)
 #' @param progress Wether to display a progress bar (TRUE or FALSE). By default it will only display in an interactive session.
 #'
-#' @return a data.frame with pollution data
+#' @return a data.frame with pollution data, when downloading "HORARIOS" the hours correspond the
+#' GMT+6 timezone
 #'
 #' @export
 #' @importFrom tidyr gather_
@@ -233,5 +236,59 @@ get_station_data <- function(criterion, pollutant, year, progress = interactive(
       p$tick()$print()
   }
   as.data.frame(df)
+}
+
+
+
+#' Download monthly pollution data
+#'
+#' retrieve pollution data by station from the air quality server at \url{
+#' http://www.aire.df.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016 data.
+#' For earlier years the archive files from \url{http://www.aire.df.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
+#' are used
+#'
+#' @param pollutant The type of pollutant to download.
+#' \itemize{
+#'  \item{"SO2"}{ - Dioxido de azufre (partes por billon)}
+#'  \item{"CO"}{ - Monoxido de carbono (partes por millon)}
+#'  \item{"NOX"}{ - Oxidos de nitrogeno (partes por billon)}
+#'  \item{"NO2"}{ - Dioxido de nitrogeno (partes por billon)}
+#'  \item{"NO"}{ - Oxido nitrico (partes por billon)}
+#'  \item{"O3"}{ - Ozono (partes por billon)}
+#'  \item{"PM10"}{ - Particulas menores a 10 micrometros (microgramos por metro cubico)}
+#'  \item{"PM25"}{ - Particulas menores a 2.5 micrometros (microgramos por metro cubico)}
+#'  \item{"WSP"}{ - Velocidad del viento (metros por segundo)}
+#'  \item{"WDR"}{ - Direccion del viento (grados)}
+#'  \item{"TMP"}{ - Temperatura ambiente (grados Celsius)}
+#'  \item{"RH"}{ - Humedad relativa (porcentaje)}
+#' }
+#' @param year a numeric vector containing the years for which to download data (the earliest possible value is 1986)
+#' @param month month number to download
+#'
+#' @return a data.frame with pollution data, when downloading "HORARIOS" the hours correspond the
+#' GMT+6 timezone
+#'
+#' @export
+#' @importFrom stringr str_pad
+get_station_single_month <- function(pollutant, year, month) {
+  if( missing(pollutant) | missing(year) | missing(month))
+    stop("arguments missing")
+  if(length(pollutant) > 1)
+    stop("You can only download one pollutant at a time")
+  if(length(year) > 1)
+    stop("You can only download one year at a time")
+  if(length(month) > 1)
+    stop("You can only download one year at a time")
+  pollutant <- tolower(pollutant)
+  stopifnot(pollutant %in% c("so2", "co", "nox", "no2",
+                             "no", "o3", "pm10", "pm25",
+                             "wsp", "wdr", "tmp", "rh"))
+  month <- str_pad(as.character(month), 2, "left", "0")
+  stopifnot(month %in% c("01", "02", "03", "04",
+                         "05", "06", "07", "08",
+                         "09", "10", "11", "12"))
+  if(min(year) < 2015)
+    stop("Monthly data is only available from 2015 onwards, try downloading the data for the entire year")
+  download_current_station_data("HORARIOS", pollutant, year, month)
 }
 
