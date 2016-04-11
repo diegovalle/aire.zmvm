@@ -4,12 +4,12 @@
 \alias{convert_to_imeca}
 \title{Title}
 \usage{
-convert_to_imeca(pollutant, value)
+convert_to_imeca(value, pollutant)
 }
 \arguments{
-\item{pollutant}{type of pollutant}
-
 \item{value}{value to convert to IMECAS}
+
+\item{pollutant}{type of pollutant}
 }
 \value{
 value in IMECAS

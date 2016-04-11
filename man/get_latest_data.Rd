@@ -7,7 +7,8 @@
 get_latest_data()
 }
 \value{
-A data.frame with pollution values in IMECAs
+A data.frame with pollution values in IMECAs, the time corresponds to the
+America/Mexico_City timezone
 }
 \description{
 Get the latest pollution values for each station

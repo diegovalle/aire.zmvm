@@ -4,7 +4,7 @@
 \alias{download_current_station_data}
 \title{Title}
 \usage{
-download_current_station_data(criterion, pollutant, year)
+download_current_station_data(criterion, pollutant, year, month = "")
 }
 \arguments{
 \item{criterion}{type of data to download}
@@ -12,6 +12,8 @@ download_current_station_data(criterion, pollutant, year)
 \item{pollutant}{type of pollutant to download}
 
 \item{year}{year to download}
+
+\item{month}{month to download}
 }
 \description{
 Title
