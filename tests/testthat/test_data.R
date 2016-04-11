@@ -56,6 +56,9 @@ test_that("station pollution data matches api", {
   df_horarios_2010 <- get_station_data("HORARIOS", "PM10", 2010)
   df_horarios_2016 <- get_station_data("HORARIOS", "O3", 2016)
 
+  expect_false(all(stringr::str_detect(unique(df_horarios_2016$station_code), "[:space:]")))
+  expect_false(all(stringr::str_detect(unique(df_horarios_2016$station_code), "\ufffd")))
+
   expect_false("CHA" %in% unique(df_max_2015$station_code))
   expect_true("MON" %in% unique(df_max_2015$station_code))
 
