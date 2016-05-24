@@ -37,7 +37,7 @@ Master: [![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.sv
 What does it do?
 ----------------
 
-This package downloads pollution data for the Mexico City metro area. It can download real-time, daily maximum, minimum, or average for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City)
+This package downloads pollution data for the Mexico City metro area. It can download real-time, daily maximum, minimum, or hourly average data for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City).
 
 Installation
 ------------
@@ -70,18 +70,18 @@ o3 <- get_station_data(criterion = "MAXIMOS", # Can be one of MAXIMOS (daily max
                                                 # or HORARIOS (hourly average)
                        pollutant = "O3", # Can be one of "SO2", "CO", "NOX", "NO2", "NO", "O3", 
                                          # "PM10", "PM25", "WSP", "WDR", "TMP", "RH"
-                       year = 2015:2016) # A numeric vector, the earliest year allowed is 1986
+                       year = 1986:2016) # A numeric vector, the earliest year allowed is 1986
 knitr::kable(head(o3))
 ```
 
 | date       | station\_code | pollutant | unit |  value|
 |:-----------|:--------------|:----------|:-----|------:|
-| 2015-01-01 | ACO           | O3        | ppb  |     54|
-| 2015-01-01 | AJM           | O3        | ppb  |     83|
-| 2015-01-01 | AJU           | O3        | ppb  |     42|
-| 2015-01-01 | ATI           | O3        | ppb  |     98|
-| 2015-01-01 | CAM           | O3        | ppb  |     75|
-| 2015-01-01 | CCA           | O3        | ppb  |     75|
+| 1986-01-01 | AZC           | O3        | ppb  |     NA|
+| 1986-01-01 | CES           | O3        | ppb  |     NA|
+| 1986-01-01 | HAN           | O3        | ppb  |     NA|
+| 1986-01-01 | MER           | O3        | ppb  |     NA|
+| 1986-01-01 | PED           | O3        | ppb  |     NA|
+| 1986-01-01 | PLA           | O3        | ppb  |     NA|
 
 ``` r
 # Daily max among all base stations
@@ -111,4 +111,4 @@ ggplot(o3_max,
   theme_bw()
 ```
 
-![](readme_files/figure-markdown_github/unnamed-chunk-1-1.png)<!-- -->
+![](readme_files/figure-markdown_github/unnamed-chunk-1-1.png)
