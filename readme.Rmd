@@ -21,7 +21,7 @@ Master: [![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.sv
 
 ## What does it do?
 
-This package downloads pollution data for the Mexico City metro area. It can download real-time, daily maximum, minimum, or average for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City)
+This package downloads pollution data for the Mexico City metro area. It can download real-time, daily maximum, minimum, or hourly average data for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City).
 
 
 ```{r setup, include=FALSE}
