@@ -1,15 +1,27 @@
+recode_unit <- function(pollutant) {
+  str_replace_all(pollutant, c("pm2" = "\u00B5g/m\u00B3", "so2" = "ppb", "co" = "ppm",
+                               "nox" = "ppb", "no2"="ppb", "no"="ppb", "o3"="ppb",
+                               "pm10"="\u00B5g/m\u00B3", "pm25"="\u00B5g/m\u00B3", "wsp"="m/s",
+                               "wdr"="\u00B0",
+                               "tmp"="\u00B0C", "rh"="%"))
+}
 
+recode_pollutant <- function(pollutant) {
+  str_replace_all(pollutant, c("pm2" = "PM25", "so2" = "SO2", "co" = "CO",
+                               "nox" = "NOX", "no2"="NO2", "no"="NO", "o3"="O3",
+                               "pm10"="PM10", "pm25"="PM25", "wsp"="WSP", "wdr"="WDR",
+                               "tmp"="TMP", "rh"="RH", "PM2.5"="PM25"))
+}
 #' Title
 #'
 #' @param year year to download
 #' @param pollutant pollutant to filter by
 #'
 #'
-#' @importFrom stringr str_c  str_sub
+#' @importFrom stringr str_c  str_sub str_replace_all
 #' @importFrom readr read_csv
 #' @importFrom dplyr filter
 #' @importFrom lubridate fast_strptime
-#' @importFrom car recode
 #'
 download_old_station_data <- function(pollutant, year) {
   upollutant <- toupper(pollutant)
@@ -43,8 +55,9 @@ download_old_station_data <- function(pollutant, year) {
   df$value <- as.numeric(df$value)
   df$date <- as.Date(df$date)
 
-  df$unit <- car::recode(df$unit, '15 = "ppm"; 1 = "ppb"; 2 = "\u00B5g/m\u00B3"')
-  df$pollutant <- upollutant
+  df$unit <- str_replace_all(as.character(df$unit),
+                             c("15" = "ppm", "1" = "ppb", "2" = "\u00B5g/m\u00B3"))
+  df$pollutant <- recode_pollutant(upollutant)
 
   df <- df[,c("date", "hour", "station_code", "pollutant", "unit", "value")]
   as.data.frame(df)
@@ -62,7 +75,7 @@ download_old_station_data <- function(pollutant, year) {
 #' @importFrom xml2 read_html
 #' @importFrom dplyr %>%
 #' @importFrom lubridate fast_strptime
-#' @importFrom car recode
+#' @importFrom httr GET
 #'
 download_current_station_data <- function(criterion, pollutant, year, month = "") {
   if(pollutant == "pm25")
@@ -72,7 +85,7 @@ download_current_station_data <- function(criterion, pollutant, year, month = ""
                "parametro=", pollutant, "&",
                "anio=", year, "&",
                "qmes=", month)
-  poll_table <- read_html(url)
+  poll_table <- read_html(httr::GET(url,  httr::timeout(60)))
   df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE)
   names(df) <- df[1,]
   names(df)[1] <- "date"
@@ -110,15 +123,23 @@ download_current_station_data <- function(criterion, pollutant, year, month = ""
   df <- gather_(df, "station_code", "value", val_cols)
   df$station_code <- as.character(df$station_code)
 
-  df$unit <- car::recode(pollutant, '"pm2" = "\u00B5g/m\u00B3"; "so2" = "ppb"; "co" = "ppm";
-                         "nox" = "ppb"; "no2"="ppb"; "no"="ppb"; "o3"="ppb";
-                         "pm10"="\u00B5g/m\u00B3"; "pm25"="\u00B5g/m\u00B3"; "wsp"="m/s";
-                         "wdr"="\u00B0";
-                         "tmp"="\u00B0C"; "rh"="%"')
-  df$pollutant <- car::recode(pollutant, '"pm2" = "PM25"; "so2" = "SO2"; "co" = "CO";
-                         "nox" = "NOX"; "no2"="NO2"; "no"="NO"; "o3"="O3";
-                         "pm10"="PM10"; "pm25"="PM25"; "wsp"="WSP"; "wdr"="WDR";
-                         "tmp"="TMP"; "rh"="RH"')
+  # print(evaluate_promise({recode(pollutant, '"pm2" = "\u00B5g/m\u00B3"; "so2" = "ppb"; "co" = "ppm";
+  #                        "nox" = "ppb"; "no2"="ppb"; "no"="ppb"; "o3"="ppb";
+  #                        "pm10"="\u00B5g/m\u00B3"; "pm25"="\u00B5g/m\u00B3"; "wsp"="m/s";
+  #                        "wdr"="\u00B0";
+  #                        "tmp"="\u00B0C"; "rh"="%"')}))
+  df$unit <- recode_unit(pollutant)
+  df$pollutant <- recode_pollutant(pollutant)
+
+  # df$unit <- recode(pollutant, '"pm2" = "\u00B5g/m\u00B3"; "so2" = "ppb"; "co" = "ppm";
+  #                        "nox" = "ppb"; "no2"="ppb"; "no"="ppb"; "o3"="ppb";
+  #                        "pm10"="\u00B5g/m\u00B3"; "pm25"="\u00B5g/m\u00B3"; "wsp"="m/s";
+  #                        "wdr"="\u00B0";
+  #                        "tmp"="\u00B0C"; "rh"="%"')
+  # df$pollutant <- recode(pollutant, '"pm2" = "PM25"; "so2" = "SO2"; "co" = "CO";
+  #                        "nox" = "NOX"; "no2"="NO2"; "no"="NO"; "o3"="O3";
+  #                        "pm10"="PM10"; "pm25"="PM25"; "wsp"="WSP"; "wdr"="WDR";
+  #                        "tmp"="TMP"; "rh"="RH"')
   if(criterion != "HORARIOS") {
     df <- df[,c("date", "station_code", "pollutant", "unit", "value")]
   } else {
@@ -137,13 +158,14 @@ download_current_station_data <- function(criterion, pollutant, year, month = ""
 #' @importFrom dplyr %>% group_by_ summarise_ ungroup
 #'
 download_data <- function(criterion, pollutant, year) {
+  year_no_data <- 2005
   if(criterion == "HORARIOS") {
-    if(year > 2015) {
+    if(year >= year_no_data) {
       download_current_station_data(criterion, pollutant, year)
     } else
       download_old_station_data(pollutant, year)
   } else if(criterion == "MAXIMOS") {
-    if(year > 2015) {
+    if(year >= year_no_data) {
       download_current_station_data(criterion, pollutant, year)
     } else
       download_old_station_data(pollutant, year) %>%
@@ -153,7 +175,7 @@ download_data <- function(criterion, pollutant, year) {
                                base::max(value, na.rm = TRUE))") %>%
       ungroup()
   } else if(criterion == "MINIMOS") {
-    if(year > 2015) {
+    if(year >= year_no_data) {
       download_current_station_data(criterion, pollutant, year)
     } else
       download_old_station_data(pollutant, year) %>%
@@ -212,6 +234,7 @@ download_data <- function(criterion, pollutant, year) {
 #' head(df)
 #' }
 get_station_data <- function(criterion, pollutant, year, progress = interactive()) {
+  year_no_data <- 2005
   if(length(pollutant) > 1)
     stop("You can only download one pollutant at a time")
   stopifnot(criterion %in% c("HORARIOS", "MAXIMOS", "MINIMOS"))
@@ -219,11 +242,11 @@ get_station_data <- function(criterion, pollutant, year, progress = interactive(
   stopifnot(pollutant %in% c("so2", "co", "nox", "no2",
                              "no", "o3", "pm10", "pm25",
                              "wsp", "wdr", "tmp", "rh"))
-  if(all(pollutant %in% c("wsp", "wdr", "tmp", "rh") & year < 2015))
-    stop("WSP, WDR, TMP or RH are only available after 2015. However you can visit <http://www.aire.df.gob.mx/default.php?opc=%27aKBhnmI=%27&opcion=Zw==> to download older data")
+  if(all(pollutant %in% c("wsp", "wdr", "tmp", "rh") & year < year_no_data))
+    stop("WSP, WDR, TMP or RH are only available after 2005. However you can visit <http://www.aire.df.gob.mx/default.php?opc=%27aKBhnmI=%27&opcion=Zw==> to download older data")
   if(min(year) < 1986)
     stop("Data is only available from 1986 onwards")
-  if(progress)
+  if(!is.null(progress))
     p <- progress_estimated(length(year))
   # ll <- mapply(function(criterion, pollutant, year) {pr <<- p;p$tick(); download_data},
   #              criterion = rep(criterion, length(year)),
@@ -233,7 +256,7 @@ get_station_data <- function(criterion, pollutant, year, progress = interactive(
   df <- data.frame()
   for(i in year){
     df <- rbind(df,  download_data(criterion, pollutant, i))
-    if(progress)
+    if(!is.null(progress))
       p$tick()$print()
   }
   as.data.frame(df)
