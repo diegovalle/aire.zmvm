@@ -25,7 +25,7 @@ pm10_to_imeca_2014 <- function(value){
   return(round(ret))
 }
 
-# http://www.aire.df.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
+# http://aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
 pm25_to_imeca_2006 <- function(value){
   if (value >= 0.000 & value <= 15.4){
     ret <- value*50/15.4
