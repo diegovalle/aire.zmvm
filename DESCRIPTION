@@ -7,7 +7,7 @@ Description: The Mexico City government mantains a network of censors to
     continually monitor pollution. This package provides R functions that can
     download the daily maximum, minimum, hourly average or real-time data for each
     of the pollution measuring stations or geographic zones. It also contains the
-    locations of each of the stations. See <http://www.aire.df.gob.mx/> for the air
+    locations of each of the stations. See <http://aire.cdmx.gob.mx/> for the air
     pollution website.
 License: BSD_3_clause + file LICENSE
 LazyData: TRUE

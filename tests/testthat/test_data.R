@@ -26,6 +26,13 @@ test_that("convert time correctly parses string", {
   expect_equal(convert_time("01:00 h,
 				domingo 22 de mayo de 2016
 			"),  "2016-05-22 01:00:00")
+
+  expect_equal(convert_time("24:00 h,
+				lunes 30 de mayo de 2016"), "2016-05-31 00:00:00")
+
+  expect_equal(convert_time("24:00 h,
+  mi&eacute;rcoles 01 de junio de 2016"), "2016-06-02 00:00:00")
+
 })
 
 test_that(("convert units"), {

@@ -41,7 +41,7 @@ get_zone_data(criterion, pollutant, zone, start_date, end_date)
 A data.frame with pollution data measured in IMECAS, by geographic zone
 }
 \description{
-retrieve pollution data by geographic zone from the air quality server at \url{http://www.aire.df.gob.mx/default.php?opc='aqBjnmU='}
+retrieve pollution data by geographic zone from the air quality server at \url{http://aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
 }
 \examples{
 \dontrun{
