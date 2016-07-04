@@ -40,8 +40,8 @@ GMT+6 timezone
 }
 \description{
 retrieve pollution data by station from the air quality server at \url{
-http://aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016 data.
-For earlier years the archive files from \url{http://aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
+http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016 data.
+For earlier years the archive files from \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
 are used
 }
 \examples{

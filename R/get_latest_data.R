@@ -35,7 +35,7 @@ convert_time <- function(time){
 #' head(df)
 #' }
 get_latest_data <- function() {
-  url = "http://aire.cdmx.gob.mx/ultima-hora-reporte.php"
+  url = "http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php"
 
   poll_table <- read_html(httr::GET(url,  httr::timeout(60)))
   time <- convert_time(html_text(html_nodes(poll_table, "div#textohora")))
