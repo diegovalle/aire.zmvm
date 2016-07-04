@@ -84,8 +84,8 @@ test_that("station pollution data matches api", {
   df_max_2015 <- get_station_data("MAXIMOS", "O3", 2015)
   df_max_2005 <- get_station_data("MAXIMOS", "SO2", 2005)
   df_wdr_2005 <- get_station_data("MAXIMOS", "WDR", 2005)
-  #df_horarios_2010 <- get_station_data("HORARIOS", "PM10", 2010)
-  #df_horarios_2016 <- get_station_data("HORARIOS", "O3", 2016)
+  df_horarios_2010 <- get_station_data("HORARIOS", "PM10", 2010)
+  df_horarios_2016 <- get_station_data("HORARIOS", "O3", 2016)
 
   # Check that PM25 is correctly coded with a '.'
   expect_true(unique(get_station_data("MAXIMOS", "PM25", 2004:2005)$pollutant) == "PM25")
@@ -119,15 +119,15 @@ test_that("station pollution data matches api", {
                  NA, 7, NA, 8, 30, 12, NA, 32, 49, 12, NA, NA, 7, 101, 7, 15,
                  NA, 25, 20, NA, NA, 11, 10, 19, 25))
 
-  #expect_equal(unname(unlist(subset(df_horarios_2010, date == as.Date("2010-01-01") &
-  #                                    hour == 1)$value)),
-  #             c(115, 98, 195, 104, 83, 62, 182, 275, 73, 225, 81, 129, 71,
-  #               107))
-  # expect_equal(unname(unlist(subset(df_horarios_2016, date == as.Date("2016-02-29") &
-  #                                     hour == 1)$value)),
-  #              c(NA, 28, 1, NA, NA, 5, 2, 6, NA, 30, 10, 9, 27, 14, 25, 15,
-  #                5, 30, 7, NA, 13, NA, 7, 15, 37, 17, 10, NA, 11, NA, NA, NA,
-  #                NA, NA, NA, NA, 10, NA, NA, 2, 3, NA, 18))
+  expect_equal(unname(unlist(subset(df_horarios_2010, date == as.Date("2010-01-01") &
+                                     hour == 1)$value)),
+              c(115, 98, 195, 104, 83, 62, 182, 275, 73, 225, 81, 129, 71,
+                107))
+  expect_equal(unname(unlist(subset(df_horarios_2016, date == as.Date("2016-02-29") &
+                                      hour == 1)$value)),
+               c(NA, 28, 1, NA, NA, 5, 2, 6, NA, 30, 10, 9, 27, 14, 25, 15,
+                 5, 30, 7, NA, 13, NA, 7, 15, 37, 17, 10, NA, 11, NA, NA, NA,
+                 NA, NA, NA, NA, 10, NA, NA, 2, 3, NA, 18))
 })
 
 

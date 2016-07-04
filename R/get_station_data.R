@@ -80,7 +80,7 @@ download_old_station_data <- function(pollutant, year) {
 download_current_station_data <- function(criterion, pollutant, year, month = "") {
   if(pollutant == "pm25")
     pollutant <- "pm2"
-  base_url = "http://aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/respuesta.php?"
+  base_url = "http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/respuesta.php?"
   url <- str_c(base_url, "qtipo=", criterion, "&",
                "parametro=", pollutant, "&",
                "anio=", year, "&",
@@ -149,6 +149,24 @@ download_current_station_data <- function(criterion, pollutant, year, month = ""
   as.data.frame(df)
 }
 
+# Temporary hack (hopefully) to download yearly hourly data by month
+download_horario_by_month <- function(pollutant, year){
+  df <- data.frame()
+  cur_date <- Sys.Date()
+  cur_year <- lubridate::year(cur_date)
+  cur_month <- lubridate::month(cur_date)
+
+
+  if (year == cur_year) {
+    for(j in 1:cur_month)
+      df <- rbind(df,  get_station_single_month(pollutant = pollutant, year, month = j))
+  } else {
+    for(j in 1:12)
+      df <- rbind(df,  get_station_single_month(pollutant = pollutant, year, month = j))
+  }
+  return(df)
+}
+
 #' Title
 #'
 #' @param criterion type of data to download
@@ -160,8 +178,11 @@ download_current_station_data <- function(criterion, pollutant, year, month = ""
 download_data <- function(criterion, pollutant, year) {
   year_no_data <- 2005
   if(criterion == "HORARIOS") {
-    if(year >= year_no_data) {
-      download_current_station_data(criterion, pollutant, year)
+    # Fuck, the website stopped allowing download of HORARIOS yearly data
+    # use the old archives before 2015 and use the monthly data after
+    if(year > 2015) {
+      # download_current_station_data(criterion, pollutant, year)
+      download_horario_by_month(pollutant, year)
     } else
       download_old_station_data(pollutant, year)
   } else if(criterion == "MAXIMOS") {
@@ -191,8 +212,8 @@ download_data <- function(criterion, pollutant, year) {
 #' Download pollution data
 #'
 #' retrieve pollution data by station from the air quality server at \url{
-#' http://aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016 data.
-#' For earlier years the archive files from \url{http://aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
+#' http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016 data.
+#' For earlier years the archive files from \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
 #' are used
 #'
 #' @param criterion Type of data to download.
@@ -243,7 +264,7 @@ get_station_data <- function(criterion, pollutant, year, progress = interactive(
                              "no", "o3", "pm10", "pm25",
                              "wsp", "wdr", "tmp", "rh"))
   if(all(pollutant %in% c("wsp", "wdr", "tmp", "rh") & year < year_no_data))
-    stop("WSP, WDR, TMP or RH are only available after 2005. However you can visit <http://aire.cdmx.gob.mx/default.php?opc=%27aKBhnmI=%27&opcion=Zw==> to download older data")
+    stop("WSP, WDR, TMP or RH are only available after 2005. However you can visit <http://www.aire.cdmx.gob.mx/default.php?opc=%27aKBhnmI=%27&opcion=Zw==> to download older data")
   if(min(year) < 1986)
     stop("Data is only available from 1986 onwards")
   if(!is.null(progress))
@@ -267,8 +288,8 @@ get_station_data <- function(criterion, pollutant, year, progress = interactive(
 #' Download monthly pollution data
 #'
 #' retrieve pollution data by station from the air quality server at \url{
-#' http://aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016 data.
-#' For earlier years the archive files from \url{http://aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
+#' http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016 data.
+#' For earlier years the archive files from \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
 #' are used
 #'
 #' @param pollutant The type of pollutant to download.
@@ -311,8 +332,9 @@ get_station_single_month <- function(pollutant, year, month) {
   stopifnot(month %in% c("01", "02", "03", "04",
                          "05", "06", "07", "08",
                          "09", "10", "11", "12"))
-  if(min(year) < 2015)
-    stop("Monthly data is only available from 2015 onwards, try downloading the data for the entire year")
+  year_no_data <- 2005
+  if(year < year_no_data)
+    stop("Monthly data is only available from 2005 onwards, try downloading the data for the entire year")
   download_current_station_data("HORARIOS", pollutant, year, month)
 }
 

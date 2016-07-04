@@ -14,7 +14,7 @@
 #' @importFrom lubridate day month year
 #' @importFrom httr content
 download_zone <- function(criterion, pollutant, zone, start_date, end_date) {
-  url = "http://aire.cdmx.gob.mx/estadisticas-consultas/consultas/resultado_consulta.php"
+  url = "http://www.aire.cdmx.gob.mx/estadisticas-consultas/consultas/resultado_consulta.php"
   fd <- list(
     diai	= day(start_date),
     mesi	= month(start_date),
@@ -46,7 +46,7 @@ download_zone <- function(criterion, pollutant, zone, start_date, end_date) {
 
 #' Download pollution data by zone
 #'
-#' retrieve pollution data by geographic zone from the air quality server at \url{http://aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
+#' retrieve pollution data by geographic zone from the air quality server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
 #'
 #' @param pollutant The type of pollutant to download
 #' \itemize{
