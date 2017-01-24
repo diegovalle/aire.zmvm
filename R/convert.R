@@ -136,7 +136,11 @@ to_imeca <- function(contaminant, value) {
   return(ret)
 }
 
-#' Title
+#' Convert pollution values in the original units returned by sensors to
+#' IMECA (Índice Metropolitano de la Calidad del Aire) a dimensionless scale
+#' where all the pollutants can be compared.
+#'
+#' See \url{http://rama.edomex.gob.mx/contaminacion-atmosferica/imeca}
 #'
 #' @param pollutant type of pollutant
 #' @param value value to convert to IMECAS
@@ -145,7 +149,7 @@ to_imeca <- function(contaminant, value) {
 #' @export
 convert_to_imeca <- function(value, pollutant) {
   pollutant <- toupper(pollutant)
-  stopifnot(pollutant %in% c("O3", "NO2", "PM10", "SO2", "CO", "PM25"))
+  stopifnot(pollutant %in% c("O3", "NO2", "PM10", "SO2", "CO"))
   warning("This function is beta. Converted values don't always match official ones and care should be taken to validate them.")
   as.vector(unname(mapply(to_imeca, contaminant = pollutant, value = value)))
 }
