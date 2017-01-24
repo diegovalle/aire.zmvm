@@ -1,3 +1,4 @@
+# http://siga.jalisco.gob.mx/assets/documentos/normatividad/nadf-009-aire-2006.pdf
 pm10_to_imeca_2006 <- function(value){
   if (value >= 0.000 & value <= 120){
     ret <- value * 5/6
@@ -9,7 +10,7 @@ pm10_to_imeca_2006 <- function(value){
   return(round(ret))
 }
 
-
+# http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
 pm10_to_imeca_2014 <- function(value){
   if (value >= 0.000 & value <= 40){
     ret <- 1.25 * value
@@ -25,7 +26,7 @@ pm10_to_imeca_2014 <- function(value){
   return(round(ret))
 }
 
-# http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
+
 pm25_to_imeca_2006 <- function(value){
   if (value >= 0.000 & value <= 15.4){
     ret <- value*50/15.4
@@ -97,7 +98,7 @@ co_to_imeca <- function(value){
   } else if (value > 22.00) {
     ret <- value*201/22.01
   }
-  return(ret)
+  return(round(ret))
 }
 
 round2 = function(x, n = 0) {
@@ -144,6 +145,7 @@ to_imeca <- function(contaminant, value) {
 #' @export
 convert_to_imeca <- function(value, pollutant) {
   pollutant <- toupper(pollutant)
-  stopifnot(pollutant %in% c("O3", "NO2", "PM10"))
+  stopifnot(pollutant %in% c("O3", "NO2", "PM10", "SO2", "CO", "PM25"))
+  warning("This function is beta. Converted values don't always match official ones and care should be taken to validate them.")
   as.vector(unname(mapply(to_imeca, contaminant = pollutant, value = value)))
 }
