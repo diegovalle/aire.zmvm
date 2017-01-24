@@ -70,11 +70,13 @@ test_that(("convert units"), {
   expect_equal(convert_to_imeca(98, "O3"), 103)
   expect_equal(convert_to_imeca(170, "O3"), 166)
 
-  # expect_equal(convert_to_imeca(1.5, "CO"), 14)
-  # expect_equal(convert_to_imeca(6, "CO"), 55)
+  expect_equal(convert_to_imeca(1.5, "CO"), 14)
+  expect_equal(convert_to_imeca(6, "CO"), 55)
   # expect_equal(convert_to_imeca(12, "CO"), 109)
-  # expect_equal(convert_to_imeca(18, "CO"), 164)
+  expect_equal(convert_to_imeca(18, "CO"), 164)
   # expect_equal(convert_to_imeca(24, "CO"), 218)
+
+  expect_equal(convert_to_imeca(80, "PM10"), 102)
 })
 
 test_that("station pollution data matches api", {
