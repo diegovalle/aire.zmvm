@@ -334,7 +334,7 @@ get_station_single_month <- function(pollutant, year, month) {
                          "09", "10", "11", "12"))
   year_no_data <- 2005
   if(year < year_no_data)
-    stop("Monthly data is only available from 2005 onwards, try downloading the data for the entire year")
+    stop("Monthly data is only available from 2005 onwards, try instead downloading the data for the entire year")
   download_current_station_data("HORARIOS", pollutant, year, month)
 }
 
