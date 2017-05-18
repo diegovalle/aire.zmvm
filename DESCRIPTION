@@ -9,6 +9,8 @@ Description: The Mexico City government mantains a network of censors to
     of the pollution measuring stations or geographic zones. It also contains the
     locations of each of the stations. See <http://aire.cdmx.gob.mx/> for the air
     pollution website.
+URL: https://hoyodesmog.diegovalle.net/aire.zmvm.html, https://github.com/diegovalle/aire.zmvm
+BugReports: https://github.com/diegovalle/aire.zmvm/issues
 License: BSD_3_clause + file LICENSE
 LazyData: TRUE
 Depends:

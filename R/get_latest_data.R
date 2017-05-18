@@ -35,7 +35,7 @@ convert_time <- function(time){
 #' head(df)
 #' }
 get_latest_data <- function() {
-  url = "http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php"
+  url <- "http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php"
 
   poll_table <- read_html(httr::GET(url,  httr::timeout(60)))
   time <- convert_time(html_text(html_nodes(poll_table, "div#textohora")))
@@ -43,17 +43,17 @@ get_latest_data <- function() {
   df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE, fill = TRUE)
   names(df) <- c("station_code", "municipio", "quality", "pollutant", "value")
   df <- df[2:nrow(df),]
-  df$value <- sapply(df$value, function(x) URLdecode(str_match(URLdecode(x),"'(\\d+)'")[[2]]))
+  df$value <- lapply(df$value, function(x) URLdecode(str_match(URLdecode(x),"'(\\d+)'")[[2]]))
 
   edomex <- html_table(html_nodes(poll_table, "table")[[2]], header = TRUE, fill = TRUE)
   names(edomex) <- c("station_code", "municipio", "quality", "pollutant", "value")
   edomex <- edomex[2:nrow(edomex),]
-  edomex$value <- sapply(edomex$value,
+  edomex$value <- lapply(edomex$value,
                          function(x) URLdecode(str_match(URLdecode(x),"'(\\d+)'")[[2]]))
 
   mxc <- rbind(df, edomex)
   mxc$value[mxc$value=="NA"] <- NA
-  mxc$value <- as.numeric(mxc$value)
+  mxc$value <- as.integer(mxc$value)
   mxc$datetime <- time
   mxc$unit <- "IMECA"
   mxc <- mxc[,c("station_code", "municipio", "quality", "pollutant", "unit", "value", "datetime")]

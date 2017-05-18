@@ -86,7 +86,7 @@ download_old_station_data <- function(pollutant, year) {
 download_current_station_data <- function(criterion, pollutant, year, month = "") {
   if(pollutant == "pm25")
     pollutant <- "pm2"
-  base_url = "http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/respuesta.php?"
+  base_url <- "http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/respuesta.php?"
   url <- str_c(base_url, "qtipo=", criterion, "&",
                "parametro=", pollutant, "&",
                "anio=", year, "&",

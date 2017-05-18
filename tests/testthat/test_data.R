@@ -174,4 +174,11 @@ test_that("zone pollution data matches api", {
   expect_equal(unique(df_horarios$pollutant), c("O3", "PM10"))
 })
 
+test_that("latest data", {
+  df <- get_latest_data()
+  expect_gt(nrow(df), 0)
+  expect_type(df$value, "integer")
+  expect_type(df$datetime, "character")
+})
+
 

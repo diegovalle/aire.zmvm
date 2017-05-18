@@ -44,7 +44,7 @@ pm25_to_imeca_2006 <- function(value){
 
 
 o3_to_imeca <- function(value){
-  value = value /1000
+  value <- value /1000
   if (value >= 0.000 & value <= 0.070){
     ret <- 714.29 * value
   } else if (value > 0.070 & value <= 0.095){
@@ -60,7 +60,7 @@ o3_to_imeca <- function(value){
 }
 
 no2_to_imeca <- function(value){
-  value = value /1000
+  value <- value /1000
   if (value >= 0.000 & value <= 0.105){
     ret <- value * 50/0.105
   } else if (value > 0.105 & value <= 0.210){
@@ -81,7 +81,7 @@ so2_to_imeca <- function(value){
     return(NA)
   if(is.na(value))
     return(NA)
-  value = value /1000
+  value <- value /1000
   ret <- value*100/0.13
   return(round(ret))
 }
@@ -101,13 +101,13 @@ co_to_imeca <- function(value){
   return(round(ret))
 }
 
-round2 = function(x, n = 0) {
-  posneg = sign(x)
-  z = abs(x)*10^n
-  z = z + 0.5
-  z = trunc(z)
-  z = z/10^n
-  z*posneg
+round2 <- function(x, n = 0) {
+  posneg <-  sign(x)
+  z <- abs(x)*10^n
+  z <- z + 0.5
+  z <- trunc(z)
+  z <- z/10^n
+  z * posneg
 }
 
 to_imeca <- function(contaminant, value) {

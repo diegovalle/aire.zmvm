@@ -14,7 +14,7 @@
 #' @importFrom lubridate day month year
 #' @importFrom httr content
 download_zone <- function(criterion, pollutant, zone, start_date, end_date) {
-  url = "http://www.aire.cdmx.gob.mx/estadisticas-consultas/consultas/resultado_consulta.php"
+  url <- "http://www.aire.cdmx.gob.mx/estadisticas-consultas/consultas/resultado_consulta.php"
   fd <- list(
     diai	= day(start_date),
     mesi	= month(start_date),
@@ -127,10 +127,10 @@ get_zone_data <- function(criterion, pollutant, zone, start_date, end_date) {
 
   # when the data is HORARIOS the second column corresponds to the hour
   if(criterion != tolower("HORARIOS")) {
-    value_col = base::setdiff(names(df), "date")
+    value_col <- base::setdiff(names(df), "date")
   } else {
     names(df)[2] <- "hour"
-    value_col = base::setdiff(names(df), c("date", "hour"))
+    value_col <- base::setdiff(names(df), c("date", "hour"))
   }
   df <- df %>%
     gather_("zone_pollutant", "value", value_col) %>%
