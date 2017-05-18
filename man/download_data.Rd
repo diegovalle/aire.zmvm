@@ -16,4 +16,3 @@ download_data(criterion, pollutant, year)
 \description{
 Title
 }
-

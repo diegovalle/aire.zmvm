@@ -2,7 +2,9 @@
 % Please edit documentation in R/convert.R
 \name{convert_to_imeca}
 \alias{convert_to_imeca}
-\title{Title}
+\title{Convert pollution values in the original units returned by sensors to
+IMECA (Indice Metropolitano de la Calidad del Aire) a dimensionless scale
+where all the pollutants can be compared.}
 \usage{
 convert_to_imeca(value, pollutant)
 }
@@ -15,6 +17,5 @@ convert_to_imeca(value, pollutant)
 value in IMECAS
 }
 \description{
-Title
+See \url{http://rama.edomex.gob.mx/contaminacion-atmosferica/imeca}
 }
-

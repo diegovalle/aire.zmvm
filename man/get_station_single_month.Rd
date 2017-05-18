@@ -37,4 +37,3 @@ http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} fo
 For earlier years the archive files from \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
 are used
 }
-

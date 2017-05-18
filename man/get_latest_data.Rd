@@ -19,4 +19,3 @@ df <- get_latest_data()
 head(df)
 }
 }
-

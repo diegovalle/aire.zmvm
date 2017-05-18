@@ -27,4 +27,4 @@ Imports:
     xml2,
     httr,
     readr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

@@ -18,4 +18,3 @@ download_current_station_data(criterion, pollutant, year, month = "")
 \description{
 Title
 }
-

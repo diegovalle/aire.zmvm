@@ -100,13 +100,13 @@ test_that("station pollution data matches api", {
   expect_true("MON" %in% unique(df_max_2015$station_code))
 
   expect_equal(unname(unlist(subset(df_min_2016, date == as.Date("2016-01-03"))$value)),
-               c(21, 26, NA, 4, 26, 22, NA, NA, NA, 17, NA, 6, 6, 3, NA, 29,
-                 NA, 24, NA, NA, NA, 21, 27, NA, NA, NA, NA, 50, NA, NA, NA, 11,
-                 NA, NA, 25, 3, NA, NA, NA, 21, 47))
+               c(21, 26, 0, 4, 26, 18, 0, NA, 0, 17, 0, 6, 6, 3, 0, 29, NA,
+                 24, 0, 0, NA, 21, 27, NA, 0, NA, NA, 50, NA, 0, 0, 11, NA, 0,
+                 25, 3, 0, 0, NA, 21, 47))
   expect_equal(unname(unlist(subset(df_max_2016, date == as.Date("2016-01-05"))$value)),
-               c(52, 30, NA, 82, 76, 242, NA, NA, NA, 84, NA, 42, 112, 86, NA,
-                 88, 32, 64, NA, NA, NA, 95, 71, NA, NA, NA, NA, 116, NA, NA,
-                 NA, 63, NA, NA, 111, 110, NA, NA, 75, 108, 151))
+               c(52, 30, 0, 82, 76, 242, 0, NA, 0, 84, 0, 42, 112, 86, 0, 88,
+                 32, 64, 0, 0, NA, 95, 71, NA, 0, NA, NA, 116, NA, 0, 0, 63, NA,
+                 0, 111, 110, 0, 0, 75, 108, 151))
 
   expect_equal(unname(unlist(subset(df_min_2015, date == as.Date("2015-01-01"))$value)),
                c(17, NA, NA, 11, NA, 11, NA, NA, NA, 9, NA, NA, 38, 16, NA,
@@ -128,8 +128,8 @@ test_that("station pollution data matches api", {
   expect_equal(unname(unlist(subset(df_horarios_2016, date == as.Date("2016-02-29") &
                                       hour == 1)$value)),
                c(NA, 28, 1, NA, NA, 5, 2, 6, NA, 30, 10, 9, 27, 14, 25, 15,
-                 5, 30, 7, NA, 13, NA, 7, 15, 37, 17, 10, NA, 11, NA, NA, NA,
-                 NA, NA, NA, NA, 10, NA, NA, 2, 3, NA, 18))
+                 5, 30, 7, NA, 13, NA, 7, 15, 37, 17, 10, NA, 11, NA, NA, 0, NA,
+                 NA, NA, 0, 10, NA, 0, 2, 3, NA, 18))
 })
 
 

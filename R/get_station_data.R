@@ -19,7 +19,7 @@ recode_pollutant <- function(pollutant) {
 #'
 #'
 #' @importFrom stringr str_c  str_sub str_replace_all
-#' @importFrom readr read_csv
+#' @importFrom readr read_csv col_character col_double col_integer
 #' @importFrom dplyr filter
 #' @importFrom lubridate fast_strptime
 #'
@@ -29,7 +29,13 @@ download_old_station_data <- function(pollutant, year) {
     upollutant <- "PM2.5"
   base_url <- "http://148.243.232.112:8080/opendata/anuales_horarios_gz/contaminantes_"
   df <- read_csv(str_c(base_url, year, ".csv.gz"),
-                 skip = 10, progress = FALSE)
+                 skip = 10, progress = FALSE, col_types = list(
+                   date = col_character(),
+                   cve_station = col_character(),
+                   cve_parameter = col_character(),
+                   value = col_double(),
+                   unit = col_integer()
+                 ))
 
   names(df) <- c("date", "station_code", "pollutant", "value", "unit")
   if(!upollutant %in% unique(df$pollutant)) {
