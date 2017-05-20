@@ -75,14 +75,16 @@ o3_max <- o3 %>%
                          base::max(value, na.rm = TRUE))) %>%
   na.omit()
 
+# ozone values at which a contingencia ambiental was declared
+# and the dates during which they were valid
 contingencia <- data.frame(ppb = c(155, 185, 199, 205),
-  start = c(2016.33,2014, 2011, 2010),
+  start = c(2016.33, 2014, 2011, 2010),
   end = c(2017.5, 2016 + 93/365, 2014, 2011))
 max_daily_df <- tsdf(ts(o3_max$max, start = c(2010,1), frequency = 365))
 ggplot(max_daily_df,
        aes(x = x, y = y)) + 
-   geom_line(colour = "grey75", alpha = .5) +
-   stat_rollapplyr(width = 90, align = "right")+
+  geom_line(colour = "grey75", alpha = .5) +
+  stat_rollapplyr(width = 90, align = "right") +
   #geom_vline(xintercept = 2015 + 183/365) +
   geom_segment(data = contingencia, 
                aes(x=start, y=ppb, xend=end, yend=ppb), color="darkred", linetype = 2)  +
