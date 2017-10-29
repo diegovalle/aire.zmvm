@@ -1,8 +1,10 @@
 #' Pollution measuring stations in Mexico City
 #'
-#' This data set contains all pollution measuring stations in Mexico City. AJM, INN, MGH and GAM
-#' were added manually (locations were determinded using Google Maps) since the official
-#' source data set was missing them.
+#' This data set contains all pollution measuring stations in Mexico City. The station with code SS1
+#' was added manually since the official source data set was missing any information
+#' (location was determinded from the
+#' \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/GDF_2015_audit_report_final_v2.pdf}{Audit of Ambient Air Monitoring Stations
+#' for the Sistema de Monitoreo Atmosferico de la Ciudad de Mexico}).
 #'
 #' @format A data frame with 63 rows and 7 variables:
 #' \describe{
