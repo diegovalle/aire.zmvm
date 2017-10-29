@@ -71,6 +71,7 @@ o3_max <- o3 %>%
 
 # ozone values at which a contingencia ambiental was declared
 # and the dates during which they were valid
+# source: http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/pcaa-modificaciones.pdf
 contingencia <- data.frame(ppb = c(155, 185, 199, 205, 210),
   start = c(2016.33, 2014, 2011, 2010, 2009),
   end = c(2017.5, 2016 + 93/365, 2014, 2011, 2010))
