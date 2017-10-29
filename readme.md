@@ -77,9 +77,10 @@ o3_max <- o3 %>%
 
 # ozone values at which a contingencia ambiental was declared
 # and the dates during which they were valid
+# source: http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/pcaa-modificaciones.pdf
 contingencia <- data.frame(ppb = c(155, 185, 199, 205, 210),
   start = c(2016.33, 2014, 2011, 2010, 2009),
-  end = c(2017.5, 2016 + 93/365, 2014, 2011, 2010))
+  end = c(2017.91, 2016 + 93/365, 2014, 2011, 2010))
 max_daily_df <- tsdf(ts(o3_max$max, start = c(2009,1), frequency = 365.25))
 ggplot(max_daily_df,
        aes(x = x, y = y)) + 
@@ -96,4 +97,4 @@ ggplot(max_daily_df,
 
     ## Warning: Removed 29 rows containing missing values (geom_path).
 
-![](readme_files/figure-markdown_github/unnamed-chunk-1-1.png)
+![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-1-1.png)
