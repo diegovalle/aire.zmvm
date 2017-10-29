@@ -91,7 +91,7 @@ download_current_station_data <- function(criterion, pollutant, year, month = ""
                "parametro=", pollutant, "&",
                "anio=", year, "&",
                "qmes=", month)
-  poll_table <- read_html(httr::GET(url,  httr::timeout(60)))
+  poll_table <- read_html(httr::GET(url,  httr::timeout(120)))
   df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE)
   names(df) <- df[1,]
   names(df)[1] <- "date"
