@@ -5,7 +5,10 @@
 #' @importFrom stringr str_match str_replace str_replace_all str_detect
 
 .convert_time <- function(time){
+  print(Encoding(time))
+  time <- iconv(time, "UTF-8", "ASCII\\TRANSLIT")
   print(time)
+
   time <- str_replace_all(time, "\n|\t", "")
   print(time)
   time <- str_replace(time, ",[ &;A-Za-z\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da]+ ",
