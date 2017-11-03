@@ -26,6 +26,6 @@ This data set contains all pollution measuring stations in Mexico City. The stat
 was added manually since the official source data set was missing any information
 (location was determinded from the
 \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/GDF_2015_audit_report_final_v2.pdf}{Audit of Ambient Air Monitoring Stations
-for the Sistema de Monitoreo Atmosferico de la Ciudad de Mexico}).
+for the Sistema de Monitoreo Atmosférico de la Ciudad de México}).
 }
 \keyword{datasets}
