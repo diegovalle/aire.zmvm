@@ -5,12 +5,8 @@
 #' @importFrom stringr str_match str_replace str_replace_all str_detect
 
 .convert_time <- function(time){
-  print(Encoding(time))
   time <- iconv(time, "UTF-8", "ASCII//TRANSLIT")
-  print(time)
-
   time <- str_replace_all(time, "\n|\t", "")
-  print(time)
   time <- str_replace(time, ",[ &;A-Za-z\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da]+ ",
                       "")
   month_names <- c("enero" = "january", "febrero" = "february", "marzo" = "march",
@@ -18,7 +14,6 @@
                    "agosto" = "august", "septiembre" = "september",
                    "octubre" = "october", "noviembre" = "november", "diciembre" = "december")
   time <- str_replace_all(time, month_names)
-  print(time)
   if (str_detect(time, "24:00"))
     warning("At midnight the website sometimes get the time wrong and reports a date 24 hours into the future")
   time <- strptime(time, "%H:%M h%d de %B de %Y", tz = "America/Mexico_City")
