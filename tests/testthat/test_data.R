@@ -1,55 +1,41 @@
 test_that("convert time correctly parses string", {
-  expect_equal(convert_time("11:00 h, miércoles 06 de abril de 2016"),
+  expect_equal(.convert_time("11:00 h, miércoles 06 de abril de 2016"),
                "2016-04-06 11:00:00")
-  expect_equal(convert_time("11:00 h,
+  expect_equal(.convert_time("11:00 h,
 				miércoles 06 de abril de 2016
 			"),  "2016-04-06 11:00:00")
-  expect_equal(convert_time("24:00 h,
+  expect_equal(.convert_time("24:00 h,
 				lunes 23 de mayo de 2016
 			"),  "2016-05-24 00:00:00")
 
-  expect_equal(convert_time("23:00 h,
+  expect_equal(.convert_time("23:00 h,
 				domingo 22 de mayo de 2016"),  "2016-05-22 23:00:00")
-  expect_equal(convert_time("20:00 h,
+  expect_equal(.convert_time("20:00 h,
 				domingo 22 de mayo de 2016
 			"),  "2016-05-22 20:00:00")
-  expect_equal(convert_time("01:00 h,
+  expect_equal(.convert_time("01:00 h,
 				lunes 23 de mayo de 2016
 			"),  "2016-05-23 01:00:00")
 
-  expect_equal(convert_time("23:00 h,
+  expect_equal(.convert_time("23:00 h,
 				S&aacute;bado 21 de mayo de 2016
 			"),  "2016-05-21 23:00:00")
-  expect_equal(convert_time("24:00 h,
+  expect_equal(.convert_time("24:00 h,
 				S&aacute;bado 21 de mayo de 2016
 			"),  "2016-05-22 00:00:00")
-  expect_equal(convert_time("01:00 h,
+  expect_equal(.convert_time("01:00 h,
 				domingo 22 de mayo de 2016
 			"),  "2016-05-22 01:00:00")
 
-  expect_equal(convert_time("24:00 h,
+  expect_equal(.convert_time("24:00 h,
 				lunes 30 de mayo de 2016"), "2016-05-31 00:00:00")
 
-  expect_equal(convert_time("24:00 h,
+  expect_equal(.convert_time("24:00 h,
   mi&eacute;rcoles 01 de junio de 2016"), "2016-06-02 00:00:00")
 
 })
 
 test_that(("convert units"), {
-  # df_max_zone <- get_zone_data("MAXIMOS", c("NO2"), c("TZ"),
-  #               "2015-01-01", "2015-12-31")
-  # df_max_station <- get_station_data("MAXIMOS", "NO2", 2015)
-  #
-  # library(dplyr)
-  # zone_max <- df_max_zone %>%
-  #   group_by(date) %>%
-  #   summarise(max = max(value, na.rm = TRUE))
-  # station_max <- df_max_station %>%
-  #   group_by(date) %>%
-  #   summarise(max = max(value, na.rm = TRUE)) %>%
-  #   mutate(max_imeca = convert_to_imeca(max, "NO2"))
-  #
-  # expect_equal(zone_max$max, station_max$max_imeca)
   expect_equal(convert_to_imeca(-1, "NO2"), NA)
   expect_equal(convert_to_imeca(NA, "NO2"), NA)
   expect_equal(convert_to_imeca(c(450, 350, 250), "NO2"), c(215,167,119))
@@ -89,7 +75,7 @@ test_that("station pollution data matches api", {
   df_horarios_2010 <- get_station_data("HORARIOS", "PM10", 2010)
   df_horarios_2016 <- get_station_data("HORARIOS", "O3", 2016)
 
-  # Check that PM25 is correctly coded with a '.'
+  # Check that PM25 is correctly coded without a '.'
   expect_true(unique(get_station_data("MAXIMOS", "PM25", 2004:2005)$pollutant) == "PM25")
 
   #expect_false(all(stringr::str_detect(unique(df_horarios_2016$station_code), "[:space:]")))
@@ -181,4 +167,39 @@ test_that("latest data", {
   expect_type(df$datetime, "character")
 })
 
+test_that("idw360", {
+  library(sp)
+  df <- structure(list(date = structure(c(17472, 17472, 17472, 17472, 17472), class = "Date"),
+                       hour = c(15, 15, 15, 15, 15),
+                       station_code = c("ACO", "AJM", "AJU", "BJU", "CHO"),
+                       value = c(36, 6, 7, 319, 214),
+                       lat = c(19.635501, 19.272161, 19.154286, 19.370464, 19.266948),
+                       lon = c(-98.912003, -99.207744, -99.162611, -99.159596, -98.886088)),
+                  .Names = c("date", "hour", "station_code", "value", "lat", "lon"),
+                  row.names = c(NA, -5L),
+                  class = c("tbl_df", "tbl", "data.frame"))
+  station_loc <- df[,c("lat", "lon", "value")]
+  coordinates(station_loc) <- ~lon+lat
+  proj4string(station_loc) <- sp::CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
+
+  # create a 10x10 grid based on the stations
+  pixels = 10
+  mxc_grid <- expand.grid(x=seq((min(coordinates(station_loc)[ ,1]) - .1),
+                                (max(coordinates(station_loc)[ ,1]) + .1),
+                                length.out = pixels),
+                          y=seq((min(coordinates(station_loc)[ ,2]) - .1),
+                                (max(coordinates(station_loc)[ ,2]) + .1),
+                                length.out = pixels))
+
+  mxc_grid_pts <- SpatialPixels(SpatialPoints((mxc_grid)))
+  mxc_grid_pts <- as(mxc_grid_pts, "SpatialGrid")
+  proj4string(mxc_grid_pts) <- CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
+
+  # Inverse distance weighting
+  idw <- idw360(station_loc$value, station_loc, mxc_grid_pts)
+  expect_type(idw$pred, "double")
+  expect_equal(length(idw$pred), 10*10)
+  expect_true(all(idw$pred <= 360))
+  expect_true(all(idw$pred >= 0))
+})
 
