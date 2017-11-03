@@ -16,8 +16,10 @@ environment:
   global:
     WARNINGS_ARE_ERRORS: 1
 
-  matrix:
+  image:
+  - Visual Studio 2017
 
+  matrix:
   - R_VERSION: stable
 
   - R_VERSION: release
