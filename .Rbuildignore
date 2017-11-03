@@ -8,3 +8,4 @@ readme.html
 ^cran-comments\.md$
 ^NEWS\.md$
 ^readme_files$
+cran-comments.md
