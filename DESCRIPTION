@@ -1,6 +1,6 @@
 Package: aire.zmvm
 Type: Package
-Title: Download pollution, wind, and temperature data for the Mexico City metro area 
+Title: Download Mexico City Pollution, Wind, and Temperature Data
 Version: 0.5.0
 Authors@R: c(person("Diego", "Valle-Jones", email = "diego@diegovalle.net", role = c("aut", "cre")))
 Description: The Mexico City government maintains a network of sensors to

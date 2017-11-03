@@ -171,6 +171,7 @@ test_that("latest data", {
   expect_gt(nrow(df), 0)
   expect_type(df$value, "integer")
   expect_type(df$datetime, "character")
+  expect_false(all(is.na(df$datetime)))
 })
 
 test_that("idw360", {
