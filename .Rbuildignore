@@ -5,7 +5,9 @@
 readme.Rmd
 readme.md
 readme.html
+readme_files
 ^cran-comments\.md$
 ^NEWS\.md$
-^readme_files$
 cran-comments.md
+^appveyor\.yml$
+.gitattributes
