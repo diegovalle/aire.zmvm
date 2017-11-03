@@ -18,14 +18,10 @@ environment:
 
   matrix:
 
-  - R_VERSION: devel
-    R_ARCH: x64
-    GCC_PATH: mingw_64
+  - R_VERSION: stable
 
   - R_VERSION: release
     R_ARCH: x64
-
-  - R_VERSION: stable
 
   - R_VERSION: patched
 
