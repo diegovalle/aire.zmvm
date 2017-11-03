@@ -66,6 +66,8 @@ test_that(("convert units"), {
 })
 
 test_that("station pollution data matches api", {
+  skip_on_cran()
+
   df_min_2016 <- get_station_data("MINIMOS", "PM10", 2016, progress = NULL)
   df_max_2016 <- get_station_data("MAXIMOS", "PM10", 2016)
   df_min_2015 <- get_station_data("MINIMOS", "PM10", 2015)
@@ -120,6 +122,8 @@ test_that("station pollution data matches api", {
 
 
 test_that("zone pollution data matches api", {
+  skip_on_cran()
+
   df_max_o3 <- suppressWarnings(get_zone_data("MAXIMOS", "O3", c("NO", "NE", "CE"),
                           "2015-12-25", "2016-01-01"))
   df_max_tz <- suppressWarnings(get_zone_data("MAXIMOS", c("O3", "PM10"), c("TZ"),
@@ -161,6 +165,8 @@ test_that("zone pollution data matches api", {
 })
 
 test_that("latest data", {
+  skip_on_cran()
+
   df <- get_latest_data()
   expect_gt(nrow(df), 0)
   expect_type(df$value, "integer")
@@ -177,7 +183,7 @@ test_that("idw360", {
                        lon = c(-98.912003, -99.207744, -99.162611, -99.159596, -98.886088)),
                   .Names = c("date", "hour", "station_code", "value", "lat", "lon"),
                   row.names = c(NA, -5L),
-                  class = c("tbl_df", "tbl", "data.frame"))
+                  class = c("data.frame"))
   station_loc <- df[,c("lat", "lon", "value")]
   coordinates(station_loc) <- ~lon+lat
   proj4string(station_loc) <- sp::CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
