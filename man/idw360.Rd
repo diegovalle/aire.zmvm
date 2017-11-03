@@ -9,9 +9,9 @@ idw360(values, coords, grid, idp = 2)
 \arguments{
 \item{values}{the dependent variable}
 
-\item{coords}{the spatial data locations (coordinates)}
+\item{coords}{the spatial data locations where the values were measured}
 
-\item{grid}{data frame or Spatial object with prediction/simulation locations}
+\item{grid}{data frame or Spatial object with the locations to predict}
 
 \item{idp}{The inverse distance weighting power}
 }
@@ -22,5 +22,5 @@ data.frame with the interpolated values for each of the grid points
 function for inverse distance weighted interpolation with directional data. Useful for when you
 are working with data whose unit of measurement is degrees (i.e. the average of 35° and 355°
 should be 15°). It works by finding the shortest distance between two degree marks
-on a circle
+on a circle.
 }
