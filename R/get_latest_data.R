@@ -6,7 +6,7 @@
 
 .convert_time <- function(time){
   print(Encoding(time))
-  time <- iconv(time, "UTF-8", "ASCII\\TRANSLIT")
+  time <- iconv(time, "UTF-8", "ASCII//TRANSLIT")
   print(time)
 
   time <- str_replace_all(time, "\n|\t", "")
