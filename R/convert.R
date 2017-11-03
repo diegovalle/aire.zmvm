@@ -1,11 +1,11 @@
 # http://siga.jalisco.gob.mx/assets/documentos/normatividad/nadf-009-aire-2006.pdf
 pm10_to_imeca_2006 <- function(value){
   if (value >= 0.000 & value <= 120){
-    ret <- value * 5/6
+    ret <- value * 5 / 6
   } else if (value > 120 & value <= 320){
-    ret <- 40 + value *.5
+    ret <- 40 + value * .5
   } else if (value > 320) {
-    ret <- value * 5/8
+    ret <- value * 5 / 8
   }
   return(round(ret))
 }
@@ -16,9 +16,9 @@ pm10_to_imeca_2014 <- function(value){
     ret <- 1.25 * value
   } else if (value > 40 & value <= 75){
     ret <- 1.44 * (value - 41) + 51
-  } else if( value > 75 & value <= 214) {
-    ret <- 0.355 * (value - 76) +101
-  } else if(value > 214 & value <= 354) {
+  } else if ( value > 75 & value <= 214) {
+    ret <- 0.355 * (value - 76) + 101
+  } else if (value > 214 & value <= 354) {
     ret <- 0.353 * (value - 215) + 151
   } else if (value > 354) {
     ret <- 0.567 * value
@@ -29,29 +29,29 @@ pm10_to_imeca_2014 <- function(value){
 
 pm25_to_imeca_2006 <- function(value){
   if (value >= 0.000 & value <= 15.4){
-    ret <- value*50/15.4
-  } else if (value >15.4 & value <= 40.4){
-    ret <- 20.5+value *49/24.9
-  } else if( value > 40.4 & value <= 65.4) {
-    ret <- 21.3+value*49/24.9
-  } else if(value > 65.4 & value <= 150.4) {
-    ret <- 113.2+value*49/84.9
+    ret <- value * 50 / 15.4
+  } else if (value > 15.4 & value <= 40.4){
+    ret <- 20.5 + value * 49 / 24.9
+  } else if ( value > 40.4 & value <= 65.4) {
+    ret <- 21.3 + value * 49 / 24.9
+  } else if (value > 65.4 & value <= 150.4) {
+    ret <- 113.2 + value * 49 / 84.9
   } else if (value > 150.4) {
-    ret <- value * 201/150.5
+    ret <- value * 201 / 150.5
   }
   return(round(ret))
 }
 
 
 o3_to_imeca <- function(value){
-  value <- value /1000
+  value <- value / 1000
   if (value >= 0.000 & value <= 0.070){
     ret <- 714.29 * value
   } else if (value > 0.070 & value <= 0.095){
     ret <- 2041.67 * (value - 0.071) + 51
-  } else if( value > 0.095 & value <= 0.154) {
-    ret <- 844.83 * (value - 0.096) +101
-  } else if(value > 0.154 & value <= 0.204) {
+  } else if ( value > 0.095 & value <= 0.154) {
+    ret <- 844.83 * (value - 0.096) + 101
+  } else if (value > 0.154 & value <= 0.204) {
     ret <- 1000 * (value - 0.155) + 151
   } else if (value > 0.204) {
     ret <- 982.5 * value
@@ -60,15 +60,15 @@ o3_to_imeca <- function(value){
 }
 
 no2_to_imeca <- function(value){
-  value <- value /1000
+  value <- value / 1000
   if (value >= 0.000 & value <= 0.105){
-    ret <- value * 50/0.105
+    ret <- value * 50 / 0.105
   } else if (value > 0.105 & value <= 0.210){
-    ret <- 1.058+value*49/0.104
+    ret <- 1.058 + value * 49 / 0.104
   } else if( value > 0.210 & value <= 0.315) {
-    ret <- 1.587+value*49/0.104
+    ret <- 1.587 + value * 49 / 0.104
   } else if(value > 0.315 & value <= 0.420) {
-    ret <- 2.115+value*49/0.104
+    ret <- 2.115 + value * 49 / 0.104
   } else if (value > 0.420) {
     ret <- value*201/0.421
   }

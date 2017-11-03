@@ -1,4 +1,3 @@
-
 #' Title
 #'
 #' @param pollutant bla
@@ -13,7 +12,7 @@
 #' @importFrom rvest html_nodes html_table
 #' @importFrom lubridate day month year
 #' @importFrom httr content
-download_zone <- function(criterion, pollutant, zone, start_date, end_date) {
+.download_data_zone <- function(criterion, pollutant, zone, start_date, end_date) {
   url <- "http://www.aire.cdmx.gob.mx/estadisticas-consultas/consultas/resultado_consulta.php"
   fd <- list(
     diai	= day(start_date),
@@ -115,18 +114,18 @@ get_zone_data <- function(criterion, pollutant, zone, start_date, end_date) {
   criterion <- tolower(criterion)
 
   # If pollutants are O3 or PM10 issua a warning that the way of calculating the index changed
-  if(length(base::intersect(pollutant, c("O3", "PM10", "TZ"))) > 0)
+  if (length(base::intersect(pollutant, c("O3", "PM10", "TZ"))) > 0)
     warning("\n*******************\nStarting October 28, 2014 the IMECA values for O3 and PM10 are computed using NOM-020-SSA1-2014 and NOM-025-SSA1-2014\n*******************")
 
-  df <- download_zone(criterion, pollutant, zone, start_date, end_date)
+  df <- .download_data_zone(criterion, pollutant, zone, start_date, end_date)
 
-  names(df) <- df[1,]
+  names(df) <- df[1, ]
   names(df)[1] <- "date"
   names(df) <- str_replace_all(names(df), "\\s", "")
-  df <- df[2:nrow(df),]
+  df <- df[2:nrow(df), ]
 
   # when the data is HORARIOS the second column corresponds to the hour
-  if(criterion != tolower("HORARIOS")) {
+  if (criterion != tolower("HORARIOS")) {
     value_col <- base::setdiff(names(df), "date")
   } else {
     names(df)[2] <- "hour"
@@ -141,12 +140,10 @@ get_zone_data <- function(criterion, pollutant, zone, start_date, end_date) {
   df$value <- as.numeric(df$value)
   df$date <- as.Date(df$date)
   df$unit <- "IMECA"
-  if(criterion != tolower("HORARIOS")) {
-    as.data.frame(df[ ,c("date", "zone", "pollutant", "unit", "value")])
+  if (criterion != tolower("HORARIOS")) {
+    as.data.frame(df[, c("date", "zone", "pollutant", "unit", "value")])
   } else {
-    as.data.frame(df[ ,c("date", "hour", "zone", "pollutant", "unit", "value")])
+    as.data.frame(df[, c("date", "hour", "zone", "pollutant", "unit", "value")])
   }
 
 }
-
-
