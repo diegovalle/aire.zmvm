@@ -8,6 +8,7 @@
   time <- str_replace_all(time, "\n|\t", "")
   time <- str_replace(time, ",[ &;A-Za-z\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da]+ ",
                       "")
+  print(time)
   month_names <- c("enero" = "january", "febrero" = "february", "marzo" = "march",
                    "abril" = "april", "mayo" = "may", "junio" = "june", "julio" = "july",
                    "agosto" = "august", "septiembre" = "september",
