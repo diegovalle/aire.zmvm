@@ -1,20 +1,19 @@
 Package: aire.zmvm
 Type: Package
-Title: Download pollution data for the Zona Metropolitana del Valle de Mexico
+Title: Download pollution, wind, and temperature data for the Mexico City metro area 
 Version: 0.1.0
 Authors@R: c(person("Diego", "Valle-Jones", email = "diego@diegovalle.net", role = c("aut", "cre")))
-Description: The Mexico City government mantains a network of censors to
-    continually monitor pollution. This package provides R functions that can
-    download the daily maximum, minimum, hourly average or real-time data for each
+Description: The Mexico City government maintains a network of sensors to
+    continually monitor air pollution, wind and temperature. This package provides R functions 
+    for downloading the daily maximum, minimum, hourly average, or real-time data for each
     of the pollution measuring stations or geographic zones. It also contains the
-    locations of each of the stations. See <http://aire.cdmx.gob.mx/> for the air
-    pollution website.
+    locations of each of the stations. See <http://aire.cdmx.gob.mx/> for more information.
 URL: https://hoyodesmog.diegovalle.net/aire.zmvm.html, https://github.com/diegovalle/aire.zmvm
 BugReports: https://github.com/diegovalle/aire.zmvm/issues
 License: BSD_3_clause + file LICENSE
 LazyData: TRUE
 Depends:
-    R (>= 2.10)
+    R (>= 3.0.2)
 Suggests:
     knitr,
     rmarkdown,
@@ -28,5 +27,7 @@ Imports:
     stringr,
     xml2,
     httr,
-    readr
+    readr,
+    sp
 RoxygenNote: 6.0.1
+Encoding: UTF-8
