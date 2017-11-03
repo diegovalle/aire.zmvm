@@ -3,11 +3,9 @@ Type: Package
 Title: Download Mexico City Pollution, Wind, and Temperature Data
 Version: 0.5.0
 Authors@R: c(person("Diego", "Valle-Jones", email = "diego@diegovalle.net", role = c("aut", "cre")))
-Description: The Mexico City government maintains a network of sensors to
-    continually monitor air pollution, wind and temperature. This package provides R functions 
-    for downloading the daily maximum, minimum, hourly average, or real-time data for each
-    of the pollution measuring stations or geographic zones. It also contains the
-    locations of each of the stations. See <http://aire.cdmx.gob.mx/> for more information.
+Description: Tools for downloading data from each of the pollution, wind, and temperature 
+    measuring stations or geographic zones in the Mexico City metro area. See 
+    <http://aire.cdmx.gob.mx/> for more information.
 URL: https://hoyodesmog.diegovalle.net/aire.zmvm.html, https://github.com/diegovalle/aire.zmvm
 BugReports: https://github.com/diegovalle/aire.zmvm/issues
 License: BSD_3_clause + file LICENSE
