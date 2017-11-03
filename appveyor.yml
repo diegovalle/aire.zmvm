@@ -12,12 +12,12 @@ install:
 
 # Adapt as necessary starting from here
 
+image:
+- Visual Studio 2017
+
 environment:
   global:
     WARNINGS_ARE_ERRORS: 1
-
-  image:
-  - Visual Studio 2017
 
   matrix:
   - R_VERSION: stable
