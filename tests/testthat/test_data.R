@@ -4,9 +4,9 @@ test_that(".convert_time correctly parses string", {
   expect_equal(.convert_time("11:00 h,
 				miércoles 06 de abril de 2016
 			"),  "2016-04-06 11:00:00")
-  expect_equal(.convert_time("24:00 h,
+  expect_equal(suppressWarnings(.convert_time("24:00 h,
 				lunes 23 de mayo de 2016
-			"),  "2016-05-24 00:00:00")
+			")),  "2016-05-24 00:00:00")
 
   expect_equal(.convert_time("23:00 h,
 				domingo 22 de mayo de 2016"),  "2016-05-22 23:00:00")
@@ -20,49 +20,55 @@ test_that(".convert_time correctly parses string", {
   expect_equal(.convert_time("23:00 h,
 				S&aacute;bado 21 de mayo de 2016
 			"),  "2016-05-21 23:00:00")
-  expect_equal(.convert_time("24:00 h,
-				S&aacute;bado 21 de mayo de 2016
-			"),  "2016-05-22 00:00:00")
   expect_equal(.convert_time("01:00 h,
 				domingo 22 de mayo de 2016
 			"),  "2016-05-22 01:00:00")
+  expect_equal(suppressWarnings(.convert_time("24:00 h,
+				S&aacute;bado 21 de mayo de 2016
+			")),  "2016-05-22 00:00:00")
 
-  expect_equal(.convert_time("24:00 h,
-				lunes 30 de mayo de 2016"), "2016-05-31 00:00:00")
+  expect_equal(suppressWarnings(.convert_time("24:00 h,
+				lunes 30 de mayo de 2016")), "2016-05-31 00:00:00")
 
-  expect_equal(.convert_time("24:00 h,
-  mi&eacute;rcoles 01 de junio de 2016"), "2016-06-02 00:00:00")
+  expect_equal(suppressWarnings(.convert_time("24:00 h,
+  mi&eacute;rcoles 01 de junio de 2016")), "2016-06-02 00:00:00")
+
+  expect_warning(.convert_time("24:00 h,
+  mi&eacute;rcoles 01 de junio de 2016"))
 
 })
 
 test_that(("convert units"), {
-  expect_equal(convert_to_imeca(-1, "NO2"), NA)
-  expect_equal(convert_to_imeca(NA, "NO2"), NA)
-  expect_equal(convert_to_imeca(c(450, 350, 250), "NO2"), c(215,167,119))
-  expect_equal(convert_to_imeca(c(450, 350, 48), c("NO2", "NO2", "O3")), c(215,167,34))
+  expect_equal(convert_to_imeca(-1, "NO2", showWarnings = FALSE), NA)
+  expect_equal(convert_to_imeca(NA, "NO2", showWarnings = FALSE), NA)
+  expect_equal(convert_to_imeca(c(450, 350, 250), "NO2", showWarnings = FALSE), c(215,167,119))
+  expect_equal(convert_to_imeca(c(450, 350, 48), c("NO2", "NO2", "O3"), showWarnings = FALSE), c(215,167,34))
 
-  expect_equal(convert_to_imeca(90, "NO2"), 43)
-  expect_equal(convert_to_imeca(75, "NO2"), 36)
-  #expect_equal(convert_to_imeca(150, "NO2"), 71)
-  expect_equal(convert_to_imeca(250, "NO2"), 119)
-  expect_equal(convert_to_imeca(350, "NO2"), 167)
-  expect_equal(convert_to_imeca(450, "NO2"), 215)
+  expect_equal(convert_to_imeca(90, "NO2", showWarnings = FALSE), 43)
+  expect_equal(convert_to_imeca(75, "NO2", showWarnings = FALSE), 36)
+  #expect_equal(convert_to_imeca(150, "NO2", showWarnings = FALSE), 71)
+  expect_equal(convert_to_imeca(250, "NO2", showWarnings = FALSE), 119)
+  expect_equal(convert_to_imeca(350, "NO2", showWarnings = FALSE), 167)
+  expect_equal(convert_to_imeca(450, "NO2", showWarnings = FALSE), 215)
 
-  expect_equal(convert_to_imeca(48, "O3"), 34)
-  expect_equal(convert_to_imeca(67, "O3"), 48)
-  expect_equal(convert_to_imeca(77, "O3"), 63)
-  expect_equal(convert_to_imeca(205, "O3"), 201)
-  expect_equal(convert_to_imeca(72, "O3"), 53)
-  expect_equal(convert_to_imeca(98, "O3"), 103)
-  expect_equal(convert_to_imeca(170, "O3"), 166)
+  expect_equal(convert_to_imeca(48, "O3", showWarnings = FALSE), 34)
+  expect_equal(convert_to_imeca(67, "O3", showWarnings = FALSE), 48)
+  expect_equal(convert_to_imeca(77, "O3", showWarnings = FALSE), 63)
+  expect_equal(convert_to_imeca(205, "O3", showWarnings = FALSE), 201)
+  expect_equal(convert_to_imeca(72, "O3", showWarnings = FALSE), 53)
+  expect_equal(convert_to_imeca(98, "O3", showWarnings = FALSE), 103)
+  expect_equal(convert_to_imeca(170, "O3", showWarnings = FALSE), 166)
 
-  expect_equal(convert_to_imeca(1.5, "CO"), 14)
-  expect_equal(convert_to_imeca(6, "CO"), 55)
-  # expect_equal(convert_to_imeca(12, "CO"), 109)
-  expect_equal(convert_to_imeca(18, "CO"), 164)
-  # expect_equal(convert_to_imeca(24, "CO"), 218)
+  expect_equal(convert_to_imeca(1.5, "CO", showWarnings = FALSE), 14)
+  expect_equal(convert_to_imeca(6, "CO", showWarnings = FALSE), 55)
+  # expect_equal(convert_to_imeca(12, "CO", showWarnings = FALSE), 109)
+  expect_equal(convert_to_imeca(18, "CO", showWarnings = FALSE), 164)
+  # expect_equal(convert_to_imeca(24, "CO", showWarnings = FALSE), 218)
 
-  expect_equal(convert_to_imeca(80, "PM10"), 102)
+  expect_equal(convert_to_imeca(80, "PM10", showWarnings = FALSE), 102)
+
+  expect_warning(convert_to_imeca(80, "PM10"))
+  expect_silent(convert_to_imeca(80, "PM10", showWarnings = FALSE))
 })
 
 test_that("station pollution data matches api", {
@@ -134,6 +140,9 @@ test_that("zone pollution data matches api", {
 
   expect_warning(get_zone_data("MAXIMOS", "O3", c("NO", "NE", "CE"),
                                "2015-12-25", "2016-01-01"))
+  expect_silent(get_zone_data("MAXIMOS", "O3", c("NO", "NE", "CE"),
+                              "2015-12-25", "2016-01-01",
+                              showWarnings = FALSE))
   expect_equal(subset(df_max_o3, zone == "NO" &
                         pollutant == "O3")$value,
                c(109, 51, 29, 49, 36, 104, 92, 119))

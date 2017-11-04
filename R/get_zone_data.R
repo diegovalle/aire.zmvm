@@ -72,6 +72,7 @@
 #' }
 #' @param start_date The start date in YYYY-MM-DD format (earliest possible value is 2008-01-01).
 #' @param end_date The end date in YYYY-MM-DD format.
+#' @param showWarnings Show warnings about problems with the data
 #'
 #' @return A data.frame with pollution data measured in IMECAS, by geographic zone
 #'
@@ -89,7 +90,8 @@
 #' head(df)
 #' }
 #'
-get_zone_data <- function(criterion, pollutant, zone, start_date, end_date) {
+get_zone_data <- function(criterion, pollutant, zone, start_date, end_date,
+                          showWarnings = TRUE) {
   if (missing(pollutant))
     stop("You need to specify a contaminante")
   if (missing(zone))
@@ -114,9 +116,10 @@ get_zone_data <- function(criterion, pollutant, zone, start_date, end_date) {
   criterion <- tolower(criterion)
 
   # If pollutants are O3 or PM10 issua a warning that the way of calculating the index changed
-  if (length(base::intersect(pollutant, c("O3", "PM10", "TZ"))) > 0)
+  if (length(base::intersect(pollutant, c("O3", "PM10", "TZ"))) > 0 && showWarnings)
     warning("\n*******************\nStarting October 28, 2014 the IMECA values for O3 and PM10 are computed using NOM-020-SSA1-2014 and NOM-025-SSA1-2014\n*******************")
-
+  if (start_date >= "2017-01-01" && showWarnings)
+    warning("\n*******************\nSometime in 2017 a number of stations were dropped from some zones\n*******************")
   df <- .download_data_zone(criterion, pollutant, zone, start_date, end_date)
 
   names(df) <- df[1, ]

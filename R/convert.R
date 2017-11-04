@@ -144,12 +144,14 @@ to_imeca <- function(contaminant, value) {
 #'
 #' @param pollutant type of pollutant
 #' @param value value to convert to IMECAS
+#' @param showWarnings show a warning about issues with performing the conversion
 #'
 #' @return value in IMECAS
 #' @export
-convert_to_imeca <- function(value, pollutant) {
+convert_to_imeca <- function(value, pollutant, showWarnings = TRUE) {
   pollutant <- toupper(pollutant)
   stopifnot(pollutant %in% c("O3", "NO2", "PM10", "SO2", "CO"))
-  warning("This function is beta. Converted values don't always match official ones and care should be taken to validate them.")
+  if (showWarnings)
+    warning("This function is beta. Converted values don't always match official ones and care should be taken to validate them.")
   as.vector(unname(mapply(to_imeca, contaminant = pollutant, value = value)))
 }

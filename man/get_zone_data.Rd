@@ -4,7 +4,8 @@
 \alias{get_zone_data}
 \title{Download pollution data by zone}
 \usage{
-get_zone_data(criterion, pollutant, zone, start_date, end_date)
+get_zone_data(criterion, pollutant, zone, start_date, end_date,
+  showWarnings = TRUE)
 }
 \arguments{
 \item{criterion}{The type of data to download
@@ -36,6 +37,8 @@ get_zone_data(criterion, pollutant, zone, start_date, end_date)
 \item{start_date}{The start date in YYYY-MM-DD format (earliest possible value is 2008-01-01).}
 
 \item{end_date}{The end date in YYYY-MM-DD format.}
+
+\item{showWarnings}{Show warnings about problems with the data}
 }
 \value{
 A data.frame with pollution data measured in IMECAS, by geographic zone
