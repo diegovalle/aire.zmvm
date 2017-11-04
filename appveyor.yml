@@ -23,6 +23,7 @@ image:
 environment:
   global:
     WARNINGS_ARE_ERRORS: 1
+    NOT_CRAN: true
 
   matrix:
   - R_VERSION: stable
@@ -39,9 +40,8 @@ build_script:
   - travis-tool.sh install_deps
 
 test_script:
-  - echo NOT_CRAN=true>>$HOME/.Renviron
   - travis-tool.sh run_tests
-  - travis-tool dump_sysinfo
+  - travis-tool.sh dump_sysinfo
 
 on_failure:
   - 7z a failure.zip *.Rcheck\*
