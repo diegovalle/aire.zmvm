@@ -26,6 +26,9 @@ environment:
     NOT_CRAN: true
 
   matrix:
+  - R_VERSION: devel
+    R_ARCH: x64
+
   - R_VERSION: stable
 
   - R_VERSION: release
