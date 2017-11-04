@@ -140,6 +140,8 @@ test_that("zone pollution data matches api", {
 
   expect_warning(get_zone_data("MAXIMOS", "O3", c("NO", "NE", "CE"),
                                "2015-12-25", "2016-01-01"))
+  expect_warning(get_zone_data("MAXIMOS", "SO2", c("NO", "NE", "CE"),
+                               "2017-02-25", "2017-05-01"))
   expect_silent(get_zone_data("MAXIMOS", "O3", c("NO", "NE", "CE"),
                               "2015-12-25", "2016-01-01",
                               showWarnings = FALSE))
