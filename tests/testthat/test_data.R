@@ -219,5 +219,17 @@ test_that("idw360", {
   expect_equal(length(idw$pred), 10*10)
   expect_true(all(idw$pred <= 360))
   expect_true(all(idw$pred >= 0))
+
+  # First column x/longitud, second y/latitude
+  locations <- data.frame(lon = c(1, 2), lat = c(1, 2))
+  coordinates(locations) <- ~lon+lat
+  # Wind direction values in degrees
+  values <- c(55, 355)
+  # The grid for which to extrapolate the values
+  grid <- data.frame(lon = c(1, 2, 1, 2), lat = c(1, 2, 2, 1))
+  coordinates(grid) <- ~lon+lat
+
+  idw <- idw360(values, locations, grid)
+  expect_equal(idw, data.frame(pred = c(55, 355, 25 ,25)))
 })
 
