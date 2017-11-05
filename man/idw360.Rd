@@ -24,3 +24,16 @@ are working with data whose unit of measurement is degrees (i.e. the average of 
 should be 15°). It works by finding the shortest distance between two degree marks
 on a circle.
 }
+\examples{
+library(sp)
+# Location of sensors. First column x/longitud, second y/latitude
+locations <- data.frame(lon = c(1, 2), lat = c(1, 2))
+coordinates(locations) <- ~lon+lat
+# Could be wind direction values in degrees
+values <- c(55, 355)
+# The grid for which to extrapolate values
+grid <- data.frame(lon = c(1, 2, 1, 2), lat = c(1, 2, 2, 1))
+coordinates(grid) <- ~lon+lat
+idw360(values, locations, grid)
+
+}

@@ -3,7 +3,7 @@
 \name{convert_to_imeca}
 \alias{convert_to_imeca}
 \title{Convert pollution values in the original units returned by sensors to
-IMECA (Indice Metropolitano de la Calidad del Aire) a dimensionless scale
+IMECA (Indice Metropolitano de la Calidad del Aire), a dimensionless scale
 where all the pollutants can be compared.}
 \usage{
 convert_to_imeca(value, pollutant, showWarnings = TRUE)
@@ -20,4 +20,7 @@ value in IMECAS
 }
 \description{
 See \url{http://rama.edomex.gob.mx/contaminacion-atmosferica/imeca}
+}
+\examples{
+convert_to_imeca(157, "O3", showWarnings = FALSE)
 }
