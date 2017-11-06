@@ -2,7 +2,14 @@
 
 language: r
 warnings_are_errors: true
-sudo: required
+
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+    - os: osx
 
 branches:
   only:
