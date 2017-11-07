@@ -1,20 +1,20 @@
 #' Title
 #'
-#' @param time time to convert
+#' @param time_div time to convert
 #'
 #' @importFrom stringr str_match str_replace str_replace_all str_detect
-.convert_time <- function(time){
-  time <- str_replace_all(time, "\n|\t", "")
-  time <- str_replace(time, "h,.*?([0-9])", "h\\1")
+.convert_time <- function(time_div){
+  time_div <- str_replace_all(time_div, "\n|\t", "")
+  time_div <- str_replace(time_div, "h,(.|\n)+?(?=[0-9])", "h")
   month_names <- c("enero" = "january", "febrero" = "february", "marzo" = "march",
                    "abril" = "april", "mayo" = "may", "junio" = "june", "julio" = "july",
                    "agosto" = "august", "septiembre" = "september",
                    "octubre" = "october", "noviembre" = "november", "diciembre" = "december")
-  time <- str_replace_all(time, month_names)
-  if (str_detect(time, "24:00"))
+  time_div <- str_replace_all(time_div, month_names)
+  if (str_detect(time_div, "24:00"))
     warning("At midnight the website sometimes get the time wrong and reports a date 24 hours into the future")
-  time <- strptime(time, "%H:%M h%d de %B de %Y", tz = "America/Mexico_City")
-  as.character(strftime(time, "%Y-%m-%d %H:%M:%S"))
+  time_div <- strptime(time_div, "%H:%M h%d de %B de %Y", tz = "America/Mexico_City")
+  as.character(strftime(time_div, "%Y-%m-%d %H:%M:%S"))
 }
 
 #' Get the latest pollution values for each station
