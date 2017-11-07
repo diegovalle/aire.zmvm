@@ -27,7 +27,6 @@ Imports:
     xml2,
     httr,
     readr,
-    sp,
-    stringi
+    sp
 RoxygenNote: 6.0.1
 Encoding: UTF-8

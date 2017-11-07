@@ -3,7 +3,6 @@
 #' @param time time to convert
 #'
 #' @importFrom stringr str_match str_replace str_replace_all str_detect
-#' @importFrom stringi stri_trans_general
 .convert_time <- function(time){
   time <- str_replace_all(time, "\n|\t", "")
   time <- str_replace(time, "h,.*?([0-9])", "h\\1")
