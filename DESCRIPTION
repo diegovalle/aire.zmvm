@@ -17,7 +17,9 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    ggplot2
+    ggplot2,
+    ggseas,
+    dplyr
 Imports:
     lubridate,
     dplyr,
