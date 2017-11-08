@@ -18,8 +18,7 @@ Suggests:
     rmarkdown,
     testthat,
     ggplot2,
-    ggseas,
-    dplyr
+    ggseas
 Imports:
     lubridate,
     dplyr,
