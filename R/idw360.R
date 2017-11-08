@@ -18,24 +18,28 @@
 #' @export
 #' @examples
 #' library(sp)
-#' # Location of sensors. First column x/longitud, second y/latitude
+#' library(ggplot2)
+#'
+#' #' ## Could be wind direction values in degrees
+#' values <- c(55, 355)
+#'
+#' ## Location of sensors. First column x/longitud, second y/latitude
 #' locations <- data.frame(lon = c(1, 2), lat = c(1, 2))
 #' coordinates(locations) <- ~lon+lat
-#' # Could be wind direction values in degrees
-#' values <- c(55, 355)
-#' # The grid for which to extrapolate values
+#'
+#' ## The grid for which to extrapolate values
 #' grid <- data.frame(lon = c(1, 2, 1, 2), lat = c(1, 2, 2, 1))
 #' coordinates(grid) <- ~lon+lat
-
+#'
 #' res <- idw360(values, locations, grid)
-#' \dontrun{
-#' library(ggplot2)
-#' df <- cbind(idw360(values, locations, grid), as.data.frame(grid))
+#'
+#' df <- cbind(res, as.data.frame(grid))
 #' # The wind direction compass starts where the 90 degree mark is located
-#' ggplot(df, aes(lat, lon)) +
+#' ggplot(df, aes(lon, lat)) +
 #'   geom_point() +
-#'   geom_spoke(aes(angle = ((90 - pred) %% 360) * pi / 180), radius = 1)
-#' }
+#'   geom_spoke(aes(angle = ((90 - pred) %% 360) * pi / 180),
+#'              radius = 1,
+#'              arrow=arrow(length = unit(0.2,"cm")))
 idw360 <- function(values, coords, grid, idp = 2) {
   stopifnot(length(values) == nrow(coords))
   stopifnot(is.numeric(idp))
