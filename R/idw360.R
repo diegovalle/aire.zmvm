@@ -27,8 +27,15 @@
 #' grid <- data.frame(lon = c(1, 2, 1, 2), lat = c(1, 2, 2, 1))
 #' coordinates(grid) <- ~lon+lat
 
-#' idw360(values, locations, grid)
-#'
+#' res <- idw360(values, locations, grid)
+#' \dontrun{
+#' library(ggplot2)
+#' df <- cbind(idw360(values, locations, grid), as.data.frame(grid))
+#' # The wind direction compass starts where the 90 degree mark is located
+#' ggplot(df, aes(lat, lon)) +
+#'   geom_point() +
+#'   geom_spoke(aes(angle = ((90 - pred) %% 360) * pi / 180), radius = 1)
+#' }
 idw360 <- function(values, coords, grid, idp = 2) {
   stopifnot(length(values) == nrow(coords))
   stopifnot(is.numeric(idp))
