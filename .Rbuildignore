@@ -7,7 +7,6 @@ readme.md
 readme.html
 readme_files
 ^cran-comments\.md$
-^NEWS\.md$
 cran-comments.md
 ^appveyor\.yml$
 .gitattributes
