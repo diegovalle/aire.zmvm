@@ -20,7 +20,7 @@
 #' library(sp)
 #' library(ggplot2)
 #'
-#' #' ## Could be wind direction values in degrees
+#' ## Could be wind direction values in degrees
 #' values <- c(55, 355)
 #'
 #' ## Location of sensors. First column x/longitud, second y/latitude
