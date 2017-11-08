@@ -10,3 +10,4 @@ readme_files
 cran-comments.md
 ^appveyor\.yml$
 .gitattributes
+^README-.*\.png$

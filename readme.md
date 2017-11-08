@@ -1,30 +1,30 @@
 Mexico City Pollution Data
 ================
 Diego Valle-Jones
-May 19, 2017
+November 08, 2017
 
 -   [What does it do?](#what-does-it-do)
 -   [Installation](#installation)
 -   [Quick Example](#quick-example)
 
-Master: [![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.svg?branch=master)](https://travis-ci.org/diegovalle/aire.zmvm) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/c7kg6o68exx0lirg?svg=true)](https://ci.appveyor.com/project/diegovalle/aire-zmvm/branch/master)
+[![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.svg?branch=master)](https://travis-ci.org/diegovalle/aire.zmvm) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/c7kg6o68exx0lirg?svg=true)](https://ci.appveyor.com/project/diegovalle/aire-zmvm/branch/master)
 
 |              |                                                        |
 |--------------|--------------------------------------------------------|
 | **Author:**  | Diego Valle-Jones                                      |
 | **License:** | [BSD\_3](https://opensource.org/licenses/BSD-3-Clause) |
-| **Status:**  | alpha                                                  |
-| **Website:** | <https://github.com/diegovalle/aire.zmvm>              |
+| **Status:**  | First release                                          |
+| **Website:** | <https://hoyodesmog.diegovalle.net/aire.zmvm.html>     |
 
 What does it do?
 ----------------
 
-This package downloads pollution data for the Mexico City metro area. It can download real-time, daily maximum, minimum, or hourly average data for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City).
+Tools for downloading pollution data for the Mexico City metro area. It can download real-time, daily maximum, minimum, or hourly average data for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City). It also includes the locations of all the measuring stations and a function to perform inverse distance weighting modified to work with wind direction.
 
 Installation
 ------------
 
-For the moment this package is only available from github. For the development version:
+You can always install the development version from GitHub:
 
 ``` r
 if (!require(devtools)) {
@@ -33,14 +33,24 @@ if (!require(devtools)) {
 devtools::install_github('diegovalle/aire.zmvm')
 ```
 
+To install the most recent package version from CRAN type:
+
+``` r
+install.packages("aire.zmvm")
+library(aire.zmvm)
+```
+
+Note that the version on CRAN might not reflect the most recent changes made to this package.
+
 Quick Example
 -------------
 
-The package consists mainly of three functions:
+The package consists mainly of four functions:
 
 -   `get_station_data` to download data for each of the pollution (and wind and temperature) measuring stations.
 -   `get_zone_data` to download data for each of the 5 geographic zones of Mexico City
 -   `get_latest_data` to download the latest values for each of the pollution measuring stations.
+-   `idw360` Inverse distance weighting modified to work with degrees
 
 ``` r
 library("aire.zmvm")
@@ -67,6 +77,7 @@ knitr::kable(head(o3))
 | 2009-01-06 | ACO           | O3        | ppb  |     71|
 
 ``` r
+
 # Daily max among all base stations
 o3_max <- o3 %>% 
   group_by(date) %>% 
@@ -93,8 +104,7 @@ ggplot(max_daily_df,
   ylab("parts per billion") +
   ggtitle("Maximum daily ozone concentration and 30 day rolling average", 
           subtitle = "Red lines indicate the values necessary to activate a phase I smog alert. \nData source: SEDEMA")
+#> Warning: Removed 29 rows containing missing values (geom_path).
 ```
 
-    ## Warning: Removed 29 rows containing missing values (geom_path).
-
-![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-1-1.png)
+![](man/figures/README-unnamed-chunk-2-1.png)
