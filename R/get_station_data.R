@@ -226,7 +226,7 @@ download_horario_by_month <- function(pollutant, year){
 #'  \item{"RH"}{ - Humedad relativa (porcentaje)}
 #' }
 #' @param year a numeric vector containing the years for which to download data (the earliest possible value is 1986)
-#' @param progress Wether to display a progress bar (TRUE or FALSE). By default it will only display in an interactive session.
+#' @param progress Whether to display a progress bar (TRUE or FALSE). By default it will only display in an interactive session.
 #'
 #' @return a data.frame with pollution data, when downloading "HORARIOS" the hours correspond the
 #' GMT+6 timezone

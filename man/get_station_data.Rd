@@ -32,7 +32,7 @@ get_station_data(criterion, pollutant, year, progress = interactive())
 
 \item{year}{a numeric vector containing the years for which to download data (the earliest possible value is 1986)}
 
-\item{progress}{Wether to display a progress bar (TRUE or FALSE). By default it will only display in an interactive session.}
+\item{progress}{Whether to display a progress bar (TRUE or FALSE). By default it will only display in an interactive session.}
 }
 \value{
 a data.frame with pollution data, when downloading "HORARIOS" the hours correspond the
