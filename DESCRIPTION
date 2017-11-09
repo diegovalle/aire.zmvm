@@ -18,7 +18,8 @@ Suggests:
     rmarkdown,
     testthat,
     ggplot2,
-    ggseas
+    ggseas,
+    mapproj
 Imports:
     lubridate,
     dplyr,
