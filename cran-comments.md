@@ -1,4 +1,10 @@
-This is my first submission. I have read and agree to the the CRAN policies at http://cran.r-project.org/web/packages/policies.html
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Changed the LICENSE file for the BSD_3_clause
+
+* Added more small executable examples in the Rd-files (some functions depend on an 
+  internet connection so it wasn't possible)
 
 ## Test environments
 * Ubuntu 16.04 locally, R 3.4.2
@@ -7,5 +13,5 @@ This is my first submission. I have read and agree to the the CRAN policies at h
 * Win-Builder (devel and release)
 
 ## R CMD check results
-There were no ERRORsor WARNINGs
+There were no ERRORs or WARNINGs
 1 NOTE because it is a new submission 
