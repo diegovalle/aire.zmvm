@@ -53,6 +53,7 @@ ggplot(df, aes(lon, lat)) +
              radius = 1,
              arrow=arrow(length = unit(0.2,"cm")))
 
+library("mapproj")
 ## Random values in each of the measuring stations
 locations <- stations[, c("lon", "lat")]
 coordinates(locations) <- ~lon+lat
