@@ -42,7 +42,7 @@
 #'   geom_spoke(aes(angle = ((90 - pred) %% 360) * pi / 180),
 #'              radius = 1,
 #'              arrow=arrow(length = unit(0.2,"cm")))
-#'
+#' \dontrun{
 #' library("mapproj")
 #' ## Random values in each of the measuring stations
 #' locations <- stations[, c("lon", "lat")]
@@ -66,6 +66,7 @@
 #'              radius = .07,
 #'              arrow=arrow(length = unit(0.2,"cm"))) +
 #'   coord_map()
+#' }
 idw360 <- function(values, coords, grid, idp = 2) {
   stopifnot(length(values) == nrow(coords))
   stopifnot(is.numeric(idp))
