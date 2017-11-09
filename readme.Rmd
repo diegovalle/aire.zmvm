@@ -1,7 +1,7 @@
 ---
 title: "Mexico City Pollution Data"
 author: "Diego Valle-Jones"
-date: "November 08, 2017"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output: 
  github_document:
           toc: true
