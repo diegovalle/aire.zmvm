@@ -84,8 +84,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' # Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
-#' # from 2015-01-01 to 2016-03-20 for all geo zones
+#' ## Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
+#' ## from 2015-01-01 to 2016-03-20 for all geographic zones
 #' df <- get_zone_data("MAXIMOS", "PM10", "TZ", "2015-01-01", "2016-03-20")
 #' head(df)
 #' }

@@ -28,4 +28,7 @@ was added manually since the official source data set was missing any informatio
 \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/GDF_2015_audit_report_final_v2.pdf}{Audit of Ambient Air Monitoring Stations
 for the Sistema de Monitoreo Atmosferico de la Ciudad de Mexico}).
 }
+\examples{
+head(stations)
+}
 \keyword{datasets}

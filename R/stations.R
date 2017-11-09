@@ -18,4 +18,6 @@
 #'
 #' }
 #' @source \url{http://148.243.232.112:8080/opendata/catalogos/cat_estacion.csv}
+#' @examples
+#' head(stations)
 "stations"

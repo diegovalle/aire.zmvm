@@ -17,8 +17,8 @@
 #' @return data.frame with the interpolated values for each of the grid points
 #' @export
 #' @examples
-#' library(sp)
-#' library(ggplot2)
+#' library("sp")
+#' library("ggplot2")
 #'
 #' ## Could be wind direction values in degrees
 #' values <- c(55, 355)
@@ -31,15 +31,40 @@
 #' grid <- data.frame(lon = c(1, 2, 1, 2), lat = c(1, 2, 2, 1))
 #' coordinates(grid) <- ~lon+lat
 #'
+#' ## Perform the inverse distance weighted interpolation
 #' res <- idw360(values, locations, grid)
+#' head(res)
 #'
 #' df <- cbind(res, as.data.frame(grid))
-#' # The wind direction compass starts where the 90 degree mark is located
+#' ## The wind direction compass starts where the 90 degree mark is located
 #' ggplot(df, aes(lon, lat)) +
 #'   geom_point() +
 #'   geom_spoke(aes(angle = ((90 - pred) %% 360) * pi / 180),
 #'              radius = 1,
 #'              arrow=arrow(length = unit(0.2,"cm")))
+#'
+#' ## Random values in each of the measuring stations
+#' locations <- stations[, c("lon", "lat")]
+#' coordinates(locations) <- ~lon+lat
+#' proj4string(locations) <- CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
+#' values <- runif(length(locations), 0, 360)
+#' pixels <- 10
+#' grid <- expand.grid(lon = seq((min(coordinates(locations)[, 1]) - .1),
+#'                               (max(coordinates(locations)[, 1]) + .1),
+#'                               length.out = pixels),
+#'                     lat = seq((min(coordinates(locations)[, 2]) - .1),
+#'                               (max(coordinates(locations)[, 2]) + .1),
+#'                               length.out = pixels))
+#' grid <- SpatialPoints(grid)
+#' proj4string(grid) <- CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
+#' ## bind the extrapolated values for plotting
+#' df <- cbind(idw360(values, locations, grid), as.data.frame(grid))
+#' ggplot(df, aes(lon, lat)) +
+#'   geom_point(size = .1) +
+#'   geom_spoke(aes(angle = ((90 - pred) %% 360) * pi / 180),
+#'              radius = .07,
+#'              arrow=arrow(length = unit(0.2,"cm"))) +
+#'   coord_map()
 idw360 <- function(values, coords, grid, idp = 2) {
   stopifnot(length(values) == nrow(coords))
   stopifnot(is.numeric(idp))

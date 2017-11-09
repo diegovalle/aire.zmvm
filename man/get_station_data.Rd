@@ -46,9 +46,12 @@ are used
 }
 \examples{
 \dontrun{
-# Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
-# from 2015 to 2016
+## Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
+## from 2015 to 2016
 df <- get_station_data("MAXIMOS", "pm10", 2015:2016)
 head(df)
+## Download ozone concentration hourly data for 2016
+df2 <- get_station_data("HORARIOS", "o3", 2016)
+head(df2)
 }
 }

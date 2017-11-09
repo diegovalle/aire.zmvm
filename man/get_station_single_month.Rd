@@ -37,3 +37,13 @@ http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} fo
 For earlier years the archive files from \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
 are used
 }
+\examples{
+\dontrun{
+# Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
+# from 2015 to 2016
+mar16 <- get_station_single_month("PM10", 2016, 3)
+head(march16)
+oct17 <- get_station_single_month("O3", 2017, 10)
+head(oct17)
+}
+}

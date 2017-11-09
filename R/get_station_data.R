@@ -237,10 +237,13 @@ download_horario_by_month <- function(pollutant, year){
 #'
 #' @examples
 #' \dontrun{
-#' # Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
-#' # from 2015 to 2016
+#' ## Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
+#' ## from 2015 to 2016
 #' df <- get_station_data("MAXIMOS", "pm10", 2015:2016)
 #' head(df)
+#' ## Download ozone concentration hourly data for 2016
+#' df2 <- get_station_data("HORARIOS", "o3", 2016)
+#' head(df2)
 #' }
 get_station_data <- function(criterion, pollutant, year, progress = interactive()) {
   year_no_data <- 2005
@@ -303,6 +306,15 @@ get_station_data <- function(criterion, pollutant, year, progress = interactive(
 #'
 #' @export
 #' @importFrom stringr str_pad
+#' @examples
+#' \dontrun{
+#' # Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
+#' # from 2015 to 2016
+#' mar16 <- get_station_single_month("PM10", 2016, 3)
+#' head(march16)
+#' oct17 <- get_station_single_month("O3", 2017, 10)
+#' head(oct17)
+#' }
 get_station_single_month <- function(pollutant, year, month) {
   if ( missing(pollutant) | missing(year) | missing(month))
     stop("arguments missing")
