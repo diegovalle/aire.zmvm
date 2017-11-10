@@ -19,7 +19,8 @@ Suggests:
     testthat,
     ggplot2,
     ggseas,
-    mapproj
+    mapproj,
+    selectr
 Imports:
     lubridate,
     dplyr,
