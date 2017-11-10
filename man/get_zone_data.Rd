@@ -44,7 +44,7 @@ get_zone_data(criterion, pollutant, zone, start_date, end_date,
 A data.frame with pollution data measured in IMECAS, by geographic zone
 }
 \description{
-retrieve pollution data by geographic zone from the air quality server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
+retrieve pollution data in IMECAs by geographic zone from the air quality server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
 }
 \examples{
 ## There was a regional (NE) PM10 pollution emergency on Jan 6, 2017

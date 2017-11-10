@@ -45,7 +45,7 @@
 
 #' Download pollution data by zone
 #'
-#' retrieve pollution data by geographic zone from the air quality server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
+#' retrieve pollution data in IMECAs by geographic zone from the air quality server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
 #'
 #' @param pollutant The type of pollutant to download
 #' \itemize{
