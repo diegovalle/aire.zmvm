@@ -29,10 +29,8 @@
 #' @importFrom httr GET
 #'
 #' @examples
-#' \dontrun{
 #' df <- get_latest_data()
 #' head(df)
-#' }
 get_latest_data <- function() {
   url <- "http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php"
 

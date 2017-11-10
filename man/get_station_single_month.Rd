@@ -32,18 +32,19 @@ a data.frame with pollution data, when downloading "HORARIOS" the hours correspo
 GMT+6 timezone
 }
 \description{
-retrieve pollution data by station from the air quality server at \url{
-http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016 data.
-For earlier years the archive files from \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
-are used
+retrieve hourly averages of pollution data by station from the air quality server at \url{
+http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
 }
 \examples{
+## Download hourly temperature data from October 2016
+df_tmp <- get_station_single_month("TMP", 2016, 10)
+head(df_tmp)
 \dontrun{
-# Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
-# from 2015 to 2016
-mar16 <- get_station_single_month("PM10", 2016, 3)
-head(march16)
-oct17 <- get_station_single_month("O3", 2017, 10)
-head(oct17)
+## Download daily hourly PM10 data (particulate matter 10 micrometers or less in diameter)
+## from March 2016
+df_pm10 <- get_station_single_month("PM10", 2016, 3)
+head(df_pm10)
+df_o3 <- get_station_single_month("O3", 2017, 10)
+head(df_o3)
 }
 }

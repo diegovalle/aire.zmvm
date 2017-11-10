@@ -14,8 +14,6 @@ America/Mexico_City timezone
 Get the latest pollution values for each station
 }
 \examples{
-\dontrun{
 df <- get_latest_data()
 head(df)
-}
 }

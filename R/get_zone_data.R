@@ -83,6 +83,10 @@
 #' @importFrom tidyr gather_ separate_
 #'
 #' @examples
+#' ## There was a regional (NE) PM10 pollution emergency on Jan 6, 2017
+#' get_zone_data("MAXIMOS", "PM10", "NE", "2017-01-05", "2017-01-08", showWarnings = FALSE)
+#' ## There was an ozone pollution emergency on May 15, 2017
+#' get_zone_data("MAXIMOS", "O3", "TZ", "2017-05-15", "2017-05-15", showWarnings = FALSE)
 #' \dontrun{
 #' ## Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
 #' ## from 2015-01-01 to 2016-03-20 for all geographic zones
