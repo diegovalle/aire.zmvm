@@ -36,9 +36,6 @@ retrieve hourly averages of pollution data by station from the air quality serve
 http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
 }
 \examples{
-## Download hourly temperature data from October 2016
-df_tmp <- get_station_single_month("TMP", 2016, 10)
-head(df_tmp)
 \dontrun{
 ## Download daily hourly PM10 data (particulate matter 10 micrometers or less in diameter)
 ## from March 2016

@@ -305,9 +305,6 @@ get_station_data <- function(criterion, pollutant, year, progress = interactive(
 #' @export
 #' @importFrom stringr str_pad
 #' @examples
-#' ## Download hourly temperature data from October 2016
-#' df_tmp <- get_station_single_month("TMP", 2016, 10)
-#' head(df_tmp)
 #' \dontrun{
 #' ## Download daily hourly PM10 data (particulate matter 10 micrometers or less in diameter)
 #' ## from March 2016
