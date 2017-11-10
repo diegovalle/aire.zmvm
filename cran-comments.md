@@ -1,10 +1,8 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Changed the LICENSE file for the BSD_3_clause
-
-* Added more small executable examples in the Rd-files (some functions depend on an 
-  internet connection so it wasn't possible)
+* Added more small executable examples in the Rd-files for functions that don't download large amounts
+of data and take more than 5s
 
 ## Test environments
 * Ubuntu 16.04 locally, R 3.4.2
