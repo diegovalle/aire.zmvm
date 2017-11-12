@@ -1,7 +1,7 @@
 Mexico City Pollution Data
 ================
 Diego Valle-Jones
-November 09, 2017
+November 12, 2017
 
 -   [What does it do?](#what-does-it-do)
 -   [Installation](#installation)
@@ -89,9 +89,9 @@ o3_max <- o3 %>%
 # ozone values at which a contingencia ambiental was declared
 # and the dates during which they were valid
 # source: http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/pcaa-modificaciones.pdf
-contingencia <- data.frame(ppb = c(155, 185, 199, 205, 210),
-  start = c(2016.33, 2014, 2011, 2010, 2009),
-  end = c(2017.91, 2016 + 93/365, 2014, 2011, 2010))
+contingencia <- data.frame(ppb = c(216, 210, 205, 199, 185, 155, 155),
+  start = c(2009, 2009.4973, 2010.4973, 2011.5795,  2012.6052,  2016.291, 2016.4986),
+  end = c(2009.4973, 2010.4945, 2011.4945, 2012.6025,   2016.2883, 2016.4959, Inf))
 max_daily_df <- tsdf(ts(o3_max$max, start = c(2009,1), frequency = 365.25))
 ggplot(max_daily_df,
        aes(x = x, y = y)) + 
