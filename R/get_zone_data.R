@@ -43,9 +43,30 @@
   df
 }
 
+
 #' Download pollution data by zone
 #'
 #' retrieve pollution data in IMECAs by geographic zone from the air quality server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
+#'
+#' The geographic
+#' zones were defined in the Gaceta Oficial CDMX, No 106, 1 de julio 2016.
+#'
+#' Zona Centro: Benito Juárez,
+#' Cuauhtémoc, Iztacalco and Venustiano Carranza.
+#'
+#' Zona Noreste : Gustavo A. Madero, Coacalco de Berriozábal, Chicoloapan, Chimalhuacán,
+#' Ecatepec de Morelos, Ixtapaluca, La Paz,
+#' Nezahualcóyotl and Tecámac.
+#'
+#' Zona Noroeste: Azcapotzalco,
+#' Miguel Hidalgo, Atizapán de Zaragoza, Cuautitlán, Cuautitlán Izcalli, Naucalpan de Juárez, Nicolás
+#' Romero, Tlalnepantla de Baz and Tultitlán.
+#'
+#' Zona Sureste: Iztapalapa, Milpa
+#' Alta, Tláhuac, Xochimilco, Chalco and Valle de Chalco.
+#'
+#' Zona Suroeste: Álvaro Obregón,
+#' Coyoacán, Cuajimalpa, Magdalena Contreras, Tlalpan and Huixquilucan.
 #'
 #' @param pollutant The type of pollutant to download
 #' \itemize{
@@ -74,8 +95,7 @@
 #' @param end_date The end date in YYYY-MM-DD format.
 #' @param showWarnings Show warnings about problems with the data
 #'
-#' @return A data.frame with pollution data measured in IMECAS, by geographic zone
-#'
+#' @return A data.frame with pollution data measured in IMECAS, by geographic zone.
 #' @export
 #' @importFrom stringr str_c  str_replace_all
 #' @importFrom rvest html_nodes html_table
