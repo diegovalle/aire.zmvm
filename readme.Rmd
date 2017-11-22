@@ -20,12 +20,12 @@ knitr::opts_chunk$set(
 
 [![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.svg?branch=master)](https://travis-ci.org/diegovalle/aire.zmvm) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/c7kg6o68exx0lirg?svg=true)](https://ci.appveyor.com/project/diegovalle/aire-zmvm/branch/master)
 
-|              |          |
-|--------------|---------------|
-| __Author:__ | Diego Valle-Jones |
-| __License:__ | [BSD_3](https://opensource.org/licenses/BSD-3-Clause) |
-| __Status:__ | First release |
-| __Website:__ | [https://hoyodesmog.diegovalle.net/aire.zmvm.html](https://hoyodesmog.diegovalle.net/aire.zmvm.html) |
+|                       |                                                       |
+|-----------------------|-------------------------------------------------------|
+| __Author:__           | Diego Valle-Jones                                     |
+| __License:__          | [BSD_3](https://opensource.org/licenses/BSD-3-Clause) |
+| __Status:__           | Version 0.5.0 on CRAN                                 |
+| __Website:__          | [https://hoyodesmog.diegovalle.net/aire.zmvm.html](https://hoyodesmog.diegovalle.net/aire.zmvm.html) |
 
 
 ## What does it do?
