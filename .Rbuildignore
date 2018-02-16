@@ -11,3 +11,4 @@ cran-comments.md
 ^appveyor\.yml$
 .gitattributes
 ^README-.*\.png$
+^codecov\.yml$

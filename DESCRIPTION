@@ -20,7 +20,8 @@ Suggests:
     ggplot2,
     ggseas,
     mapproj,
-    selectr
+    selectr,
+    covr
 Imports:
     lubridate,
     dplyr,
