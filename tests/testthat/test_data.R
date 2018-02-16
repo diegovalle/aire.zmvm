@@ -38,39 +38,6 @@ test_that(".convert_time correctly parses string", {
 
 })
 
-test_that(("convert units"), {
-  expect_equal(convert_to_imeca(-1, "NO2", showWarnings = FALSE), NA)
-  expect_equal(convert_to_imeca(NA, "NO2", showWarnings = FALSE), NA)
-  expect_equal(convert_to_imeca(c(450, 350, 250), "NO2", showWarnings = FALSE), c(215,167,119))
-  expect_equal(convert_to_imeca(c(450, 350, 48), c("NO2", "NO2", "O3"), showWarnings = FALSE), c(215,167,34))
-
-  expect_equal(convert_to_imeca(90, "NO2", showWarnings = FALSE), 43)
-  expect_equal(convert_to_imeca(75, "NO2", showWarnings = FALSE), 36)
-  #expect_equal(convert_to_imeca(150, "NO2", showWarnings = FALSE), 71)
-  expect_equal(convert_to_imeca(250, "NO2", showWarnings = FALSE), 119)
-  expect_equal(convert_to_imeca(350, "NO2", showWarnings = FALSE), 167)
-  expect_equal(convert_to_imeca(450, "NO2", showWarnings = FALSE), 215)
-
-  expect_equal(convert_to_imeca(48, "O3", showWarnings = FALSE), 34)
-  expect_equal(convert_to_imeca(67, "O3", showWarnings = FALSE), 48)
-  expect_equal(convert_to_imeca(77, "O3", showWarnings = FALSE), 63)
-  expect_equal(convert_to_imeca(205, "O3", showWarnings = FALSE), 201)
-  expect_equal(convert_to_imeca(72, "O3", showWarnings = FALSE), 53)
-  expect_equal(convert_to_imeca(98, "O3", showWarnings = FALSE), 103)
-  expect_equal(convert_to_imeca(170, "O3", showWarnings = FALSE), 166)
-
-  expect_equal(convert_to_imeca(1.5, "CO", showWarnings = FALSE), 14)
-  expect_equal(convert_to_imeca(6, "CO", showWarnings = FALSE), 55)
-  # expect_equal(convert_to_imeca(12, "CO", showWarnings = FALSE), 109)
-  expect_equal(convert_to_imeca(18, "CO", showWarnings = FALSE), 164)
-  # expect_equal(convert_to_imeca(24, "CO", showWarnings = FALSE), 218)
-
-  expect_equal(convert_to_imeca(80, "PM10", showWarnings = FALSE), 102)
-
-  expect_warning(convert_to_imeca(80, "PM10"))
-  expect_silent(convert_to_imeca(80, "PM10", showWarnings = FALSE))
-})
-
 test_that("station pollution data matches api", {
   skip_on_cran()
 
@@ -184,52 +151,3 @@ test_that("latest data", {
   expect_type(df$datetime, "character")
   expect_false(all(is.na(df$datetime)))
 })
-
-test_that("idw360", {
-  library(sp)
-  df <- structure(list(date = structure(c(17472, 17472, 17472, 17472, 17472), class = "Date"),
-                       hour = c(15, 15, 15, 15, 15),
-                       station_code = c("ACO", "AJM", "AJU", "BJU", "CHO"),
-                       value = c(36, 6, 7, 319, 214),
-                       lat = c(19.635501, 19.272161, 19.154286, 19.370464, 19.266948),
-                       lon = c(-98.912003, -99.207744, -99.162611, -99.159596, -98.886088)),
-                  .Names = c("date", "hour", "station_code", "value", "lat", "lon"),
-                  row.names = c(NA, -5L),
-                  class = c("data.frame"))
-  station_loc <- df[,c("lat", "lon", "value")]
-  coordinates(station_loc) <- ~lon+lat
-  proj4string(station_loc) <- sp::CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
-
-  # create a 10x10 grid based on the stations
-  pixels = 10
-  mxc_grid <- expand.grid(x=seq((min(coordinates(station_loc)[ ,1]) - .1),
-                                (max(coordinates(station_loc)[ ,1]) + .1),
-                                length.out = pixels),
-                          y=seq((min(coordinates(station_loc)[ ,2]) - .1),
-                                (max(coordinates(station_loc)[ ,2]) + .1),
-                                length.out = pixels))
-
-  mxc_grid_pts <- SpatialPixels(SpatialPoints((mxc_grid)))
-  mxc_grid_pts <- as(mxc_grid_pts, "SpatialGrid")
-  proj4string(mxc_grid_pts) <- CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
-
-  # Inverse distance weighting
-  idw <- idw360(station_loc$value, station_loc, mxc_grid_pts)
-  expect_type(idw$pred, "double")
-  expect_equal(length(idw$pred), 10*10)
-  expect_true(all(idw$pred <= 360))
-  expect_true(all(idw$pred >= 0))
-
-  # First column x/longitud, second y/latitude
-  locations <- data.frame(lon = c(1, 2), lat = c(1, 2))
-  coordinates(locations) <- ~lon+lat
-  # Wind direction values in degrees
-  values <- c(55, 355)
-  # The grid for which to extrapolate the values
-  grid <- data.frame(lon = c(1, 2, 1, 2), lat = c(1, 2, 2, 1))
-  coordinates(grid) <- ~lon+lat
-
-  idw <- idw360(values, locations, grid)
-  expect_equal(idw, data.frame(pred = c(55, 355, 25 ,25)))
-})
-

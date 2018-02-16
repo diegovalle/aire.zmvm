@@ -143,7 +143,7 @@ get_zone_data <- function(criterion, pollutant, zone, start_date, end_date,
   if (length(base::intersect(pollutant, c("O3", "PM10", "TZ"))) > 0 && showWarnings)
     warning("\n*******************\nStarting October 28, 2014 the IMECA values for O3 and PM10 are computed using NOM-020-SSA1-2014 and NOM-025-SSA1-2014\n*******************")
   if (start_date >= "2017-01-01" && showWarnings)
-    warning("\n*******************\nSometime in 2017 a number of stations were dropped from some zones\n*******************")
+    warning("\n*******************\nSometime in 2015-2017 a number of stations were dropped from some zones\n*******************")
   df <- .download_data_zone(criterion, pollutant, zone, start_date, end_date)
 
   names(df) <- df[1, ]

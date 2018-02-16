@@ -77,10 +77,6 @@ no2_to_imeca <- function(value){
 }
 
 so2_to_imeca <- function(value){
-  if(value < 0)
-    return(NA)
-  if(is.na(value))
-    return(NA)
   value <- value /1000
   ret <- value*100/0.13
   return(round(ret))
