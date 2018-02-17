@@ -1,0 +1,148 @@
+---
+title: "Introduction to the aire.zmvm package"
+author: "Diego Valle-Jones"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(fig.width = 7, 
+                      fig.height = 7,
+                      fig.align = 'center',
+                      out.width='95%', 
+                      dpi = 200,
+                      collapse = TRUE,
+                      comment = "#>"
+)
+```
+
+This document introduces you to tools for downloading data for each of the pollution, wind and temperature measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City).
+
+## Core Functions
+
+The basic set of functions provided by the package:
+
+* ```get_station_data``` and ```get_station_single_month``` to download data for each of the pollution (and wind and temperature) measuring stations.
+* ```get_zone_data``` to download data for each of the 5 geographic zones of Mexico City 
+* ```get_latest_data``` to download the latest values for each of the pollution measuring stations.
+* ```idw360``` Inverse distance weighting modified to work with degrees
+
+## Map of PM<sub>10</sub> Pollution
+
+While it may be tempting to use the ```get_latest_data``` function to recreate the map on the
+frontpage of [www.aire.cdmx.gob.mx](http://www.aire.cdmx.gob.mx/default.php) not all pollution measuring stations have sensors to detect all pollutants (some are missing PM<sub>10</sub> sensors, others O<sub>3</sub>, and so on). It would be incorrect to conclude that just because some stations are missing a sensor there is no pollution, the function is provided more for compatibility reasons. You can visit [hoyodesmog](https://hoyodesmog.diegovalle.net/aire.zmvm.html) for and example of how to solve this problem.
+
+
+Instead we are going to plot the values of a single pollutant (particulate matter 10 micrometers or less in diameter). First we load the packages we need to run this vignette and download the pollution data:
+
+```{r, message = FALSE}
+if (!require("aire.zmvm")) install.packages("aire.zmvm", repos = "http://cran.us.r-project.org")
+library("lubridate")
+library("dplyr")
+library("ggplot2")
+library("ggmap")
+
+pm10 <- get_station_single_month("PM10", 2018, 2)
+```
+
+Here's what the data we just downloaded looks like:
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(pm10, 10))
+```
+
+We will join this data with the ```stations``` data.frame that comes with the package and includes the latitude and longitude of all pollution measurnin stations. Then we will use the package ggmap to plot the locations of the stations on top of a map.
+
+```{r, message = FALSE, warning=FALSE}
+# last available hour of the last available day
+pm10 <- pm10 %>%
+  filter(date == max(date)) %>%
+  filter(hour == max(hour))
+
+# Join the PM10 data with the stations data.frame included in the package
+mxc <- na.omit(left_join(pm10, stations, by = "station_code"))
+
+qmplot(lon, lat, data = mxc, maptype = "toner-lite", zoom = 11) +
+  geom_point(aes(fill = value), shape = 21, size = 9, color = "black") +
+  scale_fill_gradient(expression(paste(PM[10], " ", mu, g/m^3)),
+                      guide=guide_colourbar(reverse = TRUE),
+                      low = "#fff7ec", high = "#990000") +
+  ggtitle(expression(paste("Map of ", PM[10]," pollution in Mexico City")))
+```
+
+## Cold Weather School Closings
+
+Education authorities decided to suspend clases in public and private schools in some parts of Mexico City on Wednesday January 31, 2018, because of low temperatures. We will download and graph the daily morning hourly temperature data for this month and compare the days of January 30 and 31 with the rest of the month.
+
+### Data Aquisition
+
+Again we use the ```get_station_single_month``` function to download hourly temperature data for the month of January.
+
+```{r, fig.show='hold',fig.cap = "January Temperatures in 2018, by day", message=FALSE}
+# Download temperature (TMP) data for January 2018
+jan <- get_station_single_month("TMP", 2018, 1)
+```
+
+Here's what the data we downloaded looks like:
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(jan, 10))
+```
+
+
+### Data Cleaning
+
+After aquiring the data all that's left to do is to clean the data.
+
+```{r}
+
+temp_morning <- jan %>%
+  filter(hour %in% c(1:11) ) %>%
+  mutate(hour = factor(hour, levels = c(1:11))) %>%
+  mutate(day = day(date))
+
+# The school suspension was announced on the afternoon of January 30
+temp_morning$color <- "other days"
+temp_morning$color[which(temp_morning$date == "2018-01-30")] <- "Jan 30-31"
+temp_morning$color[which(temp_morning$date == "2018-01-31")] <- "Jan 30-31"
+
+# remove the stations that didn't report data during January 30-31
+temp_morning <- temp_morning %>%
+  group_by(station_code) %>%
+  filter(sum(value[date == "2018-01-30"], na.rm = TRUE) > 0 &
+           sum(value[date == "2018-01-31"], na.rm = TRUE) > 0) %>%
+  ungroup() %>%
+  na.omit()
+
+# reorder the data so the facets with the lowest temperatures
+# come first
+temp_morning <- mutate(temp_morning,
+                       station_code = reorder(station_code, value, min, na.rm = TRUE))
+```
+
+### Plot
+
+```{r, fig.show='hold',fig.cap = "January Temperatures in 2018, by day", message=FALSE}
+ggplot(temp_morning, aes(hour, value, group = day, color = color)) +
+  geom_line(alpha = .8, size = .7) +
+  facet_wrap(~ station_code) +
+  scale_colour_manual("day", values = c("#542788", "#fdb863")) +
+  scale_x_discrete(breaks = c(1, 6, 11), labels = c("1:00 AM", "6:00 AM", "11:00 AM")) +
+  xlab("hour") +
+  ylab("temperature[°C]") +
+  ggtitle("Daily morning temperatures in Mexico City during January 2018, by station",
+          subtitle = "Source: SEDEMA") +
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 80, hjust = 1),
+        legend.position="bottom")
+
+
+
+```
+
