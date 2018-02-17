@@ -48,6 +48,7 @@ library("dplyr")
 library("ggplot2")
 library("ggmap")
 
+# Download PM10 hourly data for February 2018
 pm10 <- get_station_single_month("PM10", 2018, 2)
 ```
 
@@ -59,8 +60,13 @@ knitr::kable(head(pm10, 10))
 
 We will join this data with the ```stations``` data.frame that comes with the package and includes the latitude and longitude of all pollution measurnin stations. Then we will use the package ggmap to plot the locations of the stations on top of a map.
 
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(stations, 5))
+```
+
 ```{r, message = FALSE, warning=FALSE}
-# last available hour of the last available day
+# last available hour of the last available day in February
 pm10 <- pm10 %>%
   filter(date == max(date)) %>%
   filter(hour == max(hour))
@@ -135,7 +141,7 @@ ggplot(temp_morning, aes(hour, value, group = day, color = color)) +
   scale_colour_manual("day", values = c("#542788", "#fdb863")) +
   scale_x_discrete(breaks = c(1, 6, 11), labels = c("1:00 AM", "6:00 AM", "11:00 AM")) +
   xlab("hour") +
-  ylab("temperature[°C]") +
+  ylab(expression(paste("temperature [",degree,"C]"))) +
   ggtitle("Daily morning temperatures in Mexico City during January 2018, by station",
           subtitle = "Source: SEDEMA") +
   theme_bw() + 
