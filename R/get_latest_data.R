@@ -6,10 +6,13 @@
 .convert_time <- function(time_div){
   time_div <- str_replace_all(time_div, "\n|\t", "")
   time_div <- str_replace(time_div, "h,(.|\n)+?(?=[0-9])", "h")
-  month_names <- c("enero" = "january", "febrero" = "february", "marzo" = "march",
-                   "abril" = "april", "mayo" = "may", "junio" = "june", "julio" = "july",
+  month_names <- c("enero" = "january", "febrero" = "february",
+                   "marzo" = "march",
+                   "abril" = "april", "mayo" = "may", "junio" = "june",
+                   "julio" = "july",
                    "agosto" = "august", "septiembre" = "september",
-                   "octubre" = "october", "noviembre" = "november", "diciembre" = "december")
+                   "octubre" = "october", "noviembre" = "november",
+                   "diciembre" = "december")
   time_div <- str_replace_all(time_div, month_names)
   if (str_detect(time_div, "24:00"))
     warning("At midnight the website sometimes get the time wrong and reports a date 24 hours into the future")

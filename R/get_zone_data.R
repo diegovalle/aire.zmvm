@@ -44,7 +44,7 @@
 }
 
 
-#' Download pollution data by zone
+#' Download pollution data by zone in IMECAs
 #'
 #' retrieve pollution data in IMECAs by geographic zone from the air quality server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
 #'
@@ -100,7 +100,7 @@
 #' @importFrom stringr str_c  str_replace_all
 #' @importFrom rvest html_nodes html_table
 #' @importFrom xml2 read_html
-#' @importFrom tidyr gather_ separate_
+#' @importFrom tidyr gather separate
 #'
 #' @examples
 #' ## There was a regional (NE) PM10 pollution emergency on Jan 6, 2017
@@ -139,7 +139,7 @@ get_zone_data <- function(criterion, pollutant, zone, start_date, end_date,
   # the API expects lowercase letters
   criterion <- tolower(criterion)
 
-  # If pollutants are O3 or PM10 issua a warning that the way of calculating the index changed
+  # If pollutants are O3 or PM10 issue a warning that the way of calculating the index changed
   if (length(base::intersect(pollutant, c("O3", "PM10", "TZ"))) > 0 && showWarnings)
     warning("\n*******************\nStarting October 28, 2014 the IMECA values for O3 and PM10 are computed using NOM-020-SSA1-2014 and NOM-025-SSA1-2014\n*******************")
   if (start_date >= "2017-01-01" && showWarnings)
@@ -153,14 +153,15 @@ get_zone_data <- function(criterion, pollutant, zone, start_date, end_date,
 
   # when the data is HORARIOS the second column corresponds to the hour
   if (criterion != tolower("HORARIOS")) {
-    value_col <- base::setdiff(names(df), "date")
+    df <- df %>%
+      gather(zone_pollutant, value, -date) %>%
+      separate(zone_pollutant, c("zone", "pollutant"), sep = 2)
   } else {
     names(df)[2] <- "hour"
-    value_col <- base::setdiff(names(df), c("date", "hour"))
+    df <- df %>%
+      gather(zone_pollutant, value, -date, -hour) %>%
+      separate(zone_pollutant, c("zone", "pollutant"), sep = 2)
   }
-  df <- df %>%
-    gather_("zone_pollutant", "value", value_col) %>%
-    separate_("zone_pollutant", c("zone", "pollutant"), sep = 2)
   # Some  values are invalid and to avoid warnings I correct them manually
   df[which(df$value == ""), "value"] <- NA
   df[which(df$value == "M"), "value"] <- NA

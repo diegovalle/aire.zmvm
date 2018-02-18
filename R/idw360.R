@@ -73,7 +73,7 @@ idw360 <- function(values, coords, grid, idp = 2) {
   distance <- t(spDists(coords, grid))
   w <- 1 / (distance ^ idp)
 
-  for (i in 1:nrow(w)) {
+  for (i in seq_len(nrow(w))) {
     if (sum(is.infinite(w[i, ])) > 0){
       w[i, !is.infinite(w[i, ])] <- 0
       w[i, is.infinite(w[i, ])] <- 1
