@@ -32,7 +32,7 @@ a data.frame with pollution data, when downloading "HORARIOS" the hours correspo
 GMT+6 timezone
 }
 \description{
-retrieve hourly averages of pollution data by station from the air quality server at \url{
+retrieve hourly averages of pollution data in the original units by station from the air quality server at \url{
 http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
 }
 \examples{

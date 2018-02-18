@@ -1,17 +1,34 @@
 recode_unit <- function(pollutant) {
-  str_replace_all(pollutant, c("pm2" = "\u00B5g/m\u00B3", "so2" = "ppb", "co" = "ppm",
-                               "nox" = "ppb", "no2" = "ppb", "no" = "ppb", "o3" = "ppb",
-                               "pm10" = "\u00B5g/m\u00B3", "pm25" = "\u00B5g/m\u00B3",
+  str_replace_all(pollutant, c("pm2" = "\u00B5g/m\u00B3",
+                               "so2" = "ppb",
+                               "co" = "ppm",
+                               "nox" = "ppb",
+                               "no2" = "ppb",
+                               "no" = "ppb",
+                               "o3" = "ppb",
+                               "pm10" = "\u00B5g/m\u00B3",
+                               "pm25" = "\u00B5g/m\u00B3",
                                "wsp" = "m/s",
                                "wdr" = "\u00B0",
-                               "tmp" = "\u00B0C", "rh" = "%"))
+                               "tmp" = "\u00B0C",
+                               "rh" = "%"))
 }
 
 recode_pollutant <- function(pollutant) {
-  str_replace_all(pollutant, c("pm2" = "PM25", "so2" = "SO2", "co" = "CO",
-                               "nox" = "NOX", "no2" = "NO2", "no" = "NO", "o3" = "O3",
-                               "pm10" = "PM10", "pm25" = "PM25", "wsp" = "WSP", "wdr" = "WDR",
-                               "tmp" = "TMP", "rh" = "RH", "PM2.5" = "PM25"))
+  str_replace_all(pollutant, c("pm2" = "PM25",
+                               "so2" = "SO2",
+                               "co" = "CO",
+                               "nox" = "NOX",
+                               "no2" = "NO2",
+                               "no" = "NO",
+                               "o3" = "O3",
+                               "pm10" = "PM10",
+                               "pm25" = "PM25",
+                               "wsp" = "WSP",
+                               "wdr" = "WDR",
+                               "tmp" = "TMP",
+                               "rh" = "RH",
+                               "PM2.5" = "PM25"))
 }
 #' Title
 #'
@@ -80,6 +97,7 @@ recode_pollutant <- function(pollutant) {
 #' @importFrom dplyr %>%
 #' @importFrom lubridate fast_strptime
 #' @importFrom httr GET
+#' @importFrom tidyr gather
 #'
 .download_current_station_data <- function(criterion, pollutant, year, month = "") {
   if (pollutant == "pm25")
@@ -119,11 +137,10 @@ recode_pollutant <- function(pollutant) {
 
   df$date <- as.Date(df$date)
   if (criterion != "HORARIOS") {
-    val_cols <- base::setdiff(names(df), c("date"))
+    df <- gather(df, station_code, value, -date)
   } else {
-    val_cols <- base::setdiff(names(df), c("date", "hour"))
+    df <- gather(df, station_code, value, -date, -hour)
   }
-  df <- gather_(df, "station_code", "value", val_cols)
   df$station_code <- as.character(df$station_code)
 
   df$unit <- recode_unit(pollutant)
@@ -197,9 +214,9 @@ download_horario_by_month <- function(pollutant, year){
 }
 
 
-#' Download pollution data
+#' Download pollution data by station
 #'
-#' retrieve pollution data by station from the air quality server at \url{
+#' retrieve pollution data by station in the original units from the air quality server at \url{
 #' http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016 data.
 #' For earlier years the archive files from \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
 #' are used
@@ -278,7 +295,7 @@ get_station_data <- function(criterion, pollutant, year, progress = interactive(
 
 #' Download monthly pollution data
 #'
-#' retrieve hourly averages of pollution data by station from the air quality server at \url{
+#' retrieve hourly averages of pollution data in the original units by station from the air quality server at \url{
 #' http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
 #'
 #' @param pollutant The type of pollutant to download.

@@ -15,7 +15,7 @@ test_that("idw360", {
   proj4string(station_loc) <- sp::CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
 
   # create a 10x10 grid based on the stations
-  pixels = 10
+  pixels <- 10
   mxc_grid <- expand.grid(x=seq((min(coordinates(station_loc)[ ,1]) - .1),
                                 (max(coordinates(station_loc)[ ,1]) + .1),
                                 length.out = pixels),

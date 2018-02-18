@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_station_data.R
 \name{get_station_data}
 \alias{get_station_data}
-\title{Download pollution data}
+\title{Download pollution data by station}
 \usage{
 get_station_data(criterion, pollutant, year, progress = interactive())
 }
@@ -39,7 +39,7 @@ a data.frame with pollution data, when downloading "HORARIOS" the hours correspo
 GMT+6 timezone
 }
 \description{
-retrieve pollution data by station from the air quality server at \url{
+retrieve pollution data by station in the original units from the air quality server at \url{
 http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016 data.
 For earlier years the archive files from \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
 are used

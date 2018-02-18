@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_zone_data.R
 \name{get_zone_data}
 \alias{get_zone_data}
-\title{Download pollution data by zone}
+\title{Download pollution data by zone in IMECAs}
 \usage{
 get_zone_data(criterion, pollutant, zone, start_date, end_date,
   showWarnings = TRUE)
