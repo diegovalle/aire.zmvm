@@ -22,40 +22,54 @@ knitr::opts_chunk$set(fig.width = 7,
 )
 ```
 
-This document introduces you to tools for downloading data for each of the pollution, wind and temperature measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City).
+This document introduces you to tools for downloading data for each of the pollution, wind and temperature measuring stations or the maximum pollutant values by geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City).
 
 ## Core Functions
 
 The basic set of functions provided by the package:
 
-* ```get_station_data``` and ```get_station_single_month``` to download data for each of the pollution (and wind and temperature) measuring stations.
+* ```get_station_imeca``` download data for each station in IMECAs
+* ```get_station_data``` and ```get_station_single_month``` to download pollution data for each of the pollution (and wind and temperature) measuring stations in the original units.
 * ```get_zone_data``` to download data for each of the 5 geographic zones of Mexico City 
 * ```get_latest_data``` to download the latest values for each of the pollution measuring stations.
 * ```idw360``` Inverse distance weighting modified to work with degrees
 
-## Map of PM<sub>10</sub> Pollution
+## Map of Pollution Levels
 
-While it may be tempting to use the ```get_latest_data``` function to recreate the map on the
-frontpage of [www.aire.cdmx.gob.mx](http://www.aire.cdmx.gob.mx/default.php) not all pollution measuring stations have sensors to detect all pollutants (some are missing PM<sub>10</sub> sensors, others O<sub>3</sub>, and so on). It would be incorrect to conclude that just because some stations are missing a sensor there is no pollution, the function is provided more for compatibility reasons. You can visit [hoyodesmog](https://hoyodesmog.diegovalle.net/aire.zmvm.html) for and example of how to solve this problem.
+Pollution is monitored by a series of stations located throughout the Mexico City Metro Area. Since there are different pollutants to monitor, each measured in different units, and each with different specified averaging periods, a common scale called IMECA was created to make them comparable. Currently, an hourly average of 151 IMECA points or 155 ppb of ozone are needed to declare a phase I smog alert.
 
-
-Instead we are going to plot the values of a single pollutant (particulate matter 10 micrometers or less in diameter). First we load the packages we need to run this vignette and download the pollution data:
+First we load the packages we need to run this vignette and download the pollution data:
 
 ```{r, message = FALSE}
-if (!require("aire.zmvm")) install.packages("aire.zmvm", repos = "http://cran.us.r-project.org")
+library("aire.zmvm")
 library("lubridate")
 library("dplyr")
 library("ggplot2")
 library("ggmap")
+library("sp")
+library("gstat")
 
-# Download PM10 hourly data for February 2018
-pm10 <- get_station_single_month("PM10", 2018, 2)
+# Download hourly data for all pollutants during February 20, 2018 
+# The maximum Ozone level was reached at 18:00 PM local time
+# 17:00 with no daylight savings time
+ldf <- lapply(c("PM10", "O3", "SO2", "NO2", "CO"), 
+              function(x) get_station_imeca(x, "2017-05-20") %>% 
+                filter(hour == 17) )
 ```
+
 
 Here's what the data we just downloaded looks like:
 
 ```{r, echo=FALSE, results='asis'}
-knitr::kable(head(pm10, 10))
+knitr::kable(head(ldf[[1]], 10))
+```
+
+You may have noticed that the code comments mention the local time as being 1 hour ahead
+of time returned by the function in the data.frame above. That's because the data returned by all package functions comes in a format that is not affected by daylight savings time. To covert to local Mexico City time:
+
+```{r}
+format(as.POSIXct("2017-05-20 17:00", tz = "UTC+6"), 
+       tz="America/Mexico_City", usetz=TRUE)
 ```
 
 We will join this data with the ```stations``` data.frame that comes with the package and includes the latitude and longitude of all pollution measurnin stations. Then we will use the package ggmap to plot the locations of the stations on top of a map.
@@ -65,21 +79,89 @@ We will join this data with the ```stations``` data.frame that comes with the pa
 knitr::kable(head(stations, 5))
 ```
 
+```{r}
+
+get_grid <- function(station_vec, pixels = 20) {
+  df <- stations[stations$station_code %in% station_vec,]
+  geog <- df[,c("lat", "lon")]
+  coordinates(geog) <- ~lon+lat
+  
+  geog.grd <- expand.grid(x = seq((min(coordinates(geog)[ ,1]) - .1),
+                                (max(coordinates(geog)[ ,1]) + .1),
+                                length.out=pixels),
+                          y = seq((min(coordinates(geog)[ ,2]) - .1),
+                                (max(coordinates(geog)[ ,2]) + .1),
+                                length.out = pixels))
+  
+  grd.pts <- SpatialPixels(SpatialPoints(geog.grd))
+  as(grd.pts, "SpatialGrid")
+}
+
+
+# Sometimes stations are taken offline for maintenance, exclude those
+# that weren't reporting data
+reporting_stations <- unique(na.omit(do.call(rbind, ldf))$station_code)
+# 50x50 grid covering Mexico City
+grid <- get_grid(reporting_stations, 50)
+plot(grid)
+# Plot the locations of the stations
+geog <- stations[stations$station_code %in% reporting_stations, ][ ,c("lat", 
+                                                                      "lon")]
+coordinates(geog) <- ~lon+lat
+points(geog, pch = 22, col = "lightgray", bg = "red", cex = 1.2)
+```
+
+```{r, message=FALSE, warning=FALSE}
+heatmap <- function(df, grid){
+  if(nrow(df) == 0){
+    return(data.frame(var1.pred = NA, var1.var = NA, lon = NA, lat = NA))
+  }
+  
+  df <- left_join(df, stations, by = "station_code")
+  df <- df[!is.na(df$value),]
+  df <- df[,c("lat", "lon", "value")]
+  coordinates(df) <- ~lon+lat
+  # For radiation pollution the exponent should be 2
+  # See http://www.sciencedirect.com/science/article/pii/S009830041200372X
+  df.idw <- idw(value ~ 1, df, grid, idp = 2, debug.level = 0)
+  
+  idw = as.data.frame(df.idw)
+  names(idw) <- c("var1.pred", "var1.var", "lon", "lat")
+
+  idw
+}
+
+
+# Create the IDW heatmap for each pollutant
+idw_tiles <- lapply(ldf, heatmap, grid)
+# Calculate the maximum value across all pollutants
+maxes <- apply(do.call(cbind, lapply(idw_tiles, 
+                                     function(x) x[["var1.pred"]])), 
+               1, max)
+idw_tiles_max <- data.frame(var1.pred = maxes, 
+                       lat = idw_tiles[[1]]$lat, 
+                       lon = idw_tiles[[1]]$lon)
+
+qmplot(x, y, data = data.frame(grid), geom = "blank", 
+       maptype = "toner-lite", source = "stamen", zoom = 10)  +
+  geom_tile(data = idw_tiles_max, aes(x = lon, y = lat, fill = var1.pred), 
+            alpha = .8) + 
+  scale_fill_distiller("IMECAs", limits = c(0, max(idw_tiles_max$var1.pred)), 
+                       palette = "RdYlBu",
+                       direction = -1) +
+  geom_point(data = stations[stations$station_code %in% reporting_stations, ],
+             aes(lon, lat), shape = 22, size = 1.6) +
+  ggtitle(paste0("Pollution in Mexico City during the pollution",
+                 " emergency of May-20-17"))
+
+```
+
+
+
+
 ```{r, message = FALSE, warning=FALSE}
 # last available hour of the last available day in February
-pm10 <- pm10 %>%
-  filter(date == max(date)) %>%
-  filter(hour == max(hour))
 
-# Join the PM10 data with the stations data.frame included in the package
-mxc <- na.omit(left_join(pm10, stations, by = "station_code"))
-
-qmplot(lon, lat, data = mxc, maptype = "toner-lite", zoom = 11) +
-  geom_point(aes(fill = value), shape = 21, size = 9, color = "black") +
-  scale_fill_gradient(expression(paste(PM[10], " ", mu, g/m^3)),
-                      guide=guide_colourbar(reverse = TRUE),
-                      low = "#fff7ec", high = "#990000") +
-  ggtitle(expression(paste("Map of ", PM[10]," pollution in Mexico City")))
 ```
 
 ## Cold Weather School Closings
@@ -109,12 +191,13 @@ After aquiring the data all that's left to do is to clean the data.
 ```{r}
 
 temp_morning <- jan %>%
-  filter(hour %in% c(1:11) ) %>%
-  mutate(hour = factor(hour, levels = c(1:11))) %>%
-  mutate(day = day(date))
+  mutate(day = day(date)) %>%
+  # Kids were on vaction until the 6th and only go to school during weekdays
+  filter(hour %in% c(5:11) & day > 6 & wday(date)) %>%
+  mutate(hour = factor(hour, levels = c(5:11)))
 
 # The school suspension was announced on the afternoon of January 30
-temp_morning$color <- "other days"
+temp_morning$color <- "other school days"
 temp_morning$color[which(temp_morning$date == "2018-01-30")] <- "Jan 30-31"
 temp_morning$color[which(temp_morning$date == "2018-01-31")] <- "Jan 30-31"
 
@@ -129,7 +212,10 @@ temp_morning <- temp_morning %>%
 # reorder the data so the facets with the lowest temperatures
 # come first
 temp_morning <- mutate(temp_morning,
-                       station_code = reorder(station_code, value, min, na.rm = TRUE))
+                       station_code = reorder(station_code, 
+                                              value, 
+                                              min, 
+                                              na.rm = TRUE))
 ```
 
 ### Plot
@@ -139,16 +225,15 @@ ggplot(temp_morning, aes(hour, value, group = day, color = color)) +
   geom_line(alpha = .8, size = .7) +
   facet_wrap(~ station_code) +
   scale_colour_manual("day", values = c("#542788", "#fdb863")) +
-  scale_x_discrete(breaks = c(1, 6, 11), labels = c("1:00 AM", "6:00 AM", "11:00 AM")) +
+  scale_x_discrete(breaks = c(5, 8, 11), 
+                   labels = c("5:00 AM", "8:00 AM", "11:00 AM")) +
   xlab("hour") +
+  scale_y_continuous(breaks = c(0, 10, 20), minor_breaks = c(5, 15)) +
   ylab(expression(paste("temperature [",degree,"C]"))) +
   ggtitle("Daily morning temperatures in Mexico City during January 2018, by station",
-          subtitle = "Source: SEDEMA") +
+          subtitle = "Data only includes school days during January\nSource: SEDEMA") +
   theme_bw() + 
   theme(axis.text.x = element_text(angle = 80, hjust = 1),
-        legend.position="bottom")
-
-
-
+        legend.position="top")
 ```
 

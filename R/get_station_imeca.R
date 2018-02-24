@@ -13,8 +13,8 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #'  \item{"O3"}{ - Ozono}
 #'  \item{"PM10"}{ - Particulas menores a 10 micrometros}
 #' }
-#' @param date The date for which to download data in YYYY-MM-DD format (earliest
-#' possible value is 2009-01-01).
+#' @param date The date for which to download data in YYYY-MM-DD format
+#' (the earliest possible date is 2009-01-01).
 #'
 #' @return A data.frame with pollution data measured in IMECAS, by station.
 #' @export

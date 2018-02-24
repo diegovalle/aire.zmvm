@@ -16,8 +16,8 @@ get_station_imeca(pollutant, date)
  \item{"PM10"}{ - Particulas menores a 10 micrometros}
 }}
 
-\item{date}{The date for which to download data in YYYY-MM-DD format (earliest
-possible value is 2009-01-01).}
+\item{date}{The date for which to download data in YYYY-MM-DD format
+(the earliest possible date is 2009-01-01).}
 }
 \value{
 A data.frame with pollution data measured in IMECAS, by station.
