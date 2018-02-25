@@ -1,7 +1,7 @@
 Mexico City Pollution Data
 ================
 Diego Valle-Jones
-February 15, 2018
+February 24, 2018
 
 -   [What does it do?](#what-does-it-do)
 -   [Installation](#installation)
@@ -47,9 +47,10 @@ Quick Example
 
 The package consists mainly of four functions:
 
--   `get_station_data` to download data for each of the pollution (and wind and temperature) measuring stations.
--   `get_zone_data` to download data for each of the 5 geographic zones of Mexico City
--   `get_latest_data` to download the latest values for each of the pollution measuring stations.
+-   `get_station_data` download data for each of the pollution (and wind and temperature) measuring stations in the original units.
+-   `get_station_imeca` download data for each of the pollution stations in IMECAs
+-   `get_zone_imeca` download data for each of the 5 geographic zones of Mexico City
+-   `get_latest_imeca` download the latest values in IMECAs for each of the pollution measuring stations.
 -   `idw360` Inverse distance weighting modified to work with degrees
 
 ``` r
@@ -90,8 +91,8 @@ o3_max <- o3 %>%
 # and the dates during which they were valid
 # source: http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/pcaa-modificaciones.pdf
 contingencia <- data.frame(ppb = c(216, 210, 205, 199, 185, 155, 155),
-  start = c(2009, 2009.4973, 2010.4973, 2011.5795,  2012.6052,  2016.291, 2016.4986),
-  end = c(2009.4973, 2010.4945, 2011.4945, 2012.6025,   2016.2883, 2016.4959, Inf))
+  start = c(2009, 2009.4973, 2010.4973, 2011.5795, 2012.6052, 2016.291, 2016.4986),
+  end = c(2009.4973, 2010.4945, 2011.4945, 2012.6025, 2016.2883, 2016.4959, Inf))
 max_daily_df <- tsdf(ts(o3_max$max, start = c(2009,1), frequency = 365.25))
 ggplot(max_daily_df,
        aes(x = x, y = y)) + 

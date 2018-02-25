@@ -2,10 +2,12 @@
 
 export(convert_to_imeca)
 export(get_latest_data)
+export(get_latest_imeca)
 export(get_station_data)
 export(get_station_imeca)
 export(get_station_single_month)
 export(get_zone_data)
+export(get_zone_imeca)
 export(idw360)
 importFrom(dplyr,"%>%")
 importFrom(dplyr,filter)

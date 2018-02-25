@@ -97,19 +97,19 @@ test_that("station pollution data matches api", {
 test_that("zone pollution data matches api", {
   skip_on_cran()
 
-  df_max_o3 <- suppressWarnings(get_zone_data("MAXIMOS", "O3", c("NO", "NE", "CE"),
+  df_max_o3 <- suppressWarnings(get_zone_imeca("MAXIMOS", "O3", c("NO", "NE", "CE"),
                           "2015-12-25", "2016-01-01"))
-  df_max_tz <- suppressWarnings(get_zone_data("MAXIMOS", c("O3", "PM10"), c("TZ"),
+  df_max_tz <- suppressWarnings(get_zone_imeca("MAXIMOS", c("O3", "PM10"), c("TZ"),
                           "2015-12-31", "2016-01-06"))
-  df_horarios <- suppressWarnings(get_zone_data("HORARIOS", c("O3", "PM10"),
+  df_horarios <- suppressWarnings(get_zone_imeca("HORARIOS", c("O3", "PM10"),
                                                 c("NO", "NE", "CE"),
                                "2015-12-25", "2016-01-01"))
 
-  expect_warning(get_zone_data("MAXIMOS", "O3", c("NO", "NE", "CE"),
+  expect_warning(get_zone_imeca("MAXIMOS", "O3", c("NO", "NE", "CE"),
                                "2015-12-25", "2016-01-01"))
-  expect_warning(get_zone_data("MAXIMOS", "SO2", c("NO", "NE", "CE"),
+  expect_warning(get_zone_imeca("MAXIMOS", "SO2", c("NO", "NE", "CE"),
                                "2017-02-25", "2017-05-01"))
-  expect_silent(get_zone_data("MAXIMOS", "O3", c("NO", "NE", "CE"),
+  expect_silent(get_zone_imeca("MAXIMOS", "O3", c("NO", "NE", "CE"),
                               "2015-12-25", "2016-01-01",
                               showWarnings = FALSE))
   expect_equal(subset(df_max_o3, zone == "NO" &
@@ -145,7 +145,7 @@ test_that("zone pollution data matches api", {
 test_that("latest data", {
   skip_on_cran()
 
-  df <- get_latest_data()
+  df <- get_latest_imeca()
   expect_gt(nrow(df), 0)
   expect_type(df$value, "integer")
   expect_type(df$datetime, "character")
