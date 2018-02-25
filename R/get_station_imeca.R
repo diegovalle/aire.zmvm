@@ -34,7 +34,7 @@ get_station_imeca <- function(pollutant, date) {
     stop("start_date should be after 2008-01-01")
   stopifnot(length(base::setdiff(pollutant,
                                  c("O3", "NO2", "SO2", "CO", "PM10"))) == 0)
-
+  
   url <- "http://www.aire.cdmx.gob.mx/default.php?opc=%27aqBjnmc=%27"
   fd <- list(
     fecha	= date,
@@ -47,12 +47,12 @@ get_station_imeca <- function(pollutant, date) {
     aceptar	= "Submit",
     consulta	= 1
   )
-
+  
   result <- httr::POST(url,
                        body = fd,
                        encode = "form")
   poll_table <- xml2::read_html(content(result, "text"))
-
+  
   df <- rvest::html_table(rvest::html_nodes(poll_table, "table")[[1]],
                           header = TRUE,
                           fill = TRUE)

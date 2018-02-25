@@ -32,9 +32,9 @@
 #' @importFrom httr GET
 #'
 #' @examples
-#' df <- get_latest_data()
+#' df <- get_latest_imeca()
 #' head(df)
-get_latest_data <- function() {
+get_latest_imeca <- function() {
   url <- "http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php"
 
   poll_table <- read_html(httr::GET(url,  httr::timeout(120)))
@@ -60,3 +60,6 @@ get_latest_data <- function() {
 
   mxc[!is.na(mxc$station_code), ]
 }
+
+
+
