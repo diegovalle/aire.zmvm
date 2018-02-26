@@ -16,14 +16,20 @@
   time_div <- str_replace_all(time_div, month_names)
   if (str_detect(time_div, "24:00"))
     warning("At midnight the website sometimes get the time wrong and reports a date 24 hours into the future")
-  time_div <- strptime(time_div, "%H:%M h%d de %B de %Y", tz = "America/Mexico_City")
+  time_div <- strptime(time_div, "%H:%M h%d de %B de %Y",
+                       tz = "America/Mexico_City")
   as.character(strftime(time_div, "%Y-%m-%d %H:%M:%S"))
 }
 
 #' Get the latest pollution values for each station
 #'
-#' @return A data.frame with pollution values in IMECAs, the time corresponds to the
-#' America/Mexico_City timezone
+#' Note that in
+#' 2015 it was determined that the stations with codes ACO, AJU, INN, MON
+#' and MPA would no longer be taken into consideration when computing the
+#' pollution index and are not included in the data returned by this function
+#'
+#' @return A data.frame with pollution values in IMECAs, the time corresponds
+#' to the America/Mexico_City timezone
 #' @export
 #' @importFrom utils URLdecode
 #' @importFrom rvest html_nodes html_text
@@ -40,23 +46,30 @@ get_latest_imeca <- function() {
   poll_table <- read_html(httr::GET(url,  httr::timeout(120)))
   time <- .convert_time(html_text(html_nodes(poll_table, "div#textohora")))
 
-  df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE, fill = TRUE)
+  df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE,
+                   fill = TRUE)
   names(df) <- c("station_code", "municipio", "quality", "pollutant", "value")
   df <- df[2:nrow(df), ]
-  df$value <- lapply(df$value, function(x) URLdecode(str_match(URLdecode(x), "'(\\d+)'")[[2]]))
+  df$value <- lapply(df$value,
+                     function(x) URLdecode(str_match(URLdecode(x),
+                                                     "'(\\d+)'")[[2]]))
 
-  edomex <- html_table(html_nodes(poll_table, "table")[[2]], header = TRUE, fill = TRUE)
-  names(edomex) <- c("station_code", "municipio", "quality", "pollutant", "value")
+  edomex <- html_table(html_nodes(poll_table, "table")[[2]], header = TRUE,
+                       fill = TRUE)
+  names(edomex) <- c("station_code", "municipio",
+                     "quality", "pollutant", "value")
   edomex <- edomex[2:nrow(edomex), ]
   edomex$value <- lapply(edomex$value,
-                         function(x) URLdecode(str_match(URLdecode(x), "'(\\d+)'")[[2]]))
+                         function(x) URLdecode(str_match(URLdecode(x),
+                                                         "'(\\d+)'")[[2]]))
 
   mxc <- rbind(df, edomex)
   mxc$value[mxc$value == "NA"] <- NA
   mxc$value <- as.integer(mxc$value)
   mxc$datetime <- time
   mxc$unit <- "IMECA"
-  mxc <- mxc[, c("station_code", "municipio", "quality", "pollutant", "unit", "value", "datetime")]
+  mxc <- mxc[, c("station_code", "municipio", "quality", "pollutant",
+                 "unit", "value", "datetime")]
 
   mxc[!is.na(mxc$station_code), ]
 }

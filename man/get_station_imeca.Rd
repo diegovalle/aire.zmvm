@@ -23,7 +23,11 @@ get_station_imeca(pollutant, date)
 A data.frame with pollution data measured in IMECAS, by station.
 }
 \description{
-Download pollution data by station in IMECAS
+Note that in
+2015 it was determined that the stations with codes ACO, AJU, INN, MON
+and MPA would no longer be taken into consideration when computing the
+pollution index and at some point in the future would no longer be inclued
+in the data returned by this function
 }
 \examples{
 ## There was an ozone pollution emergency on May 15, 2017

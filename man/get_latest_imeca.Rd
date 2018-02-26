@@ -7,11 +7,14 @@
 get_latest_imeca()
 }
 \value{
-A data.frame with pollution values in IMECAs, the time corresponds to the
-America/Mexico_City timezone
+A data.frame with pollution values in IMECAs, the time corresponds
+to the America/Mexico_City timezone
 }
 \description{
-Get the latest pollution values for each station
+Note that in
+2015 it was determined that the stations with codes ACO, AJU, INN, MON
+and MPA would no longer be taken into consideration when computing the
+pollution index and are not included in the data returned by this function
 }
 \examples{
 df <- get_latest_imeca()

@@ -31,7 +31,7 @@ get_zone_imeca(criterion, pollutant, zone, start_date, end_date,
  \item{"CE"}{ - Centro}
  \item{"SO"}{ - Suroeste}
  \item{"SE"}{ - Sureste}
- \item{"TZ"}{ - All the zones}
+ \item{"TZ"}{ - All zones}
 }}
 
 \item{start_date}{The start date in YYYY-MM-DD format (earliest possible value is 2008-01-01).}
@@ -44,27 +44,38 @@ get_zone_imeca(criterion, pollutant, zone, start_date, end_date,
 A data.frame with pollution data measured in IMECAS, by geographic zone.
 }
 \description{
-retrieve pollution data in IMECAs by geographic zone from the air quality server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
+retrieve pollution data in IMECAs by geographic zone from the air quality
+server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
 }
 \details{
-The geographic
-zones were defined in the Gaceta Oficial CDMX, No 106, 1 de julio 2016.
+Note that the which stations belong to which zones may change over time, also
+the way the IMECA is computed can change so that comparison of
+pollution values across time may not be valid. In
+2015 it was determined that the stations with codes ACO, AJU, INN, MON
+and MPA would no longer be taken into consideration when computing the
+pollution index and at some point in the future would be no longer
+included in the data by zone.
 
-Zona Centro: Benito Juárez,
+The different geographic zones were defined in the Gaceta Oficial
+CDMX, No 106, 1 de julio 2016.
+
+\strong{Zona Centro}: Benito Juárez,
 Cuauhtémoc, Iztacalco and Venustiano Carranza.
 
-Zona Noreste : Gustavo A. Madero, Coacalco de Berriozábal, Chicoloapan, Chimalhuacán,
+\strong{Zona Noreste}: Gustavo A. Madero, Coacalco de Berriozábal,
+Chicoloapan, Chimalhuacán,
 Ecatepec de Morelos, Ixtapaluca, La Paz,
 Nezahualcóyotl and Tecámac.
 
-Zona Noroeste: Azcapotzalco,
-Miguel Hidalgo, Atizapán de Zaragoza, Cuautitlán, Cuautitlán Izcalli, Naucalpan de Juárez, Nicolás
+\strong{Zona Noroeste}: Azcapotzalco,
+Miguel Hidalgo, Atizapán de Zaragoza, Cuautitlán, Cuautitlán Izcalli,
+Naucalpan de Juárez, Nicolás
 Romero, Tlalnepantla de Baz and Tultitlán.
 
-Zona Sureste: Iztapalapa, Milpa
+\strong{Zona Sureste}: Iztapalapa, Milpa
 Alta, Tláhuac, Xochimilco, Chalco and Valle de Chalco.
 
-Zona Suroeste: Álvaro Obregón,
+\strong{Zona Suroeste}: Álvaro Obregón,
 Coyoacán, Cuajimalpa, Magdalena Contreras, Tlalpan and Huixquilucan.
 }
 \examples{

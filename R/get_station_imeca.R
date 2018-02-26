@@ -5,6 +5,12 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 
 #' Download pollution data by station in IMECAS
 #'
+#' Note that in
+#' 2015 it was determined that the stations with codes ACO, AJU, INN, MON
+#' and MPA would no longer be taken into consideration when computing the
+#' pollution index and at some point in the future would no longer be inclued
+#' in the data returned by this function
+#'
 #' @param pollutant The type of pollutant to download
 #' \itemize{
 #'  \item{"SO2"}{ - Dioxido de azufre}
@@ -20,7 +26,7 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #' @export
 #' @importFrom rvest html_nodes html_table
 #' @importFrom xml2 read_html
-#' @importFrom tidyr gather separate_
+#' @importFrom tidyr gather
 #'
 #' @examples
 #' ## There was an ozone pollution emergency on May 15, 2017
@@ -31,10 +37,10 @@ get_station_imeca <- function(pollutant, date) {
   if(!is.Date(date))
     stop("Date should be a date in YYYY-MM-DD format")
   if (date < "2009-01-01")
-    stop("start_date should be after 2008-01-01")
+    stop("start_date should be after 2009-01-01")
   stopifnot(length(base::setdiff(pollutant,
                                  c("O3", "NO2", "SO2", "CO", "PM10"))) == 0)
-  
+
   url <- "http://www.aire.cdmx.gob.mx/default.php?opc=%27aqBjnmc=%27"
   fd <- list(
     fecha	= date,
@@ -47,12 +53,12 @@ get_station_imeca <- function(pollutant, date) {
     aceptar	= "Submit",
     consulta	= 1
   )
-  
+
   result <- httr::POST(url,
                        body = fd,
                        encode = "form")
   poll_table <- xml2::read_html(content(result, "text"))
-  
+
   df <- rvest::html_table(rvest::html_nodes(poll_table, "table")[[1]],
                           header = TRUE,
                           fill = TRUE)
