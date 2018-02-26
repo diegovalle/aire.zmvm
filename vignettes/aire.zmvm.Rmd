@@ -22,23 +22,35 @@ knitr::opts_chunk$set(fig.width = 7,
 )
 ```
 
-This document introduces you to tools for downloading data for each of the pollution, wind and temperature measuring stations or the maximum pollutant values by geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City).
+This document introduces you to tools for downloading data for each of the pollution, wind and temperature measuring stations in the Zona Metropolitana del Valle de México (greater Mexico City).
 
 ## Core Functions
 
 The basic set of functions provided by the package:
 
-* ```get_station_imeca``` download data for each station in IMECAs
-* ```get_station_data``` and ```get_station_single_month``` to download pollution data for each of the pollution (and wind and temperature) measuring stations in the original units.
-* ```get_zone_data``` to download data for each of the 5 geographic zones of Mexico City 
-* ```get_latest_data``` to download the latest values for each of the pollution measuring stations.
-* ```idw360``` Inverse distance weighting modified to work with degrees
+* ```get_station_imeca``` download pollution values for each station in IMECAs
+* ```get_station_data``` and ```get_station_single_month``` download pollution, wind and temperature data for each of the measuring stations in the original units (ppb, µg/m³, etc).
+* ```get_zone_imeca``` download pollution data in IMECAs for each of the 5 geographic zones of Mexico City 
+* ```get_latest_imeca``` download the latest pollution hourly maximums for each of the measuring stations.
+* ```idw360``` inverse distance weighting modified to work with degrees, useful for wind data
+
+Because of limitations with the website [http://www.aire.cdmx.gob.mx/](http://www.aire.cdmx.gob.mx/default.php)
+
+| function                  | date range     | Units    | Wind / Temperature / RH | Earliest Date | Pollutants  | Includes All Stations |
+|---------------------------|----------------|----------|------------------|------------|------------|-------|
+| get_station_imeca         | 1 day          | IMECA    | No               | 2009-01-01 | SO2, CO, NO2, O3, PM10 | No |
+| get_station_data          | years          | Original | Yes              | 1986       | SO2, CO, NO2, O3, PM10, PM25,  WSP, WDR, TMP, RH | Yes |
+| get_station_single_month  | 1 month        | Original | Yes              | 1986-01    | SO2, CO, NO2, O3, PM10, PM25,  WSP, WDR, TMP, RH | Yes |
+| get_zone_imeca            | 1 or more days | IMECA    | No               | 2008-01-01 | SO2, CO, NO2, O3, PM10 | Only zones |
+| get_latest_imeca          | 1 hour         | IMECA    | NO               | Latest only| Max of SO2, CO, NO2, O3, PM10 | No |
+
 
 ## Map of Pollution Levels
 
-Pollution is monitored by a series of stations located throughout the Mexico City Metro Area. Since there are different pollutants to monitor, each measured in different units, and each with different specified averaging periods, a common scale called IMECA was created to make them comparable. Currently, an hourly average of 151 IMECA points or 155 ppb of ozone are needed to declare a phase I smog alert.
+Pollution is monitored by a series of stations located throughout the Mexico City Metro Area. Since there are different pollutants to monitor, each measured in different units, and each with different specified averaging periods, a common scale called [IMECA](https://en.wikipedia.org/wiki/%C3%8Dndice_Metropolitano_de_la_Calidad_del_Aire) was created to make them comparable. If 
+pollutant reach an hourly average of 151 IMECA points or the Mexico City government can declare a phase I smog alert and order cars off the streets and place limits on polluting industries.
 
-First we load the packages we need to run this vignette and download the pollution data:
+On May 20, 2017 a phase I smog alert was declared. We'll make a plot of pollution levels during the alert. First we load the packages we need to run this vignette and download the pollution data:
 
 ```{r, message = FALSE}
 library("aire.zmvm")
@@ -65,23 +77,26 @@ knitr::kable(head(ldf[[1]], 10))
 ```
 
 You may have noticed that the code comments mention the local time as being 1 hour ahead
-of time returned by the function in the data.frame above. That's because the data returned by all package functions comes in a format that is not affected by daylight savings time. To covert to local Mexico City time:
+of time returned by the function in the data.frame above. That's because the data returned by this package functions comes in a format that is not affected by daylight savings time. To convert to local Mexico City time we can use the following function:
 
 ```{r}
 format(as.POSIXct("2017-05-20 17:00", tz = "UTC+6"), 
-       tz="America/Mexico_City", usetz=TRUE)
+       tz="America/Mexico_City", usetz = TRUE)
 ```
 
-We will join this data with the ```stations``` data.frame that comes with the package and includes the latitude and longitude of all pollution measurnin stations. Then we will use the package ggmap to plot the locations of the stations on top of a map.
+The package also includes a ```stations``` data.frame that includes the latitude and longitude of all pollution measuring stations. 
 
 
 ```{r, echo=FALSE, results='asis'}
 knitr::kable(head(stations, 5))
 ```
 
+We will use this data to create a grid covering Mexico City and extrapolate the values by inverse distance weighting from the locations of the pollution measuring stations to each cell in the
+grid. 
+
 ```{r}
 
-get_grid <- function(station_vec, pixels = 20) {
+create_grid <- function(station_vec, pixels = 20) {
   df <- stations[stations$station_code %in% station_vec,]
   geog <- df[,c("lat", "lon")]
   coordinates(geog) <- ~lon+lat
@@ -102,8 +117,9 @@ get_grid <- function(station_vec, pixels = 20) {
 # that weren't reporting data
 reporting_stations <- unique(na.omit(do.call(rbind, ldf))$station_code)
 # 50x50 grid covering Mexico City
-grid <- get_grid(reporting_stations, 50)
-plot(grid)
+grid <- create_grid(reporting_stations, 50)
+
+plot(grid, main = "Grid covering Mexico City and Locations of\nPollution Measuring Stations (red)")
 # Plot the locations of the stations
 geog <- stations[stations$station_code %in% reporting_stations, ][ ,c("lat", 
                                                                       "lon")]
@@ -111,7 +127,10 @@ coordinates(geog) <- ~lon+lat
 points(geog, pch = 22, col = "lightgray", bg = "red", cex = 1.2)
 ```
 
-```{r, message=FALSE, warning=FALSE}
+Interaction, pick the highest
+Then we will use the package ggmap to plot the locations of the stations on top of a map.
+
+```{r, message=FALSE, warning=FALSE, fig.cap = "Map of Pollution in Mexico City"}
 heatmap <- function(df, grid){
   if(nrow(df) == 0){
     return(data.frame(var1.pred = NA, var1.var = NA, lon = NA, lat = NA))
@@ -166,7 +185,7 @@ qmplot(x, y, data = data.frame(grid), geom = "blank",
 
 ## Cold Weather School Closings
 
-Education authorities decided to suspend clases in public and private schools in some parts of Mexico City on Wednesday January 31, 2018, because of low temperatures. We will download and graph the daily morning hourly temperature data for this month and compare the days of January 30 and 31 with the rest of the month.
+Education authorities decided to suspend classes in public and private schools in some parts of Mexico City on Wednesday January 31, 2018, because of low temperatures. We will download and graph the daily morning hourly temperature data for this month and compare the days of January 30 and 31 with the rest of the month.
 
 ### Data Aquisition
 
@@ -186,7 +205,7 @@ knitr::kable(head(jan, 10))
 
 ### Data Cleaning
 
-After aquiring the data all that's left to do is to clean the data.
+After acquiring the data all that's left to do is to clean the data.
 
 ```{r}
 
@@ -220,7 +239,7 @@ temp_morning <- mutate(temp_morning,
 
 ### Plot
 
-```{r, fig.show='hold',fig.cap = "January Temperatures in 2018, by day", message=FALSE}
+```{r, fig.show='hold', fig.cap = "January Temperatures in 2018, by day", message=FALSE}
 ggplot(temp_morning, aes(hour, value, group = day, color = color)) +
   geom_line(alpha = .8, size = .7) +
   facet_wrap(~ station_code) +
