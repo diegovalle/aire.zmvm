@@ -46,6 +46,8 @@ recode_pollutant <- function(pollutant) {
   if (upollutant == "PM25")
     upollutant <- "PM2.5"
   base_url <- "http://148.243.232.112:8080/opendata/anuales_horarios_gz/contaminantes_"
+  if (upollutant %in% c("WSP", "WDR", "TMP", "RH"))
+    base_url <- "http://148.243.232.112:8080/opendata/anuales_horarios_gz/meteorolog%C3%ADa_"
   df <- read_csv(str_c(base_url, year, ".csv.gz"),
                  skip = 10, progress = FALSE, col_types = list(
                    date = col_character(),
@@ -77,7 +79,14 @@ recode_pollutant <- function(pollutant) {
   df$date <- as.Date(df$date)
 
   df$unit <- str_replace_all(as.character(df$unit),
-                             c("15" = "ppm", "1" = "ppb", "2" = "\u00B5g/m\u00B3"))
+                             c("15" = "ppm",
+                               "1" = "ppb",
+                               "2" = "\u00B5g/m\u00B3",
+                               "3" = "m/s",
+                               "4" = "\u00B0",
+                               "5" = "\u00B0C",
+                               "6" = "%"
+                                 ))
   df$pollutant <- recode_pollutant(upollutant)
 
   df <- df[, c("date", "hour", "station_code", "pollutant", "unit", "value")]
@@ -179,7 +188,7 @@ download_horario_by_month <- function(pollutant, year){
 #' @param pollutant type of pollutant
 #' @param year year to download
 #'
-#' @importFrom dplyr %>% group_by_ summarise_ ungroup
+#' @importFrom dplyr %>% group_by summarise ungroup
 #'
 .download_data <- function(criterion, pollutant, year) {
   year_no_data <- 2005
@@ -195,20 +204,20 @@ download_horario_by_month <- function(pollutant, year){
       .download_current_station_data(criterion, pollutant, year)
     } else
       .download_old_station_data(pollutant, year) %>%
-      group_by_("date", "station_code", "pollutant", "unit") %>%
-      summarise_(value = "ifelse(all(is.na(value)),
+      group_by(date, station_code, pollutant, unit) %>%
+      summarise(value = ifelse(all(is.na(value)),
                                NA,
-                               base::max(value, na.rm = TRUE))") %>%
+                               base::max(value, na.rm = TRUE))) %>%
       ungroup()
   } else if (criterion == "MINIMOS") {
     if (year >= year_no_data) {
       .download_current_station_data(criterion, pollutant, year)
     } else
       .download_old_station_data(pollutant, year) %>%
-      group_by_("date", "station_code", "pollutant", "unit") %>%
-      summarise_(value = "ifelse(all(is.na(value)),
+      group_by(date, station_code, pollutant, unit) %>%
+      summarise(value = ifelse(all(is.na(value)),
                                NA,
-                               base::min(value, na.rm = TRUE))") %>%
+                               base::min(value, na.rm = TRUE))) %>%
       ungroup()
   }
 }
@@ -249,7 +258,6 @@ download_horario_by_month <- function(pollutant, year){
 #' GMT+6 timezone
 #'
 #' @export
-#' @importFrom tidyr gather_
 #' @importFrom dplyr progress_estimated
 #'
 #' @examples
@@ -271,8 +279,8 @@ get_station_data <- function(criterion, pollutant, year, progress = interactive(
   stopifnot(pollutant %in% c("so2", "co", "nox", "no2",
                              "no", "o3", "pm10", "pm25",
                              "wsp", "wdr", "tmp", "rh"))
-  if (all(pollutant %in% c("wsp", "wdr", "tmp", "rh") & year < year_no_data))
-    stop("WSP, WDR, TMP or RH are only available after 2005. However you can visit <http://www.aire.cdmx.gob.mx/default.php?opc=%27aKBhnmI=%27&opcion=Zw==> to download older data")
+  #if (all(pollutant %in% c("wsp", "wdr", "tmp", "rh") & year < year_no_data))
+  #  stop("WSP, WDR, TMP or RH are only available after 2005. However you can visit <http://www.aire.cdmx.gob.mx/default.php?opc=%27aKBhnmI=%27&opcion=Zw==> to download older data")
   if (min(year) < 1986)
     stop("Data is only available from 1986 onwards")
   if (!is.null(progress))
