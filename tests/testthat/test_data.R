@@ -50,6 +50,11 @@ test_that("station pollution data matches api", {
   df_horarios_2010 <- get_station_data("HORARIOS", "PM10", 2010)
   df_horarios_2016 <- get_station_data("HORARIOS", "O3", 2016)
 
+
+  expect_equal(dplyr::filter(get_station_data("HORARIOS", "RH", 2000),
+                date == "2000-01-01" & hour == 3 &
+                  station_code == "XAL")$value, 56)
+
   # Check that PM25 is correctly coded without a '.'
   expect_true(unique(get_station_data("MAXIMOS", "PM25", 2004:2005)$pollutant) == "PM25")
 
