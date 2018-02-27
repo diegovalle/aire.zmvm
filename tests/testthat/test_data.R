@@ -51,6 +51,8 @@ test_that("station pollution data matches api", {
   df_horarios_2016 <- get_station_data("HORARIOS", "O3", 2016)
 
 
+
+  expect_warning(get_station_data("HORARIOS", "PM25", 1986))
   expect_equal(dplyr::filter(get_station_data("HORARIOS", "RH", 2000),
                 date == "2000-01-01" & hour == 3 &
                   station_code == "XAL")$value, 56)
@@ -145,6 +147,13 @@ test_that("zone pollution data matches api", {
                c(5))
   expect_equal(unique(df_horarios$zone), c("NO", "NE", "CE"))
   expect_equal(unique(df_horarios$pollutant), c("O3", "PM10"))
+  # detect date errors
+  expect_error(get_zone_imeca("MAXIMOS", "O3", "TZ",
+                              "error_date", "error_date"))
+  # test that deprecated function shows warning
+  expect_warning(get_zone_data("MAXIMOS", "O3", "NO",
+                                               "2015-12-31", "2015-12-31",
+                                               showWarnings = FALSE))
 })
 
 test_that("latest data", {
@@ -155,4 +164,6 @@ test_that("latest data", {
   expect_type(df$value, "integer")
   expect_type(df$datetime, "character")
   expect_false(all(is.na(df$datetime)))
+
+  expect_warning(get_latest_data())
 })
