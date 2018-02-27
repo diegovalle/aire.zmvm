@@ -77,11 +77,12 @@ knitr::kable(head(ldf[[1]], 10))
 ```
 
 You may have noticed that the code comments mention the local time as being 1 hour ahead
-of the time returned by the function. That's because the hour returned by the `get_station_imeca` function comes in a format that is not affected by daylight savings time (UTC+6). To convert to local Mexico City time we can use the following function:
+of the data returned by the function. That's because the hourly data returned by the `get_station_imeca` function comes in a format that is not affected by daylight savings time, i.e. 6 hours behind UTC (*Etc/GMT+6*). In many cases you'll want to convert the time to the local timezone of *America/Mexico_City*, for example, to analyze pollution levels at peak conmuting times. You can use the following function to do it:
 
 ```{r}
-format(as.POSIXct("2017-05-20 17:00", tz = "UTC+6"), 
-       tz="America/Mexico_City", usetz = TRUE)
+format(as.POSIXct("2017-05-20 17:00", tz = "Etc/GMT+6"), 
+       tz = "America/Mexico_City", 
+       usetz = TRUE)
 ```
 
 The package also includes a ```stations``` data.frame that includes the latitude and longitude of all pollution measuring stations. 
@@ -174,7 +175,7 @@ qmplot(x, y, data = data.frame(grid), geom = "blank",
   geom_point(data = stations[stations$station_code %in% reporting_stations, ],
              aes(lon, lat), shape = 22, size = 1.6) +
   ggtitle(paste0("Pollution in Mexico City during the pollution",
-                 " emergency of May-20-17"))
+                 " emergency of May 20, 2017"))
 
 ```
 
