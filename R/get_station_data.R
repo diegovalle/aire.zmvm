@@ -279,17 +279,10 @@ get_station_data <- function(criterion, pollutant, year, progress = interactive(
   stopifnot(pollutant %in% c("so2", "co", "nox", "no2",
                              "no", "o3", "pm10", "pm25",
                              "wsp", "wdr", "tmp", "rh"))
-  #if (all(pollutant %in% c("wsp", "wdr", "tmp", "rh") & year < year_no_data))
-  #  stop("WSP, WDR, TMP or RH are only available after 2005. However you can visit <http://www.aire.cdmx.gob.mx/default.php?opc=%27aKBhnmI=%27&opcion=Zw==> to download older data")
   if (min(year) < 1986)
     stop("Data is only available from 1986 onwards")
   if (!is.null(progress))
     p <- progress_estimated(length(year))
-  # ll <- mapply(function(criterion, pollutant, year) {pr <<- p;p$tick(); .download_data},
-  #              criterion = rep(criterion, length(year)),
-  #              pollutant = rep(pollutant, length(year)),
-  #              year = year,
-  #              SIMPLIFY = FALSE)
   df <- data.frame()
   for (i in year){
     df <- rbind(df,  .download_data(criterion, pollutant, i))
