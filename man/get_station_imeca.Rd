@@ -31,5 +31,6 @@ in the data returned by this function
 }
 \examples{
 ## There was an ozone pollution emergency on May 15, 2017
-get_station_imeca("O3", "2017-05-15")
+df <- get_station_imeca("O3", "2017-05-15")
+head(df[order(-df$value), ])
 }

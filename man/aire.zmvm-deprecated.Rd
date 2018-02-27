@@ -21,7 +21,7 @@ The functions listed below are deprecated and will be defunct in
 
 \tabular{rl}{
   \code{get_zone_data} \tab now a synonym for \code{\link{get_zone_imeca}}\cr
-  \code{get_zone_data} \tab now a synonym for \code{\link{get_zone_imeca}}\cr
+  \code{get_latest_data} \tab now a synonym for \code{\link{get_latest_imeca}}\cr
 }
 }
 
