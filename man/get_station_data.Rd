@@ -35,8 +35,8 @@ get_station_data(criterion, pollutant, year, progress = interactive())
 \item{progress}{Whether to display a progress bar (TRUE or FALSE). By default it will only display in an interactive session.}
 }
 \value{
-a data.frame with pollution data, when downloading "HORARIOS" the hours correspond the
-GMT+6 timezone
+a data.frame with pollution data, when downloading "HORARIOS" the hours correspond to the
+UTC-6 timezone, with no daylight saving time
 }
 \description{
 retrieve pollution data by station in the original units from the air quality server at \url{

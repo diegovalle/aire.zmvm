@@ -28,8 +28,8 @@ get_station_single_month(pollutant, year, month)
 \item{month}{month number to download}
 }
 \value{
-a data.frame with pollution data, when downloading "HORARIOS" the hours correspond the
-GMT+6 timezone
+a data.frame with pollution data, when downloading "HORARIOS" the hours correspond to the
+UTC-6 timezone, with no daylight saving time
 }
 \description{
 retrieve hourly averages of pollution data in the original units by station from the air quality server at \url{

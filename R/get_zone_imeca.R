@@ -112,7 +112,8 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #' @param end_date The end date in YYYY-MM-DD format.
 #' @param showWarnings Show warnings about problems with the data
 #'
-#' @return A data.frame with pollution data measured in IMECAS, by geographic zone.
+#' @return A data.frame with pollution data measured in IMECAS, by geographic zone. The hours
+#' correspond to the UTC-6 timezone, with no daylight saving time
 #' @export
 #' @importFrom stringr str_c  str_replace_all
 #' @importFrom rvest html_nodes html_table
@@ -163,10 +164,10 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
   criterion <- tolower(criterion)
 
   # If pollutants are O3 or PM10 issue a warning that the way of calculating the index changed
-  if (length(base::intersect(pollutant, c("O3", "PM10", "TZ"))) > 0 && showWarnings)
+  if (length(base::intersect(pollutant, c("O3", "PM10"))) > 0 && showWarnings)
     warning("\n*******************\nStarting October 28, 2014 the IMECA values for O3 and PM10 are computed using NOM-020-SSA1-2014 and NOM-025-SSA1-2014\n*******************")
   if (start_date >= "2017-01-01" && showWarnings)
-    warning("\n*******************\nSometime in 2015-2017 a number of stations were dropped from some zones\n*******************")
+    warning("\n*******************\nSometime in 2015-2017 the stations ACO, AJU, INN, MON, and MPA were excluded from the index\n*******************")
   df <- .download_data_zone(criterion, pollutant, zone, start_date, end_date)
 
   names(df) <- df[1, ]

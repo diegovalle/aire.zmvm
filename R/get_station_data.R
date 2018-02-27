@@ -254,8 +254,8 @@ download_horario_by_month <- function(pollutant, year){
 #' @param year a numeric vector containing the years for which to download data (the earliest possible value is 1986)
 #' @param progress Whether to display a progress bar (TRUE or FALSE). By default it will only display in an interactive session.
 #'
-#' @return a data.frame with pollution data, when downloading "HORARIOS" the hours correspond the
-#' GMT+6 timezone
+#' @return a data.frame with pollution data, when downloading "HORARIOS" the hours correspond to the
+#' UTC-6 timezone, with no daylight saving time
 #'
 #' @export
 #' @importFrom dplyr progress_estimated
@@ -317,8 +317,8 @@ get_station_data <- function(criterion, pollutant, year, progress = interactive(
 #' @param year a numeric vector containing the years for which to download data (the earliest possible value is 1986)
 #' @param month month number to download
 #'
-#' @return a data.frame with pollution data, when downloading "HORARIOS" the hours correspond the
-#' GMT+6 timezone
+#' @return a data.frame with pollution data, when downloading "HORARIOS" the hours correspond to the
+#' UTC-6 timezone, with no daylight saving time
 #'
 #' @export
 #' @importFrom stringr str_pad
@@ -339,7 +339,7 @@ get_station_single_month <- function(pollutant, year, month) {
   if (length(year) > 1)
     stop("You can only download one year at a time")
   if (length(month) > 1)
-    stop("You can only download one year at a time")
+    stop("You can only download one month at a time")
   pollutant <- tolower(pollutant)
   stopifnot(pollutant %in% c("so2", "co", "nox", "no2",
                              "no", "o3", "pm10", "pm25",

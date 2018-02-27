@@ -41,7 +41,8 @@ get_zone_imeca(criterion, pollutant, zone, start_date, end_date,
 \item{showWarnings}{Show warnings about problems with the data}
 }
 \value{
-A data.frame with pollution data measured in IMECAS, by geographic zone.
+A data.frame with pollution data measured in IMECAS, by geographic zone. The hours
+correspond to the UTC-6 timezone, with no daylight saving time
 }
 \description{
 retrieve pollution data in IMECAs by geographic zone from the air quality
