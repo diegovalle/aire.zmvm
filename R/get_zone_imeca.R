@@ -1,3 +1,8 @@
+is.Date <- function(date, date.format = "%Y-%m-%d") {
+  tryCatch(!is.na(as.Date(date, date.format)),
+           error = function(e) {FALSE})
+}
+
 #' Title
 #'
 #' @param pollutant bla
@@ -39,33 +44,45 @@
                        encode = "form")
   poll_table <- xml2::read_html(content(result, "text"))
 
-  df <- rvest::html_table(rvest::html_nodes(poll_table, "table")[[1]], header = TRUE)
+  df <- rvest::html_table(rvest::html_nodes(poll_table, "table")[[1]],
+                          header = TRUE)
   df
 }
 
 
 #' Download pollution data by zone in IMECAs
 #'
-#' retrieve pollution data in IMECAs by geographic zone from the air quality server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
+#' retrieve pollution data in IMECAs by geographic zone from the air quality
+#' server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
 #'
-#' The geographic
-#' zones were defined in the Gaceta Oficial CDMX, No 106, 1 de julio 2016.
+#' Note that the which stations belong to which zones may change over time, also
+#' the way the IMECA is computed can change so that comparison of
+#' pollution values across time may not be valid. In
+#' 2015 it was determined that the stations with codes ACO, AJU, INN, MON
+#' and MPA would no longer be taken into consideration when computing the
+#' pollution index and at some point in the future would be no longer
+#' included in the data by zone.
 #'
-#' Zona Centro: Benito Juárez,
+#' The different geographic zones were defined in the Gaceta Oficial
+#' CDMX, No 106, 1 de julio 2016.
+#'
+#' \strong{Zona Centro}: Benito Juárez,
 #' Cuauhtémoc, Iztacalco and Venustiano Carranza.
 #'
-#' Zona Noreste : Gustavo A. Madero, Coacalco de Berriozábal, Chicoloapan, Chimalhuacán,
+#' \strong{Zona Noreste}: Gustavo A. Madero, Coacalco de Berriozábal,
+#' Chicoloapan, Chimalhuacán,
 #' Ecatepec de Morelos, Ixtapaluca, La Paz,
 #' Nezahualcóyotl and Tecámac.
 #'
-#' Zona Noroeste: Azcapotzalco,
-#' Miguel Hidalgo, Atizapán de Zaragoza, Cuautitlán, Cuautitlán Izcalli, Naucalpan de Juárez, Nicolás
+#' \strong{Zona Noroeste}: Azcapotzalco,
+#' Miguel Hidalgo, Atizapán de Zaragoza, Cuautitlán, Cuautitlán Izcalli,
+#' Naucalpan de Juárez, Nicolás
 #' Romero, Tlalnepantla de Baz and Tultitlán.
 #'
-#' Zona Sureste: Iztapalapa, Milpa
+#' \strong{Zona Sureste}: Iztapalapa, Milpa
 #' Alta, Tláhuac, Xochimilco, Chalco and Valle de Chalco.
 #'
-#' Zona Suroeste: Álvaro Obregón,
+#' \strong{Zona Suroeste}: Álvaro Obregón,
 #' Coyoacán, Cuajimalpa, Magdalena Contreras, Tlalpan and Huixquilucan.
 #'
 #' @param pollutant The type of pollutant to download
@@ -84,7 +101,7 @@
 #'  \item{"CE"}{ - Centro}
 #'  \item{"SO"}{ - Suroeste}
 #'  \item{"SE"}{ - Sureste}
-#'  \item{"TZ"}{ - All the zones}
+#'  \item{"TZ"}{ - All zones}
 #' }
 #' @param criterion The type of data to download
 #' \itemize{
@@ -124,15 +141,21 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
     stop("You need to specify a start date")
   if (missing(end_date))
     stop("You need to specify an end date (YYYY-MM-DD)")
+  if(!is.Date(end_date))
+    stop("end_ate should be a date in YYYY-MM-DD format")
   if (missing(start_date))
     stop("You need to specify a start date (YYYY-MM-DD)")
+  if(!is.Date(start_date))
+    stop("start_date should be a date in YYYY-MM-DD format")
   if (start_date < "2008-01-01")
     stop("start_date should be after 2008-01-01")
 
-  # standarize on uppercase since the station api expects upper but zone api expects lower
+  # standarize on uppercase since the station api expects upper, but
+  # zone api expects lower
   criterion <- toupper(criterion)
   stopifnot(length(base::setdiff(pollutant,
-                                 c("SO2", "CO", "NO2", "O3", "PM10", "TC"))) == 0)
+                                 c("SO2", "CO", "NO2",
+                                   "O3", "PM10", "TC"))) == 0)
   stopifnot(length(base::setdiff(zone,
                                  c("NO", "NE", "CE", "SO", "SE", "TZ"))) == 0)
   stopifnot(criterion %in% c("HORARIOS", "MAXIMOS"))

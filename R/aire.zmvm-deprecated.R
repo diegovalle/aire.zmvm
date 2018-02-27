@@ -7,12 +7,12 @@
 #' @name aire.zmvm-deprecated
 #' @keywords internal
 #' @param ... Parameters to be passed to the modern version of the function
-#' @export  get_latest_data get_zone_data
-#' @aliases  get_latest_data get_zone_data
+#' @export get_latest_data get_zone_data
+#' @aliases get_latest_data get_zone_data
 #' @section Details:
 #' \tabular{rl}{
 #'   \code{get_zone_data} \tab now a synonym for \code{\link{get_zone_imeca}}\cr
-#'   \code{get_zone_data} \tab now a synonym for \code{\link{get_zone_imeca}}\cr
+#'   \code{get_latest_data} \tab now a synonym for \code{\link{get_latest_imeca}}\cr
 #' }
 #'
 get_latest_data <- function(...) {
