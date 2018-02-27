@@ -129,7 +129,7 @@ points(geog, pch = 22, col = "lightgray", bg = "red", cex = 1.2)
 Interaction, pick the highest
 Then we will use the package ggmap to plot the locations of the stations on top of a map.
 
-```{r, message=FALSE, warning=FALSE, fig.cap = "Map of Pollution in Mexico City"}
+```{r}
 heatmap <- function(df, grid){
   if(nrow(df) == 0){
     return(data.frame(var1.pred = NA, var1.var = NA, lon = NA, lat = NA))
@@ -159,7 +159,11 @@ maxes <- apply(do.call(cbind, lapply(idw_tiles,
 idw_tiles_max <- data.frame(var1.pred = maxes, 
                        lat = idw_tiles[[1]]$lat, 
                        lon = idw_tiles[[1]]$lon)
+```
 
+### Plot
+
+```{r, message=FALSE, warning=FALSE, fig.cap = "Map of Pollution in Mexico City"}
 qmplot(x, y, data = data.frame(grid), geom = "blank", 
        maptype = "toner-lite", source = "stamen", zoom = 10)  +
   geom_tile(data = idw_tiles_max, aes(x = lon, y = lat, fill = var1.pred), 
@@ -174,13 +178,6 @@ qmplot(x, y, data = data.frame(grid), geom = "blank",
 
 ```
 
-
-
-
-```{r, message = FALSE, warning=FALSE}
-# last available hour of the last available day in February
-
-```
 
 ## Cold Weather School Closings
 
