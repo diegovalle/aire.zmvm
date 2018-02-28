@@ -23,7 +23,7 @@ get_station_imeca(pollutant, date, showWarnings = TRUE)
 }
 \value{
 A data.frame with pollution data measured in IMECAS, by station.
-The hours correspond to the UTC-6 timezone, with no daylight saving time
+The hours correspond to the \emph{Etc/GMT+6} timezone, with no daylight saving time
 }
 \description{
 Note that in
@@ -35,5 +35,10 @@ in the data returned by this function
 \examples{
 ## There was an ozone pollution emergency on May 15, 2017
 df_o3 <- get_station_imeca("O3", "2017-05-15", showWarnings = FALSE)
+
+## Convert to local Mexico City time
+df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date, " ", df_o3$hour, ":00"),
+                                    tz = "Etc/GMT+6"),
+                         tz = "America/Mexico_City")
 head(df_o3[order(-df_o3$value), ])
 }

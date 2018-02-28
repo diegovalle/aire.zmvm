@@ -36,7 +36,7 @@ get_station_data(criterion, pollutant, year, progress = interactive())
 }
 \value{
 a data.frame with pollution data, when downloading "HORARIOS" the hours correspond to the
-UTC-6 timezone, with no daylight saving time
+\emph{Etc/GMT+6} timezone, with no daylight saving time
 }
 \description{
 retrieve pollution data by station in the original units from the air quality server at \url{
@@ -46,12 +46,18 @@ are used
 }
 \examples{
 \dontrun{
-## Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
-## from 2015 to 2016
+## Download daily maximum PM10 data (particulate matter 10 micrometers or
+## less in diameter) from 2015 to 2016
 df <- get_station_data("MAXIMOS", "PM10", 2015:2016)
 head(df)
+
 ## Download ozone concentration hourly data for 2016
 df2 <- get_station_data("HORARIOS", "O3", 2016)
+
+## Convert to local Mexico City time
+df2$mxc_time <- format(as.POSIXct(paste0(df2$date, " ", df2$hour, ":00"),
+                                  tz = "Etc/GMT+6"),
+                       tz = "America/Mexico_City")
 head(df2)
 }
 }

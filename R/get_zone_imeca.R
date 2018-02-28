@@ -113,7 +113,7 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #' @param showWarnings Show warnings about problems with the data
 #'
 #' @return A data.frame with pollution data measured in IMECAS, by geographic zone. The hours
-#' correspond to the UTC-6 timezone, with no daylight saving time
+#' correspond to the \emph{Etc/GMT+6} timezone, with no daylight saving time
 #' @export
 #' @importFrom stringr str_c  str_replace_all
 #' @importFrom rvest html_nodes html_table
@@ -122,14 +122,28 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #'
 #' @examples
 #' ## There was a regional (NE) PM10 pollution emergency on Jan 6, 2017
-#' get_zone_imeca("MAXIMOS", "PM10", "NE", "2017-01-05", "2017-01-08", showWarnings = FALSE)
+#' get_zone_imeca("MAXIMOS", "PM10", "NE", "2017-01-05", "2017-01-08",
+#'                showWarnings = FALSE)
+#'
 #' ## There was an ozone pollution emergency on May 15, 2017
-#' get_zone_imeca("MAXIMOS", "O3", "TZ", "2017-05-15", "2017-05-15", showWarnings = FALSE)
+#' get_zone_imeca("MAXIMOS", "O3", "TZ", "2017-05-15", "2017-05-15",
+#'                showWarnings = FALSE)
+#'
 #' \dontrun{
-#' ## Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
-#' ## from 2015-01-01 to 2016-03-20 for all geographic zones
+#' ## Download daily maximum PM10 data (particulate matter 10 micrometers or
+#' ## less in diameter) from 2015-01-01 to 2016-03-20 for all geographic zones
 #' df <- get_zone_imeca("MAXIMOS", "PM10", "TZ", "2015-01-01", "2016-03-20")
 #' head(df)
+#'
+#' ## Download hourly O3 pollution data for May 15, 2017. Only the suroeste zone
+#' df2 <- get_zone_imeca("HORARIOS", "O3", "SO", "2017-05-15", "2017-05-15")
+#'
+#' ## Convert to local Mexico City time
+#' df2$mxc_time <- format(as.POSIXct(paste0(df2$date, " ", df2$hour, ":00"),
+#'                                   tz = "Etc/GMT+6"),
+#'                        tz = "America/Mexico_City")
+#'
+#' head(df2)
 #' }
 #'
 get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,

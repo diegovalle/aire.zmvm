@@ -29,7 +29,7 @@ get_station_single_month(pollutant, year, month)
 }
 \value{
 a data.frame with pollution data, when downloading "HORARIOS" the hours correspond to the
-UTC-6 timezone, with no daylight saving time
+\emph{Etc/GMT+6} timezone, with no daylight saving time
 }
 \description{
 retrieve hourly averages of pollution data in the original units by station from the air quality server at \url{
@@ -37,11 +37,17 @@ http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
 }
 \examples{
 \dontrun{
-## Download daily hourly PM10 data (particulate matter 10 micrometers or less in diameter)
-## from March 2016
+## Download daily hourly PM10 data (particulate matter 10 micrometers or
+## less in diameter) from March 2016
 df_pm10 <- get_station_single_month("PM10", 2016, 3)
 head(df_pm10)
+
+## Download daily hourly O3 data from October 2017
 df_o3 <- get_station_single_month("O3", 2017, 10)
+## Convert to local Mexico City time
+df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date, " ", df_o3$hour, ":00"),
+                                    tz = "Etc/GMT+6"),
+                         tz = "America/Mexico_City")
 head(df_o3)
 }
 }

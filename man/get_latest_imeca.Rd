@@ -7,8 +7,8 @@
 get_latest_imeca()
 }
 \value{
-A data.frame with pollution values in IMECAs, the time corresponds
-to the America/Mexico_City timezone
+A data.frame with pollution values in IMECAs, the hour corresponds
+to the \emph{America/Mexico_City} timezone
 }
 \description{
 Note that in

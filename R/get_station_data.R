@@ -255,19 +255,25 @@ download_horario_by_month <- function(pollutant, year){
 #' @param progress Whether to display a progress bar (TRUE or FALSE). By default it will only display in an interactive session.
 #'
 #' @return a data.frame with pollution data, when downloading "HORARIOS" the hours correspond to the
-#' UTC-6 timezone, with no daylight saving time
+#' \emph{Etc/GMT+6} timezone, with no daylight saving time
 #'
 #' @export
 #' @importFrom dplyr progress_estimated
 #'
 #' @examples
 #' \dontrun{
-#' ## Download daily maximum PM10 data (particulate matter 10 micrometers or less in diameter)
-#' ## from 2015 to 2016
+#' ## Download daily maximum PM10 data (particulate matter 10 micrometers or
+#' ## less in diameter) from 2015 to 2016
 #' df <- get_station_data("MAXIMOS", "PM10", 2015:2016)
 #' head(df)
+#'
 #' ## Download ozone concentration hourly data for 2016
 #' df2 <- get_station_data("HORARIOS", "O3", 2016)
+#'
+#' ## Convert to local Mexico City time
+#' df2$mxc_time <- format(as.POSIXct(paste0(df2$date, " ", df2$hour, ":00"),
+#'                                   tz = "Etc/GMT+6"),
+#'                        tz = "America/Mexico_City")
 #' head(df2)
 #' }
 get_station_data <- function(criterion, pollutant, year, progress = interactive()) {
@@ -281,12 +287,12 @@ get_station_data <- function(criterion, pollutant, year, progress = interactive(
                              "wsp", "wdr", "tmp", "rh"))
   if (min(year) < 1986)
     stop("Data is only available from 1986 onwards")
-  if (!is.null(progress))
+  if (!is.null(progress) & length(year) > 1)
     p <- progress_estimated(length(year))
   df <- data.frame()
   for (i in year){
     df <- rbind(df,  .download_data(criterion, pollutant, i))
-    if (!is.null(progress))
+    if (!is.null(progress) & length(year) > 1)
       p$tick()$print()
   }
   as.data.frame(df)
@@ -318,17 +324,23 @@ get_station_data <- function(criterion, pollutant, year, progress = interactive(
 #' @param month month number to download
 #'
 #' @return a data.frame with pollution data, when downloading "HORARIOS" the hours correspond to the
-#' UTC-6 timezone, with no daylight saving time
+#' \emph{Etc/GMT+6} timezone, with no daylight saving time
 #'
 #' @export
 #' @importFrom stringr str_pad
 #' @examples
 #' \dontrun{
-#' ## Download daily hourly PM10 data (particulate matter 10 micrometers or less in diameter)
-#' ## from March 2016
+#' ## Download daily hourly PM10 data (particulate matter 10 micrometers or
+#' ## less in diameter) from March 2016
 #' df_pm10 <- get_station_single_month("PM10", 2016, 3)
 #' head(df_pm10)
+#'
+#' ## Download daily hourly O3 data from October 2017
 #' df_o3 <- get_station_single_month("O3", 2017, 10)
+#' ## Convert to local Mexico City time
+#' df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date, " ", df_o3$hour, ":00"),
+#'                                     tz = "Etc/GMT+6"),
+#'                          tz = "America/Mexico_City")
 #' head(df_o3)
 #' }
 get_station_single_month <- function(pollutant, year, month) {
