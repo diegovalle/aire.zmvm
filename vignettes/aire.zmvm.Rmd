@@ -22,7 +22,7 @@ knitr::opts_chunk$set(fig.width = 7,
 )
 ```
 
-This document introduces you to tools for downloading data for each of the pollution, wind and temperature measuring stations in the Zona Metropolitana del Valle de México (greater Mexico City).
+This document introduces you to tools for downloading data from each of the pollution, wind and temperature measuring stations in the Zona Metropolitana del Valle de México (greater Mexico City).
 
 ## Core Functions
 
@@ -34,15 +34,15 @@ The basic set of functions provided by the package:
 * ```get_latest_imeca``` download the latest pollution hourly maximums for each of the measuring stations.
 * ```idw360``` inverse distance weighting modified to work with degrees, useful for wind data
 
-Because of limitations with the SEDEMA website [http://www.aire.cdmx.gob.mx/](http://www.aire.cdmx.gob.mx/default.php) (where all data downloaded by the aire.zmvm comes from) options for downloading data can be somewhat confusing, but hopefuly the following table will serve to make them clearer.
+Because of limitations with the SEDEMA website [http://www.aire.cdmx.gob.mx/](http://www.aire.cdmx.gob.mx/default.php) (where all data downloaded by the aire.zmvm comes from), options for downloading data can be somewhat confusing, but hopefully the following table will serve to make them clearer.
 
-| function                  | date range     | Units    | Wind / Temperature / RH | Earliest Date | Pollutants  | Includes All Stations |
-|---------------------------|----------------|----------|------------------|------------|------------|-------|
-| get_station_data          | years          | Original | Yes              | 1986       | SO2, CO, NO2, O3, PM10, PM25,  WSP, WDR, TMP, RH | Yes |
-| get_station_single_month  | 1 month        | Original | Yes              | 1986-01    | SO2, CO, NO2, O3, PM10, PM25,  WSP, WDR, TMP, RH | Yes |
-| get_station_imeca         | 1 day          | IMECA    | No               | 2009-01-01 | SO2, CO, NO2, O3, PM10 | No |
-| get_zone_imeca            | 1 or more days | IMECA    | No               | 2008-01-01 | SO2, CO, NO2, O3, PM10 | Only zones |
-| get_latest_imeca          | 1 hour         | IMECA    | NO               | Latest only| Max of SO2, CO, NO2, O3, PM10 | No |
+| function                  | date range     | Units    | Wind / Temperature / RH | Earliest Date | Pollutants  | Includes All Stations | Criterion |
+|---------------------------|----------------|----------|------------------|------------|------------|-------|-------|
+| get_station_data          | years          | Original | Yes              | 1986       | SO2, CO, NO2, O3, PM10, PM25,  WSP, WDR, TMP, RH | Yes | hourly, daily max, daily min |
+| get_station_single_month  | 1 month        | Original | Yes              | 2005-01    | SO2, CO, NO2, O3, PM10, PM25,  WSP, WDR, TMP, RH | Yes | hourly |
+| get_station_imeca         | 1 day          | IMECA    | No               | 2009-01-01 | SO2, CO, NO2, O3, PM10 | No | hourly |
+| get_zone_imeca            | 1 or more days | IMECA    | No               | 2008-01-01 | SO2, CO, NO2, O3, PM10 | Only zones | hourly, daily max |
+| get_latest_imeca          | 1 hour         | IMECA    | NO               | Latest only| Max of SO2, CO, NO2, O3, PM10 | No |latest hourly |
 
 
 ## Map of Pollution Levels
@@ -52,7 +52,7 @@ pollutants reach an hourly average of 151 IMECA points or more the Mexico City g
 
 On May 20, 2017 a phase I smog alert was declared. We'll show just how easy it is to make a map of pollution levels during the alert with this package. First we load the packages we need to run this vignette and download the pollution data:
 
-```{r, message = FALSE}
+```{r, message = FALSE, warning=FALSE}
 library("aire.zmvm")
 library("lubridate")
 library("dplyr")
@@ -62,7 +62,7 @@ library("sp")
 library("gstat")
 
 # Download hourly data for all pollutants during February 20, 2018 
-# The maximum Ozone level was reached at 18:00 PM local time
+# The maximum Ozone level was reached at 18:00 PM local time,
 # 17:00 with no daylight savings time
 ldf <- lapply(c("PM10", "O3", "SO2", "NO2", "CO"), 
               function(x) get_station_imeca(x, "2017-05-20") %>% 
@@ -73,11 +73,11 @@ ldf <- lapply(c("PM10", "O3", "SO2", "NO2", "CO"),
 Here's what the data we just downloaded looks like:
 
 ```{r, echo=FALSE, results='asis'}
-knitr::kable(head(ldf[[1]], 10))
+knitr::kable(head(ldf[[2]][order(-ldf[[2]]$value), ], 10), row.names = FALSE)
 ```
 
 You may have noticed that the code comments mention the local time as being 1 hour ahead
-of the data returned by the function. That's because the hourly data returned by the `get_station_imeca` function comes in a format that is not affected by daylight savings time, i.e. 6 hours behind UTC (*Etc/GMT+6*). In many cases you'll want to convert the time to the local timezone of *America/Mexico_City*, for example, to analyze pollution levels at peak conmuting times. You can use the following function to do it:
+of that returned by the function. That's because the hourly data returned by `get_station_imeca` comes in a format that is not affected by daylight savings time—i.e. 6 hours behind UTC (*Etc/GMT+6*). If, for example, you ever want to analyze pollution levels at peak commuting times, you'll want to convert the time to the local timezone of *America/Mexico_City*. You can use the following code to perform the conversion:
 
 ```{r}
 format(as.POSIXct("2017-05-20 17:00", tz = "Etc/GMT+6"), 
@@ -85,14 +85,14 @@ format(as.POSIXct("2017-05-20 17:00", tz = "Etc/GMT+6"),
        usetz = TRUE)
 ```
 
-The package also includes a ```stations``` data.frame that includes the latitude and longitude of all pollution measuring stations. 
+The package also includes a data.frame named ```stations``` that includes the latitude and longitude of all pollution measuring stations. 
 
 
 ```{r, echo=FALSE, results='asis'}
 knitr::kable(head(stations, 5))
 ```
 
-We will use this data to create a grid covering Mexico City and extrapolate the pollution values to each cell by inverse distance weighting from the locations of the pollution measuring stations . 
+We will use this data to create a grid covering Mexico City and extrapolate the pollution values to each cell in the grid by inverse distance weighting from the locations of the measuring stations. 
 
 ```{r}
 
@@ -127,8 +127,8 @@ coordinates(geog) <- ~lon+lat
 points(geog, pch = 22, col = "lightgray", bg = "red", cex = 1.2)
 ```
 
-Interaction, pick the highest
-Then we will use the package ggmap to plot the locations of the stations on top of a map.
+There are probably additive or interaction effects between pollutants, but to keep things simple
+we'll do like the Mexico City government when it reports pollution levels and simply ignore them. We'll take the maximum pollution value in each cell of the grid to create the map.
 
 ```{r}
 heatmap <- function(df, grid){
@@ -164,6 +164,8 @@ idw_tiles_max <- data.frame(var1.pred = maxes,
 
 ### Plot
 
+Now we will use the package ggmap to plot the locations of the stations and the pollution grid on top of a map.
+
 ```{r, message=FALSE, warning=FALSE, fig.cap = "Map of Pollution in Mexico City"}
 qmplot(x, y, data = data.frame(grid), geom = "blank", 
        maptype = "toner-lite", source = "stamen", zoom = 10)  +
@@ -182,11 +184,11 @@ qmplot(x, y, data = data.frame(grid), geom = "blank",
 
 ## Cold Weather School Closings
 
-Education authorities decided to suspend classes in public and private schools in some parts of Mexico City on Wednesday January 31, 2018, because of low temperatures. We will download and graph the daily morning hourly temperature data for this month and compare the days of January 30 and 31 with the rest of the month.
+Education authorities decided to suspend classes in public and private schools in some parts of Mexico City on Wednesday January 31, 2018, because of low temperatures. We will download and graph the daily morning hourly temperature and compare the days of January 30 and 31 with the rest of the month.
 
 ### Data Aquisition
 
-Again we use the ```get_station_single_month``` function to download hourly temperature data for the month of January.
+We use the ```get_station_single_month``` function to download hourly temperature data for the month of January.
 
 ```{r, fig.show='hold',fig.cap = "January Temperatures in 2018, by day", message=FALSE}
 # Download temperature (TMP) data for January 2018
