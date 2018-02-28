@@ -108,7 +108,8 @@ recode_pollutant <- function(pollutant) {
 #' @importFrom httr GET
 #' @importFrom tidyr gather
 #'
-.download_current_station_data <- function(criterion, pollutant, year, month = "") {
+.download_current_station_data <- function(criterion, pollutant, year,
+                                           month = "") {
   if (pollutant == "pm25")
     pollutant <- "pm2"
   base_url <- "http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/respuesta.php?"
@@ -132,8 +133,8 @@ recode_pollutant <- function(pollutant) {
   if (criterion == "HORARIOS") {
     names(df)[2] <- "hour"
   }
-  # The website messed up and changed the station_name of the Montecillo (Texcoco) station
-  # to CHA instead of MON
+  # The website sometimes messes up and changes the station_code of the
+  # Montecillo (Texcoco) station to CHA instead of MON
   if ("CHA" %in% names(df)) {
     if (!"MON" %in% names(df)) {
       names(df)[which(names(df) == "CHA")] <- "MON"
@@ -174,10 +175,12 @@ download_horario_by_month <- function(pollutant, year){
 
   if (year == cur_year) {
     for (j in 1:cur_month)
-      df <- rbind(df,  get_station_single_month(pollutant = pollutant, year, month = j))
+      df <- rbind(df,  get_station_single_month(pollutant = pollutant,
+                                                year, month = j))
   } else {
     for (j in 1:12)
-      df <- rbind(df,  get_station_single_month(pollutant = pollutant, year, month = j))
+      df <- rbind(df,  get_station_single_month(pollutant = pollutant,
+                                                year, month = j))
   }
   return(df)
 }
@@ -226,7 +229,7 @@ download_horario_by_month <- function(pollutant, year){
 #' Download pollution data by station
 #'
 #' retrieve pollution data by station in the original units from the air quality server at \url{
-#' http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016 data.
+#' http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016-2018 data.
 #' For earlier years the archive files from \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
 #' are used
 #'
@@ -276,7 +279,8 @@ download_horario_by_month <- function(pollutant, year){
 #'                        tz = "America/Mexico_City")
 #' head(df2)
 #' }
-get_station_data <- function(criterion, pollutant, year, progress = interactive()) {
+get_station_data <- function(criterion, pollutant, year,
+                             progress = interactive()) {
   year_no_data <- 2005
   if (length(pollutant) > 1)
     stop("You can only download one pollutant at a time")
@@ -302,8 +306,8 @@ get_station_data <- function(criterion, pollutant, year, progress = interactive(
 
 #' Download monthly pollution data
 #'
-#' retrieve hourly averages of pollution data in the original units by station from the air quality server at \url{
-#' http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
+#' retrieve hourly averages of pollution data in the original units by station
+#' from the air quality server at \url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
 #'
 #' @param pollutant The type of pollutant to download.
 #' \itemize{
@@ -362,6 +366,7 @@ get_station_single_month <- function(pollutant, year, month) {
                          "09", "10", "11", "12"))
   year_no_data <- 2005
   if (year < year_no_data)
-    stop("Monthly data is only available from 2005 onwards, try instead downloading the data for the entire year")
+    stop(paste0("Monthly data is only available from 2005 onwards, try instead",
+                " downloading the data for the entire year"))
   .download_current_station_data("HORARIOS", pollutant, year, month)
 }

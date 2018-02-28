@@ -32,8 +32,8 @@ a data.frame with pollution data, when downloading "HORARIOS" the hours correspo
 \emph{Etc/GMT+6} timezone, with no daylight saving time
 }
 \description{
-retrieve hourly averages of pollution data in the original units by station from the air quality server at \url{
-http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
+retrieve hourly averages of pollution data in the original units by station
+from the air quality server at \url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
 }
 \examples{
 \dontrun{

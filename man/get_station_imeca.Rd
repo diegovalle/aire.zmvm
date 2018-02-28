@@ -23,7 +23,8 @@ get_station_imeca(pollutant, date, showWarnings = TRUE)
 }
 \value{
 A data.frame with pollution data measured in IMECAS, by station.
-The hours correspond to the \emph{Etc/GMT+6} timezone, with no daylight saving time
+The hours correspond to the \emph{Etc/GMT+6} timezone, with no daylight
+saving time
 }
 \description{
 Note that in

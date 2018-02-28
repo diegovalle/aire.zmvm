@@ -177,11 +177,17 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
   # the API expects lowercase letters
   criterion <- tolower(criterion)
 
-  # If pollutants are O3 or PM10 issue a warning that the way of calculating the index changed
+  # If pollutants are O3 or PM10 issue a warning that the way of calculating
+  # the index changed
   if (length(base::intersect(pollutant, c("O3", "PM10"))) > 0 && showWarnings)
-    warning("\n*******************\nStarting October 28, 2014 the IMECA values for O3 and PM10 are computed using NOM-020-SSA1-2014 and NOM-025-SSA1-2014\n*******************")
+    warning(paste0("\n*******************\nStarting October 28, 2014 the IMECA",
+                   " values for O3 and PM10 are computed using",
+                   " NOM-020-SSA1-2014 and",
+                   " NOM-025-SSA1-2014\n*******************"))
   if (start_date >= "2017-01-01" && showWarnings)
-    warning("\n*******************\nSometime in 2015-2017 the stations ACO, AJU, INN, MON, and MPA were excluded from the index\n*******************")
+    warning(paste0("\n*******************\nSometime in 2015-2017 the stations",
+                   " ACO, AJU, INN, MON, and MPA were excluded from the",
+                   " index\n*******************"))
   df <- .download_data_zone(criterion, pollutant, zone, start_date, end_date)
 
   names(df) <- df[1, ]

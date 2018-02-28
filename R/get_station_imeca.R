@@ -24,7 +24,8 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #' @param showWarnings Show warnings about problems with the data
 #'
 #' @return A data.frame with pollution data measured in IMECAS, by station.
-#' The hours correspond to the \emph{Etc/GMT+6} timezone, with no daylight saving time
+#' The hours correspond to the \emph{Etc/GMT+6} timezone, with no daylight
+#' saving time
 #' @export
 #' @importFrom rvest html_nodes html_table
 #' @importFrom xml2 read_html
@@ -50,7 +51,9 @@ get_station_imeca <- function(pollutant, date,
   stopifnot(length(base::setdiff(pollutant,
                                  c("O3", "NO2", "SO2", "CO", "PM10"))) == 0)
   if (date >= "2017-01-01" && showWarnings)
-    warning("\n*******************\nSometime in 2015-2017 the stations ACO, AJU, INN, MON, and MPA were excluded from the index\n*******************")
+    warning(paste0("\n*******************\nSometime in 2015-2017 the stations",
+                   "ACO, AJU, INN, MON, and MPA were excluded from the",
+                   " index\n*******************"))
 
 
   url <- "http://www.aire.cdmx.gob.mx/default.php?opc=%27aqBjnmc=%27"

@@ -40,7 +40,7 @@ a data.frame with pollution data, when downloading "HORARIOS" the hours correspo
 }
 \description{
 retrieve pollution data by station in the original units from the air quality server at \url{
-http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016 data.
+http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016-2018 data.
 For earlier years the archive files from \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
 are used
 }
