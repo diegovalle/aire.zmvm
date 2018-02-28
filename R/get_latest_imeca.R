@@ -28,8 +28,8 @@
 #' and MPA would no longer be taken into consideration when computing the
 #' pollution index and are not included in the data returned by this function
 #'
-#' @return A data.frame with pollution values in IMECAs, the time corresponds
-#' to the America/Mexico_City timezone
+#' @return A data.frame with pollution values in IMECAs, the hour corresponds
+#' to the \emph{America/Mexico_City} timezone
 #' @export
 #' @importFrom utils URLdecode
 #' @importFrom rvest html_nodes html_text

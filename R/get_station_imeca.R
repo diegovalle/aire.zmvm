@@ -21,8 +21,10 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #' }
 #' @param date The date for which to download data in YYYY-MM-DD format
 #' (the earliest possible date is 2009-01-01).
+#' @param showWarnings Show warnings about problems with the data
 #'
 #' @return A data.frame with pollution data measured in IMECAS, by station.
+#' The hours correspond to the \emph{Etc/GMT+6} timezone, with no daylight saving time
 #' @export
 #' @importFrom rvest html_nodes html_table
 #' @importFrom xml2 read_html
@@ -30,9 +32,15 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #'
 #' @examples
 #' ## There was an ozone pollution emergency on May 15, 2017
-#' df <- get_station_imeca("O3", "2017-05-15")
-#' head(df[order(-df$value), ])
-get_station_imeca <- function(pollutant, date) {
+#' df_o3 <- get_station_imeca("O3", "2017-05-15", showWarnings = FALSE)
+#'
+#' ## Convert to local Mexico City time
+#' df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date, " ", df_o3$hour, ":00"),
+#'                                     tz = "Etc/GMT+6"),
+#'                          tz = "America/Mexico_City")
+#' head(df_o3[order(-df_o3$value), ])
+get_station_imeca <- function(pollutant, date,
+                              showWarnings = TRUE) {
   if (missing(date))
     stop("You need to specify a start date (YYYY-MM-DD)")
   if(!is.Date(date))
@@ -41,6 +49,9 @@ get_station_imeca <- function(pollutant, date) {
     stop("start_date should be after 2009-01-01")
   stopifnot(length(base::setdiff(pollutant,
                                  c("O3", "NO2", "SO2", "CO", "PM10"))) == 0)
+  if (date >= "2017-01-01" && showWarnings)
+    warning("\n*******************\nSometime in 2015-2017 the stations ACO, AJU, INN, MON, and MPA were excluded from the index\n*******************")
+
 
   url <- "http://www.aire.cdmx.gob.mx/default.php?opc=%27aqBjnmc=%27"
   fd <- list(

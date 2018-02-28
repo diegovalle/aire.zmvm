@@ -149,7 +149,7 @@ test_that("zone pollution data matches api", {
   expect_equal(unique(df_horarios$pollutant), c("O3", "PM10"))
   # detect date errors
   expect_error(get_zone_imeca("MAXIMOS", "O3", "TZ",
-                              "error_date", "error_date"))
+                              "2008-01-32", "2007-13-44"))
   # test that deprecated function shows warning
   expect_warning(get_zone_data("MAXIMOS", "O3", "NO",
                                                "2015-12-31", "2015-12-31",
