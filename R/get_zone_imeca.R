@@ -110,7 +110,8 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #' }
 #' @param start_date The start date in YYYY-MM-DD format (earliest possible value is 2008-01-01).
 #' @param end_date The end date in YYYY-MM-DD format.
-#' @param showWarnings Show warnings about problems with the data
+#' @param showWarnings Deprecated; use show_messages instead.
+#' @param show_messages show a message about issues with performing the conversion
 #'
 #' @return A data.frame with pollution data measured in IMECAS, by geographic zone. The hours
 #' correspond to the \emph{Etc/GMT+6} timezone, with no daylight saving time
@@ -123,11 +124,11 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #' @examples
 #' ## There was a regional (NE) PM10 pollution emergency on Jan 6, 2017
 #' get_zone_imeca("MAXIMOS", "PM10", "NE", "2017-01-05", "2017-01-08",
-#'                showWarnings = FALSE)
+#'                show_messages = FALSE)
 #'
 #' ## There was an ozone pollution emergency on May 15, 2017
 #' get_zone_imeca("MAXIMOS", "O3", "TZ", "2017-05-15", "2017-05-15",
-#'                showWarnings = FALSE)
+#'                show_messages = FALSE)
 #'
 #' \dontrun{
 #' ## Download daily maximum PM10 data (particulate matter 10 micrometers or
@@ -147,21 +148,24 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #' }
 #'
 get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
-                          showWarnings = TRUE) {
+                          showWarnings = TRUE, show_messages = TRUE) {
+  if (!missing("showWarnings"))
+    warning("`showWarnings` argument deprecated.",
+            call. = FALSE)
   if (missing(pollutant))
-    stop("You need to specify a contaminante")
+    stop("You need to specify a pollutant")
   if (missing(zone))
     stop("You need to specify a zona")
   if (missing(criterion))
     stop("You need to specify a start date")
   if (missing(end_date))
-    stop("You need to specify an end date (YYYY-MM-DD)")
+    stop("You need to specify an end_date (YYYY-MM-DD)")
   if(!is.Date(end_date))
     stop("end_ate should be a date in YYYY-MM-DD format")
   if (missing(start_date))
-    stop("You need to specify a start date (YYYY-MM-DD)")
+    stop("You need to specify a start_date (YYYY-MM-DD)")
   if(!is.Date(start_date))
-    stop("start_date should be a date in YYYY-MM-DD format")
+    stop("start_date should be a string in YYYY-MM-DD format")
   if (start_date < "2008-01-01")
     stop("start_date should be after 2008-01-01")
 
@@ -177,17 +181,17 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
   # the API expects lowercase letters
   criterion <- tolower(criterion)
 
-  # If pollutants are O3 or PM10 issue a warning that the way of calculating
+  # If pollutants are O3 or PM10 display a message that the way of calculating
   # the index changed
-  if (length(base::intersect(pollutant, c("O3", "PM10"))) > 0 && showWarnings)
-    warning(paste0("\n*******************\nStarting October 28, 2014 the IMECA",
+  if (length(base::intersect(pollutant, c("O3", "PM10"))) > 0 && show_messages)
+    message(paste0("Starting October 28, 2014 the IMECA",
                    " values for O3 and PM10 are computed using",
                    " NOM-020-SSA1-2014 and",
-                   " NOM-025-SSA1-2014\n*******************"))
-  if (start_date >= "2017-01-01" && showWarnings)
-    warning(paste0("\n*******************\nSometime in 2015-2017 the stations",
+                   " NOM-025-SSA1-2014"))
+  if (start_date >= "2017-01-01" && show_messages)
+    message(paste0("Sometime in 2015-2017 the stations",
                    " ACO, AJU, INN, MON, and MPA were excluded from the",
-                   " index\n*******************"))
+                   " index"))
   df <- .download_data_zone(criterion, pollutant, zone, start_date, end_date)
 
   names(df) <- df[1, ]

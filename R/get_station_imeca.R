@@ -21,7 +21,7 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #' }
 #' @param date The date for which to download data in YYYY-MM-DD format
 #' (the earliest possible date is 2009-01-01).
-#' @param showWarnings Show warnings about problems with the data
+#' @param show_messages show a message about issues with performing the conversion
 #'
 #' @return A data.frame with pollution data measured in IMECAS, by station.
 #' The hours correspond to the \emph{Etc/GMT+6} timezone, with no daylight
@@ -33,7 +33,7 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #'
 #' @examples
 #' ## There was an ozone pollution emergency on May 15, 2017
-#' df_o3 <- get_station_imeca("O3", "2017-05-15", showWarnings = FALSE)
+#' df_o3 <- get_station_imeca("O3", "2017-05-15", show_messages = FALSE)
 #'
 #' ## Convert to local Mexico City time
 #' df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date, " ", df_o3$hour, ":00"),
@@ -41,7 +41,7 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #'                          tz = "America/Mexico_City")
 #' head(df_o3[order(-df_o3$value), ])
 get_station_imeca <- function(pollutant, date,
-                              showWarnings = TRUE) {
+                              show_messages = TRUE) {
   if (missing(date))
     stop("You need to specify a start date (YYYY-MM-DD)")
   if(!is.Date(date))
@@ -50,10 +50,10 @@ get_station_imeca <- function(pollutant, date,
     stop("start_date should be after 2009-01-01")
   stopifnot(length(base::setdiff(pollutant,
                                  c("O3", "NO2", "SO2", "CO", "PM10"))) == 0)
-  if (date >= "2017-01-01" && showWarnings)
-    warning(paste0("\n*******************\nSometime in 2015-2017 the stations",
-                   "ACO, AJU, INN, MON, and MPA were excluded from the",
-                   " index\n*******************"))
+  if (date >= "2017-01-01" && show_messages)
+    message(paste0("Sometime in 2015-2017 the stations with codes",
+                   " ACO, AJU, INN, MON, and MPA were excluded from the",
+                   " index"))
 
 
   url <- "http://www.aire.cdmx.gob.mx/default.php?opc=%27aqBjnmc=%27"

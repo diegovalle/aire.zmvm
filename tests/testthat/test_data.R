@@ -51,8 +51,8 @@ test_that("station pollution data matches api", {
   df_horarios_2016 <- get_station_data("HORARIOS", "O3", 2016)
 
 
-
-  expect_warning(get_station_data("HORARIOS", "PM25", 1986))
+  # No measuring stations for PM25 in 1986, should show message
+  expect_message(get_station_data("HORARIOS", "PM25", 1986))
   expect_equal(dplyr::filter(get_station_data("HORARIOS", "RH", 2000),
                 date == "2000-01-01" & hour == 3 &
                   station_code == "XAL")$value, 56)
@@ -104,21 +104,21 @@ test_that("station pollution data matches api", {
 test_that("zone pollution data matches api", {
   skip_on_cran()
 
-  df_max_o3 <- suppressWarnings(get_zone_imeca("MAXIMOS", "O3", c("NO", "NE", "CE"),
+  df_max_o3 <- suppressMessages(get_zone_imeca("MAXIMOS", "O3", c("NO", "NE", "CE"),
                           "2015-12-25", "2016-01-01"))
-  df_max_tz <- suppressWarnings(get_zone_imeca("MAXIMOS", c("O3", "PM10"), c("TZ"),
+  df_max_tz <- suppressMessages(get_zone_imeca("MAXIMOS", c("O3", "PM10"), c("TZ"),
                           "2015-12-31", "2016-01-06"))
-  df_horarios <- suppressWarnings(get_zone_imeca("HORARIOS", c("O3", "PM10"),
+  df_horarios <- suppressMessages(get_zone_imeca("HORARIOS", c("O3", "PM10"),
                                                 c("NO", "NE", "CE"),
                                "2015-12-25", "2016-01-01"))
 
-  expect_warning(get_zone_imeca("MAXIMOS", "O3", c("NO", "NE", "CE"),
+  expect_message(get_zone_imeca("MAXIMOS", "O3", c("NO", "NE", "CE"),
                                "2015-12-25", "2016-01-01"))
-  expect_warning(get_zone_imeca("MAXIMOS", "SO2", c("NO", "NE", "CE"),
+  expect_message(get_zone_imeca("MAXIMOS", "SO2", c("NO", "NE", "CE"),
                                "2017-02-25", "2017-05-01"))
   expect_silent(get_zone_imeca("MAXIMOS", "O3", c("NO", "NE", "CE"),
                               "2015-12-25", "2016-01-01",
-                              showWarnings = FALSE))
+                              show_messages = FALSE))
   expect_equal(subset(df_max_o3, zone == "NO" &
                         pollutant == "O3")$value,
                c(109, 51, 29, 49, 36, 104, 92, 119))
@@ -152,8 +152,7 @@ test_that("zone pollution data matches api", {
                               "2008-01-32", "2007-13-44"))
   # test that deprecated function shows warning
   expect_warning(get_zone_data("MAXIMOS", "O3", "NO",
-                                               "2015-12-31", "2015-12-31",
-                                               showWarnings = FALSE))
+                                               "2015-12-31", "2015-12-31"))
 })
 
 test_that("latest data", {

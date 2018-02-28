@@ -4,7 +4,7 @@
 \alias{get_station_imeca}
 \title{Download pollution data by station in IMECAS}
 \usage{
-get_station_imeca(pollutant, date, showWarnings = TRUE)
+get_station_imeca(pollutant, date, show_messages = TRUE)
 }
 \arguments{
 \item{pollutant}{The type of pollutant to download
@@ -19,7 +19,7 @@ get_station_imeca(pollutant, date, showWarnings = TRUE)
 \item{date}{The date for which to download data in YYYY-MM-DD format
 (the earliest possible date is 2009-01-01).}
 
-\item{showWarnings}{Show warnings about problems with the data}
+\item{show_messages}{show a message about issues with performing the conversion}
 }
 \value{
 A data.frame with pollution data measured in IMECAS, by station.
@@ -35,7 +35,7 @@ in the data returned by this function
 }
 \examples{
 ## There was an ozone pollution emergency on May 15, 2017
-df_o3 <- get_station_imeca("O3", "2017-05-15", showWarnings = FALSE)
+df_o3 <- get_station_imeca("O3", "2017-05-15", show_messages = FALSE)
 
 ## Convert to local Mexico City time
 df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date, " ", df_o3$hour, ":00"),

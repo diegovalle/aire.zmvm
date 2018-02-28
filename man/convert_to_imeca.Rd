@@ -6,14 +6,17 @@
 IMECA (Indice Metropolitano de la Calidad del Aire), a dimensionless scale
 where all the pollutants can be compared.}
 \usage{
-convert_to_imeca(value, pollutant, showWarnings = TRUE)
+convert_to_imeca(value, pollutant, showWarnings = TRUE,
+  show_warnings = TRUE)
 }
 \arguments{
 \item{value}{value to convert to IMECAS}
 
 \item{pollutant}{type of pollutant}
 
-\item{showWarnings}{show a warning about issues with performing the conversion}
+\item{showWarnings}{Deprecated; use show_warnings instead.}
+
+\item{show_warnings}{show a warning about issues with performing the conversion}
 }
 \value{
 value in IMECAS
