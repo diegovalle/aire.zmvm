@@ -50,9 +50,11 @@ test_that("station pollution data matches api", {
   df_horarios_2010 <- get_station_data("HORARIOS", "PM10", 2010)
   df_horarios_2016 <- get_station_data("HORARIOS", "O3", 2016)
 
-
+  # Wait before downloading
+  Sys.sleep(2)
   # No measuring stations for PM25 in 1986, should show message
   expect_message(get_station_data("HORARIOS", "PM25", 1986))
+  Sys.sleep(2)
   expect_equal(dplyr::filter(get_station_data("HORARIOS", "RH", 2000),
                 date == "2000-01-01" & hour == 3 &
                   station_code == "XAL")$value, 56)
