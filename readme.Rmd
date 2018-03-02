@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 |-----------------------|-------------------------------------------------------|
 | __Author:__           | Diego Valle-Jones                                     |
 | __License:__          | [BSD_3](https://opensource.org/licenses/BSD-3-Clause) |
-| __Status:__           | Version 0.5.0 on CRAN                                 |
+| __Status:__           | Version 0.6.0 on CRAN                                 |
 | __Website:__          | [https://hoyodesmog.diegovalle.net/aire.zmvm.html](https://hoyodesmog.diegovalle.net/aire.zmvm.html) |
 
 
@@ -56,17 +56,27 @@ library(aire.zmvm)
 ```
 Note that the version on CRAN might not reflect the most recent changes made to this package.
 
-## Quick Example
+## Core Functions
 
 The package consists mainly of four functions: 
 
-* ```get_station_data``` download data for each of the pollution (and wind and temperature) measuring stations in the original units.
-* ```get_station_imeca``` download data for each of the pollution stations in IMECAs
-* ```get_zone_imeca``` download data for each of the 5 geographic zones of Mexico City 
-* ```get_latest_imeca``` download the latest values in IMECAs for each of the pollution measuring stations.
-* ```idw360``` Inverse distance weighting modified to work with degrees
+* ```get_station_data``` and ```get_station_month_data``` download pollution, wind and temperature data for each of the measuring stations in the original units (ppb, µg/m³, etc).
+* ```get_station_imeca``` download pollution values for each station in IMECAs
+* ```get_zone_imeca``` download pollution data in IMECAs for each of the 5 geographic zones of Mexico City 
+* ```get_latest_imeca``` download the latest pollution hourly maximums for each of the measuring stations.
+* ```idw360``` inverse distance weighting modified to work with degrees, useful for wind data
 
-```{r, fig.show='hold',  message=FALSE, fig.width=11}
+| function                  | date range     | Units    | Wind / Tmp / RH | Earliest Date | Pollutants  | Includes All Stations | Criterion |
+|---------------------------|----------------|----------|------------------|------------|------------|-------|-------|
+| get_station_data          | years          | Original | Yes              | 1986       | SO2, CO, NO2, O3, PM10, PM25,  WSP, WDR, TMP, RH | Yes | hourly, daily&nbsp;maximum, daily&nbsp;minimum |
+| get_station_month_data  | 1 month        | Original | Yes              | 2005‑01    | SO2, CO, NO2, O3, PM10, PM25,  WSP, WDR, TMP, RH | Yes | hourly, daily&nbsp;maximum, daily&nbsp;minimum |
+| get_station_imeca         | 1 day          | IMECA    | No               | 2009‑01‑01 | SO2, CO, NO2, O3, PM10 | No | hourly |
+| get_zone_imeca            | 1 or more days | IMECA    | No               | 2008‑01‑01 | SO2, CO, NO2, O3, PM10 | Only zones | hourly, daily&nbsp;maximum |
+| get_latest_imeca          | 1 hour         | IMECA    | No               | Latest only| Maximum value of SO2, CO, NO2, O3, PM10 | No |latest&nbsp;hourly |
+
+## Quick Example
+
+```{r, fig.show='hold',  message=FALSE, fig.width=11, warning=FALSE}
 library("aire.zmvm")
 library("dplyr")
 library("ggplot2")
