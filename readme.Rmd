@@ -70,9 +70,9 @@ The package consists mainly of four functions:
 |---------------------------|----------------|----------|------------------|------------|------------|-------|-------|
 | get_station_data          | years          | Original | Yes              | 1986       | SO2, CO, NO2, O3, PM10, PM25,  WSP, WDR, TMP, RH | Yes | hourly, daily&nbsp;maximum, daily&nbsp;minimum |
 | get_station_month_data  | 1 month        | Original | Yes              | 2005‑01    | SO2, CO, NO2, O3, PM10, PM25,  WSP, WDR, TMP, RH | Yes | hourly, daily&nbsp;maximum, daily&nbsp;minimum |
-| get_station_imeca         | 1 day          | IMECA    | No               | 2009‑01‑01 | SO2, CO, NO2, O3, PM10 | No | hourly |
+| get_station_imeca         | 1&nbsp;day          | IMECA    | No               | 2009‑01‑01 | SO2, CO, NO2, O3, PM10 | No | hourly |
 | get_zone_imeca            | 1 or more days | IMECA    | No               | 2008‑01‑01 | SO2, CO, NO2, O3, PM10 | Only zones | hourly, daily&nbsp;maximum |
-| get_latest_imeca          | 1 hour         | IMECA    | No               | Latest only| Maximum value of SO2, CO, NO2, O3, PM10 | No |latest&nbsp;hourly |
+| get_latest_imeca          | 1&nbsp;hour         | IMECA    | No               | Latest only| Maximum value of SO2, CO, NO2, O3, PM10 | No |latest&nbsp;hourly |
 
 ## Quick Example
 
