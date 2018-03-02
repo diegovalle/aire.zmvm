@@ -141,7 +141,8 @@ to_imeca <- function(contaminant, value) {
 #' @param pollutant type of pollutant
 #' @param value value to convert to IMECAS
 #' @param showWarnings Deprecated; use show_warnings instead.
-#' @param show_warnings show a warning about issues with performing the conversion
+#' @param show_warnings show a warning about issues with performing the
+#' conversion
 #'
 #' @return value in IMECAS
 #' @export

@@ -1,4 +1,6 @@
 is.Date <- function(date, date.format = "%Y-%m-%d") {
+  if (length(date) < 1)
+    return(FALSE)
   tryCatch(!is.na(as.Date(date, date.format)),
            error = function(e) {FALSE})
 }
@@ -21,7 +23,8 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #' }
 #' @param date The date for which to download data in YYYY-MM-DD format
 #' (the earliest possible date is 2009-01-01).
-#' @param show_messages show a message about issues with performing the conversion
+#' @param show_messages show a message about issues with performing the
+#' conversion
 #'
 #' @return A data.frame with pollution data measured in IMECAS, by station.
 #' The hours correspond to the \emph{Etc/GMT+6} timezone, with no daylight
@@ -36,7 +39,10 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #' df_o3 <- get_station_imeca("O3", "2017-05-15", show_messages = FALSE)
 #'
 #' ## Convert to local Mexico City time
-#' df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date, " ", df_o3$hour, ":00"),
+#' df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date,
+#'                                            " ",
+#'                                            df_o3$hour,
+#'                                            ":00"),
 #'                                     tz = "Etc/GMT+6"),
 #'                          tz = "America/Mexico_City")
 #' head(df_o3[order(-df_o3$value), ])
@@ -44,17 +50,21 @@ get_station_imeca <- function(pollutant, date,
                               show_messages = TRUE) {
   if (missing(date))
     stop("You need to specify a start date (YYYY-MM-DD)")
+  if(length(date) != 1)
+    stop("date should be a date in YYYY-MM-DD format")
   if(!is.Date(date))
-    stop("Date should be a date in YYYY-MM-DD format")
+    stop("date should be a date in YYYY-MM-DD format")
   if (date < "2009-01-01")
-    stop("start_date should be after 2009-01-01")
-  stopifnot(length(base::setdiff(pollutant,
-                                 c("O3", "NO2", "SO2", "CO", "PM10"))) == 0)
+    stop("date should be after 2009-01-01")
+  if (!(identical("O3", pollutant) | identical("NO2", pollutant) |
+      identical("SO2", pollutant) | identical("CO", pollutant) |
+      identical("PM10", pollutant)))
+     stop("Invalid pollutant value")
+
   if (date >= "2017-01-01" && show_messages)
     message(paste0("Sometime in 2015-2017 the stations with codes",
                    " ACO, AJU, INN, MON, and MPA were excluded from the",
                    " index"))
-
 
   url <- "http://www.aire.cdmx.gob.mx/default.php?opc=%27aqBjnmc=%27"
   fd <- list(

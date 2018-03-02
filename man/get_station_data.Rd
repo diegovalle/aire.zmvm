@@ -22,26 +22,34 @@ get_station_data(criterion, pollutant, year, progress = interactive())
  \item{"NO2"}{ - Dioxido de nitrogeno (partes por billon)}
  \item{"NO"}{ - Oxido nitrico (partes por billon)}
  \item{"O3"}{ - Ozono (partes por billon)}
- \item{"PM10"}{ - Particulas menores a 10 micrometros (microgramos por metro cubico)}
- \item{"PM25"}{ - Particulas menores a 2.5 micrometros (microgramos por metro cubico)}
+ \item{"PM10"}{ - Particulas menores a 10 micrometros
+ (microgramos por metro cubico)}
+ \item{"PM25"}{ - Particulas menores a 2.5 micrometros
+ (microgramos por metro cubico)}
  \item{"WSP"}{ - Velocidad del viento (metros por segundo)}
  \item{"WDR"}{ - Direccion del viento (grados)}
  \item{"TMP"}{ - Temperatura ambiente (grados Celsius)}
  \item{"RH"}{ - Humedad relativa (porcentaje)}
 }}
 
-\item{year}{a numeric vector containing the years for which to download data (the earliest possible value is 1986)}
+\item{year}{a numeric vector containing the years for which to download data
+(the earliest possible value is 1986)}
 
-\item{progress}{Whether to display a progress bar (TRUE or FALSE). By default it will only display in an interactive session.}
+\item{progress}{Whether to display a progress bar (TRUE or FALSE).
+By default it will only display in an interactive session.}
 }
 \value{
-a data.frame with pollution data, when downloading "HORARIOS" the hours correspond to the
+a data.frame with pollution data, when downloading "HORARIOS" the
+hours correspond to the
 \emph{Etc/GMT+6} timezone, with no daylight saving time
 }
 \description{
-retrieve pollution data by station in the original units from the air quality server at \url{
-http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016-2018 data.
-For earlier years the archive files from \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
+retrieve pollution data by station in the original units from the air quality
+server at
+\url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
+for 2016-2018 data.
+For earlier years the archive files from
+\url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
 are used
 }
 \examples{

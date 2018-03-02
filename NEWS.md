@@ -3,6 +3,8 @@
 ## New features
 
 * function `get_station_imeca` for downloading pollution data in IMECAs from each station
+* `get_station_month_data` replaces `get_station_data_monthly`. Allows for downloading daily
+maximums and daily minimums
 * `get_station_data` now can download TMP, WSP, WDR and RH data back to 1986
 
 ## Bug fixes and improvements

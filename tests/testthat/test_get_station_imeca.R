@@ -24,3 +24,16 @@ test_that("get_station_imeca pollution data matches the website", {
                  58, 77, 60, 42, 43, 38,
                  31, 15, 6, 4, 4, 2, 2))
 })
+
+test_that("is.Date works", {
+  expect_true(is.Date("2009-01-01"))
+  expect_false(is.Date("2009-13-01"))
+  expect_false(is.Date("20011-13-01"))
+  expect_false(is.Date("2009-11-34"))
+  expect_false(is.Date("2009-02-30"))
+  expect_false(is.Date(character(0)))
+  expect_false(is.Date(NULL))
+  expect_false(is.Date(NA))
+})
+
+

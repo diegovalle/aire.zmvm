@@ -1,8 +1,3 @@
-is.Date <- function(date, date.format = "%Y-%m-%d") {
-  tryCatch(!is.na(as.Date(date, date.format)),
-           error = function(e) {FALSE})
-}
-
 #' Title
 #'
 #' @param pollutant bla
@@ -17,7 +12,8 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #' @importFrom rvest html_nodes html_table
 #' @importFrom lubridate day month year
 #' @importFrom httr content
-.download_data_zone <- function(criterion, pollutant, zone, start_date, end_date) {
+.download_data_zone <- function(criterion, pollutant, zone, start_date,
+                                end_date) {
   url <- "http://www.aire.cdmx.gob.mx/estadisticas-consultas/consultas/resultado_consulta.php"
   fd <- list(
     diai	= day(start_date),
@@ -85,7 +81,8 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #' \strong{Zona Suroeste}: Álvaro Obregón,
 #' Coyoacán, Cuajimalpa, Magdalena Contreras, Tlalpan and Huixquilucan.
 #'
-#' @param pollutant The type of pollutant to download
+#' @param pollutant The type of pollutant to download. One or more of the
+#' following options:
 #' \itemize{
 #'  \item{"SO2"}{ - Dioxido de azufre}
 #'  \item{"CO"}{ - Monoxido de carbono}
@@ -94,7 +91,8 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #'  \item{"PM10"}{ - Particulas menores a 10 micrometros}
 #'  \item{"TC"}{- All the pollutants}
 #' }
-#' @param zone The geographic zone for which to download data
+#' @param zone The geographic zone for which to download data. One or more of
+#' the following:
 #' \itemize{
 #'  \item{"NO"}{ - Noroeste}
 #'  \item{"NE"}{ - Noreste}
@@ -103,17 +101,20 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 #'  \item{"SE"}{ - Sureste}
 #'  \item{"TZ"}{ - All zones}
 #' }
-#' @param criterion The type of data to download
+#' @param criterion The type of data to download. One of the following options:
 #' \itemize{
 #'  \item{"HORARIOS"}{ - Hourly data}
 #'  \item{"MAXIMOS""}{ - Daily maximums}
 #' }
-#' @param start_date The start date in YYYY-MM-DD format (earliest possible value is 2008-01-01).
+#' @param start_date The start date in YYYY-MM-DD format (earliest possible
+#' value is 2008-01-01).
 #' @param end_date The end date in YYYY-MM-DD format.
 #' @param showWarnings Deprecated; use show_messages instead.
-#' @param show_messages show a message about issues with performing the conversion
+#' @param show_messages show a message about issues with performing the
+#' conversion
 #'
-#' @return A data.frame with pollution data measured in IMECAS, by geographic zone. The hours
+#' @return A data.frame with pollution data measured in IMECAS, by geographic
+#' zone. The hours
 #' correspond to the \emph{Etc/GMT+6} timezone, with no daylight saving time
 #' @export
 #' @importFrom stringr str_c  str_replace_all
@@ -172,12 +173,20 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
   # standarize on uppercase since the station api expects upper, but
   # zone api expects lower
   criterion <- toupper(criterion)
-  stopifnot(length(base::setdiff(pollutant,
-                                 c("SO2", "CO", "NO2",
-                                   "O3", "PM10", "TC"))) == 0)
-  stopifnot(length(base::setdiff(zone,
-                                 c("NO", "NE", "CE", "SO", "SE", "TZ"))) == 0)
-  stopifnot(criterion %in% c("HORARIOS", "MAXIMOS"))
+  for (i in seq_len(length(pollutant)))
+    if (!(identical("O3", pollutant[i]) | identical("NO2", pollutant[i]) |
+          identical("SO2", pollutant[i]) | identical("CO", pollutant[i]) |
+          identical("PM10", pollutant[i]) | identical("TC", pollutant[i])))
+      stop("Invalid pollutant value")
+  pollutant <- unique(pollutant)
+  for (i in seq_len(length(zone)))
+    if (!(identical("NO", zone[i]) | identical("NE", zone[i]) |
+          identical("CE", zone[i]) | identical("SO", zone[i]) |
+          identical("SE", zone[i]) | identical("TZ", zone[i]) ))
+      stop("zone should be one of 'NO', 'NE', 'CE', 'SO', 'SE', or 'TZ'")
+  zone <- unique(zone)
+  if (!(identical("HORARIOS", criterion) | identical("MAXIMOS", criterion)))
+      stop("criterion should be 'HORARIOS' or 'MAXIMOS'")
   # the API expects lowercase letters
   criterion <- tolower(criterion)
 

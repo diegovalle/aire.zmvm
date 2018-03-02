@@ -1,3 +1,13 @@
+is.integer2 <- function(int) {
+  if (length(int) < 1)
+    return(FALSE)
+  if(any(is.na(int)))
+    return(FALSE)
+  tryCatch(identical(int, as.integer(floor(int))) |
+             identical(int, as.double(floor(int))),
+           error = function(e) {FALSE})
+}
+
 recode_unit <- function(pollutant) {
   str_replace_all(pollutant, c("pm2" = "\u00B5g/m\u00B3",
                                "so2" = "ppb",
@@ -104,7 +114,7 @@ recode_pollutant <- function(pollutant) {
 #' @importFrom rvest html_nodes html_table
 #' @importFrom xml2 read_html
 #' @importFrom dplyr %>%
-#' @importFrom lubridate fast_strptime
+#' @importFrom lubridate fast_strptime month
 #' @importFrom httr GET
 #' @importFrom tidyr gather
 #'
@@ -158,6 +168,12 @@ recode_pollutant <- function(pollutant) {
 
   if (criterion != "HORARIOS") {
     df <- df[, c("date", "station_code", "pollutant", "unit", "value")]
+    # For some reason when the criterion is MAXIMOS or MINIMOS the website
+    # returns the month we asked for, plus the rest of the year. subset
+    if ((month %in% c("01", "02", "03", "04",
+                      "05", "06", "07", "08",
+                      "09", "10", "11", "12")))
+      df <- dplyr::filter(df, month(date) == as.numeric(month))
   } else {
     df <- df[, c("date", "hour", "station_code", "pollutant", "unit", "value")]
   }
@@ -175,12 +191,14 @@ download_horario_by_month <- function(pollutant, year){
 
   if (year == cur_year) {
     for (j in 1:cur_month)
-      df <- rbind(df,  get_station_single_month(pollutant = pollutant,
-                                                year, month = j))
+      df <- rbind(df,  get_station_month_data("HORARIOS",
+                                              pollutant = toupper(pollutant),
+                                              year, month = j))
   } else {
     for (j in 1:12)
-      df <- rbind(df,  get_station_single_month(pollutant = pollutant,
-                                                year, month = j))
+      df <- rbind(df,  get_station_month_data("HORARIOS",
+                                              pollutant = toupper(pollutant),
+                                              year, month = j))
   }
   return(df)
 }
@@ -228,9 +246,12 @@ download_horario_by_month <- function(pollutant, year){
 
 #' Download pollution data by station
 #'
-#' retrieve pollution data by station in the original units from the air quality server at \url{
-#' http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php} for 2016-2018 data.
-#' For earlier years the archive files from \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
+#' retrieve pollution data by station in the original units from the air quality
+#' server at
+#' \url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
+#' for 2016-2018 data.
+#' For earlier years the archive files from
+#' \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
 #' are used
 #'
 #' @param criterion Type of data to download.
@@ -247,17 +268,22 @@ download_horario_by_month <- function(pollutant, year){
 #'  \item{"NO2"}{ - Dioxido de nitrogeno (partes por billon)}
 #'  \item{"NO"}{ - Oxido nitrico (partes por billon)}
 #'  \item{"O3"}{ - Ozono (partes por billon)}
-#'  \item{"PM10"}{ - Particulas menores a 10 micrometros (microgramos por metro cubico)}
-#'  \item{"PM25"}{ - Particulas menores a 2.5 micrometros (microgramos por metro cubico)}
+#'  \item{"PM10"}{ - Particulas menores a 10 micrometros
+#'  (microgramos por metro cubico)}
+#'  \item{"PM25"}{ - Particulas menores a 2.5 micrometros
+#'  (microgramos por metro cubico)}
 #'  \item{"WSP"}{ - Velocidad del viento (metros por segundo)}
 #'  \item{"WDR"}{ - Direccion del viento (grados)}
 #'  \item{"TMP"}{ - Temperatura ambiente (grados Celsius)}
 #'  \item{"RH"}{ - Humedad relativa (porcentaje)}
 #' }
-#' @param year a numeric vector containing the years for which to download data (the earliest possible value is 1986)
-#' @param progress Whether to display a progress bar (TRUE or FALSE). By default it will only display in an interactive session.
+#' @param year a numeric vector containing the years for which to download data
+#' (the earliest possible value is 1986)
+#' @param progress Whether to display a progress bar (TRUE or FALSE).
+#' By default it will only display in an interactive session.
 #'
-#' @return a data.frame with pollution data, when downloading "HORARIOS" the hours correspond to the
+#' @return a data.frame with pollution data, when downloading "HORARIOS" the
+#' hours correspond to the
 #' \emph{Etc/GMT+6} timezone, with no daylight saving time
 #'
 #' @export
@@ -282,33 +308,50 @@ download_horario_by_month <- function(pollutant, year){
 get_station_data <- function(criterion, pollutant, year,
                              progress = interactive()) {
   year_no_data <- 2005
-  if (length(pollutant) > 1)
-    stop("You can only download one pollutant at a time")
-  stopifnot(criterion %in% c("HORARIOS", "MAXIMOS", "MINIMOS"))
-  pollutant <- tolower(pollutant)
-  stopifnot(pollutant %in% c("so2", "co", "nox", "no2",
-                             "no", "o3", "pm10", "pm25",
-                             "wsp", "wdr", "tmp", "rh"))
+  if (!(identical("HORARIOS", criterion) | identical("MAXIMOS", criterion) |
+        identical("MINIMOS", criterion)))
+    stop("criterion should be 'HORARIOS', 'MINIMOS', or 'MAXIMOS'")
+  if (!(identical("O3", pollutant) | identical("NO2", pollutant) |
+        identical("SO2", pollutant) | identical("CO", pollutant) |
+        identical("PM10", pollutant) | identical("WSP", pollutant) |
+        identical("WDR", pollutant) | identical("TMP", pollutant) |
+        identical("NOX", pollutant) | identical("NO", pollutant) |
+        identical("PM25", pollutant) | identical("RH", pollutant)))
+    stop("Invalid pollutant value")
+  ## Check the year argument is an integer or vector of integers
+  if (length(year) < 1)
+    stop("year should be an integer in YYYY format")
+  for (i in seq_len(length(year)))
+    if (is.integer2(year[i]) == FALSE)
+      stop("year should be an integer in YYYY format")
   if (min(year) < 1986)
     stop("Data is only available from 1986 onwards")
+
+  pollutant <- tolower(pollutant)
+
   if (!is.null(progress) & length(year) > 1)
     p <- progress_estimated(length(year))
   df <- data.frame()
   for (i in year){
-    df <- rbind(df,  .download_data(criterion, pollutant, i))
+    df <- rbind(df, .download_data(criterion, pollutant, i))
     if (!is.null(progress) & length(year) > 1)
       p$tick()$print()
   }
   as.data.frame(df)
 }
 
-
-
 #' Download monthly pollution data
 #'
-#' retrieve hourly averages of pollution data in the original units by station
-#' from the air quality server at \url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
+#' retrieve hourly averages, daily maximums or daily minimums of pollution data
+#' in the original units, by station, from the air quality server at
+#' \url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
 #'
+#' @param criterion Type of data to download.
+#' \itemize{
+#'  \item{"HORARIOS"}{ - Hourly data}
+#'  \item{"MAXIMOS""}{ - Daily maximums}
+#'  \item{"MINIMOS"}{ - Daily minimums}
+#' }
 #' @param pollutant The type of pollutant to download.
 #' \itemize{
 #'  \item{"SO2"}{ - Dioxido de azufre (partes por billon)}
@@ -317,17 +360,20 @@ get_station_data <- function(criterion, pollutant, year,
 #'  \item{"NO2"}{ - Dioxido de nitrogeno (partes por billon)}
 #'  \item{"NO"}{ - Oxido nitrico (partes por billon)}
 #'  \item{"O3"}{ - Ozono (partes por billon)}
-#'  \item{"PM10"}{ - Particulas menores a 10 micrometros (microgramos por metro cubico)}
-#'  \item{"PM25"}{ - Particulas menores a 2.5 micrometros (microgramos por metro cubico)}
+#'  \item{"PM10"}{ - Particulas menores a 10 micrometros
+#'  (microgramos por metro cubico)}
+#'  \item{"PM25"}{ - Particulas menores a 2.5 micrometros
+#'  (microgramos por metro cubico)}
 #'  \item{"WSP"}{ - Velocidad del viento (metros por segundo)}
 #'  \item{"WDR"}{ - Direccion del viento (grados)}
 #'  \item{"TMP"}{ - Temperatura ambiente (grados Celsius)}
 #'  \item{"RH"}{ - Humedad relativa (porcentaje)}
 #' }
-#' @param year a numeric vector containing the years for which to download data (the earliest possible value is 1986)
+#' @param year an integer indicating the year for which to download data
+#' (the earliest possible value is 1986)
 #' @param month month number to download
 #'
-#' @return a data.frame with pollution data, when downloading "HORARIOS" the hours correspond to the
+#' @return a data.frame with pollution data, the hours correspond to the
 #' \emph{Etc/GMT+6} timezone, with no daylight saving time
 #'
 #' @export
@@ -336,37 +382,60 @@ get_station_data <- function(criterion, pollutant, year,
 #' \dontrun{
 #' ## Download daily hourly PM10 data (particulate matter 10 micrometers or
 #' ## less in diameter) from March 2016
-#' df_pm10 <- get_station_single_month("PM10", 2016, 3)
+#' df_pm10 <- get_station_month_data("HORARIOS", "PM10", 2016, 3)
 #' head(df_pm10)
 #'
 #' ## Download daily hourly O3 data from October 2017
-#' df_o3 <- get_station_single_month("O3", 2017, 10)
+#' df_o3 <- get_station_month_data("O3", 2017, 10)
 #' ## Convert to local Mexico City time
-#' df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date, " ", df_o3$hour, ":00"),
+#' df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date,
+#'                                            " ",
+#'                                            df_o3$hour, ":00"),
 #'                                     tz = "Etc/GMT+6"),
 #'                          tz = "America/Mexico_City")
 #' head(df_o3)
 #' }
-get_station_single_month <- function(pollutant, year, month) {
+get_station_month_data <- function(criterion, pollutant, year, month) {
   if ( missing(pollutant) | missing(year) | missing(month))
     stop("arguments missing")
-  if (length(pollutant) > 1)
-    stop("You can only download one pollutant at a time")
-  if (length(year) > 1)
-    stop("You can only download one year at a time")
-  if (length(month) > 1)
-    stop("You can only download one month at a time")
-  pollutant <- tolower(pollutant)
-  stopifnot(pollutant %in% c("so2", "co", "nox", "no2",
-                             "no", "o3", "pm10", "pm25",
-                             "wsp", "wdr", "tmp", "rh"))
+  if (!(identical("HORARIOS", criterion) | identical("MAXIMOS", criterion) |
+        identical("MINIMOS", criterion)))
+    stop("criterion should be 'HORARIOS', 'MINIMOS', or 'MAXIMOS'")
+  if (!(identical("O3", pollutant) | identical("NO2", pollutant) |
+        identical("SO2", pollutant) | identical("CO", pollutant) |
+        identical("PM10", pollutant) | identical("WSP", pollutant) |
+        identical("WDR", pollutant) | identical("TMP", pollutant) |
+        identical("NOX", pollutant) | identical("NO", pollutant) |
+        identical("PM25", pollutant) | identical("RH", pollutant)))
+    stop("Invalid pollutant value")
+  ## Check the year argument is an integer or vector of integers
+  if (length(year) < 1)
+    stop("year should be an integer in YYYY format")
+  for (i in seq_len(length(year)))
+    if (is.integer2(year[i]) == FALSE)
+      stop("year should be an integer in YYYY format")
+  if (min(year) < 2005)
+    stop(paste("Data is only available from 2005 onwards. Try the using the",
+               " function `get_station_data` to download data by year",
+               " from 1986 onwards"))
+  if (length(month) != 1)
+    stop("you can only download a single month at a time")
+
   month <- str_pad(as.character(month), 2, "left", "0")
-  stopifnot(month %in% c("01", "02", "03", "04",
-                         "05", "06", "07", "08",
-                         "09", "10", "11", "12"))
+  if (!(identical("01", month) | identical("02", month) |
+        identical("03", month) | identical("04", month) |
+        identical("05", month) | identical("06", month) |
+        identical("07", month) | identical("08", month) |
+        identical("09", month) | identical("10", month) |
+        identical("11", month) | identical("12", month)))
+    stop("Invalid month value, should be between 1 and 12")
+
+  pollutant <- tolower(pollutant)
+
   year_no_data <- 2005
   if (year < year_no_data)
     stop(paste0("Monthly data is only available from 2005 onwards, try instead",
-                " downloading the data for the entire year"))
-  .download_current_station_data("HORARIOS", pollutant, year, month)
+                " downloading the data for the entire year (up to 1986) with",
+                " `get_station_data`"))
+  .download_current_station_data(criterion, pollutant, year, month)
 }

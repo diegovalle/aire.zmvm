@@ -19,7 +19,8 @@ get_station_imeca(pollutant, date, show_messages = TRUE)
 \item{date}{The date for which to download data in YYYY-MM-DD format
 (the earliest possible date is 2009-01-01).}
 
-\item{show_messages}{show a message about issues with performing the conversion}
+\item{show_messages}{show a message about issues with performing the
+conversion}
 }
 \value{
 A data.frame with pollution data measured in IMECAS, by station.
@@ -38,7 +39,10 @@ in the data returned by this function
 df_o3 <- get_station_imeca("O3", "2017-05-15", show_messages = FALSE)
 
 ## Convert to local Mexico City time
-df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date, " ", df_o3$hour, ":00"),
+df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date,
+                                           " ",
+                                           df_o3$hour,
+                                           ":00"),
                                     tz = "Etc/GMT+6"),
                          tz = "America/Mexico_City")
 head(df_o3[order(-df_o3$value), ])

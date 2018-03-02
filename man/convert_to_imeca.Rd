@@ -16,7 +16,8 @@ convert_to_imeca(value, pollutant, showWarnings = TRUE,
 
 \item{showWarnings}{Deprecated; use show_warnings instead.}
 
-\item{show_warnings}{show a warning about issues with performing the conversion}
+\item{show_warnings}{show a warning about issues with performing the
+conversion}
 }
 \value{
 value in IMECAS
