@@ -38,8 +38,29 @@ test_that(".convert_time correctly parses string", {
 
 })
 
-test_that("station pollution data matches api", {
+test_that("is.integer2 works", {
+  expect_true(is.integer2(1986))
+  expect_false(is.integer2(99.2))
+  expect_false(is.integer2(99.0000000001))
+  expect_false(is.integer2(character(0)))
+  expect_false(is.integer2(NULL))
+  expect_false(is.integer2(1.0000000000001))
+  expect_true(is.integer2(2018))
+  expect_true(is.integer2(c(1999:2010)[3]))
+
+})
+
+test_that("get_station_data matches website", {
   skip_on_cran()
+
+  # Invalid function arguments
+  expect_error(get_station_data("INVALID", "PM10", 2016))
+  expect_error(get_station_data("MAXIMOS", "INVALID", 2016))
+  expect_error(get_station_data("MAXIMOS", "PM10", 2016.6))
+  expect_error(get_station_data("MAXIMOS", "PM10", 1980))
+  expect_error(get_station_data("MAXIMOS", "PM10", -9:2015))
+  expect_error(get_station_data("MAXIMOS", "PM10", 2016.999))
+  expect_error(get_station_data("MAXIMOS", "PM10", -2016))
 
   df_min_2016 <- get_station_data("MINIMOS", "PM10", 2016, progress = NULL)
   df_max_2016 <- get_station_data("MAXIMOS", "PM10", 2016)
@@ -50,9 +71,11 @@ test_that("station pollution data matches api", {
   df_horarios_2010 <- get_station_data("HORARIOS", "PM10", 2010)
   df_horarios_2016 <- get_station_data("HORARIOS", "O3", 2016)
 
-
-
-  expect_warning(get_station_data("HORARIOS", "PM25", 1986))
+  # Wait before downloading
+  Sys.sleep(2)
+  # No measuring stations for PM25 in 1986, should show message
+  expect_message(get_station_data("HORARIOS", "PM25", 1986))
+  Sys.sleep(2)
   expect_equal(dplyr::filter(get_station_data("HORARIOS", "RH", 2000),
                 date == "2000-01-01" & hour == 3 &
                   station_code == "XAL")$value, 56)
@@ -98,72 +121,4 @@ test_that("station pollution data matches api", {
                c(NA, 28, 1, NA, NA, 5, 2, 6, NA, 30, 10, 9, 27, 14, 25, 15,
                  5, 30, 7, NA, 13, NA, 7, 15, 37, 17, 10, NA, 11, NA, NA, 0, NA,
                  NA, NA, 0, 10, NA, 0, 2, 3, NA, 18))
-})
-
-
-test_that("zone pollution data matches api", {
-  skip_on_cran()
-
-  df_max_o3 <- suppressWarnings(get_zone_imeca("MAXIMOS", "O3", c("NO", "NE", "CE"),
-                          "2015-12-25", "2016-01-01"))
-  df_max_tz <- suppressWarnings(get_zone_imeca("MAXIMOS", c("O3", "PM10"), c("TZ"),
-                          "2015-12-31", "2016-01-06"))
-  df_horarios <- suppressWarnings(get_zone_imeca("HORARIOS", c("O3", "PM10"),
-                                                c("NO", "NE", "CE"),
-                               "2015-12-25", "2016-01-01"))
-
-  expect_warning(get_zone_imeca("MAXIMOS", "O3", c("NO", "NE", "CE"),
-                               "2015-12-25", "2016-01-01"))
-  expect_warning(get_zone_imeca("MAXIMOS", "SO2", c("NO", "NE", "CE"),
-                               "2017-02-25", "2017-05-01"))
-  expect_silent(get_zone_imeca("MAXIMOS", "O3", c("NO", "NE", "CE"),
-                              "2015-12-25", "2016-01-01",
-                              showWarnings = FALSE))
-  expect_equal(subset(df_max_o3, zone == "NO" &
-                        pollutant == "O3")$value,
-               c(109, 51, 29, 49, 36, 104, 92, 119))
-  expect_equal(subset(df_max_o3, zone == "NE" &
-                        pollutant == "O3")$value,
-               c(122, 48, 32, 59, 38, 106, 115, 125))
-  expect_equal(unique(df_max_o3$zone), c("NO", "NE", "CE"))
-
-  expect_equal(subset(df_max_tz, zone == "NO" &
-                        pollutant == "PM10")$value,
-               c(107, 133, 129, 80, 104, 103, 78))
-  expect_equal(subset(df_max_tz, zone == "SO" &
-                        pollutant == "O3")$value,
-               c(124,132,69,57,29,44,33))
-  expect_equal(unique(df_max_tz$zone), c("NO", "NE", "CE", "SO", "SE"))
-
-  expect_equal(subset(df_horarios, zone == "CE" &
-                        pollutant == "PM10" &
-                        date == "2015-12-25")$value,
-               c(107, 107, 108, 108, 110, 112, 113, 113, 117, 119, 126, 127,
-                 126, 126, 127, 127, 127, 126, 126, 126, 126, 125, 124, 124))
-  expect_equal(subset(df_horarios, zone == "NO" &
-                        pollutant == "O3" &
-                        hour == 1 &
-                        date == "2016-01-01")$value,
-               c(5))
-  expect_equal(unique(df_horarios$zone), c("NO", "NE", "CE"))
-  expect_equal(unique(df_horarios$pollutant), c("O3", "PM10"))
-  # detect date errors
-  expect_error(get_zone_imeca("MAXIMOS", "O3", "TZ",
-                              "2008-01-32", "2007-13-44"))
-  # test that deprecated function shows warning
-  expect_warning(get_zone_data("MAXIMOS", "O3", "NO",
-                                               "2015-12-31", "2015-12-31",
-                                               showWarnings = FALSE))
-})
-
-test_that("latest data", {
-  skip_on_cran()
-
-  df <- get_latest_imeca()
-  expect_gt(nrow(df), 0)
-  expect_type(df$value, "integer")
-  expect_type(df$datetime, "character")
-  expect_false(all(is.na(df$datetime)))
-
-  expect_warning(get_latest_data())
 })

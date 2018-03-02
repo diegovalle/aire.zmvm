@@ -12,3 +12,4 @@ cran-comments.md
 .gitattributes
 ^README-.*\.png$
 ^codecov\.yml$
+^data-raw$

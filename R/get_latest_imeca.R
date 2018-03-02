@@ -15,7 +15,9 @@
                    "diciembre" = "december")
   time_div <- str_replace_all(time_div, month_names)
   if (str_detect(time_div, "24:00"))
-    warning("At midnight the website sometimes get the time wrong and reports a date 24 hours into the future")
+    warning(paste0("At midnight the website sometimes gets the time wrong and",
+                   " reports a date 24 hours into the future"),
+            call. = FALSE)
   time_div <- strptime(time_div, "%H:%M h%d de %B de %Y",
                        tz = "America/Mexico_City")
   as.character(strftime(time_div, "%Y-%m-%d %H:%M:%S"))

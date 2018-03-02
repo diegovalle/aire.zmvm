@@ -5,16 +5,17 @@
 \title{Download pollution data by zone in IMECAs}
 \usage{
 get_zone_imeca(criterion, pollutant, zone, start_date, end_date,
-  showWarnings = TRUE)
+  showWarnings = TRUE, show_messages = TRUE)
 }
 \arguments{
-\item{criterion}{The type of data to download
+\item{criterion}{The type of data to download. One of the following options:
 \itemize{
  \item{"HORARIOS"}{ - Hourly data}
  \item{"MAXIMOS""}{ - Daily maximums}
 }}
 
-\item{pollutant}{The type of pollutant to download
+\item{pollutant}{The type of pollutant to download. One or more of the
+following options:
 \itemize{
  \item{"SO2"}{ - Dioxido de azufre}
  \item{"CO"}{ - Monoxido de carbono}
@@ -24,7 +25,8 @@ get_zone_imeca(criterion, pollutant, zone, start_date, end_date,
  \item{"TC"}{- All the pollutants}
 }}
 
-\item{zone}{The geographic zone for which to download data
+\item{zone}{The geographic zone for which to download data. One or more of
+the following:
 \itemize{
  \item{"NO"}{ - Noroeste}
  \item{"NE"}{ - Noreste}
@@ -34,14 +36,19 @@ get_zone_imeca(criterion, pollutant, zone, start_date, end_date,
  \item{"TZ"}{ - All zones}
 }}
 
-\item{start_date}{The start date in YYYY-MM-DD format (earliest possible value is 2008-01-01).}
+\item{start_date}{The start date in YYYY-MM-DD format (earliest possible
+value is 2008-01-01).}
 
 \item{end_date}{The end date in YYYY-MM-DD format.}
 
-\item{showWarnings}{Show warnings about problems with the data}
+\item{showWarnings}{Deprecated; use show_messages instead.}
+
+\item{show_messages}{show a message about issues with performing the
+conversion}
 }
 \value{
-A data.frame with pollution data measured in IMECAS, by geographic zone. The hours
+A data.frame with pollution data measured in IMECAS, by geographic
+zone. The hours
 correspond to the \emph{Etc/GMT+6} timezone, with no daylight saving time
 }
 \description{
@@ -82,11 +89,11 @@ Coyoacán, Cuajimalpa, Magdalena Contreras, Tlalpan and Huixquilucan.
 \examples{
 ## There was a regional (NE) PM10 pollution emergency on Jan 6, 2017
 get_zone_imeca("MAXIMOS", "PM10", "NE", "2017-01-05", "2017-01-08",
-               showWarnings = FALSE)
+               show_messages = FALSE)
 
 ## There was an ozone pollution emergency on May 15, 2017
 get_zone_imeca("MAXIMOS", "O3", "TZ", "2017-05-15", "2017-05-15",
-               showWarnings = FALSE)
+               show_messages = FALSE)
 
 \dontrun{
 ## Download daily maximum PM10 data (particulate matter 10 micrometers or

@@ -1,15 +1,16 @@
 #' Inverse Distance Weighting with Directional Data
 #'
-#' function for inverse distance weighted interpolation with directional data. Useful for when you
-#' are working with data whose unit of measurement is degrees (i.e. the average of 35 degrees and
-#' 355 degrees should be 15 degrees). It works by finding the shortest distance between two degree
+#' function for inverse distance weighted interpolation with directional data.
+#' Useful for when you are working with data whose unit of measurement is
+#' degrees (i.e. the average of 35 degrees and 355 degrees should be 15
+#' degrees). It works by finding the shortest distance between two degree
 #' marks on a circle.
 #'
 #' @param values the dependent variable
-#' @param coords the spatial data locations where the values were measured. First column x/longitud,
-#' second y/latitude
-#' @param grid data frame or Spatial object with the locations to predict. First column x/longitud,
-#' second y/latitude
+#' @param coords the spatial data locations where the values were measured.
+#' First column x/longitud, second y/latitude
+#' @param grid data frame or Spatial object with the locations to predict.
+#' First column x/longitud, second y/latitude
 #' @param idp The inverse distance weighting power
 #'
 #' @importFrom sp spDists
@@ -47,7 +48,8 @@
 #' ## Random values in each of the measuring stations
 #' locations <- stations[, c("lon", "lat")]
 #' coordinates(locations) <- ~lon+lat
-#' proj4string(locations) <- CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
+#' crs_string <- "+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0"
+#' proj4string(locations) <- CRS(crs_string)
 #' values <- runif(length(locations), 0, 360)
 #' pixels <- 10
 #' grid <- expand.grid(lon = seq((min(coordinates(locations)[, 1]) - .1),
@@ -57,7 +59,7 @@
 #'                               (max(coordinates(locations)[, 2]) + .1),
 #'                               length.out = pixels))
 #' grid <- SpatialPoints(grid)
-#' proj4string(grid) <- CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
+#' proj4string(grid) <- CRS(crs_string)
 #' ## bind the extrapolated values for plotting
 #' df <- cbind(idw360(values, locations, grid), as.data.frame(grid))
 #' ggplot(df, aes(lon, lat)) +

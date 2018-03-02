@@ -13,6 +13,7 @@ NULL
 
 
 
-## Avoid notes of the type 'no visible binding for global variable [variable name]'
+## Avoid notes of the type:
+## 'no visible binding for global variable [variable name]'
 utils::globalVariables(c("station_code", "value", "hour", "zone_pollutant",
                          "unit"))

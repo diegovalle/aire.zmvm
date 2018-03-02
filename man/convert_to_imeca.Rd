@@ -6,14 +6,18 @@
 IMECA (Indice Metropolitano de la Calidad del Aire), a dimensionless scale
 where all the pollutants can be compared.}
 \usage{
-convert_to_imeca(value, pollutant, showWarnings = TRUE)
+convert_to_imeca(value, pollutant, showWarnings = TRUE,
+  show_warnings = TRUE)
 }
 \arguments{
 \item{value}{value to convert to IMECAS}
 
 \item{pollutant}{type of pollutant}
 
-\item{showWarnings}{show a warning about issues with performing the conversion}
+\item{showWarnings}{Deprecated; use show_warnings instead.}
+
+\item{show_warnings}{show a warning about issues with performing the
+conversion}
 }
 \value{
 value in IMECAS
@@ -24,16 +28,16 @@ See \url{http://rama.edomex.gob.mx/contaminacion-atmosferica/imeca}
 \examples{
 ## IMECAs are a dimensionless scale that allows for the comparison of
 ## different pollutants
-convert_to_imeca(157, "O3", showWarnings = FALSE)
-convert_to_imeca(c(450, 350, 250), "NO2", showWarnings = FALSE)
-convert_to_imeca(80, "PM10", showWarnings = FALSE)
-convert_to_imeca(c(157, 200), "O3", showWarnings = FALSE)
-convert_to_imeca(48, "O3", showWarnings = FALSE)
-convert_to_imeca(67, "O3", showWarnings = FALSE)
-convert_to_imeca(77, "O3", showWarnings = FALSE)
-convert_to_imeca(205, "O3", showWarnings = FALSE)
-convert_to_imeca(72, "O3", showWarnings = FALSE)
-convert_to_imeca(98, "O3", showWarnings = FALSE)
+convert_to_imeca(157, "O3", show_warnings = FALSE)
+convert_to_imeca(c(450, 350, 250), "NO2", show_warnings = FALSE)
+convert_to_imeca(80, "PM10", show_warnings = FALSE)
+convert_to_imeca(c(157, 200), "O3", show_warnings = FALSE)
+convert_to_imeca(48, "O3", show_warnings = FALSE)
+convert_to_imeca(67, "O3", show_warnings = FALSE)
+convert_to_imeca(77, "O3", show_warnings = FALSE)
+convert_to_imeca(205, "O3", show_warnings = FALSE)
+convert_to_imeca(72, "O3", show_warnings = FALSE)
+convert_to_imeca(98, "O3", show_warnings = FALSE)
 
 ## Should show a warning because the conversion formula is not well
 ## defined
