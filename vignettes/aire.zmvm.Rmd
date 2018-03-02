@@ -28,7 +28,7 @@ This document introduces you to tools for downloading data from each of the poll
 
 The basic set of functions provided by the package:
 
-* ```get_station_data``` and ```get_station_single_month``` download pollution, wind and temperature data for each of the measuring stations in the original units (ppb, µg/m³, etc).
+* ```get_station_data``` and ```get_station_month_data``` download pollution, wind and temperature data for each of the measuring stations in the original units (ppb, µg/m³, etc).
 * ```get_station_imeca``` download pollution values for each station in IMECAs
 * ```get_zone_imeca``` download pollution data in IMECAs for each of the 5 geographic zones of Mexico City 
 * ```get_latest_imeca``` download the latest pollution hourly maximums for each of the measuring stations.
@@ -191,8 +191,8 @@ Education authorities decided to suspend classes in public and private schools i
 We use the ```get_station_single_month``` function to download hourly temperature data for the month of January.
 
 ```{r, fig.show='hold',fig.cap = "January Temperatures in 2018, by day", message=FALSE}
-# Download temperature (TMP) data for January 2018
-jan <- get_station_single_month("TMP", 2018, 1)
+# Download hourky (HORARIOS) temperature (TMP) data for January 2018
+jan <- get_station_month_data("HORARIOS", "TMP", 2018, 1)
 ```
 
 Here's what the data we downloaded looks like:
