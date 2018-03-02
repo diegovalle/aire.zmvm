@@ -241,7 +241,7 @@ temp_morning <- mutate(temp_morning,
 ```{r, fig.show='hold', fig.cap = "January Temperatures in 2018, by day", message=FALSE}
 ggplot(temp_morning, aes(hour, value, group = day, color = color)) +
   geom_line(alpha = .8, size = .7) +
-  facet_wrap(~ station_name) +
+  facet_wrap(~ station_code) +
   scale_colour_manual("day", values = c("#542788", "#fdb863")) +
   scale_x_discrete(breaks = c(5, 8, 11), 
                    labels = c("5:00 AM", "8:00 AM", "11:00 AM")) +
