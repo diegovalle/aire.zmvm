@@ -14,14 +14,15 @@
 #' @importFrom httr content
 .download_data_zone <- function(criterion, pollutant, zone, start_date,
                                 end_date) {
-  url <- "http://www.aire.cdmx.gob.mx/estadisticas-consultas/consultas/resultado_consulta.php"
+  url <- paste0("http://www.aire.cdmx.gob.mx/",
+                "estadisticas-consultas/consultas/resultado_consulta.php")
   fd <- list(
-    diai	= day(start_date),
-    mesi	= month(start_date),
-    anoi	= year(start_date),
-    diaf	= day(end_date),
-    mesf	= month(end_date),
-    anof	= year(end_date),
+    diai = day(start_date),
+    mesi = month(start_date),
+    anoi = year(start_date),
+    diaf = day(end_date),
+    mesf = month(end_date),
+    anof = year(end_date),
     #pollutant = "on",
     #zone = "on",
     Q	= criterion,
@@ -109,7 +110,8 @@
 #' @param start_date The start date in YYYY-MM-DD format (earliest possible
 #' value is 2008-01-01).
 #' @param end_date The end date in YYYY-MM-DD format.
-#' @param showWarnings Deprecated; use show_messages instead.
+#' @param showWarnings deprecated; you can use the function
+#' \code{\link[base]{suppressWarnings}} instead.
 #' @param show_messages show a message about issues with performing the
 #' conversion
 #'
@@ -151,7 +153,8 @@
 get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
                           showWarnings = TRUE, show_messages = TRUE) {
   if (!missing("showWarnings"))
-    warning("`showWarnings` argument deprecated.",
+    warning(paste0("`showWarnings` argument deprecated. Use the function ",
+                   "`suppressWarnings` instead."),
             call. = FALSE)
   if (missing(pollutant))
     stop("You need to specify a pollutant")
@@ -161,15 +164,16 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
     stop("You need to specify a start date")
   if (missing(end_date))
     stop("You need to specify an end_date (YYYY-MM-DD)")
-  if(!is.Date(end_date))
+  if (!is.Date(end_date))
     stop("end_ate should be a date in YYYY-MM-DD format")
   if (missing(start_date))
     stop("You need to specify a start_date (YYYY-MM-DD)")
-  if(!is.Date(start_date))
+  if (!is.Date(start_date))
     stop("start_date should be a string in YYYY-MM-DD format")
   if (start_date < "2008-01-01")
     stop(paste0("start_date should be after 2008-01-01, but you can visit",
-                " http://www.aire.cdmx.gob.mx/default.php?opc=%27aKBhnmI=%27&opcion=aw==",
+                " http://www.aire.cdmx.gob.mx/",
+                "default.php?opc=%27aKBhnmI=%27&opcion=aw==",
                 " to download data going back to 1992"))
 
   # standarize on uppercase since the station api expects upper, but

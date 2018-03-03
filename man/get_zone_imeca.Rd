@@ -41,7 +41,8 @@ value is 2008-01-01).}
 
 \item{end_date}{The end date in YYYY-MM-DD format.}
 
-\item{showWarnings}{Deprecated; use show_messages instead.}
+\item{showWarnings}{deprecated; you can use the function
+\code{\link[base]{suppressWarnings}} instead.}
 
 \item{show_messages}{show a message about issues with performing the
 conversion}

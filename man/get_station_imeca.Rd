@@ -19,8 +19,7 @@ get_station_imeca(pollutant, date, show_messages = TRUE)
 \item{date}{The date for which to download data in YYYY-MM-DD format
 (the earliest possible date is 2009-01-01).}
 
-\item{show_messages}{show a message about issues with performing the
-conversion}
+\item{show_messages}{show a message about issues with excluded stations}
 }
 \value{
 A data.frame with pollution data measured in IMECAS, by station.

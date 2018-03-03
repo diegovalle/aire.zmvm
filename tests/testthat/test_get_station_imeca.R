@@ -35,5 +35,3 @@ test_that("is.Date works", {
   expect_false(is.Date(NULL))
   expect_false(is.Date(NA))
 })
-
-

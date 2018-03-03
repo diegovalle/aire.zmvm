@@ -21,5 +21,3 @@
 #' @examples
 #' head(stations)
 "stations"
-
-

@@ -21,15 +21,15 @@
 #' }
 #'
 get_latest_data <- function(...) {
-  .Deprecated("get_latatest_imeca", package="aire.zmvm")
+  .Deprecated("get_latatest_imeca", package = "aire.zmvm")
   get_latest_imeca(...)
 }
 get_zone_data <- function(...) {
-  .Deprecated("get_zone_imeca", package="aire.zmvm")
+  .Deprecated("get_zone_imeca", package = "aire.zmvm")
   get_zone_imeca(...)
 }
 get_station_single_month <- function (...) {
-  .Deprecated("get_station_month_data", package="aire.zmvm")
+  .Deprecated("get_station_month_data", package = "aire.zmvm")
   get_station_month_data("HORARIOS", ...)
 }
 NULL

@@ -18,8 +18,7 @@
 #' }
 #' @param date The date for which to download data in YYYY-MM-DD format
 #' (the earliest possible date is 2009-01-01).
-#' @param show_messages show a message about issues with performing the
-#' conversion
+#' @param show_messages show a message about issues with excluded stations
 #'
 #' @return A data.frame with pollution data measured in IMECAS, by station.
 #' The hours correspond to the \emph{Etc/GMT+6} timezone, with no daylight
@@ -45,9 +44,9 @@ get_station_imeca <- function(pollutant, date,
                               show_messages = TRUE) {
   if (missing(date))
     stop("You need to specify a start date (YYYY-MM-DD)")
-  if(length(date) != 1)
+  if (length(date) != 1)
     stop("date should be a date in YYYY-MM-DD format")
-  if(!is.Date(date))
+  if (!is.Date(date))
     stop("date should be a date in YYYY-MM-DD format")
   if (date < "2009-01-01")
     stop("date should be after 2009-01-01")
@@ -85,7 +84,7 @@ get_station_imeca <- function(pollutant, date,
   if (nrow(df) <= 1)
     stop("The website returned invalid data. Please check the date format.")
   pollutant2 <- names(df)[3]
-  df <- df[,!is.na( df[1, ])]
+  df <- df[, !is.na( df[1, ])]
   names(df) <- df[1, ]
   names(df)[1] <- "date"
   names(df)[2] <- "hour"
@@ -95,6 +94,5 @@ get_station_imeca <- function(pollutant, date,
   df$value <- as.numeric(as.character(df$value))
   df$pollutant <- pollutant2
   df$unit <- "IMECA"
-  df[,c("date", "hour", "station_code", "pollutant", "unit", "value" )]
+  df[, c("date", "hour", "station_code", "pollutant", "unit", "value" )]
 }
-

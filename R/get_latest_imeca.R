@@ -75,6 +75,3 @@ get_latest_imeca <- function() {
 
   mxc[!is.na(mxc$station_code), ]
 }
-
-
-

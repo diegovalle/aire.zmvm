@@ -47,9 +47,11 @@ recode_pollutant <- function(pollutant) {
   upollutant <- toupper(pollutant)
   if (upollutant == "PM25")
     upollutant <- "PM2.5"
-  base_url <- "http://148.243.232.112:8080/opendata/anuales_horarios_gz/contaminantes_"
+  base_url <- paste0("http://148.243.232.112:8080/",
+                     "opendata/anuales_horarios_gz/contaminantes_")
   if (upollutant %in% c("WSP", "WDR", "TMP", "RH"))
-    base_url <- "http://148.243.232.112:8080/opendata/anuales_horarios_gz/meteorolog%C3%ADa_"
+    base_url <- paste0("http://148.243.232.112:8080/",
+                       "opendata/anuales_horarios_gz/meteorolog%C3%ADa_")
   ## The files from 2012 onwards changed the name of the columns
   ## cve_station and cve_parameter to id_station and id_parameter
   if (year >= 2012)
@@ -125,7 +127,8 @@ recode_pollutant <- function(pollutant) {
                                            month = "") {
   if (pollutant == "pm25")
     pollutant <- "pm2"
-  base_url <- "http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/respuesta.php?"
+  base_url <- paste0("http://www.aire.cdmx.gob.mx/",
+                     "estadisticas-consultas/concentraciones/respuesta.php?")
   url <- str_c(base_url, "qtipo=", criterion, "&",
                "parametro=", pollutant, "&",
                "anio=", year, "&",
@@ -173,9 +176,9 @@ recode_pollutant <- function(pollutant) {
     df <- df[, c("date", "station_code", "pollutant", "unit", "value")]
     # For some reason when the criterion is MAXIMOS or MINIMOS the website
     # returns the month we asked for, plus the rest of the year. subset
-    if ((month %in% c("01", "02", "03", "04",
+    if ( (month %in% c("01", "02", "03", "04",
                       "05", "06", "07", "08",
-                      "09", "10", "11", "12")))
+                      "09", "10", "11", "12")) )
       df <- dplyr::filter(df, month(date) == as.numeric(month))
   } else {
     df <- df[, c("date", "hour", "station_code", "pollutant", "unit", "value")]

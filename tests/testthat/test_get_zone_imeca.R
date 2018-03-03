@@ -3,15 +3,22 @@ test_that("zone pollution data matches website", {
   skip_on_cran()
 
   # Invalid function arguments
-  expect_error(get_zone_imeca("INVALIDCRITERION", "O3", "NO", "2015-12-25", "2016-01-01"))
-  expect_error(get_zone_imeca("MAXIMOS", "INVALIDO3", "NO", "2015-12-25", "2016-01-01"))
-  expect_error(get_zone_imeca("MAXIMOS", "O3", "INVALIDNO", "2015-12-25", "2016-01-01"))
-  expect_error(get_zone_imeca("MAXIMOS", "O3", "NO", "2015-13-25", "2016-01-01"))
-  expect_error(get_zone_imeca("MAXIMOS", "O3", "NO", "2015-12-25", "2016-14-01"))
+  expect_error(get_zone_imeca("INVALIDCRITERION", "O3",
+                              "NO", "2015-12-25", "2016-01-01"))
+  expect_error(get_zone_imeca("MAXIMOS", "INVALIDO3",
+                              "NO", "2015-12-25", "2016-01-01"))
+  expect_error(get_zone_imeca("MAXIMOS", "O3",
+                              "INVALIDNO", "2015-12-25", "2016-01-01"))
+  expect_error(get_zone_imeca("MAXIMOS", "O3",
+                              "NO", "2015-13-25", "2016-01-01"))
+  expect_error(get_zone_imeca("MAXIMOS", "O3",
+                              "NO", "2015-12-25", "2016-14-01"))
 
-  df_max_o3 <- suppressMessages(get_zone_imeca("MAXIMOS", "O3", c("NO", "NE", "CE"),
+  df_max_o3 <- suppressMessages(get_zone_imeca("MAXIMOS",
+                                               "O3", c("NO", "NE", "CE"),
                                                "2015-12-25", "2016-01-01"))
-  df_max_tz <- suppressMessages(get_zone_imeca("MAXIMOS", c("O3", "PM10"), c("TZ"),
+  df_max_tz <- suppressMessages(get_zone_imeca("MAXIMOS",
+                                               c("O3", "PM10"), c("TZ"),
                                                "2015-12-31", "2016-01-06"))
   df_horarios <- suppressMessages(get_zone_imeca("HORARIOS", c("O3", "PM10"),
                                                  c("NO", "NE", "CE"),
@@ -37,7 +44,7 @@ test_that("zone pollution data matches website", {
                c(107, 133, 129, 80, 104, 103, 78))
   expect_equal(subset(df_max_tz, zone == "SO" &
                         pollutant == "O3")$value,
-               c(124,132,69,57,29,44,33))
+               c(124, 132, 69, 57, 29, 44, 33))
   expect_equal(unique(df_max_tz$zone), c("NO", "NE", "CE", "SO", "SE"))
 
   expect_equal(subset(df_horarios, zone == "CE" &
