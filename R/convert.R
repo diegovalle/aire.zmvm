@@ -138,14 +138,23 @@ to_imeca <- function(contaminant, value) {
 #'
 #' See \url{http://rama.edomex.gob.mx/contaminacion-atmosferica/imeca}
 #'
-#' @param pollutant type of pollutant
-#' @param value value to convert to IMECAS
+#' @param pollutant type of pollutantOne or more of the
+#' following options:
+#' \itemize{
+#'  \item{"SO2"}{ - Dioxido de azufre}
+#'  \item{"CO"}{ - Monoxido de carbono}
+#'  \item{"NO2"}{ - Dioxido de nitrogeno}
+#'  \item{"O3"}{ - Ozono}
+#'  \item{"PM10"}{ - Particulas menores a 10 micrometros}
+#' }
+#' @param value numeric value to convert to IMECAS
 #' @param showWarnings Deprecated; use show_warnings instead.
 #' @param show_warnings show a warning about issues with performing the
 #' conversion
 #'
 #' @return value in IMECAS
 #' @export
+#' @importFrom stats na.omit
 #' @examples
 #' ## IMECAs are a dimensionless scale that allows for the comparison of
 #' ## different pollutants
@@ -171,9 +180,31 @@ convert_to_imeca <- function(value, pollutant, showWarnings = TRUE,
             call. = FALSE)
     show_warnings <- showWarnings
   }
+  if (length(pollutant) < 1)
+    stop("Invalid pollutant value")
   pollutant <- toupper(pollutant)
-  stopifnot(pollutant %in% c("O3", "NO2", "PM10", "SO2", "CO"))
+  for (i in seq_len(length(pollutant)))
+    if (!(identical("O3", pollutant[i]) | identical("NO2", pollutant[i]) |
+          identical("SO2", pollutant[i]) | identical("CO", pollutant[i]) |
+          identical("PM10", pollutant[i]) ))
+      stop("Invalid pollutant value")
+  if (length(value) < 1)
+    stop("value should be numeric")
+  if (is.factor(value))
+    stop("value should be numeric")
+  if (!suppressWarnings(!any(is.na(as.numeric(na.omit(value))))))
+    stop("value should be numeric")
+
   if (show_warnings)
-    warning("This function is beta. Converted values don't always match official ones and care should be taken to validate them.")
+    warning(paste0("This function is beta. Converted values don't always",
+                   " match official ones and care should be taken to",
+                   " validate them."),
+            call. = FALSE)
+
+  if (length(value) != length(pollutant) & show_warnings)
+    warning(paste0("The vectors are of unequal length. Recycling elements ",
+                   "of the shorter vector to match the longer vector."),
+            call. = FALSE)
+
   as.vector(unname(mapply(to_imeca, contaminant = pollutant, value = value)))
 }
