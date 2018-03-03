@@ -1,7 +1,27 @@
 
 test_that(("convert units"), {
+  # Bad arguments
+  expect_error(convert_to_imeca(10, NA, show_warnings = FALSE))
+  expect_error(convert_to_imeca(10, "NO3", show_warnings = FALSE))
+  expect_error(convert_to_imeca(10, NA, show_warnings = FALSE))
+  expect_error(convert_to_imeca(10, NA, show_warnings = FALSE))
+  expect_error(convert_to_imeca(10, NA, show_warnings = FALSE))
+  expect_error(convert_to_imeca(10, NA, show_warnings = FALSE))
+
+
+  expect_equal(convert_to_imeca(c(10,NA,10), c("O3"), show_warnings = FALSE),
+               c(7,NA,7))
+  expect_equal(convert_to_imeca(c(10.1, NA, 10.3), "PM10",
+                                show_warnings = FALSE),
+               c(13, NA, 13))
+  expect_equal(convert_to_imeca(c(10.1, NA, 10.3), "PM10", show_warnings = FALSE),
+               c(13, NA, 13))
+  expect_error(convert_to_imeca(structure(1L, .Label = "a", class = "factor"),
+                                "PM10", show_warnings = FALSE))
+
   # Argument showWarnings was deprecated and should show a warning
   expect_warning(convert_to_imeca(10, "NO2", showWarnings = FALSE))
+  expect_warning(convert_to_imeca(10, c("NO2", "O3"), show_warnings = TRUE))
 
   expect_equal(convert_to_imeca(-1, "NO2", show_warnings = FALSE), NA)
   expect_equal(convert_to_imeca(NA, "NO2", show_warnings = FALSE), NA)

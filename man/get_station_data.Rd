@@ -47,10 +47,12 @@ hours correspond to the
 retrieve pollution data by station in the original units from the air quality
 server at
 \url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
-for 2016-2018 data.
-For earlier years the archive files from
-\url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
-are used
+or for earlier years use the archive files from
+\url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==} or
+\url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI='&opcion=Zw==} for
+meteorological data. For wind speed (WSP) and temperature (TMP) archive
+values are correct to one decimal place, but the most recent data is rounded
+to the nearest integer.
 }
 \examples{
 \dontrun{

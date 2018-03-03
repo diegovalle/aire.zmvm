@@ -1,12 +1,4 @@
-is.integer2 <- function(int) {
-  if (length(int) < 1)
-    return(FALSE)
-  if(any(is.na(int)))
-    return(FALSE)
-  tryCatch(identical(int, as.integer(floor(int))) |
-             identical(int, as.double(floor(int))),
-           error = function(e) {FALSE})
-}
+
 
 recode_unit <- function(pollutant) {
   str_replace_all(pollutant, c("pm2" = "\u00B5g/m\u00B3",
@@ -58,7 +50,19 @@ recode_pollutant <- function(pollutant) {
   base_url <- "http://148.243.232.112:8080/opendata/anuales_horarios_gz/contaminantes_"
   if (upollutant %in% c("WSP", "WDR", "TMP", "RH"))
     base_url <- "http://148.243.232.112:8080/opendata/anuales_horarios_gz/meteorolog%C3%ADa_"
-  df <- read_csv(str_c(base_url, year, ".csv.gz"),
+  ## The files from 2012 onwards changed the name of the columns
+  ## cve_station and cve_parameter to id_station and id_parameter
+  if (year >= 2012)
+    df <- read_csv(str_c(base_url, year, ".csv.gz"),
+                   skip = 10, progress = FALSE, col_types = list(
+                     date = col_character(),
+                     id_station = col_character(),
+                     id_parameter = col_character(),
+                     value = col_double(),
+                     unit = col_integer()
+                   ))
+  else
+    df <- read_csv(str_c(base_url, year, ".csv.gz"),
                  skip = 10, progress = FALSE, col_types = list(
                    date = col_character(),
                    cve_station = col_character(),
@@ -66,7 +70,6 @@ recode_pollutant <- function(pollutant) {
                    value = col_double(),
                    unit = col_integer()
                  ))
-
   names(df) <- c("date", "station_code", "pollutant", "value", "unit")
   if (!upollutant %in% unique(df$pollutant)) {
     message(str_c("No data for '", upollutant, "' in the year of ", year))
@@ -212,16 +215,22 @@ download_horario_by_month <- function(pollutant, year){
 #' @importFrom dplyr %>% group_by summarise ungroup
 #'
 .download_data <- function(criterion, pollutant, year) {
-  year_no_data <- 2005
+  year_not_to_use_archives <- 2018
+  ## The old archive data files include decimal points for WSP and TMP
+  ## but not the web form. Be sure to use the web form only for recent data
+  if (toupper(pollutant) == "WSP" | toupper(pollutant) == "TMP")
+    year_no_minmax_data <- 2018
+  else
+    year_no_minmax_data <- 2005
+  ## Fuck, the website stopped allowing download of HORARIOS yearly data
+  ## use the old archives before 2017 and use the monthly data after
   if (criterion == "HORARIOS") {
-    # Fuck, the website stopped allowing download of HORARIOS yearly data
-    # use the old archives before 2015 and use the monthly data after
-    if (year > 2015) {
+    if (year >= year_not_to_use_archives) {
       download_horario_by_month(pollutant, year)
     } else
       .download_old_station_data(pollutant, year)
   } else if (criterion == "MAXIMOS") {
-    if (year >= year_no_data) {
+    if (year >= year_no_minmax_data) {
       .download_current_station_data(criterion, pollutant, year)
     } else
       .download_old_station_data(pollutant, year) %>%
@@ -231,7 +240,7 @@ download_horario_by_month <- function(pollutant, year){
                                base::max(value, na.rm = TRUE))) %>%
       ungroup()
   } else if (criterion == "MINIMOS") {
-    if (year >= year_no_data) {
+    if (year >= year_no_minmax_data) {
       .download_current_station_data(criterion, pollutant, year)
     } else
       .download_old_station_data(pollutant, year) %>%
@@ -249,10 +258,12 @@ download_horario_by_month <- function(pollutant, year){
 #' retrieve pollution data by station in the original units from the air quality
 #' server at
 #' \url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
-#' for 2016-2018 data.
-#' For earlier years the archive files from
-#' \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
-#' are used
+#' or for earlier years use the archive files from
+#' \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==} or
+#' \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI='&opcion=Zw==} for
+#' meteorological data. For wind speed (WSP) and temperature (TMP) archive
+#' values are correct to one decimal place, but the most recent data is rounded
+#' to the nearest integer.
 #'
 #' @param criterion Type of data to download.
 #' \itemize{
@@ -307,7 +318,6 @@ download_horario_by_month <- function(pollutant, year){
 #' }
 get_station_data <- function(criterion, pollutant, year,
                              progress = interactive()) {
-  year_no_data <- 2005
   if (!(identical("HORARIOS", criterion) | identical("MAXIMOS", criterion) |
         identical("MINIMOS", criterion)))
     stop("criterion should be 'HORARIOS', 'MINIMOS', or 'MAXIMOS'")
@@ -329,12 +339,14 @@ get_station_data <- function(criterion, pollutant, year,
 
   pollutant <- tolower(pollutant)
 
-  if (!is.null(progress) & length(year) > 1)
+  if (is.null(progress))
+    progress <- FALSE
+  if (progress & length(year) > 1)
     p <- progress_estimated(length(year))
   df <- data.frame()
   for (i in year){
     df <- rbind(df, .download_data(criterion, pollutant, i))
-    if (!is.null(progress) & length(year) > 1)
+    if (progress & length(year) > 1)
       p$tick()$print()
   }
   as.data.frame(df)
@@ -345,6 +357,9 @@ get_station_data <- function(criterion, pollutant, year,
 #' retrieve hourly averages, daily maximums or daily minimums of pollution data
 #' in the original units, by station, from the air quality server at
 #' \url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
+#' The values for wind speed (WSP) and temperature (TMP) were rounded
+#' to the nearest integer, but the \code{\link{get_station_data}} function allows you to
+#' download data accurate to one decimal point.
 #'
 #' @param criterion Type of data to download.
 #' \itemize{
@@ -420,6 +435,12 @@ get_station_month_data <- function(criterion, pollutant, year, month) {
                " from 1986 onwards"))
   if (length(month) != 1)
     stop("you can only download a single month at a time")
+  if (pollutant == "WSP" | pollutant == "TMP")
+    warning(paste0("Wind speed (WSP) and temperature (TMP) were rounded to the",
+            " nearest integer, in some circumstances you can download data",
+            " accurate to",
+            " one decimal point using the `get_station_data` function. ",
+            "See the documentation for more information."), call. = FALSE)
 
   month <- str_pad(as.character(month), 2, "left", "0")
   if (!(identical("01", month) | identical("02", month) |

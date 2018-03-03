@@ -10,9 +10,17 @@ convert_to_imeca(value, pollutant, showWarnings = TRUE,
   show_warnings = TRUE)
 }
 \arguments{
-\item{value}{value to convert to IMECAS}
+\item{value}{numeric value to convert to IMECAS}
 
-\item{pollutant}{type of pollutant}
+\item{pollutant}{type of pollutantOne or more of the
+following options:
+\itemize{
+ \item{"SO2"}{ - Dioxido de azufre}
+ \item{"CO"}{ - Monoxido de carbono}
+ \item{"NO2"}{ - Dioxido de nitrogeno}
+ \item{"O3"}{ - Ozono}
+ \item{"PM10"}{ - Particulas menores a 10 micrometros}
+}}
 
 \item{showWarnings}{Deprecated; use show_warnings instead.}
 

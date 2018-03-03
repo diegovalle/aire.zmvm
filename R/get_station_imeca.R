@@ -1,9 +1,4 @@
-is.Date <- function(date, date.format = "%Y-%m-%d") {
-  if (length(date) < 1)
-    return(FALSE)
-  tryCatch(!is.na(as.Date(date, date.format)),
-           error = function(e) {FALSE})
-}
+
 
 #' Download pollution data by station in IMECAS
 #'

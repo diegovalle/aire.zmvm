@@ -1,7 +1,7 @@
 Mexico City Pollution Data
 ================
 Diego Valle-Jones
-March 01, 2018
+March 02, 2018
 
 -   [What does it do?](#what-does-it-do)
 -   [Installation](#installation)
@@ -67,10 +67,10 @@ The package consists mainly of four functions:
 </colgroup>
 <thead>
 <tr class="header">
-<th>function</th>
-<th>date range</th>
+<th>Function</th>
+<th>Date range</th>
 <th>Units</th>
-<th>Wind / Tmp / RH</th>
+<th>Wind, Tmp, RH</th>
 <th>Earliest Date</th>
 <th>Pollutants</th>
 <th>Includes All Stations</th>
@@ -90,7 +90,7 @@ The package consists mainly of four functions:
 </tr>
 <tr class="even">
 <td>get_station_month_data</td>
-<td>1 month</td>
+<td>1 month</td>
 <td>Original</td>
 <td>Yes</td>
 <td>2005‑01</td>
@@ -100,7 +100,7 @@ The package consists mainly of four functions:
 </tr>
 <tr class="odd">
 <td>get_station_imeca</td>
-<td>1 day</td>
+<td>1 day</td>
 <td>IMECA</td>
 <td>No</td>
 <td>2009‑01‑01</td>
@@ -120,7 +120,7 @@ The package consists mainly of four functions:
 </tr>
 <tr class="odd">
 <td>get_latest_imeca</td>
-<td>1 hour</td>
+<td>1 hour</td>
 <td>IMECA</td>
 <td>No</td>
 <td>Latest only</td>

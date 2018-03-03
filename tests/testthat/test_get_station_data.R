@@ -40,6 +40,7 @@ test_that(".convert_time correctly parses string", {
 
 test_that("is.integer2 works", {
   expect_true(is.integer2(1986))
+  expect_true(is.integer2(1986.0))
   expect_false(is.integer2(99.2))
   expect_false(is.integer2(99.0000000001))
   expect_false(is.integer2(character(0)))
@@ -47,7 +48,10 @@ test_that("is.integer2 works", {
   expect_false(is.integer2(1.0000000000001))
   expect_true(is.integer2(2018))
   expect_true(is.integer2(c(1999:2010)[3]))
-
+  expect_true(is.integer2(as.numeric(11)))
+  expect_true(is.integer2(as.double(11)))
+  expect_true(is.integer2(as.integer(22)))
+  expect_true(is.integer2(as.single(12)))
 })
 
 test_that("get_station_data matches website", {
@@ -63,13 +67,20 @@ test_that("get_station_data matches website", {
   expect_error(get_station_data("MAXIMOS", "PM10", -2016))
 
   df_min_2016 <- get_station_data("MINIMOS", "PM10", 2016, progress = NULL)
-  df_max_2016 <- get_station_data("MAXIMOS", "PM10", 2016)
+  df_max_2016 <- get_station_data("MAXIMOS", "PM10", 2016, progress = FALSE)
   df_min_2015 <- get_station_data("MINIMOS", "PM10", 2015)
   df_max_2015 <- get_station_data("MAXIMOS", "O3", 2015)
   df_max_2005 <- get_station_data("MAXIMOS", "SO2", 2005)
   df_wdr_2005 <- get_station_data("MAXIMOS", "WDR", 2005)
   df_horarios_2010 <- get_station_data("HORARIOS", "PM10", 2010)
   df_horarios_2016 <- get_station_data("HORARIOS", "O3", 2016)
+
+  df_wsp_2005 <- get_station_data("MAXIMOS", "WSP", 2005)
+
+  expect_equal(unname(unlist(subset(df_wsp_2005,
+                                    date == as.Date("2005-03-03"))$value)),
+               c(1.7, 7, 4.7, 4.8, 4.8, 5.2, 4.2, 4.3, 4.8, 4.5, 9.7, 6.8, 3.1,
+                 5.2))
 
   # Wait before downloading
   Sys.sleep(2)
@@ -118,7 +129,7 @@ test_that("get_station_data matches website", {
                 107))
   expect_equal(unname(unlist(subset(df_horarios_2016, date == as.Date("2016-02-29") &
                                       hour == 1)$value)),
-               c(NA, 28, 1, NA, NA, 5, 2, 6, NA, 30, 10, 9, 27, 14, 25, 15,
-                 5, 30, 7, NA, 13, NA, 7, 15, 37, 17, 10, NA, 11, NA, NA, 0, NA,
-                 NA, NA, 0, 10, NA, 0, 2, 3, NA, 18))
+               c(NA, 1, NA, 2, 30, 10, 9, 27, 14, 25, 5, 7, 13, NA, 7, 17, 10,
+                 11, NA, NA, NA, 10, NA, 2, 3, NA, 18, 6, 15, 28, 37, 5, 30, 15
+               ))
 })

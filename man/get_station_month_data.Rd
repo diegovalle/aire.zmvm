@@ -45,6 +45,9 @@ a data.frame with pollution data, the hours correspond to the
 retrieve hourly averages, daily maximums or daily minimums of pollution data
 in the original units, by station, from the air quality server at
 \url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
+The values for wind speed (WSP) and temperature (TMP) were rounded
+to the nearest integer, but the \code{\link{get_station_data}} function allows you to
+download data accurate to one decimal point.
 }
 \examples{
 \dontrun{

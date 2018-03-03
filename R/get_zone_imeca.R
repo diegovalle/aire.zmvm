@@ -168,7 +168,9 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
   if(!is.Date(start_date))
     stop("start_date should be a string in YYYY-MM-DD format")
   if (start_date < "2008-01-01")
-    stop("start_date should be after 2008-01-01")
+    stop(paste0("start_date should be after 2008-01-01, but you can visit",
+                " http://www.aire.cdmx.gob.mx/default.php?opc=%27aKBhnmI=%27&opcion=aw==",
+                " to download data going back to 1992"))
 
   # standarize on uppercase since the station api expects upper, but
   # zone api expects lower
