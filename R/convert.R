@@ -65,51 +65,51 @@ no2_to_imeca <- function(value){
     ret <- value * 50 / 0.105
   } else if (value > 0.105 & value <= 0.210){
     ret <- 1.058 + value * 49 / 0.104
-  } else if( value > 0.210 & value <= 0.315) {
+  } else if ( value > 0.210 & value <= 0.315) {
     ret <- 1.587 + value * 49 / 0.104
-  } else if(value > 0.315 & value <= 0.420) {
+  } else if (value > 0.315 & value <= 0.420) {
     ret <- 2.115 + value * 49 / 0.104
   } else if (value > 0.420) {
-    ret <- value*201/0.421
+    ret <- value * 201 / 0.421
   }
   #ret <- (value * 100)/0.21
   return(round(ret))
 }
 
 so2_to_imeca <- function(value){
-  value <- value /1000
-  ret <- value*100/0.13
+  value <- value / 1000
+  ret <- value * 100 / 0.13
   return(round(ret))
 }
 
 co_to_imeca <- function(value){
   if (value >= 0.000 & value <=  5.50){
-    ret <-value*50/5.50
+    ret <- value * 50 / 5.50
   } else if (value > 5.50  & value <= 11.00){
-    ret <- 1.82+value*49/5.49
-  } else if( value > 11 & value <= 16.50) {
-    ret <- 2.73+value*49/5.49
-  } else if(value > 16.5 & value <= 22.00) {
-    ret <- 3.64+value*49/5.49
+    ret <- 1.82 + value * 49 / 5.49
+  } else if ( value > 11 & value <= 16.50) {
+    ret <- 2.73 + value * 49 / 5.49
+  } else if (value > 16.5 & value <= 22.00) {
+    ret <- 3.64 + value * 49 / 5.49
   } else if (value > 22.00) {
-    ret <- value*201/22.01
+    ret <- value * 201 / 22.01
   }
   return(round(ret))
 }
 
 round2 <- function(x, n = 0) {
   posneg <-  sign(x)
-  z <- abs(x)*10^n
+  z <- abs(x) * 10 ^ n
   z <- z + 0.5
   z <- trunc(z)
-  z <- z/10^n
+  z <- z / 10 ^ n
   z * posneg
 }
 
 to_imeca <- function(contaminant, value) {
-  if(is.na(value))
+  if (is.na(value))
     return(NA)
-  if(value < 0)
+  if (value < 0)
     return(NA)
   if (contaminant == "O3") {
     ret <- o3_to_imeca(value)
@@ -148,9 +148,8 @@ to_imeca <- function(contaminant, value) {
 #'  \item{"PM10"}{ - Particulas menores a 10 micrometros}
 #' }
 #' @param value numeric value to convert to IMECAS
-#' @param showWarnings Deprecated; use show_warnings instead.
-#' @param show_warnings show a warning about issues with performing the
-#' conversion
+#' @param showWarnings deprecated; you can use the function
+#' \code{\link[base]{suppressWarnings}} instead.
 #'
 #' @return value in IMECAS
 #' @export
@@ -158,27 +157,26 @@ to_imeca <- function(contaminant, value) {
 #' @examples
 #' ## IMECAs are a dimensionless scale that allows for the comparison of
 #' ## different pollutants
-#' convert_to_imeca(157, "O3", show_warnings = FALSE)
-#' convert_to_imeca(c(450, 350, 250), "NO2", show_warnings = FALSE)
-#' convert_to_imeca(80, "PM10", show_warnings = FALSE)
-#' convert_to_imeca(c(157, 200), "O3", show_warnings = FALSE)
-#' convert_to_imeca(48, "O3", show_warnings = FALSE)
-#' convert_to_imeca(67, "O3", show_warnings = FALSE)
-#' convert_to_imeca(77, "O3", show_warnings = FALSE)
-#' convert_to_imeca(205, "O3", show_warnings = FALSE)
-#' convert_to_imeca(72, "O3", show_warnings = FALSE)
-#' convert_to_imeca(98, "O3", show_warnings = FALSE)
+#' convert_to_imeca(157, "O3")
+#' convert_to_imeca(c(450, 350, 250), "NO2")
+#' convert_to_imeca(80, "PM10")
+#' convert_to_imeca(c(157, 200), "O3")
+#' convert_to_imeca(48, "O3")
+#' convert_to_imeca(67, "O3")
+#' convert_to_imeca(77, "O3")
+#' convert_to_imeca(205, "O3")
+#' convert_to_imeca(72, "O3")
+#' convert_to_imeca(98, "O3")
 #'
 #' ## Should show a warning because the conversion formula is not well
 #' ## defined
 #' convert_to_imeca(1.5, "CO")
 #'
-convert_to_imeca <- function(value, pollutant, showWarnings = TRUE,
-                             show_warnings = TRUE) {
+convert_to_imeca <- function(value, pollutant, showWarnings = TRUE) {
   if (!missing("showWarnings")) {
-    warning("`showWarnings` argument deprecated. Use `show_warnings` instead.",
+    warning(paste0("`showWarnings` argument deprecated. Use the function ",
+            "`suppressWarnings` instead."),
             call. = FALSE)
-    show_warnings <- showWarnings
   }
   if (length(pollutant) < 1)
     stop("Invalid pollutant value")
@@ -195,13 +193,12 @@ convert_to_imeca <- function(value, pollutant, showWarnings = TRUE,
   if (!suppressWarnings(!any(is.na(as.numeric(na.omit(value))))))
     stop("value should be numeric")
 
-  if (show_warnings)
-    warning(paste0("This function is beta. Converted values don't always",
-                   " match official ones and care should be taken to",
-                   " validate them."),
-            call. = FALSE)
+  warning(paste0("This function is beta. Converted values don't always",
+                 " match official ones and care should be taken to",
+                 " validate them."),
+          call. = FALSE)
 
-  if (length(value) != length(pollutant) & show_warnings)
+  if (length(value) != length(pollutant))
     warning(paste0("The vectors are of unequal length. Recycling elements ",
                    "of the shorter vector to match the longer vector."),
             call. = FALSE)
