@@ -141,8 +141,8 @@ library("ggplot2")
 library("ggseas")
 
 o3 <- get_station_data(criterion = "MAXIMOS", # Can be one of MAXIMOS (daily maximum), 
-                                                # MINIMOS (daily minimum), 
-                                                # or HORARIOS (hourly average)
+                                              # MINIMOS (daily minimum), 
+                                              # or HORARIOS (hourly average)
                        pollutant = "O3", # Can be one of "SO2", "CO", "NOX", "NO2", "NO", "O3", 
                                          # "PM10", "PM25", "WSP", "WDR", "TMP", "RH"
                        year = 2009:2017) # A numeric vector, the earliest year allowed is 1986
@@ -172,8 +172,10 @@ o3_max <- o3 %>%
 # and the dates during which they were valid
 # source: http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/pcaa-modificaciones.pdf
 contingencia <- data.frame(ppb = c(216, 210, 205, 199, 185, 155, 155),
-  start = c(2009, 2009.4973, 2010.4973, 2011.5795, 2012.6052, 2016.291, 2016.4986),
-  end = c(2009.4973, 2010.4945, 2011.4945, 2012.6025, 2016.2883, 2016.4959, Inf))
+  start = c(2009, 2009.4973, 2010.4973, 2011.5795, 
+            2012.6052, 2016.291, 2016.4986),
+  end = c(2009.4973, 2010.4945, 2011.4945, 
+          2012.6025, 2016.2883, 2016.4959, Inf))
 max_daily_df <- tsdf(ts(o3_max$max, start = c(2009,1), frequency = 365.25))
 ggplot(max_daily_df,
        aes(x = x, y = y)) + 
@@ -181,11 +183,14 @@ ggplot(max_daily_df,
   stat_rollapplyr(width = 30, align = "right", color = "#01C5D2") +
   #geom_vline(xintercept = 2015 + 183/365) +
   geom_segment(data = contingencia, 
-               aes(x=start, y=ppb, xend=end, yend=ppb), color="darkred", linetype = 2)  +
+               aes(x=start, y=ppb, xend=end, yend=ppb), color="darkred", 
+               linetype = 2)  +
   xlab("date") +
   ylab("parts per billion") +
   ggtitle("Maximum daily ozone concentration and 30 day rolling average", 
-          subtitle = "Red lines indicate the values necessary to activate a phase I smog alert. \nData source: SEDEMA")
+          subtitle = paste0("Red lines indicate the values necessary to ",
+                            "activate a phase I smog alert.",
+                            "\nData source: SEDEMA"))
 ```
 
 ![](man/figures/README-unnamed-chunk-2-1.png)
