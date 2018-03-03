@@ -73,7 +73,7 @@ test_that("get_station_data matches website", {
   df_max_2005 <- get_station_data("MAXIMOS", "SO2", 2005)
   df_wdr_2005 <- get_station_data("MAXIMOS", "WDR", 2005)
   df_horarios_2010 <- get_station_data("HORARIOS", "PM10", 2010)
-  df_horarios_2016 <- get_station_data("HORARIOS", "O3", 2016)
+  df_horarios_2018 <- get_station_data("HORARIOS", "O3", 2018)
 
   df_wsp_2005 <- get_station_data("MAXIMOS", "WSP", 2005)
 
@@ -127,9 +127,9 @@ test_that("get_station_data matches website", {
                                      hour == 1)$value)),
               c(115, 98, 195, 104, 83, 62, 182, 275, 73, 225, 81, 129, 71,
                 107))
-  expect_equal(unname(unlist(subset(df_horarios_2016, date == as.Date("2016-02-29") &
+  expect_equal(unname(unlist(subset(df_horarios_2018, date == as.Date("2018-02-28") &
                                       hour == 1)$value)),
-               c(NA, 1, NA, 2, 30, 10, 9, 27, 14, 25, 5, 7, 13, NA, 7, 17, 10,
-                 11, NA, NA, NA, 10, NA, 2, 3, NA, 18, 6, 15, 28, 37, 5, 30, 15
-               ))
+               c(NA, 48, NA, 31, NA, 24, 24, 30, NA, NA, 25, NA, 35, 3, 17,
+                 6, NA, NA, NA, NA, 2, 2, 12, 16, NA, NA, 33, NA, NA, 32, NA,
+                 NA, NA, 35, NA, NA, 6, 1, NA, 22, NA, NA, 3))
 })
