@@ -52,6 +52,7 @@ test_that("is.integer2 works", {
   expect_true(is.integer2(as.double(11)))
   expect_true(is.integer2(as.integer(22)))
   expect_true(is.integer2(as.single(12)))
+  expect_false(is.integer2(NA))
 })
 
 test_that("get_station_data matches website", {
