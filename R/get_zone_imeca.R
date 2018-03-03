@@ -25,8 +25,8 @@
     anof = year(end_date),
     #pollutant = "on",
     #zone = "on",
-    Q	= criterion,
-    inter	= "",
+    Q = criterion,
+    inter       = "",
     consulta = "Consulta"
   )
   pollutant_tmp <- rep("on", length(pollutant))

@@ -1,4 +1,4 @@
-test_that( ("test get_station_month_data"), {
+test_that("test get_station_month_data", {
   skip_on_cran()
 
   # Invalid function arguments

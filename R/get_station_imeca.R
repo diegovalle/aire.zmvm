@@ -62,15 +62,15 @@ get_station_imeca <- function(pollutant, date,
 
   url <- "http://www.aire.cdmx.gob.mx/default.php?opc=%27aqBjnmc=%27"
   fd <- list(
-    fecha	= date,
-    RadioGroup1	= switch(pollutant,
+    fecha       = date,
+    RadioGroup1 = switch(pollutant,
                          "O3" = 0,
                          "NO2" = 1,
                          "SO2" = 2,
                          "CO" = 3,
                          "PM10" = 4),
-    aceptar	= "Submit",
-    consulta	= 1
+    aceptar     = "Submit",
+    consulta    = 1
   )
 
   result <- httr::POST(url,

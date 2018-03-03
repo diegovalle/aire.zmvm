@@ -1,4 +1,5 @@
 test_that(".convert_time correctly parses string", {
+  ## This is supposed to be full of tabs
   expect_equal(.convert_time("11:00 h, miércoles 06 de abril de 2016"),
                "2016-04-06 11:00:00")
   expect_equal(.convert_time("11:00 h,

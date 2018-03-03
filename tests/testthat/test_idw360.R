@@ -28,7 +28,7 @@ test_that("idw360", {
                                 (max(coordinates(station_loc)[, 2]) + .1),
                                 length.out = pixels))
 
-  mxc_grid_pts <- SpatialPixels(SpatialPoints((mxc_grid)))
+  mxc_grid_pts <- SpatialPixels(SpatialPoints( (mxc_grid)))
   mxc_grid_pts <- as(mxc_grid_pts, "SpatialGrid")
   proj4string(mxc_grid_pts) <- CRS(crs_string)
 
