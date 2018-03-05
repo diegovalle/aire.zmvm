@@ -1,7 +1,7 @@
 Mexico City Pollution Data
 ================
 Diego Valle-Jones
-March 02, 2018
+March 04, 2018
 
 -   [What does it do?](#what-does-it-do)
 -   [Installation](#installation)
@@ -10,12 +10,12 @@ March 02, 2018
 
 [![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.svg?branch=master)](https://travis-ci.org/diegovalle/aire.zmvm) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/c7kg6o68exx0lirg?svg=true)](https://ci.appveyor.com/project/diegovalle/aire-zmvm/branch/master) [![Coverage Status](https://img.shields.io/codecov/c/github/diegovalle/aire.zmvm/master.svg)](https://codecov.io/github/diegovalle/aire.zmvm?branch=master)
 
-|              |                                                        |
-|--------------|--------------------------------------------------------|
-| **Author:**  | Diego Valle-Jones                                      |
-| **License:** | [BSD\_3](https://opensource.org/licenses/BSD-3-Clause) |
-| **Status:**  | Version 0.6.0 on CRAN                                  |
-| **Website:** | <https://hoyodesmog.diegovalle.net/aire.zmvm.html>     |
+|              |                                                                                       |
+|--------------|---------------------------------------------------------------------------------------|
+| **Author:**  | Diego Valle-Jones                                                                     |
+| **License:** | [BSD\_3](https://opensource.org/licenses/BSD-3-Clause)                                |
+| **Status:**  | ![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version-ago/aire.zmvm?color=green) |
+| **Website:** | <https://hoyodesmog.diegovalle.net/aire.zmvm.html>                                    |
 
 What does it do?
 ----------------
@@ -137,15 +137,35 @@ Quick Example
 ``` r
 library("aire.zmvm")
 library("dplyr")
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 library("ggplot2")
 library("ggseas")
+#> Loading required package: seasonal
+#> 
+#> Attaching package: 'seasonal'
+#> The following object is masked _by_ '.GlobalEnv':
+#> 
+#>     view
+#> Loading required package: zoo
+#> 
+#> Attaching package: 'zoo'
+#> The following objects are masked from 'package:base':
+#> 
+#>     as.Date, as.Date.numeric
 
 o3 <- get_station_data(criterion = "MAXIMOS", # Can be one of MAXIMOS (daily maximum), 
                                               # MINIMOS (daily minimum), 
                                               # or HORARIOS (hourly average)
                        pollutant = "O3", # Can be one of "SO2", "CO", "NOX", "NO2", "NO", "O3", 
                                          # "PM10", "PM25", "WSP", "WDR", "TMP", "RH"
-                       year = 2009:2017) # A numeric vector, the earliest year allowed is 1986
+                       year = 2009:2017, progress=TRUE) # A numeric vector, the earliest year allowed is 1986
 knitr::kable(head(o3))
 ```
 
