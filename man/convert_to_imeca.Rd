@@ -12,28 +12,33 @@ convert_to_imeca(value, pollutant, showWarnings = TRUE)
 \item{pollutant}{type of pollutant. A vector of one or more of the
 following options:
 \itemize{
- \item{"SO2"}{ - Dioxido de azufre}
- \item{"CO"}{ - Monoxido de carbono}
- \item{"NO2"}{ - Dioxido de nitrogeno}
- \item{"O3"}{ - Ozono}
- \item{"PM10"}{ - Particulas menores a 10 micrometros}
+ \item{"SO2"}{ - Dioxido de azufre (24 hour average)}
+ \item{"CO"}{ - Monoxido de carbono (8 hour average)}
+ \item{"NO2"}{ - Dioxido de nitrogeno (1 hour average)}
+ \item{"O3"}{ - Ozono (1 hour average)}
+ \item{"PM10"}{ - Particulas menores a 10 micrometros (24 hour average)}
+ \item{"PM25"}{ - Particulas menores a 2.5 micrometros (24 hour average)}
 }}
 
 \item{showWarnings}{deprecated; you can use the function
 \code{\link[base]{suppressWarnings}} instead.}
 }
 \value{
-value in IMECAs
+a vector containing the converted value in IMECAs
 }
 \description{
 Air quality in Mexico City is reported in IMECAs. This function converts
-pollution values in the original units returned by sensors to
+pollution running averages in the original units (ppb, µg/m³, etc) to
 \href{https://en.wikipedia.org/wiki/Índice_Metropolitano_de_la_Calidad_del_Aire}{IMECA}
 (Indice Metropolitano de la Calidad del Aire), a dimensionless scale
 where all the pollutants can be compared.
 }
+\details{
+Note that for some pollutants a running average is expected. Because of
+rounding error results may be off by a couple of points
+}
 \examples{
-## IMECAs are a dimensionless scale that allows for the comparison of
+## IMECA is a dimensionless scale that allows for the comparison of
 ## different pollutants
 convert_to_imeca(157, "O3")
 convert_to_imeca(c(450, 350, 250), rep("NO2", 3))
@@ -41,9 +46,6 @@ convert_to_imeca(80, "PM10")
 
 ## warning about recycling elements in a vector
 convert_to_imeca(c(157, 200), "O3")
-
-## suppress all warnings
-suppressWarnings(convert_to_imeca(c(157, 200), "O3"))
 
 convert_to_imeca(67, "O3")
 convert_to_imeca(77, "O3")
@@ -53,5 +55,9 @@ convert_to_imeca(98, "O3")
 
 }
 \seealso{
-\url{http://rama.edomex.gob.mx/contaminacion-atmosferica/imeca}
+For the formulas on how to convert O3, PM10, and PM2.5 visit:
+\href{http://www.aire.cdmx.gob.mx/default.php?opc='ZaBhnmI=&dc='aQ==}{¿Como se calcula el Indice de Calidad del Aire?}, and
+for NO2, CO, and SO2:
+\href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf}{NADF-009-AIRE-2006}.
+ Also \emph{Solicitud de Informacion} FOLIO 0112000033218
 }

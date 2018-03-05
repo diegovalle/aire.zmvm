@@ -1,3 +1,14 @@
+# ASUNTO:
+#   RESPUESTA SOLICITUD DE INFORMACIÓN PÚBLICA
+#
+# FOLIO 0112000033218
+
+# El algoritmo para calcular el índice para O3, PM10 y PM2.5 de acuerdo con lo que se menciona en los dos párrafos anteriores se ubica en la siguiente liga:
+#   http://www.aire.cdmx.gob.mx/default.php?opc=%27ZaBhnmI=&dc=%27aQ==
+#
+#   Para NO2, Co y SO2, sigue utilizándose los algoritmos que se encuentran en el Anexo 4 dentro de la norma NADF-009-AIRE-2006 que establece los requisitos para elaborar el Índice Metropolitano de la Calidad del Aire y se encuentra en la siguiente liga:
+#     http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
+
 # http://siga.jalisco.gob.mx/assets/documentos/normatividad/nadf-009-aire-2006.pdf
 pm10_to_imeca_2006 <- function(value){
   if (value >= 0.000 & value <= 120){
@@ -7,42 +18,52 @@ pm10_to_imeca_2006 <- function(value){
   } else if (value > 320) {
     ret <- value * 5 / 8
   }
-  return(round(ret))
+  return(round_up(ret))
 }
 
-# http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
+# http://www.aire.cdmx.gob.mx/default.php?opc=%27ZaBhnmI=&dc=%27aQ==
 pm10_to_imeca_2014 <- function(value){
   if (value >= 0.000 & value <= 40){
     ret <- 1.25 * value
   } else if (value > 40 & value <= 75){
-    ret <- 1.44 * (value - 41) + 51
+    ret <- 1.4412 * (value - 41) + 51
   } else if ( value > 75 & value <= 214) {
-    ret <- 0.355 * (value - 76) + 101
+    ret <- 0.3551 * (value - 76) + 101
   } else if (value > 214 & value <= 354) {
-    ret <- 0.353 * (value - 215) + 151
-  } else if (value > 354) {
-    ret <- 0.567 * value
-  }
-  return(round(ret))
+    ret <- 0.3525 * (value - 215) + 151
+  } else if (value > 354 & value <= 424) {
+    ret <- 1.4348 * (value - 355) + 201
+  } else if (value > 424 & value <= 504) {
+    ret <-1.2532 * (value - 425) + 301
+  } else if (value > 504 & value <= 604) {
+    ret <- 1 * (value - 505) + 401
+  } else
+    ret <- NA
+  return(round_up(ret))
 }
 
-
-pm25_to_imeca_2006 <- function(value){
-  if (value >= 0.000 & value <= 15.4){
-    ret <- value * 50 / 15.4
-  } else if (value > 15.4 & value <= 40.4){
-    ret <- 20.5 + value * 49 / 24.9
-  } else if ( value > 40.4 & value <= 65.4) {
-    ret <- 21.3 + value * 49 / 24.9
-  } else if (value > 65.4 & value <= 150.4) {
-    ret <- 113.2 + value * 49 / 84.9
-  } else if (value > 150.4) {
-    ret <- value * 201 / 150.5
-  }
-  return(round(ret))
+# http://www.aire.cdmx.gob.mx/default.php?opc=%27ZaBhnmI=&dc=%27aQ==
+pm25_to_imeca <- function(value){
+  if (value >= 0.000 & value <= 12){
+    ret <- 4.1667 * value
+  } else if (value > 12 & value <= 45){
+    ret <- 1.4894 * (value - 12.1) + 51
+  } else if ( value > 45 & value <= 97.4) {
+    ret <- 0.9369 * (value - 45.1) + 101
+  } else if (value > 97.4 & value <= 150.4) {
+    ret <- 0.9263 * (value - 97.5) + 151
+  } else if (value > 150.4 & value <= 250.4) {
+    ret <- 0.9910 * (value - 150.5) + 201
+  } else if (value > 250.4 & value <= 350.4) {
+    ret <- 0.9910 * (value - 250.5) + 301
+  } else if (value > 350.4 & value <= 500.4) {
+    ret <- 0.6604 * (value - 350.5) + 401
+  } else
+    ret <- NA
+  return(round_up(ret))
 }
 
-
+# http://www.aire.cdmx.gob.mx/default.php?opc=%27ZaBhnmI=&dc=%27aQ==
 o3_to_imeca <- function(value){
   value <- value / 1000
   if (value >= 0.000 & value <= 0.070){
@@ -53,58 +74,58 @@ o3_to_imeca <- function(value){
     ret <- 844.83 * (value - 0.096) + 101
   } else if (value > 0.154 & value <= 0.204) {
     ret <- 1000 * (value - 0.155) + 151
-  } else if (value > 0.204) {
-    ret <- 982.5 * value
-  }
-  return(round(ret))
+  } else if (value > 0.204 & value <= 0.404) {
+    ret <- 497.49 * (value - 0.205) + 201
+  } else if (value > 0.404 & value <= 0.504) {
+    ret <- 1000 * (value - 0.405) + 301
+  } else if (value > 0.504 & value <= 0.604) {
+    ret <- 1000 * (value - 0.505) + 401
+  } else
+    ret <- NA
+  return(round_up(ret))
 }
 
+# http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
 no2_to_imeca <- function(value){
   value <- value / 1000
   if (value >= 0.000 & value <= 0.105){
     ret <- value * 50 / 0.105
   } else if (value > 0.105 & value <= 0.210){
-    ret <- 1.058 + value * 49 / 0.104
+    ret <- value * 50 / 0.105
   } else if ( value > 0.210 & value <= 0.315) {
-    ret <- 1.587 + value * 49 / 0.104
+    ret <- value * 50 / 0.105
   } else if (value > 0.315 & value <= 0.420) {
-    ret <- 2.115 + value * 49 / 0.104
+    ret <- value * 50 / 0.105
   } else if (value > 0.420) {
-    ret <- value * 201 / 0.421
+    ret <- value * 200 / 0.42
   }
   #ret <- (value * 100)/0.21
-  return(round(ret))
+  return(round_up(ret))
 }
 
+# http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
 so2_to_imeca <- function(value){
   value <- value / 1000
   ret <- value * 100 / 0.13
-  return(round(ret))
+  return(round_up(ret))
 }
 
+# http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
 co_to_imeca <- function(value){
   if (value >= 0.000 & value <=  5.50){
     ret <- value * 50 / 5.50
   } else if (value > 5.50  & value <= 11.00){
-    ret <- 1.82 + value * 49 / 5.49
+    ret <- value * 50 / 5.50
   } else if ( value > 11 & value <= 16.50) {
-    ret <- 2.73 + value * 49 / 5.49
+    ret <- value * 50 / 5.50
   } else if (value > 16.5 & value <= 22.00) {
-    ret <- 3.64 + value * 49 / 5.49
+    ret <- value * 50 / 5.50
   } else if (value > 22.00) {
-    ret <- value * 201 / 22.01
+    ret <- value * 200 / 22
   }
-  return(round(ret))
+  return(round_up(ret))
 }
 
-round2 <- function(x, n = 0) {
-  posneg <-  sign(x)
-  z <- abs(x) * 10 ^ n
-  z <- z + 0.5
-  z <- trunc(z)
-  z <- z / 10 ^ n
-  z * posneg
-}
 
 to_imeca <- function(contaminant, value) {
   if (is.na(value))
@@ -117,8 +138,8 @@ to_imeca <- function(contaminant, value) {
   if (contaminant == "PM10") {
     ret <- pm10_to_imeca_2014(value)
   }
-  if (contaminant == "PM2") {
-    ret <- pm25_to_imeca_2006(value)
+  if (contaminant == "PM25") {
+    ret <- pm25_to_imeca(value)
   }
   if (contaminant == "NO2") {
     ret <- no2_to_imeca(value)
@@ -135,31 +156,39 @@ to_imeca <- function(contaminant, value) {
 #' Convert pollution values to IMECA
 #'
 #' Air quality in Mexico City is reported in IMECAs. This function converts
-#' pollution values in the original units returned by sensors to
+#' pollution running averages in the original units (ppb, µg/m³, etc) to
 #' \href{https://en.wikipedia.org/wiki/Índice_Metropolitano_de_la_Calidad_del_Aire}{IMECA}
 #' (Indice Metropolitano de la Calidad del Aire), a dimensionless scale
 #' where all the pollutants can be compared.
 #'
-#' @seealso \url{http://rama.edomex.gob.mx/contaminacion-atmosferica/imeca}
+#' Note that for some pollutants a running average is expected. Because of
+#' rounding error results may be off by a couple of points
+#'
+#' @seealso For the formulas on how to convert O3, PM10, and PM2.5 visit:
+#' \href{http://www.aire.cdmx.gob.mx/default.php?opc='ZaBhnmI=&dc='aQ==}{¿Como se calcula el Indice de Calidad del Aire?}, and
+#' for NO2, CO, and SO2:
+#' \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf}{NADF-009-AIRE-2006}.
+#'  Also \emph{Solicitud de Informacion} FOLIO 0112000033218
 #'
 #' @param pollutant type of pollutant. A vector of one or more of the
 #' following options:
 #' \itemize{
-#'  \item{"SO2"}{ - Dioxido de azufre}
-#'  \item{"CO"}{ - Monoxido de carbono}
-#'  \item{"NO2"}{ - Dioxido de nitrogeno}
-#'  \item{"O3"}{ - Ozono}
-#'  \item{"PM10"}{ - Particulas menores a 10 micrometros}
+#'  \item{"SO2"}{ - Dioxido de azufre (24 hour average)}
+#'  \item{"CO"}{ - Monoxido de carbono (8 hour average)}
+#'  \item{"NO2"}{ - Dioxido de nitrogeno (1 hour average)}
+#'  \item{"O3"}{ - Ozono (1 hour average)}
+#'  \item{"PM10"}{ - Particulas menores a 10 micrometros (24 hour average)}
+#'  \item{"PM25"}{ - Particulas menores a 2.5 micrometros (24 hour average)}
 #' }
 #' @param value a numeric vector of values to convert to IMECAs
 #' @param showWarnings deprecated; you can use the function
 #' \code{\link[base]{suppressWarnings}} instead.
 #'
-#' @return value in IMECAs
+#' @return a vector containing the converted value in IMECAs
 #' @export
 #' @importFrom stats na.omit
 #' @examples
-#' ## IMECAs are a dimensionless scale that allows for the comparison of
+#' ## IMECA is a dimensionless scale that allows for the comparison of
 #' ## different pollutants
 #' convert_to_imeca(157, "O3")
 #' convert_to_imeca(c(450, 350, 250), rep("NO2", 3))
@@ -167,9 +196,6 @@ to_imeca <- function(contaminant, value) {
 #'
 #' ## warning about recycling elements in a vector
 #' convert_to_imeca(c(157, 200), "O3")
-#'
-#' ## suppress all warnings
-#' suppressWarnings(convert_to_imeca(c(157, 200), "O3"))
 #'
 #' convert_to_imeca(67, "O3")
 #' convert_to_imeca(77, "O3")
@@ -189,7 +215,7 @@ convert_to_imeca <- function(value, pollutant, showWarnings = TRUE) {
   for (i in seq_len(length(pollutant)))
     if (!(identical("O3", pollutant[i]) | identical("NO2", pollutant[i]) |
           identical("SO2", pollutant[i]) | identical("CO", pollutant[i]) |
-          identical("PM10", pollutant[i]) ))
+          identical("PM10", pollutant[i]) | identical("PM25", pollutant[i])))
       stop("Invalid pollutant value")
   if (length(value) < 1)
     stop("value should be numeric")
@@ -197,16 +223,15 @@ convert_to_imeca <- function(value, pollutant, showWarnings = TRUE) {
     stop("value should be numeric")
   if (!suppressWarnings(!any(is.na(as.numeric(na.omit(value))))))
     stop("value should be numeric")
-
-  warning(paste0("This function is beta. Converted values don't always",
-                 " match official ones and care should be taken to",
-                 " validate them."),
-          call. = FALSE)
-
-  if (length(value) != length(pollutant))
+  max_length <- max(c(length(value), length(pollutant)))
+  if (length(value) != length(pollutant)) {
+    if ( max(length(value), length(pollutant)) %%
+         min(length(value), length(pollutant)) != 0)
+      stop("longer argument not a multiple of length of shorter")
     warning(paste0("The vectors are of unequal length. Recycling elements ",
                    "of the shorter vector to match the longer vector."),
             call. = FALSE)
+  }
 
   as.vector(unname(mapply(to_imeca, contaminant = pollutant, value = value)))
 }

@@ -31,3 +31,13 @@ test_that("is.integer2 works", {
   # Not an integer
   expect_false(is.integer2(NA_real_))
 })
+
+test_that("round_up", {
+  expect_equal(round_up(.5), 1)
+  expect_equal(round_up(1.5), 2)
+  expect_equal(round_up(2.5), 3)
+  expect_equal(round_up(3.5), 4)
+
+  expect_equal(round_up(2.4), 2)
+  expect_equal(round_up(3.6), 4)
+})
