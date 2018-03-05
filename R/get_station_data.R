@@ -301,7 +301,7 @@ download_horario_by_month <- function(pollutant, year){
 #' \emph{Etc/GMT+6} timezone, with no daylight saving time
 #'
 #' @export
-#' @importFrom dplyr progress_estimated
+#' @importFrom progress progress_bar
 #'
 #' @examples
 #' \dontrun{
@@ -344,13 +344,16 @@ get_station_data <- function(criterion, pollutant, year,
 
   if (is.null(progress))
     progress <- FALSE
-  if (progress & length(year) > 1)
-    p <- progress_estimated(length(year))
+  if (progress & length(year) > 1) {
+    p <- progress_bar$new(format = "  downloading [:bar] :percent eta: :eta",
+                          total = length(year))
+    p$tick(0)
+  }
   df <- data.frame()
   for (i in year){
     df <- rbind(df, .download_data(criterion, pollutant, i))
     if (progress & length(year) > 1)
-      p$tick()$print()
+      p$tick()
   }
   as.data.frame(df)
 }
