@@ -158,10 +158,15 @@ to_imeca <- function(contaminant, value) {
 #' ## IMECAs are a dimensionless scale that allows for the comparison of
 #' ## different pollutants
 #' convert_to_imeca(157, "O3")
-#' convert_to_imeca(c(450, 350, 250), "NO2")
+#' convert_to_imeca(c(450, 350, 250), rep("NO2", 3))
 #' convert_to_imeca(80, "PM10")
+#'
+#' ## warning about recycling elements in a vector
 #' convert_to_imeca(c(157, 200), "O3")
-#' convert_to_imeca(48, "O3")
+#'
+#' ## suppress all warnings
+#' suppressWarnings(convert_to_imeca(48, "O3"))
+#'
 #' convert_to_imeca(67, "O3")
 #' convert_to_imeca(77, "O3")
 #' convert_to_imeca(205, "O3")
