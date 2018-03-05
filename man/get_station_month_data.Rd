@@ -45,7 +45,9 @@ a data.frame with pollution data, the hours correspond to the
 retrieve hourly averages, daily maximums or daily minimums of pollution data
 in the original units, by station, from the air quality server at
 \url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
-The values for wind speed (WSP) and temperature (TMP) were rounded
+}
+\details{
+The values for wind speed (WSP) and temperature (TMP) are rounded
 to the nearest integer, but the \code{\link{get_station_data}} function allows you to
 download data accurate to one decimal point.
 }
@@ -66,4 +68,10 @@ df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date,
                          tz = "America/Mexico_City")
 head(df_o3)
 }
+}
+\seealso{
+\code{\link{stations}} for a data.frame with the location and names
+of all polution measuring stations
+
+Other raw data functions: \code{\link{get_station_data}}
 }

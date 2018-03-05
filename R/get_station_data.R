@@ -264,7 +264,9 @@ download_horario_by_month <- function(pollutant, year){
 #' or for earlier years use the archive files from
 #' \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==} or
 #' \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI='&opcion=Zw==} for
-#' meteorological data. For wind speed (WSP) and temperature (TMP) archive
+#' meteorological data.
+#'
+#' For wind speed (WSP) and temperature (TMP) archive
 #' values are correct to one decimal place, but the most recent data is rounded
 #' to the nearest integer.
 #'
@@ -296,11 +298,14 @@ download_horario_by_month <- function(pollutant, year){
 #' @param progress Whether to display a progress bar (TRUE or FALSE).
 #' By default it will only display in an interactive session.
 #'
-#' @return a data.frame with pollution data, when downloading "HORARIOS" the
+#' @return a data.frame with pollution data. When downloading "HORARIOS" the
 #' hours correspond to the
 #' \emph{Etc/GMT+6} timezone, with no daylight saving time
 #'
 #' @export
+#' @family raw data functions
+#' @seealso \code{\link{stations}} for a data.frame with the location and names
+#' of all polution measuring stations,
 #' @importFrom progress progress_bar
 #'
 #' @examples
@@ -361,7 +366,8 @@ get_station_data <- function(criterion, pollutant, year,
 #' retrieve hourly averages, daily maximums or daily minimums of pollution data
 #' in the original units, by station, from the air quality server at
 #' \url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
-#' The values for wind speed (WSP) and temperature (TMP) were rounded
+#'
+#' The values for wind speed (WSP) and temperature (TMP) are rounded
 #' to the nearest integer, but the \code{\link{get_station_data}} function allows you to
 #' download data accurate to one decimal point.
 #'
@@ -396,6 +402,9 @@ get_station_data <- function(criterion, pollutant, year,
 #' \emph{Etc/GMT+6} timezone, with no daylight saving time
 #'
 #' @export
+#' @family raw data functions
+#' @seealso \code{\link{stations}} for a data.frame with the location and names
+#' of all polution measuring stations
 #' @importFrom stringr str_pad
 #' @examples
 #' \dontrun{

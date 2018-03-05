@@ -132,13 +132,17 @@ to_imeca <- function(contaminant, value) {
   return(ret)
 }
 
-#' Convert pollution values in the original units returned by sensors to
-#' IMECA (Indice Metropolitano de la Calidad del Aire), a dimensionless scale
+#' Convert pollution values to IMECA
+#'
+#' Air quality in Mexico City is reported in IMECAs. This function converts
+#' pollution values in the original units returned by sensors to
+#' \href{https://en.wikipedia.org/wiki/Índice_Metropolitano_de_la_Calidad_del_Aire}{IMECA}
+#' (Indice Metropolitano de la Calidad del Aire), a dimensionless scale
 #' where all the pollutants can be compared.
 #'
-#' See \url{http://rama.edomex.gob.mx/contaminacion-atmosferica/imeca}
+#' @seealso \url{http://rama.edomex.gob.mx/contaminacion-atmosferica/imeca}
 #'
-#' @param pollutant type of pollutantOne or more of the
+#' @param pollutant type of pollutant. A vector of one or more of the
 #' following options:
 #' \itemize{
 #'  \item{"SO2"}{ - Dioxido de azufre}
@@ -147,11 +151,11 @@ to_imeca <- function(contaminant, value) {
 #'  \item{"O3"}{ - Ozono}
 #'  \item{"PM10"}{ - Particulas menores a 10 micrometros}
 #' }
-#' @param value numeric value to convert to IMECAS
+#' @param value a numeric vector of values to convert to IMECAs
 #' @param showWarnings deprecated; you can use the function
 #' \code{\link[base]{suppressWarnings}} instead.
 #'
-#' @return value in IMECAS
+#' @return value in IMECAs
 #' @export
 #' @importFrom stats na.omit
 #' @examples
@@ -165,17 +169,13 @@ to_imeca <- function(contaminant, value) {
 #' convert_to_imeca(c(157, 200), "O3")
 #'
 #' ## suppress all warnings
-#' suppressWarnings(convert_to_imeca(48, "O3"))
+#' suppressWarnings(convert_to_imeca(c(157, 200), "O3"))
 #'
 #' convert_to_imeca(67, "O3")
 #' convert_to_imeca(77, "O3")
 #' convert_to_imeca(205, "O3")
 #' convert_to_imeca(72, "O3")
 #' convert_to_imeca(98, "O3")
-#'
-#' ## Should show a warning because the conversion formula is not well
-#' ## defined
-#' convert_to_imeca(1.5, "CO")
 #'
 convert_to_imeca <- function(value, pollutant, showWarnings = TRUE) {
   if (!missing("showWarnings")) {

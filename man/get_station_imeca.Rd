@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_station_imeca.R
 \name{get_station_imeca}
 \alias{get_station_imeca}
-\title{Download pollution data by station in IMECAS}
+\title{Download pollution data by station in IMECAs}
 \usage{
 get_station_imeca(pollutant, date, show_messages = TRUE)
 }
@@ -22,15 +22,19 @@ get_station_imeca(pollutant, date, show_messages = TRUE)
 \item{show_messages}{show a message about issues with excluded stations}
 }
 \value{
-A data.frame with pollution data measured in IMECAS, by station.
+A data.frame with pollution data measured in IMECAs, by station.
 The hours correspond to the \emph{Etc/GMT+6} timezone, with no daylight
 saving time
 }
 \description{
+retrieve hourly averages of pollution data by station, measured in
+\href{https://en.wikipedia.org/wiki/Índice_Metropolitano_de_la_Calidad_del_Aire}{IMECAs}
+}
+\details{
 Note that in
 2015 it was determined that the stations with codes ACO, AJU, INN, MON
 and MPA would no longer be taken into consideration when computing the
-pollution index and at some point in the future would no longer be inclued
+pollution index and at some point in the future would no longer be included
 in the data returned by this function
 }
 \examples{
@@ -45,4 +49,10 @@ df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date,
                                     tz = "Etc/GMT+6"),
                          tz = "America/Mexico_City")
 head(df_o3[order(-df_o3$value), ])
+}
+\seealso{
+\href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmc='}{Indice de calidad del aire por estaciones}
+
+Other IMECA functions: \code{\link{get_latest_imeca}},
+  \code{\link{get_zone_imeca}}
 }

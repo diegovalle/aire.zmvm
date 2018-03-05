@@ -1,8 +1,9 @@
-## aire.zmvm-deprecated.r
-#' @title Deprecated functions in package \pkg{aire.zmvm}.
-#' @description The functions listed below are deprecated and will be defunct in
-#'   the near future. When possible, alternative functions with similar
-#'   functionality are also mentioned..
+#' Deprecated functions in package \pkg{aire.zmvm}.
+#'
+#' The functions listed below are deprecated and will be defunct in
+#' the near future. When possible, alternative functions with similar
+#' functionality are also mentioned.
+#'
 #' @rdname aire.zmvm-deprecated
 #' @name aire.zmvm-deprecated
 #' @keywords internal

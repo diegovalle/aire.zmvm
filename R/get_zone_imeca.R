@@ -115,9 +115,12 @@
 #' @param show_messages show a message about issues with performing the
 #' conversion
 #'
-#' @return A data.frame with pollution data measured in IMECAS, by geographic
+#' @return A data.frame with pollution data measured in IMECAs, by geographic
 #' zone. The hours
 #' correspond to the \emph{Etc/GMT+6} timezone, with no daylight saving time
+#' @family IMECA functions
+#' @seealso \code{\link{zones}} for a data.frame containing the municipios
+#' belonging to each zone, and \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmI='}{Indice de calidad del aire por zonas}
 #' @export
 #' @importFrom stringr str_c  str_replace_all
 #' @importFrom rvest html_nodes html_table

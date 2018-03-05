@@ -1,11 +1,14 @@
 
 
-#' Download pollution data by station in IMECAS
+#' Download pollution data by station in IMECAs
+#'
+#' retrieve hourly averages of pollution data by station, measured in
+#' \href{https://en.wikipedia.org/wiki/Índice_Metropolitano_de_la_Calidad_del_Aire}{IMECAs}
 #'
 #' Note that in
 #' 2015 it was determined that the stations with codes ACO, AJU, INN, MON
 #' and MPA would no longer be taken into consideration when computing the
-#' pollution index and at some point in the future would no longer be inclued
+#' pollution index and at some point in the future would no longer be included
 #' in the data returned by this function
 #'
 #' @param pollutant The type of pollutant to download
@@ -20,10 +23,12 @@
 #' (the earliest possible date is 2009-01-01).
 #' @param show_messages show a message about issues with excluded stations
 #'
-#' @return A data.frame with pollution data measured in IMECAS, by station.
+#' @return A data.frame with pollution data measured in IMECAs, by station.
 #' The hours correspond to the \emph{Etc/GMT+6} timezone, with no daylight
 #' saving time
 #' @export
+#' @family IMECA functions
+#' @seealso \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmc='}{Indice de calidad del aire por estaciones}
 #' @importFrom rvest html_nodes html_table
 #' @importFrom xml2 read_html
 #' @importFrom tidyr gather

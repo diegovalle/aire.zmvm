@@ -16,7 +16,7 @@
 }}
 \source{
 \href{http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/Gaceta_Oficial_CDMX.pdf}{ Gaceta Oficial de la Ciudad de México}
-No. 230, 27 de Diciembre de 2016 and
+No. 230, 27 de Diciembre de 2016, and
 \emph{Solicitud de Información} FOLIO 0112000033818
 }
 \usage{
@@ -24,8 +24,9 @@ zones
 }
 \description{
 This data set contains the municipios (counties) that make up the 5
-geographic zones into which Mexico City was
-divided for the purpose of informing about the IMECA.
+geographic zones into which Mexico City was divided for the purpose of
+diseminating information about the
+\href{https://en.wikipedia.org/wiki/Índice_Metropolitano_de_la_Calidad_del_Aire}{IMECA}.
 }
 \details{
 Note that in
@@ -34,7 +35,12 @@ and MPA would no longer be taken into consideration when computing the
 pollution index because they didn't meet the
 \href{http://www.aire.cdmx.gob.mx/objetivos-monitoreo-calidad-aire.html}{objectives of monitoring
 air quality} and are no longer included in the index even if they are still
-part of the SIMAT (Sistema de Monitoreo Atmosférico de la Ciudad de México)
+part of the SIMAT (Sistema de Monitoreo Atmosférico de la Ciudad de México).
+Thus, even if they are located inside a zone, they are not included in
+the pollution values for that zone.
+
+A transparency request was used to determine the zone to which the
+municipios of Acolman, Texcoco and Atenco belonged.
 }
 \examples{
 head(zones)

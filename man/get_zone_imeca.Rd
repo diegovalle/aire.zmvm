@@ -48,7 +48,7 @@ value is 2008-01-01).}
 conversion}
 }
 \value{
-A data.frame with pollution data measured in IMECAS, by geographic
+A data.frame with pollution data measured in IMECAs, by geographic
 zone. The hours
 correspond to the \emph{Etc/GMT+6} timezone, with no daylight saving time
 }
@@ -113,4 +113,11 @@ df2$mxc_time <- format(as.POSIXct(paste0(df2$date, " ", df2$hour, ":00"),
 head(df2)
 }
 
+}
+\seealso{
+\code{\link{zones}} for a data.frame containing the municipios
+belonging to each zone, and \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmI='}{Indice de calidad del aire por zonas}
+
+Other IMECA functions: \code{\link{get_latest_imeca}},
+  \code{\link{get_station_imeca}}
 }

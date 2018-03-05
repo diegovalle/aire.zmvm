@@ -16,8 +16,8 @@ get_latest_data(...)
 }
 \description{
 The functions listed below are deprecated and will be defunct in
-  the near future. When possible, alternative functions with similar
-  functionality are also mentioned..
+the near future. When possible, alternative functions with similar
+functionality are also mentioned.
 }
 \section{Details}{
 

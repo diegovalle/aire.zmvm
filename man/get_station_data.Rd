@@ -39,7 +39,7 @@ get_station_data(criterion, pollutant, year, progress = interactive())
 By default it will only display in an interactive session.}
 }
 \value{
-a data.frame with pollution data, when downloading "HORARIOS" the
+a data.frame with pollution data. When downloading "HORARIOS" the
 hours correspond to the
 \emph{Etc/GMT+6} timezone, with no daylight saving time
 }
@@ -50,7 +50,10 @@ server at
 or for earlier years use the archive files from
 \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==} or
 \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI='&opcion=Zw==} for
-meteorological data. For wind speed (WSP) and temperature (TMP) archive
+meteorological data.
+}
+\details{
+For wind speed (WSP) and temperature (TMP) archive
 values are correct to one decimal place, but the most recent data is rounded
 to the nearest integer.
 }
@@ -70,4 +73,10 @@ df2$mxc_time <- format(as.POSIXct(paste0(df2$date, " ", df2$hour, ":00"),
                        tz = "America/Mexico_City")
 head(df2)
 }
+}
+\seealso{
+\code{\link{stations}} for a data.frame with the location and names
+of all polution measuring stations,
+
+Other raw data functions: \code{\link{get_station_month_data}}
 }
