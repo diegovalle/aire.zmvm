@@ -1,7 +1,5 @@
 
 test_that("zone pollution data matches website", {
-  skip_on_cran()
-
   # Invalid function arguments
   expect_error(get_zone_imeca("INVALIDCRITERION", "O3",
                               "NO", "2015-12-25", "2016-01-01"))
@@ -13,6 +11,8 @@ test_that("zone pollution data matches website", {
                               "NO", "2015-13-25", "2016-01-01"))
   expect_error(get_zone_imeca("MAXIMOS", "O3",
                               "NO", "2015-12-25", "2016-14-01"))
+
+  skip_on_cran()
 
   df_max_o3 <- suppressMessages(get_zone_imeca("MAXIMOS",
                                                "O3", c("NO", "NE", "CE"),

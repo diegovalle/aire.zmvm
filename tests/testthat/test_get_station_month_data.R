@@ -1,6 +1,4 @@
 test_that("test get_station_month_data", {
-  skip_on_cran()
-
   # Invalid function arguments
   expect_error(get_station_month_data("INVALID", "PM10", 2016, 1))
   expect_error(get_station_month_data("MAXIMOS", "INVALID", 2016, 2))
@@ -11,6 +9,9 @@ test_that("test get_station_month_data", {
   expect_error(get_station_month_data("MAXIMOS", "PM10", -2016, 1))
   expect_error(get_station_month_data("MAXIMOS", "PM10", -2016, 13))
   expect_error(get_station_month_data("MAXIMOS", "PM10", -2016, 1.5))
+  expect_error(get_station_month_data("MAXIMOS", c("PM10", "O3"), 2016, 1))
+
+  skip_on_cran()
 
   df_hor_2005_jan <- get_station_month_data("HORARIOS", "RH", 2005, 1)
   df_min_2016_april <- get_station_month_data("MINIMOS", "PM10", 2016, 4)

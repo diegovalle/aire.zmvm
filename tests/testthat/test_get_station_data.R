@@ -39,26 +39,7 @@ test_that(".convert_time correctly parses string", {
 
 })
 
-test_that("is.integer2 works", {
-  expect_true(is.integer2(1986))
-  expect_true(is.integer2(1986.0))
-  expect_false(is.integer2(99.2))
-  expect_false(is.integer2(99.0000000001))
-  expect_false(is.integer2(character(0)))
-  expect_false(is.integer2(NULL))
-  expect_false(is.integer2(1.0000000000001))
-  expect_true(is.integer2(2018))
-  expect_true(is.integer2(c(1999:2010)[3]))
-  expect_true(is.integer2(as.numeric(11)))
-  expect_true(is.integer2(as.double(11)))
-  expect_true(is.integer2(as.integer(22)))
-  expect_true(is.integer2(as.single(12)))
-  expect_false(is.integer2(NA))
-})
-
 test_that("get_station_data matches website", {
-  skip_on_cran()
-
   # Invalid function arguments
   expect_error(get_station_data("INVALID", "PM10", 2016))
   expect_error(get_station_data("MAXIMOS", "INVALID", 2016))
@@ -67,6 +48,8 @@ test_that("get_station_data matches website", {
   expect_error(get_station_data("MAXIMOS", "PM10", -9:2015))
   expect_error(get_station_data("MAXIMOS", "PM10", 2016.999))
   expect_error(get_station_data("MAXIMOS", "PM10", -2016))
+
+  skip_on_cran()
 
   df_min_2016 <- get_station_data("MINIMOS", "PM10", 2016, progress = NULL)
   df_max_2016 <- get_station_data("MAXIMOS", "PM10", 2016, progress = FALSE)
