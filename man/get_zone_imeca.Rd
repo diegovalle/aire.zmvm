@@ -57,7 +57,7 @@ retrieve pollution data in IMECAs by geographic zone from the air quality
 server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
 }
 \details{
-Note that the which stations belong to which zones may change over time, also
+Note that the which stations belong to which zones may change over time; also
 the way the IMECA is computed can change so that comparison of
 pollution values across time may not be valid. In
 2015 it was determined that the stations with codes ACO, AJU, INN, MON
@@ -65,8 +65,8 @@ and MPA would no longer be taken into consideration when computing the
 pollution index and at some point in the future would be no longer
 included in the data by zone.
 
-The different geographic zones were defined in the Gaceta Oficial
-CDMX, No 106, 1 de julio 2016.
+The different geographic zones were defined in the  \href{http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/Gaceta_Oficial_CDMX.pdf}{ Gaceta Oficial de la Ciudad de México}
+No. 230, 27 de Diciembre de 2016.
 
 \strong{Zona Centro}: Benito Juárez,
 Cuauhtémoc, Iztacalco and Venustiano Carranza.
