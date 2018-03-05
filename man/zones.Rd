@@ -25,7 +25,7 @@ zones
 \description{
 This data set contains the municipios (counties) that make up the 5
 geographic zones into which Mexico City was
-divided for the purpose of informing about the IMECA index.
+divided for the purpose of informing about the IMECA.
 }
 \details{
 Note that in

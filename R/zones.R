@@ -2,7 +2,7 @@
 #'
 #' This data set contains the municipios (counties) that make up the 5
 #' geographic zones into which Mexico City was
-#' divided for the purpose of informing about the IMECA index.
+#' divided for the purpose of informing about the IMECA.
 #'
 #' Note that in
 #' 2015 it was determined that the stations with codes ACO, AJU, INN, MON
