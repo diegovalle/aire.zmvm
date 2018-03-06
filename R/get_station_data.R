@@ -75,7 +75,7 @@ recode_pollutant <- function(pollutant) {
                  ))
   names(df) <- c("date", "station_code", "pollutant", "value", "unit")
   if (!upollutant %in% unique(df$pollutant)) {
-    message(str_c("No data for '", upollutant, "' in the year of ", year))
+    warning(str_c("No data for '", upollutant, "' in the year of ", year))
     return(data.frame(date = as.Date(character()),
                       hour = character(),
                       station_code = character(),
