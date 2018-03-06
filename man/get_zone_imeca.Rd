@@ -49,8 +49,8 @@ conversion}
 }
 \value{
 A data.frame with pollution data measured in IMECAs, by geographic
-zone. The hours
-correspond to the \emph{Etc/GMT+6} timezone, with no daylight saving time
+  zone. The hours correspond to the \emph{Etc/GMT+6} timezone, with no
+  daylight saving time
 }
 \description{
 retrieve pollution data in IMECAs by geographic zone from the air quality
@@ -58,14 +58,16 @@ server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
 }
 \details{
 Note that the which stations belong to which zones may change over time; also
-the way the IMECA is computed can change so that comparison of
-pollution values across time may not be valid. In
-2015 it was determined that the stations with codes ACO, AJU, INN, MON
-and MPA would no longer be taken into consideration when computing the
-pollution index and at some point in the future would be no longer
-included in the data by zone.
+the way the IMECA is computed can change so that comparison of pollution
+values across time may not be valid.
 
-The different geographic zones were defined in the  \href{http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/Gaceta_Oficial_CDMX.pdf}{ Gaceta Oficial de la Ciudad de México}
+In 2015 it was determined that the stations with codes ACO, AJU, INN, MON and
+MPA would no longer be taken into consideration when computing the pollution
+index and at some point in the future would be no longer included in the data
+by zone.
+
+The different geographic zones were defined in the
+\href{http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/Gaceta_Oficial_CDMX.pdf}{ Gaceta Oficial de la Ciudad de México}
 No. 230, 27 de Diciembre de 2016.
 
 \strong{Zona Centro}: Benito Juárez,
@@ -116,7 +118,9 @@ head(df2)
 }
 \seealso{
 \code{\link{zones}} for a data.frame containing the municipios
-belonging to each zone, and \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmI='}{Índice de calidad del aire por zonas}
+  belonging to each zone, and
+  \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmI='}{Índice de
+  calidad del aire por zonas}
 
 Other IMECA functions: \code{\link{get_latest_imeca}},
   \code{\link{get_station_imeca}}
