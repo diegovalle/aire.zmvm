@@ -30,7 +30,7 @@ pm10_to_imeca_2014 <- function(value){
     ret <- 1 * (value - 505) + 401
   } else
     ret <- NA
-  return(round_up(ret))
+  return(round_away_from_zero(ret))
 }
 
 # http://www.aire.cdmx.gob.mx/default.php?opc=%27ZaBhnmI=&dc=%27aQ==
@@ -51,7 +51,7 @@ pm25_to_imeca <- function(value){
     ret <- 0.6604 * (value - 350.5) + 401
   } else
     ret <- NA
-  return(round_up(ret))
+  return(round_away_from_zero(ret))
 }
 
 # http://www.aire.cdmx.gob.mx/default.php?opc=%27ZaBhnmI=&dc=%27aQ==
@@ -73,7 +73,7 @@ o3_to_imeca <- function(value){
     ret <- 1000 * (value - 0.505) + 401
   } else
     ret <- NA
-  return(round_up(ret))
+  return(round_away_from_zero(ret))
 }
 
 # http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
@@ -90,14 +90,14 @@ no2_to_imeca <- function(value){
   } else if (value > 0.420) {
     ret <- value * 200 / 0.42
   }
-  return(round_up(ret))
+  return(round_away_from_zero(ret))
 }
 
 # http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
 so2_to_imeca <- function(value){
   value <- value / 1000
   ret <- value * 100 / 0.13
-  return(round_up(ret))
+  return(round_away_from_zero(ret))
 }
 
 # http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
@@ -113,7 +113,7 @@ co_to_imeca <- function(value){
   } else if (value > 22.00) {
     ret <- value * 200 / 22
   }
-  return(round_up(ret))
+  return(round_away_from_zero(ret))
 }
 
 
@@ -163,12 +163,12 @@ to_imeca <- function(contaminant, value) {
 #' @param pollutant type of pollutant. A vector of one or more of the
 #' following options:
 #' \itemize{
-#'  \item{"SO2"}{ - Dioxido de azufre (24 hour average)}
-#'  \item{"CO"}{ - Monoxido de carbono (8 hour average)}
-#'  \item{"NO2"}{ - Dioxido de nitrogeno (1 hour average)}
-#'  \item{"O3"}{ - Ozono (1 hour average)}
-#'  \item{"PM10"}{ - Particulas menores a 10 micrometros (24 hour average)}
-#'  \item{"PM25"}{ - Particulas menores a 2.5 micrometros (24 hour average)}
+#'  \item{"SO2"}{ - Sulfur Dioxide (24 hour average)}
+#'  \item{"CO"}{ - Carbon Monoxide (8 hour average)}
+#'  \item{"NO2"}{ - Nitrogen Dioxide (1 hour average)}
+#'  \item{"O3"}{ - Ozone (1 hour average)}
+#'  \item{"PM10"}{ - Particulate matter 10 micrometers or less (24 hour average)}
+#'  \item{"PM25"}{ - Particulate matter 2.5 micrometers or less (24 hour average)}
 #' }
 #' @param value a numeric vector of values to convert to IMECAs
 #' @param showWarnings deprecated; you can use the function

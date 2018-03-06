@@ -12,12 +12,12 @@ convert_to_imeca(value, pollutant, showWarnings = TRUE)
 \item{pollutant}{type of pollutant. A vector of one or more of the
 following options:
 \itemize{
- \item{"SO2"}{ - Dioxido de azufre (24 hour average)}
- \item{"CO"}{ - Monoxido de carbono (8 hour average)}
- \item{"NO2"}{ - Dioxido de nitrogeno (1 hour average)}
- \item{"O3"}{ - Ozono (1 hour average)}
- \item{"PM10"}{ - Particulas menores a 10 micrometros (24 hour average)}
- \item{"PM25"}{ - Particulas menores a 2.5 micrometros (24 hour average)}
+ \item{"SO2"}{ - Sulfur Dioxide (24 hour average)}
+ \item{"CO"}{ - Carbon Monoxide (8 hour average)}
+ \item{"NO2"}{ - Nitrogen Dioxide (1 hour average)}
+ \item{"O3"}{ - Ozone (1 hour average)}
+ \item{"PM10"}{ - Particulate matter 10 micrometers or less (24 hour average)}
+ \item{"PM25"}{ - Particulate matter 2.5 micrometers or less (24 hour average)}
 }}
 
 \item{showWarnings}{deprecated; you can use the function
