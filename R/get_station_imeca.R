@@ -55,8 +55,8 @@ get_station_imeca <- function(pollutant, date,
     stop("date should be a date in YYYY-MM-DD format")
   if (date < "2009-01-01")
     stop("date should be after 2009-01-01")
-  if (!(identical("O3", pollutant) | identical("NO2", pollutant) |
-      identical("SO2", pollutant) | identical("CO", pollutant) |
+  if (!(identical("O3", pollutant) || identical("NO2", pollutant) |
+      identical("SO2", pollutant) || identical("CO", pollutant) |
       identical("PM10", pollutant)))
      stop("Invalid pollutant value")
 

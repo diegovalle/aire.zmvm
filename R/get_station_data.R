@@ -221,7 +221,7 @@ download_horario_by_month <- function(pollutant, year){
   year_not_to_use_archives <- 2018
   ## The old archive data files include decimal points for WSP and TMP
   ## but not the web form. Be sure to use the web form only for recent data
-  if (toupper(pollutant) == "WSP" | toupper(pollutant) == "TMP")
+  if (toupper(pollutant) == "WSP" || toupper(pollutant) == "TMP")
     year_no_minmax_data <- 2018
   else
     year_no_minmax_data <- 2005
@@ -326,15 +326,15 @@ download_horario_by_month <- function(pollutant, year){
 #' }
 get_station_data <- function(criterion, pollutant, year,
                              progress = interactive()) {
-  if (!(identical("HORARIOS", criterion) | identical("MAXIMOS", criterion) |
+  if (!(identical("HORARIOS", criterion) || identical("MAXIMOS", criterion) |
         identical("MINIMOS", criterion)))
     stop("criterion should be 'HORARIOS', 'MINIMOS', or 'MAXIMOS'")
-  if (!(identical("O3", pollutant) | identical("NO2", pollutant) |
-        identical("SO2", pollutant) | identical("CO", pollutant) |
-        identical("PM10", pollutant) | identical("WSP", pollutant) |
-        identical("WDR", pollutant) | identical("TMP", pollutant) |
-        identical("NOX", pollutant) | identical("NO", pollutant) |
-        identical("PM25", pollutant) | identical("RH", pollutant)))
+  if (!(identical("O3", pollutant) || identical("NO2", pollutant) |
+        identical("SO2", pollutant) || identical("CO", pollutant) |
+        identical("PM10", pollutant) || identical("WSP", pollutant) |
+        identical("WDR", pollutant) || identical("TMP", pollutant) |
+        identical("NOX", pollutant) || identical("NO", pollutant) |
+        identical("PM25", pollutant) || identical("RH", pollutant)))
     stop("Invalid pollutant value")
   ## Check the year argument is an integer or vector of integers
   if (length(year) < 1)
@@ -347,7 +347,7 @@ get_station_data <- function(criterion, pollutant, year,
 
   pollutant <- tolower(pollutant)
 
-  if (identical(progress, TRUE) & length(year) > 1) {
+  if (identical(progress, TRUE) &&  length(year) > 1) {
     p <- progress_bar$new(format = "  downloading [:bar] :percent eta: :eta",
                           total = length(year))
     p$tick(0)
@@ -355,7 +355,7 @@ get_station_data <- function(criterion, pollutant, year,
   df <- data.frame()
   for (i in year){
     df <- rbind(df, .download_data(criterion, pollutant, i))
-    if (identical(progress, TRUE) & length(year) > 1)
+    if (identical(progress, TRUE) &&  length(year) > 1)
       p$tick()
   }
   as.data.frame(df)
@@ -424,17 +424,17 @@ get_station_data <- function(criterion, pollutant, year,
 #' head(df_o3)
 #' }
 get_station_month_data <- function(criterion, pollutant, year, month) {
-  if ( missing(pollutant) | missing(year) | missing(month))
+  if ( missing(pollutant) || missing(year) || missing(month))
     stop("arguments missing")
-  if (!(identical("HORARIOS", criterion) | identical("MAXIMOS", criterion) |
+  if (!(identical("HORARIOS", criterion) || identical("MAXIMOS", criterion) |
         identical("MINIMOS", criterion)))
     stop("criterion should be 'HORARIOS', 'MINIMOS', or 'MAXIMOS'")
-  if (!(identical("O3", pollutant) | identical("NO2", pollutant) |
-        identical("SO2", pollutant) | identical("CO", pollutant) |
-        identical("PM10", pollutant) | identical("WSP", pollutant) |
-        identical("WDR", pollutant) | identical("TMP", pollutant) |
-        identical("NOX", pollutant) | identical("NO", pollutant) |
-        identical("PM25", pollutant) | identical("RH", pollutant)))
+  if (!(identical("O3", pollutant) || identical("NO2", pollutant) ||
+        identical("SO2", pollutant) || identical("CO", pollutant) ||
+        identical("PM10", pollutant) || identical("WSP", pollutant) ||
+        identical("WDR", pollutant) || identical("TMP", pollutant) ||
+        identical("NOX", pollutant) || identical("NO", pollutant) ||
+        identical("PM25", pollutant) || identical("RH", pollutant)))
     stop("Invalid pollutant value")
   ## Check the year argument is an integer or vector of integers
   if (length(year) < 1)
@@ -448,7 +448,7 @@ get_station_month_data <- function(criterion, pollutant, year, month) {
                " from 1986 onwards"))
   if (length(month) != 1)
     stop("you can only download a single month at a time")
-  if (pollutant == "WSP" | pollutant == "TMP")
+  if (pollutant == "WSP" || pollutant == "TMP")
     warning(paste0("Wind speed (WSP) and temperature (TMP) were rounded to the",
             " nearest integer, in some circumstances you can download data",
             " accurate to",
@@ -456,12 +456,12 @@ get_station_month_data <- function(criterion, pollutant, year, month) {
             "See the documentation for more information."), call. = FALSE)
 
   month <- str_pad(as.character(month), 2, "left", "0")
-  if (!(identical("01", month) | identical("02", month) |
-        identical("03", month) | identical("04", month) |
-        identical("05", month) | identical("06", month) |
-        identical("07", month) | identical("08", month) |
-        identical("09", month) | identical("10", month) |
-        identical("11", month) | identical("12", month)))
+  if (!(identical("01", month) || identical("02", month) |
+        identical("03", month) || identical("04", month) |
+        identical("05", month) || identical("06", month) |
+        identical("07", month) || identical("08", month) |
+        identical("09", month) || identical("10", month) |
+        identical("11", month) || identical("12", month)))
     stop("Invalid month value, should be between 1 and 12")
 
   pollutant <- tolower(pollutant)

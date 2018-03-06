@@ -183,18 +183,18 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
   # zone api expects lower
   criterion <- toupper(criterion)
   for (i in seq_len(length(pollutant)))
-    if (!(identical("O3", pollutant[i]) | identical("NO2", pollutant[i]) |
-          identical("SO2", pollutant[i]) | identical("CO", pollutant[i]) |
-          identical("PM10", pollutant[i]) | identical("TC", pollutant[i])))
+    if (!(identical("O3", pollutant[i]) || identical("NO2", pollutant[i]) ||
+          identical("SO2", pollutant[i]) || identical("CO", pollutant[i]) ||
+          identical("PM10", pollutant[i]) || identical("TC", pollutant[i])))
       stop("Invalid pollutant value")
   pollutant <- unique(pollutant)
   for (i in seq_len(length(zone)))
-    if (!(identical("NO", zone[i]) | identical("NE", zone[i]) |
-          identical("CE", zone[i]) | identical("SO", zone[i]) |
-          identical("SE", zone[i]) | identical("TZ", zone[i]) ))
+    if (!(identical("NO", zone[i]) || identical("NE", zone[i]) ||
+          identical("CE", zone[i]) || identical("SO", zone[i]) ||
+          identical("SE", zone[i]) || identical("TZ", zone[i]) ))
       stop("zone should be one of 'NO', 'NE', 'CE', 'SO', 'SE', or 'TZ'")
   zone <- unique(zone)
-  if (!(identical("HORARIOS", criterion) | identical("MAXIMOS", criterion)))
+  if (!(identical("HORARIOS", criterion) || identical("MAXIMOS", criterion)))
       stop("criterion should be 'HORARIOS' or 'MAXIMOS'")
   # the API expects lowercase letters
   criterion <- tolower(criterion)
