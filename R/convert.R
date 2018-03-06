@@ -9,17 +9,8 @@
 #   Para NO2, Co y SO2, sigue utilizándose los algoritmos que se encuentran en el Anexo 4 dentro de la norma NADF-009-AIRE-2006 que establece los requisitos para elaborar el Índice Metropolitano de la Calidad del Aire y se encuentra en la siguiente liga:
 #     http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
 
+# for the pm10 conversion from 2006 see
 # http://siga.jalisco.gob.mx/assets/documentos/normatividad/nadf-009-aire-2006.pdf
-pm10_to_imeca_2006 <- function(value){
-  if (value >= 0.000 & value <= 120){
-    ret <- value * 5 / 6
-  } else if (value > 120 & value <= 320){
-    ret <- 40 + value * .5
-  } else if (value > 320) {
-    ret <- value * 5 / 8
-  }
-  return(round_up(ret))
-}
 
 # http://www.aire.cdmx.gob.mx/default.php?opc=%27ZaBhnmI=&dc=%27aQ==
 pm10_to_imeca_2014 <- function(value){
@@ -34,7 +25,7 @@ pm10_to_imeca_2014 <- function(value){
   } else if (value > 354 & value <= 424) {
     ret <- 1.4348 * (value - 355) + 201
   } else if (value > 424 & value <= 504) {
-    ret <-1.2532 * (value - 425) + 301
+    ret <- 1.2532 * (value - 425) + 301
   } else if (value > 504 & value <= 604) {
     ret <- 1 * (value - 505) + 401
   } else
@@ -99,7 +90,6 @@ no2_to_imeca <- function(value){
   } else if (value > 0.420) {
     ret <- value * 200 / 0.42
   }
-  #ret <- (value * 100)/0.21
   return(round_up(ret))
 }
 
@@ -223,7 +213,6 @@ convert_to_imeca <- function(value, pollutant, showWarnings = TRUE) {
     stop("value should be numeric")
   if (!suppressWarnings(!any(is.na(as.numeric(na.omit(value))))))
     stop("value should be numeric")
-  max_length <- max(c(length(value), length(pollutant)))
   if (length(value) != length(pollutant)) {
     if ( max(length(value), length(pollutant)) %%
          min(length(value), length(pollutant)) != 0)

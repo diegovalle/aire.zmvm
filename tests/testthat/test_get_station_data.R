@@ -53,7 +53,7 @@ test_that("get_station_data matches website", {
 
   df_min_2016 <- get_station_data("MINIMOS", "PM10", 2016, progress = NULL)
   df_max_2016 <- get_station_data("MAXIMOS", "PM10", 2016, progress = FALSE)
-  df_min_2015 <- get_station_data("MINIMOS", "PM10", 2015)
+  df_min_2015 <- get_station_data("MINIMOS", "PM10", 2015, progress = TRUE)
   df_max_2015 <- get_station_data("MAXIMOS", "O3", 2015)
   df_max_2005 <- get_station_data("MAXIMOS", "SO2", 2005)
   df_wdr_2005 <- get_station_data("MAXIMOS", "WDR", 2005)
