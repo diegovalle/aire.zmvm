@@ -42,6 +42,7 @@ recode_pollutant <- function(pollutant) {
 #' @importFrom readr read_csv col_character col_double col_integer
 #' @importFrom dplyr filter
 #' @importFrom lubridate fast_strptime
+#' @keywords internal
 #'
 .download_old_station_data <- function(pollutant, year) {
   upollutant <- toupper(pollutant)
@@ -122,6 +123,7 @@ recode_pollutant <- function(pollutant) {
 #' @importFrom lubridate fast_strptime month
 #' @importFrom httr GET
 #' @importFrom tidyr gather
+#' @keywords internal
 #'
 .download_current_station_data <- function(criterion, pollutant, year,
                                            month = "") {
@@ -216,6 +218,7 @@ download_horario_by_month <- function(pollutant, year){
 #' @param year year to download
 #'
 #' @importFrom dplyr %>% group_by summarise ungroup
+#' @keywords internal
 #'
 .download_data <- function(criterion, pollutant, year) {
   year_not_to_use_archives <- 2018
@@ -280,9 +283,9 @@ download_horario_by_month <- function(pollutant, year){
 #' \itemize{
 #'  \item{"SO2"}{ - Sulfur Dioxide (parts per billion)}
 #'  \item{"CO"}{ - Carbon Monoxide (parts per million)}
-#'  \item{"NOX"}{ - Oxidos de nitrogeno (parts per billion)}
+#'  \item{"NOX"}{ - Nitrogen Oxides (parts per billion)}
 #'  \item{"NO2"}{ - Nitrogen Dioxide (parts per billion)}
-#'  \item{"NO"}{ - Oxido nitrico (parts per billion)}
+#'  \item{"NO"}{ - Nitric Oxide (parts per billion)}
 #'  \item{"O3"}{ - Ozone (parts per billion)}
 #'  \item{"PM10"}{ - Particulate matter 10 micrometers or less
 #'  (micrograms per cubic meter)}
@@ -381,9 +384,9 @@ get_station_data <- function(criterion, pollutant, year,
 #' \itemize{
 #'  \item{"SO2"}{ - Sulfur Dioxide (parts per billion)}
 #'  \item{"CO"}{ - Carbon Monoxide (parts per million)}
-#'  \item{"NOX"}{ - Oxidos de nitrogeno (parts per billion)}
+#'  \item{"NOX"}{ - Nitrogen Oxides (parts per billion)}
 #'  \item{"NO2"}{ - Nitrogen Dioxide (parts per billion)}
-#'  \item{"NO"}{ - Oxido nitrico (parts per billion)}
+#'  \item{"NO"}{ - Nitric Oxide (parts per billion)}
 #'  \item{"O3"}{ - Ozone (parts per billion)}
 #'  \item{"PM10"}{ - Particulate matter 10 micrometers or less
 #'  (micrograms per cubic meter)}

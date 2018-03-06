@@ -148,17 +148,17 @@ to_imeca <- function(contaminant, value) {
 #' Air quality in Mexico City is reported in IMECAs. This function converts
 #' pollution running averages in the original units (ppb, µg/m³, etc) to
 #' \href{https://en.wikipedia.org/wiki/Índice_Metropolitano_de_la_Calidad_del_Aire}{IMECA}
-#' (Indice Metropolitano de la Calidad del Aire), a dimensionless scale
+#' (Índice Metropolitano de la Calidad del Aire), a dimensionless scale
 #' where all the pollutants can be compared.
 #'
 #' Note that for some pollutants a running average is expected. Because of
 #' rounding error results may be off by a couple of points
 #'
 #' @seealso For the formulas on how to convert O3, PM10, and PM2.5 visit:
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc='ZaBhnmI=&dc='aQ==}{¿Como se calcula el Indice de Calidad del Aire?}, and
+#' \href{http://www.aire.cdmx.gob.mx/default.php?opc='ZaBhnmI=&dc='aQ==}{¿Como se calcula el Índice de Calidad del Aire?}, and
 #' for NO2, CO, and SO2:
 #' \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf}{NADF-009-AIRE-2006}.
-#'  Also \emph{Solicitud de Informacion} FOLIO 0112000033218
+#'  Also \emph{Solicitud de Información} FOLIO 0112000033218
 #'
 #' @param pollutant type of pollutant. A vector of one or more of the
 #' following options:

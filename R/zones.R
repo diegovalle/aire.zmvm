@@ -3,7 +3,7 @@
 #' @description
 #' This data set contains the municipios (counties) that make up the 5
 #' geographic zones into which Mexico City was divided for the purpose of
-#' diseminating information about the
+#' disseminating information about the
 #' \href{https://en.wikipedia.org/wiki/Índice_Metropolitano_de_la_Calidad_del_Aire}{IMECA}.
 #'
 #'

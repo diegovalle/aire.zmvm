@@ -8,7 +8,7 @@
 \describe{
   \item{station_code}{abbreviation of the station}
   \item{station_name}{name of the station}
-  \item{lon}{longitud of the station}
+  \item{lon}{longitude of the station}
   \item{lat}{latitude of the station}
   \item{altitude}{altitude of the station}
   \item{comment}{comment}
@@ -26,7 +26,7 @@ This data set contains all pollution measuring stations in Mexico City. The stat
 was added manually since the official source data set was missing any information
 (the location was found in the
 \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/GDF_2015_audit_report_final_v2.pdf}{Audit of Ambient Air Monitoring Stations
-for the Sistema de Monitoreo Atmosferico de la Ciudad de Mexico}).
+for the Sistema de Monitoreo Atmosférico de la Ciudad de México}).
 }
 \examples{
 head(stations)

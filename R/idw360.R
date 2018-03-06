@@ -8,9 +8,9 @@
 #'
 #' @param values the dependent variable
 #' @param coords the spatial data locations where the values were measured.
-#' First column x/longitud, second y/latitude
+#' First column x/longitude, second y/latitude
 #' @param grid data frame or Spatial object with the locations to predict.
-#' First column x/longitud, second y/latitude
+#' First column x/longitude, second y/latitude
 #' @param idp The inverse distance weighting power
 #'
 #' @importFrom sp spDists

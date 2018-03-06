@@ -28,7 +28,7 @@
 #' saving time
 #' @export
 #' @family IMECA functions
-#' @seealso \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmc='}{Indice de calidad del aire por estaciones}
+#' @seealso \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmc='}{Índice de calidad del aire por estaciones}
 #' @importFrom rvest html_nodes html_table
 #' @importFrom xml2 read_html
 #' @importFrom tidyr gather

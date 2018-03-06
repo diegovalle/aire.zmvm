@@ -10,10 +10,10 @@ idw360(values, coords, grid, idp = 2)
 \item{values}{the dependent variable}
 
 \item{coords}{the spatial data locations where the values were measured.
-First column x/longitud, second y/latitude}
+First column x/longitude, second y/latitude}
 
 \item{grid}{data frame or Spatial object with the locations to predict.
-First column x/longitud, second y/latitude}
+First column x/longitude, second y/latitude}
 
 \item{idp}{The inverse distance weighting power}
 }

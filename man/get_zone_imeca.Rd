@@ -116,7 +116,7 @@ head(df2)
 }
 \seealso{
 \code{\link{zones}} for a data.frame containing the municipios
-belonging to each zone, and \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmI='}{Indice de calidad del aire por zonas}
+belonging to each zone, and \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmI='}{Índice de calidad del aire por zonas}
 
 Other IMECA functions: \code{\link{get_latest_imeca}},
   \code{\link{get_station_imeca}}

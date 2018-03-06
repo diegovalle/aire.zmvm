@@ -1,3 +1,4 @@
+# test if int is an integer
 is.integer2 <- function(int) {
   if (length(int) < 1)
     return(FALSE)
@@ -11,6 +12,7 @@ is.integer2 <- function(int) {
              })
 }
 
+# test if date is in YYYY-MM-DD format
 is.Date <- function(date, date.format = "%Y-%m-%d") {
   if (length(date) < 1)
     return(FALSE)
@@ -21,10 +23,12 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
 }
 
 # http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
-# 4.20 Redondeo: Formato que modifica la información después de una cifra de interés, de tal manera que si la
-# siguiente cifra es 4 ó menor no se considera y no cambia la cifra de interés. Cuando la cifra siguiente es 5 ó mayor,
-# entonces la cifra de interés se incrementa en una unidad (17). Por ejemplo: el redondeo de la cifra 0.1105 es 0.111,
-# y en el caso de la cifra 0.1104 el resultado es 0.110.
+# 4.20 Redondeo: Formato que modifica la información después de una cifra de
+# interés, de tal manera que si la siguiente cifra es 4 ó menor no se considera
+# y no cambia la cifra de interés. Cuando la cifra siguiente es 5 ó mayor,
+# entonces la cifra de interés se incrementa en una unidad (17). Por ejemplo: el
+# redondeo de la cifra 0.1105 es 0.111, y en el caso de la cifra 0.1104 el
+# resultado es 0.110.
 round_away_from_zero <- function(r) {
   posneg <-  sign(r)
   z <- abs(r)
