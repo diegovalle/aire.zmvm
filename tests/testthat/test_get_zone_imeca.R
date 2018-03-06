@@ -24,8 +24,8 @@ test_that("zone pollution data matches website", {
                                                  c("NO", "NE", "CE"),
                                                  "2015-12-25", "2016-01-01"))
 
-  expect_message(get_zone_imeca("MAXIMOS", "O3", c("NO", "NE", "CE"),
-                                "2015-12-25", "2016-01-01"))
+  expect_message(get_zone_imeca("MAXIMOS", "PM10", c("NO", "NE", "CE"),
+                                "2008-01-01", "2008-01-01"))
   expect_message(get_zone_imeca("MAXIMOS", "SO2", c("NO", "NE", "CE"),
                                 "2017-02-25", "2017-05-01"))
   expect_silent(get_zone_imeca("MAXIMOS", "O3", c("NO", "NE", "CE"),

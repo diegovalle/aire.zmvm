@@ -9,11 +9,11 @@ get_station_imeca(pollutant, date, show_messages = TRUE)
 \arguments{
 \item{pollutant}{The type of pollutant to download
 \itemize{
- \item{"SO2"}{ - Dioxido de azufre}
- \item{"CO"}{ - Monoxido de carbono}
- \item{"NO2"}{ - Dioxido de nitrogeno}
- \item{"O3"}{ - Ozono}
- \item{"PM10"}{ - Particulas menores a 10 micrometros}
+ \item{"SO2"}{ - Sulfur Dioxide}
+ \item{"CO"}{ - Carbon Monoxide}
+ \item{"NO2"}{ - Nitrogen Dioxide}
+ \item{"O3"}{ - Ozone}
+ \item{"PM10"}{ - Particulate matter 10 micrometers or less}
 }}
 
 \item{date}{The date for which to download data in YYYY-MM-DD format

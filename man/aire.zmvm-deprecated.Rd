@@ -9,7 +9,9 @@
 \alias{aire.zmvm-deprecated-package}
 \title{Deprecated functions in package \pkg{aire.zmvm}.}
 \usage{
+get_zone_data(...)
 get_latest_data(...)
+get_station_single_month(...)
 }
 \arguments{
 \item{...}{Parameters to be passed to the modern version of the function}
@@ -27,7 +29,7 @@ functionality are also mentioned.
   \code{get_latest_data} \tab now a synonym for
   \code{\link{get_latest_imeca}}\cr
   \code{get_station_single_month} \tab now a synonym for
-  \code{\link{get_station_single_month}("HORARIOS", ...)}\cr
+  \code{\link{get_station_month_data}(criterion = "HORARIOS", ...)}\cr
 }
 }
 

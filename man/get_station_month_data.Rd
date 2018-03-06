@@ -16,20 +16,20 @@ get_station_month_data(criterion, pollutant, year, month)
 
 \item{pollutant}{The type of pollutant to download.
 \itemize{
- \item{"SO2"}{ - Dioxido de azufre (partes por billon)}
- \item{"CO"}{ - Monoxido de carbono (partes por millon)}
- \item{"NOX"}{ - Oxidos de nitrogeno (partes por billon)}
- \item{"NO2"}{ - Dioxido de nitrogeno (partes por billon)}
- \item{"NO"}{ - Oxido nitrico (partes por billon)}
- \item{"O3"}{ - Ozono (partes por billon)}
- \item{"PM10"}{ - Particulas menores a 10 micrometros
- (microgramos por metro cubico)}
- \item{"PM25"}{ - Particulas menores a 2.5 micrometros
- (microgramos por metro cubico)}
- \item{"WSP"}{ - Velocidad del viento (metros por segundo)}
- \item{"WDR"}{ - Direccion del viento (grados)}
- \item{"TMP"}{ - Temperatura ambiente (grados Celsius)}
- \item{"RH"}{ - Humedad relativa (porcentaje)}
+ \item{"SO2"}{ - Sulfur Dioxide (parts per billion)}
+ \item{"CO"}{ - Carbon Monoxide (parts per million)}
+ \item{"NOX"}{ - Oxidos de nitrogeno (parts per billion)}
+ \item{"NO2"}{ - Nitrogen Dioxide (parts per billion)}
+ \item{"NO"}{ - Oxido nitrico (parts per billion)}
+ \item{"O3"}{ - Ozone (parts per billion)}
+ \item{"PM10"}{ - Particulate matter 10 micrometers or less
+ (micrograms per cubic meter)}
+ \item{"PM25"}{ - Particulate matter 2.5 micrometers or less
+ (micrograms per cubic meter)}
+ \item{"WSP"}{ - Wind velocity (meters per second)}
+ \item{"WDR"}{ - Wind direction (degrees)}
+ \item{"TMP"}{ - Temperature (degrees Celsius)}
+ \item{"RH"}{ - Relative humidity (percentage)}
 }}
 
 \item{year}{an integer indicating the year for which to download data

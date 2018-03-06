@@ -85,11 +85,11 @@
 #' @param pollutant The type of pollutant to download. One or more of the
 #' following options:
 #' \itemize{
-#'  \item{"SO2"}{ - Dioxido de azufre}
-#'  \item{"CO"}{ - Monoxido de carbono}
-#'  \item{"NO2"}{ - Dioxido de nitrogeno}
-#'  \item{"O3"}{ - Ozono}
-#'  \item{"PM10"}{ - Particulas menores a 10 micrometros}
+#'  \item{"SO2"}{ - Sulfur Dioxide}
+#'  \item{"CO"}{ - Carbon Monoxide}
+#'  \item{"NO2"}{ - Nitrogen Dioxide}
+#'  \item{"O3"}{ - Ozone}
+#'  \item{"PM10"}{ - Particulate matter 10 micrometers or less}
 #'  \item{"TC"}{- All the pollutants}
 #' }
 #' @param zone The geographic zone for which to download data. One or more of
