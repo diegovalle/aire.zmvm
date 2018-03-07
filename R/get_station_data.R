@@ -370,9 +370,9 @@ get_station_data <- function(criterion, pollutant, year,
 #' in the original units, by station, from the air quality server at
 #' \url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
 #'
-#' The values for wind speed (WSP) and temperature (TMP) are rounded
-#' to the nearest integer, but the \code{\link{get_station_data}} function allows you to
-#' download data accurate to one decimal point.
+#' The values for wind speed (WSP) and temperature (TMP) are rounded to the
+#' nearest integer, but the \code{\link{get_station_data}} function allows you
+#' to download data accurate to one decimal point.
 #'
 #' @param criterion Type of data to download.
 #' \itemize{

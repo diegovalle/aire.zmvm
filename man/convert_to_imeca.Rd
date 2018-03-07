@@ -9,16 +9,13 @@ convert_to_imeca(value, pollutant, showWarnings = TRUE)
 \arguments{
 \item{value}{a numeric vector of values to convert to IMECAs}
 
-\item{pollutant}{type of pollutant. A vector of one or more of the
-following options:
-\itemize{
- \item{"SO2"}{ - Sulfur Dioxide (24 hour average)}
- \item{"CO"}{ - Carbon Monoxide (8 hour average)}
- \item{"NO2"}{ - Nitrogen Dioxide (1 hour average)}
- \item{"O3"}{ - Ozone (1 hour average)}
- \item{"PM10"}{ - Particulate matter 10 micrometers or less (24 hour average)}
- \item{"PM25"}{ - Particulate matter 2.5 micrometers or less (24 hour average)}
-}}
+\item{pollutant}{type of pollutant. A vector of one or more of the following
+options: \itemize{ \item{"SO2"}{ - Sulfur Dioxide (24 hour average)}
+\item{"CO"}{ - Carbon Monoxide (8 hour average)} \item{"NO2"}{ - Nitrogen
+Dioxide (1 hour average)} \item{"O3"}{ - Ozone (1 hour average)}
+\item{"PM10"}{ - Particulate matter 10 micrometers or less (24 hour
+average)} \item{"PM25"}{ - Particulate matter 2.5 micrometers or less (24
+hour average)} }}
 
 \item{showWarnings}{deprecated; you can use the function
 \code{\link[base]{suppressWarnings}} instead.}
@@ -30,18 +27,19 @@ a vector containing the converted value in IMECAs
 Air quality in Mexico City is reported in IMECAs. This function converts
 pollution running averages in the original units (ppb, µg/m³, etc) to
 \href{https://en.wikipedia.org/wiki/Índice_Metropolitano_de_la_Calidad_del_Aire}{IMECA}
-(Índice Metropolitano de la Calidad del Aire), a dimensionless scale
-where all the pollutants can be compared.
+(Índice Metropolitano de la Calidad del Aire), a dimensionless scale where
+all the pollutants can be compared.
 }
 \details{
-Note that for some pollutants a running average is expected. Because of
-rounding error results may be off by a couple of points
+Note that each pollutant has different averaging periods (see above). Because
+of rounding error results may be off by a couple of points
 }
 \examples{
 ## IMECA is a dimensionless scale that allows for the comparison of
 ## different pollutants
 convert_to_imeca(157, "O3")
 convert_to_imeca(c(450, 350, 250), rep("NO2", 3))
+## Since this is PM10 the 80 is supposed to be the 24 hour average
 convert_to_imeca(80, "PM10")
 
 ## warning about recycling elements in a vector
@@ -56,8 +54,8 @@ convert_to_imeca(98, "O3")
 }
 \seealso{
 For the formulas on how to convert O3, PM10, and PM2.5 visit:
-\href{http://www.aire.cdmx.gob.mx/default.php?opc='ZaBhnmI=&dc='aQ==}{¿Como se calcula el Índice de Calidad del Aire?}, and
-for NO2, CO, and SO2:
-\href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf}{NADF-009-AIRE-2006}.
- Also \emph{Solicitud de Información} FOLIO 0112000033218
+  \href{http://www.aire.cdmx.gob.mx/default.php?opc='ZaBhnmI=&dc='aQ==}{¿Como
+  se calcula el Índice de Calidad del Aire?}, and for NO2, CO, and SO2:
+  \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf}{NADF-009-AIRE-2006}.
+   Also \emph{Solicitud de Información} FOLIO 0112000033218
 }
