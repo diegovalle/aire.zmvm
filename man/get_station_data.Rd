@@ -48,7 +48,7 @@ retrieve pollution data by station in the original units from the air quality
 server at
 \href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
 or for earlier years use the archive files from
-\href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}{Contaminante} or
+\href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}{Contaminante}, or
 \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI='&opcion=Zw==}{Meteorología} for
 meteorological data.
 }

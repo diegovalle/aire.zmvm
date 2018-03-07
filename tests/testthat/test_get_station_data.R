@@ -70,7 +70,7 @@ test_that("get_station_data matches website", {
   # Wait before downloading
   Sys.sleep(2)
   # No measuring stations for PM25 in 1986, should show message
-  expect_message(get_station_data("HORARIOS", "PM25", 1986))
+  expect_warning(get_station_data("HORARIOS", "PM25", 1986))
   Sys.sleep(2)
   expect_equal(dplyr::filter(get_station_data("HORARIOS", "RH", 2000),
                 date == "2000-01-01" & hour == 3 &
