@@ -263,10 +263,10 @@ download_horario_by_month <- function(pollutant, year){
 #'
 #' retrieve pollution data by station in the original units from the air quality
 #' server at
-#' \url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
+#' \href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
 #' or for earlier years use the archive files from
-#' \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==} or
-#' \url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI='&opcion=Zw==} for
+#' \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}{Contaminante}, or
+#' \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI='&opcion=Zw==}{Meteorología} for
 #' meteorological data.
 #'
 #' For wind speed (WSP) and temperature (TMP) archive
@@ -368,7 +368,7 @@ get_station_data <- function(criterion, pollutant, year,
 #'
 #' retrieve hourly averages, daily maximums or daily minimums of pollution data
 #' in the original units, by station, from the air quality server at
-#' \url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
+#' \href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
 #'
 #' The values for wind speed (WSP) and temperature (TMP) are rounded to the
 #' nearest integer, but the \code{\link{get_station_data}} function allows you

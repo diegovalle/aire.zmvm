@@ -25,18 +25,20 @@
 
 #' Get the latest pollution values for each station
 #'
-#' Download the latest hourly pollution values for each station in
+#' Download the latest hourly values for the pollutants with the highest values
+#' for each station as measured in
 #' \href{https://en.wikipedia.org/wiki/Índice_Metropolitano_de_la_Calidad_del_Aire}{IMECAs}
 #'
-#' Note that in
-#' 2015 it was determined that the stations with codes ACO, AJU, INN, MON
-#' and MPA would no longer be taken into consideration when computing the
-#' pollution index and are not included in the data returned by this function
+#' Note that in 2015 it was determined that the stations with codes ACO, AJU,
+#' INN, MON and MPA would no longer be taken into consideration when computing
+#' the pollution index and are not included in the data returned by this
+#' function
 #'
-#' @return A data.frame with pollution values in IMECAs, the hour corresponds
-#' to the \emph{America/Mexico_City} timezone
+#' @return A data.frame with pollution values in IMECAs, the hour corresponds to
+#'   the \emph{America/Mexico_City} timezone
 #' @family IMECA functions
-#' @seealso \href{http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php}{Reporte de calidad del aire}
+#' @seealso \href{http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php}{Reporte
+#'   de calidad del aire}
 #' @export
 #' @importFrom utils URLdecode
 #' @importFrom rvest html_nodes html_text

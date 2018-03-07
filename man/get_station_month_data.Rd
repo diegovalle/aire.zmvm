@@ -44,7 +44,7 @@ a data.frame with pollution data, the hours correspond to the
 \description{
 retrieve hourly averages, daily maximums or daily minimums of pollution data
 in the original units, by station, from the air quality server at
-\url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
+\href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
 }
 \details{
 The values for wind speed (WSP) and temperature (TMP) are rounded to the
