@@ -31,8 +31,8 @@ pollution running averages in the original units (ppb, µg/m³, etc) to
 all the pollutants can be compared.
 }
 \details{
-Note that each pollutant has different averaging periods (see above). Because
-of rounding error results may be off by a couple of points
+Note that each pollutant has different averaging periods (see the arguments
+section). Because of rounding error results may be off by a couple of points
 }
 \examples{
 ## IMECA is a dimensionless scale that allows for the comparison of
