@@ -31,11 +31,16 @@
 #'
 #' Note that in 2015 it was determined that the stations with codes ACO, AJU,
 #' INN, MON and MPA would no longer be taken into consideration when computing
-#' the pollution index and are not included in the data returned by this
-#' function
+#' the pollution index because they didn't meet the
+#' \href{http://www.aire.cdmx.gob.mx/objetivos-monitoreo-calidad-aire.html}{objectives
+#' of monitoring air quality}, and are no longer included in the index, even if
+#' they are still part of the SIMAT (Sistema de Monitoreo Atmosférico de la
+#' Ciudad de México). Thus, even if they are located inside a zone, they are not
+#' included in the pollution values for that zone.
 #'
 #' @return A data.frame with pollution values in IMECAs, the hour corresponds to
-#'   the \emph{America/Mexico_City} timezone
+#'   the \emph{America/Mexico_City} timezone (which changes with daylight
+#'   saving time)
 #' @family IMECA functions
 #' @seealso \href{http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php}{Reporte
 #'   de calidad del aire}

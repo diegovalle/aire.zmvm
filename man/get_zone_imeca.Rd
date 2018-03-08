@@ -53,18 +53,18 @@ A data.frame with pollution data measured in IMECAs, by geographic
   daylight saving time
 }
 \description{
-retrieve pollution data in IMECAs by geographic zone from the air quality
+Retrieve pollution data in IMECAs by geographic zone from the air quality
 server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
 }
 \details{
-Note that the which stations belong to which zones may change over time; also
-the way the IMECA is computed can change so that comparison of pollution
-values across time may not be valid.
-
-In 2015 it was determined that the stations with codes ACO, AJU, INN, MON and
-MPA would no longer be taken into consideration when computing the pollution
-index and at some point in the future would be no longer included in the data
-by zone.
+Note that in 2015 it was determined that the stations with codes ACO, AJU,
+INN, MON and MPA would no longer be taken into consideration when computing
+the pollution index because they didn't meet the
+\href{http://www.aire.cdmx.gob.mx/objetivos-monitoreo-calidad-aire.html}{objectives
+of monitoring air quality}, and are no longer included in the index, even if
+they are still part of the SIMAT (Sistema de Monitoreo Atmosférico de la
+Ciudad de México). Thus, even if they are located inside a zone, they are not
+included in the pollution values for that zone.
 
 The different geographic zones were defined in the
 \href{http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/Gaceta_Oficial_CDMX.pdf}{ Gaceta Oficial de la Ciudad de México}

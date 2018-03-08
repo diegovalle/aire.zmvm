@@ -145,14 +145,16 @@ to_imeca <- function(contaminant, value) {
 
 #' Convert pollution values to IMECA
 #'
-#' Air quality in Mexico City is reported in IMECAs. This function converts
-#' pollution running averages in the original units (ppb, µg/m³, etc) to
+#' This function converts pollution running averages in the original
+#' units (ppb, µg/m³, etc) to
 #' \href{https://en.wikipedia.org/wiki/Índice_Metropolitano_de_la_Calidad_del_Aire}{IMECA}
-#' (Índice Metropolitano de la Calidad del Aire), a dimensionless scale where
-#' all the pollutants can be compared.
+#'
+#' Air quality in Mexico City is reported in IMECAs (Índice Metropolitano de la
+#' Calidad del Aire), a dimensionless scale where all the pollutants can be
+#' compared.
 #'
 #' Note that each pollutant has different averaging periods (see the arguments
-#' section). Because of rounding error results may be off by a couple of points
+#' section). Because of rounding error results may be off by a couple of points.
 #'
 #' @seealso For the formulas on how to convert O3, PM10, and PM2.5 visit:
 #'   \href{http://www.aire.cdmx.gob.mx/default.php?opc='ZaBhnmI=&dc='aQ==}{¿Como
@@ -167,11 +169,14 @@ to_imeca <- function(contaminant, value) {
 #'   \item{"PM10"}{ - Particulate matter 10 micrometers or less (24 hour
 #'   average)} \item{"PM25"}{ - Particulate matter 2.5 micrometers or less (24
 #'   hour average)} }
-#' @param value a numeric vector of values to convert to IMECAs
+#' @param value a numeric vector of values to convert to IMECAs. Note that the
+#' concentration of pollutants can be measured in different ways, for NO2, and
+#' O3 a 1 hour average is used, for CO, an 8 hour average, and for SO2, PM10
+#' and PM25 a 24 hour average is used.
 #' @param showWarnings deprecated; you can use the function
 #'   \code{\link[base]{suppressWarnings}} instead.
 #'
-#' @return a vector containing the converted value in IMECAs
+#' @return A vector containing the converted value in IMECAs
 #' @export
 #' @importFrom stats na.omit
 #' @examples

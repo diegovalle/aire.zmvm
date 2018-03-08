@@ -21,7 +21,7 @@ First column x/longitude, second y/latitude}
 data.frame with the interpolated values for each of the grid points
 }
 \description{
-function for inverse distance weighted interpolation with directional data.
+Function for inverse distance weighted interpolation with directional data.
 Useful for when you are working with data whose unit of measurement is
 degrees (i.e. the average of 35 degrees and 355 degrees should be 15
 degrees). It works by finding the shortest distance between two degree

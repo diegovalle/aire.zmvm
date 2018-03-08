@@ -263,17 +263,16 @@ download_horario_by_month <- function(pollutant, year){
 
 #' Download pollution data by station
 #'
-#' retrieve pollution data by station in the original units from the air quality
+#' Retrieve pollution data by station, in the original units, from the air quality
 #' server at
-#' \href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
-#' or for earlier years use the archive files from
+#' \href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones},
+#' or for earlier years use the archive files available from
 #' \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}{Contaminante}, or
 #' \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI='&opcion=Zw==}{Meteorología} for
 #' meteorological data.
 #'
-#' Temperature (TMP) archive
-#' values are correct to one decimal place, but the most recent data is rounded
-#' to the nearest integer.
+#' Temperature (TMP) archive values are correct to one decimal place, but the
+#' most recent data is only available rounded to the nearest integer.
 #'
 #' @section Warning:
 #' The data for the current month is in the process of being validated
@@ -306,7 +305,7 @@ download_horario_by_month <- function(pollutant, year){
 #' @param progress Whether to display a progress bar (TRUE or FALSE).
 #' By default it will only display in an interactive session.
 #'
-#' @return a data.frame with pollution data. When downloading "HORARIOS" the
+#' @return A data.frame with pollution data. When downloading "HORARIOS" the
 #' hours correspond to the
 #' \emph{Etc/GMT+6} timezone, with no daylight saving time
 #'
@@ -355,7 +354,7 @@ get_station_data <- function(criterion, pollutant, year,
 
   pollutant <- tolower(pollutant)
 
-  if (identical(progress, TRUE) &&  length(year) > 1) {
+  if (identical(progress, TRUE)) {
     p <- progress_bar$new(format = "  downloading [:bar] :percent eta: :eta",
                           total = length(year))
     p$tick(0)
@@ -363,7 +362,7 @@ get_station_data <- function(criterion, pollutant, year,
   df <- data.frame()
   for (i in year){
     df <- rbind(df, .download_data(criterion, pollutant, i))
-    if (identical(progress, TRUE) &&  length(year) > 1)
+    if (identical(progress, TRUE))
       p$tick()
   }
   as.data.frame(df)
@@ -371,14 +370,13 @@ get_station_data <- function(criterion, pollutant, year,
 
 #' Download monthly pollution data
 #'
-#' retrieve hourly averages, daily maximums or daily minimums of pollution data
+#' Retrieve hourly averages, daily maximums, or daily minimums of pollution data
 #' in the original units, by station, from the air quality server at
 #' \href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
 #'
-#' Temperature (TMP) was rounded to the
-#' nearest integer, but the \code{\link{get_station_data}} function allows you
-#' to download data accurate to one decimal point in some case (i.e. for old
-#' data).
+#' Temperature (TMP) data was rounded to the nearest integer, but the
+#' \code{\link{get_station_data}} function allows you to download data accurate
+#' to one decimal point in some cases (i.e. for old data).
 #'
 #' @section Warning:
 #' The data for the current month is in the process of being validated
@@ -410,7 +408,7 @@ get_station_data <- function(criterion, pollutant, year,
 #' (the earliest possible value is 1986)
 #' @param month month number to download
 #'
-#' @return a data.frame with pollution data, the hours correspond to the
+#' @return A data.frame with pollution data, the hours correspond to the
 #' \emph{Etc/GMT+6} timezone, with no daylight saving time
 #'
 #' @export

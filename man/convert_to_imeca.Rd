@@ -7,7 +7,10 @@
 convert_to_imeca(value, pollutant, showWarnings = TRUE)
 }
 \arguments{
-\item{value}{a numeric vector of values to convert to IMECAs}
+\item{value}{a numeric vector of values to convert to IMECAs. Note that the
+concentration of pollutants can be measured in different ways, for NO2, and
+O3 a 1 hour average is used, for CO, an 8 hour average, and for SO2, PM10
+and PM25 a 24 hour average is used.}
 
 \item{pollutant}{type of pollutant. A vector of one or more of the following
 options: \itemize{ \item{"SO2"}{ - Sulfur Dioxide (24 hour average)}
@@ -21,18 +24,20 @@ hour average)} }}
 \code{\link[base]{suppressWarnings}} instead.}
 }
 \value{
-a vector containing the converted value in IMECAs
+A vector containing the converted value in IMECAs
 }
 \description{
-Air quality in Mexico City is reported in IMECAs. This function converts
-pollution running averages in the original units (ppb, µg/m³, etc) to
+This function converts pollution running averages in the original
+units (ppb, µg/m³, etc) to
 \href{https://en.wikipedia.org/wiki/Índice_Metropolitano_de_la_Calidad_del_Aire}{IMECA}
-(Índice Metropolitano de la Calidad del Aire), a dimensionless scale where
-all the pollutants can be compared.
 }
 \details{
+Air quality in Mexico City is reported in IMECAs (Índice Metropolitano de la
+Calidad del Aire), a dimensionless scale where all the pollutants can be
+compared.
+
 Note that each pollutant has different averaging periods (see the arguments
-section). Because of rounding error results may be off by a couple of points
+section). Because of rounding error results may be off by a couple of points.
 }
 \examples{
 ## IMECA is a dimensionless scale that allows for the comparison of

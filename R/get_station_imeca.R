@@ -2,14 +2,17 @@
 
 #' Download pollution data by station in IMECAs
 #'
-#' retrieve hourly averages of pollution data by station, measured in
+#' Retrieve hourly averages of pollution data, by station, measured in
 #' \href{https://en.wikipedia.org/wiki/Índice_Metropolitano_de_la_Calidad_del_Aire}{IMECAs}
 #'
-#' Note that in
-#' 2015 it was determined that the stations with codes ACO, AJU, INN, MON
-#' and MPA would no longer be taken into consideration when computing the
-#' pollution index and at some point in the future would no longer be included
-#' in the data returned by this function
+#' Note that in 2015 it was determined that the stations with codes ACO, AJU,
+#' INN, MON and MPA would no longer be taken into consideration when computing
+#' the pollution index because they didn't meet the
+#' \href{http://www.aire.cdmx.gob.mx/objetivos-monitoreo-calidad-aire.html}{objectives
+#' of monitoring air quality}, and are no longer included in the index, even if
+#' they are still part of the SIMAT (Sistema de Monitoreo Atmosférico de la
+#' Ciudad de México). Thus, even if they are located inside a zone, they are not
+#' included in the pollution values for that zone.
 #'
 #' @param pollutant The type of pollutant to download
 #' \itemize{

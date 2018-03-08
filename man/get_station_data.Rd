@@ -39,23 +39,22 @@ get_station_data(criterion, pollutant, year, progress = interactive())
 By default it will only display in an interactive session.}
 }
 \value{
-a data.frame with pollution data. When downloading "HORARIOS" the
+A data.frame with pollution data. When downloading "HORARIOS" the
 hours correspond to the
 \emph{Etc/GMT+6} timezone, with no daylight saving time
 }
 \description{
-retrieve pollution data by station in the original units from the air quality
+Retrieve pollution data by station, in the original units, from the air quality
 server at
-\href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
-or for earlier years use the archive files from
+\href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones},
+or for earlier years use the archive files available from
 \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}{Contaminante}, or
 \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI='&opcion=Zw==}{Meteorología} for
 meteorological data.
 }
 \details{
-Temperature (TMP) archive
-values are correct to one decimal place, but the most recent data is rounded
-to the nearest integer.
+Temperature (TMP) archive values are correct to one decimal place, but the
+most recent data is only available rounded to the nearest integer.
 }
 \section{Warning}{
 
