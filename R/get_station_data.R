@@ -354,7 +354,7 @@ get_station_data <- function(criterion, pollutant, year,
 
   pollutant <- tolower(pollutant)
 
-  if (identical(progress, TRUE)) {
+  if (identical(progress, TRUE) && length(year) > 1) {
     p <- progress_bar$new(format = "  downloading [:bar] :percent eta: :eta",
                           total = length(year))
     p$tick(0)
@@ -362,7 +362,7 @@ get_station_data <- function(criterion, pollutant, year,
   df <- data.frame()
   for (i in year){
     df <- rbind(df, .download_data(criterion, pollutant, i))
-    if (identical(progress, TRUE))
+    if (identical(progress, TRUE) && length(year) > 1)
       p$tick()
   }
   as.data.frame(df)

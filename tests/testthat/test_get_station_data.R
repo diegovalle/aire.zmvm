@@ -53,7 +53,8 @@ test_that("get_station_data matches website", {
 
   df_min_2016 <- get_station_data("MINIMOS", "PM10", 2016, progress = NULL)
   df_max_2016 <- get_station_data("MAXIMOS", "PM10", 2016, progress = FALSE)
-  df_min_2015 <- get_station_data("MINIMOS", "PM10", 2015, progress = TRUE)
+  df_min_2015_18 <- get_station_data("MINIMOS", "PM10", c(2015,2018),
+                                     progress = TRUE)
   df_max_2015 <- get_station_data("MAXIMOS", "O3", 2015)
   df_max_2005 <- get_station_data("MAXIMOS", "SO2", 2005)
   df_wdr_2005 <- get_station_data("MAXIMOS", "WDR", 2005)
@@ -96,7 +97,7 @@ test_that("get_station_data matches website", {
                  32, 64, 0, 0, NA, 95, 71, NA, 0, NA, NA, 116, NA, 0, 0, 63, NA,
                  0, 111, 110, 0, 0, 75, 108, 151))
 
-  expect_equal(unname(unlist(subset(df_min_2015,
+  expect_equal(unname(unlist(subset(df_min_2015_18,
                                     date == as.Date("2015-01-01"))$value)),
                c(17, NA, NA, 11, NA, 11, NA, NA, NA, 9, NA, NA, 38, 16, NA,
                  12, NA, 13, NA, NA, NA, 18, 12, NA, NA, 9, NA, 9, 106, NA, 10,
