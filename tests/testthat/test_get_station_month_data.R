@@ -13,8 +13,7 @@ test_that("test get_station_month_data", {
 
   skip_on_cran()
 
-  expect_warning(df_hor_2017_jan <-
-                   get_station_month_data("HORARIOS", "WSP", 2017, 1))
+  df_hor_2017_jan <- get_station_month_data("HORARIOS", "WSP", 2017, 1)
   df_min_2016_april <- get_station_month_data("MINIMOS", "PM10", 2016, 4)
   df_max_2016_march <- get_station_month_data("MAXIMOS", "O3", 2016, 3)
 
