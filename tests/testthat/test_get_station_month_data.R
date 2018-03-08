@@ -13,20 +13,21 @@ test_that("test get_station_month_data", {
 
   skip_on_cran()
 
-  df_hor_2005_jan <- get_station_month_data("HORARIOS", "RH", 2005, 1)
+  expect_warning(df_hor_2017_jan <-
+                   get_station_month_data("HORARIOS", "WSP", 2017, 1))
   df_min_2016_april <- get_station_month_data("MINIMOS", "PM10", 2016, 4)
   df_max_2016_march <- get_station_month_data("MAXIMOS", "O3", 2016, 3)
 
   # test that the data only include one month
-  expect_true(all(month(df_hor_2005_jan$date) == 1))
+  expect_true(all(month(df_hor_2017_jan$date) == 1))
   expect_true(all(month(df_min_2016_april$date) == 4))
   expect_true(all(month(df_max_2016_march$date) == 3))
 
   expect_equal(
-    unname(unlist(subset(df_hor_2005_jan, date == as.Date("2005-01-03") &
+    unname(unlist(subset(df_hor_2017_jan, date == "2017-01-01" &
                            station_code == "MON")$value)),
-    c(56, 60, 64, 68, 67, 68, 70, 72, 66, 59, 53, 45, 34, 24, NA,
-      21, 30, 34, 38, 40, 40, 42, 41))
+    c(1.4, 1, 0.9, 0.7, 1.3, 1.1, 0.7, 0.5, 0.9, 1.3, 1.6, 1.8, 1.9,
+      1.9, 3, 3.6, 4.3, 5.1, 4.2, 3.6, 3.4, 3.1, 2.2, 1.6))
   expect_equal(
     unname(unlist(subset(df_min_2016_april,
                          date == as.Date("2016-04-15"))$value)),

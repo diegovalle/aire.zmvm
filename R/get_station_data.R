@@ -182,6 +182,8 @@ recode_pollutant <- function(pollutant) {
                       "05", "06", "07", "08",
                       "09", "10", "11", "12")) )
       df <- dplyr::filter(df, month(date) == as.numeric(month))
+    # convert from mph to m/s
+    #df$value <- round(df$value * 0.44704, 1)
   } else {
     df <- df[, c("date", "hour", "station_code", "pollutant", "unit", "value")]
   }
@@ -269,9 +271,12 @@ download_horario_by_month <- function(pollutant, year){
 #' \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI='&opcion=Zw==}{Meteorología} for
 #' meteorological data.
 #'
-#' For wind speed (WSP) and temperature (TMP) archive
+#' Temperature (TMP) archive
 #' values are correct to one decimal place, but the most recent data is rounded
 #' to the nearest integer.
+#'
+#' @section Warning:
+#' The data for the current month is in the process of being validated
 #'
 #' @param criterion Type of data to download.
 #' \itemize{
@@ -370,9 +375,13 @@ get_station_data <- function(criterion, pollutant, year,
 #' in the original units, by station, from the air quality server at
 #' \href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
 #'
-#' The values for wind speed (WSP) and temperature (TMP) are rounded to the
+#' Temperature (TMP) was rounded to the
 #' nearest integer, but the \code{\link{get_station_data}} function allows you
-#' to download data accurate to one decimal point.
+#' to download data accurate to one decimal point in some case (i.e. for old
+#' data).
+#'
+#' @section Warning:
+#' The data for the current month is in the process of being validated
 #'
 #' @param criterion Type of data to download.
 #' \itemize{
@@ -451,10 +460,10 @@ get_station_month_data <- function(criterion, pollutant, year, month) {
                " from 1986 onwards"))
   if (length(month) != 1)
     stop("you can only download a single month at a time")
-  if (pollutant == "WSP" || pollutant == "TMP")
-    warning(paste0("Wind speed (WSP) and temperature (TMP) were rounded to the",
-            " nearest integer, in some circumstances you can download data",
-            " accurate to",
+  if (pollutant == "TMP")
+    warning(paste0("Temperature (TMP) was rounded to the",
+            " nearest integer, in some circumstances (i.e. not recent data)",
+            " you can download data accurate to",
             " one decimal point using the `get_station_data` function. ",
             "See the documentation for more information."), call. = FALSE)
 
@@ -475,4 +484,5 @@ get_station_month_data <- function(criterion, pollutant, year, month) {
                 " downloading the data for the entire year (up to 1986) with",
                 " `get_station_data`"))
   .download_current_station_data(criterion, pollutant, year, month)
+
 }

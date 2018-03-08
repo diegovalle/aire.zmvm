@@ -53,10 +53,15 @@ or for earlier years use the archive files from
 meteorological data.
 }
 \details{
-For wind speed (WSP) and temperature (TMP) archive
+Temperature (TMP) archive
 values are correct to one decimal place, but the most recent data is rounded
 to the nearest integer.
 }
+\section{Warning}{
+
+The data for the current month is in the process of being validated
+}
+
 \examples{
 \dontrun{
 ## Download daily maximum PM10 data (particulate matter 10 micrometers or

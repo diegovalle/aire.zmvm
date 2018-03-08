@@ -8,16 +8,16 @@ test_that( ("convert units"), {
   expect_error(convert_to_imeca(10:15, rep("O3", 13)))
 
 
-  expect_equal(
+  expect_warning(
     convert_to_imeca(c(10, NA, 10), c("O3")),
-  c(7, NA, 7)
+  "The vectors are of unequal length."
   )
   expect_equal(
-    convert_to_imeca(c(10.1, NA, 10.3), "PM10"),
+    convert_to_imeca(c(10.1, NA, 10.3), rep("PM10", 3)),
   c(13, NA, 13)
   )
   expect_equal(
-    convert_to_imeca(c(10.1, NA, 10.3), "PM10"),
+    convert_to_imeca(c(10.1, NA, 10.3), rep("PM10", 3)),
   c(13, NA, 13))
   expect_error(convert_to_imeca(structure(1L, .Label = "a", class = "factor"),
                                 "PM10"))
@@ -34,7 +34,7 @@ test_that( ("convert units"), {
     convert_to_imeca(NA, "NO2")
     , NA)
   expect_equal(
-    convert_to_imeca(c(450, 350, 250), "NO2"),
+    convert_to_imeca(c(450, 350, 250), rep("NO2", 3)),
     c(214, 167, 119))
   expect_equal(
     convert_to_imeca(c(450, 350, 48), c("NO2", "NO2", "O3")),

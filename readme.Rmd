@@ -1,5 +1,5 @@
 ---
-title: "Mexico City Pollution Data"
+title: "Mexico City Air Quality Data"
 author: "Diego Valle-Jones"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output: 
@@ -30,7 +30,7 @@ knitr::opts_chunk$set(
 
 ## What does it do?
 
-Tools for downloading pollution data for the Mexico City metro area. It can download real-time, daily maximum, minimum, or hourly average data for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City). It also includes the locations of all the measuring stations and a function to perform inverse distance weighting modified to work with wind direction.
+Tools for downloading airquality data for the Mexico City metro area. This package can download real-time, daily maximum, minimum, or hourly average data for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City). It also includes the locations of all the measuring stations and a function to perform inverse distance weighting modified to work with wind direction.
 
 
 ```{r setup, include=FALSE}

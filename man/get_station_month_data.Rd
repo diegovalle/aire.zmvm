@@ -47,10 +47,16 @@ in the original units, by station, from the air quality server at
 \href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
 }
 \details{
-The values for wind speed (WSP) and temperature (TMP) are rounded to the
+Temperature (TMP) was rounded to the
 nearest integer, but the \code{\link{get_station_data}} function allows you
-to download data accurate to one decimal point.
+to download data accurate to one decimal point in some case (i.e. for old
+data).
 }
+\section{Warning}{
+
+The data for the current month is in the process of being validated
+}
+
 \examples{
 \dontrun{
 ## Download daily hourly PM10 data (particulate matter 10 micrometers or
