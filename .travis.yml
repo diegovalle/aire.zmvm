@@ -3,6 +3,11 @@
 language: r
 warnings_are_errors: true
 
+r:
+  - oldrel
+  - release
+  - devel
+
 env:
   - NOT_CRAN=true
 
@@ -12,6 +17,11 @@ matrix:
       dist: trusty
       sudo: required
     - os: osx
+  exclude:
+    - os: osx
+      r: devel
+    - os: osx
+      r: oldrel
 
 branches:
   only:
