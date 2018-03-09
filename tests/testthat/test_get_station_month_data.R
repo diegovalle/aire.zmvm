@@ -13,7 +13,11 @@ test_that("test get_station_month_data", {
 
   skip_on_cran()
 
-  df_hor_2017_jan <- get_station_month_data("HORARIOS", "WSP", 2017, 1)
+  df_hor_2017_jan <- get_station_month_data("HORARIOS",
+                                                           "WSP", 2017, 1)
+  expect_warning(df_tmp_2017_jan <- get_station_month_data("HORARIOS",
+                                                         "TMP", 2005, 1),
+                 "Temperature \\(TMP\\) was rounded to the nearest integer")
   df_min_2016_april <- get_station_month_data("MINIMOS", "PM10", 2016, 4)
   df_max_2016_march <- get_station_month_data("MAXIMOS", "O3", 2016, 3)
 
@@ -41,5 +45,6 @@ test_that("test get_station_month_data", {
       0, NA, 50, NA, 0, 46, 54, 0, 63, 54, 64, 48))
 
   # Expect warning from deprecated function
-  expect_warning(get_station_single_month("RH", 2005, 1))
+  expect_warning(get_station_single_month("RH", 2005, 1),
+                 "'get_station_single_month' is deprecated.")
 })
