@@ -17,11 +17,11 @@ get_zone_imeca(criterion, pollutant, zone, start_date, end_date,
 \item{pollutant}{The type of pollutant to download. One or more of the
 following options:
 \itemize{
- \item{"SO2"}{ - Dioxido de azufre}
- \item{"CO"}{ - Monoxido de carbono}
- \item{"NO2"}{ - Dioxido de nitrogeno}
- \item{"O3"}{ - Ozono}
- \item{"PM10"}{ - Particulas menores a 10 micrometros}
+ \item{"SO2"}{ - Sulfur Dioxide}
+ \item{"CO"}{ - Carbon Monoxide}
+ \item{"NO2"}{ - Nitrogen Dioxide}
+ \item{"O3"}{ - Ozone}
+ \item{"PM10"}{ - Particulate matter 10 micrometers or less}
  \item{"TC"}{- All the pollutants}
 }}
 
@@ -41,31 +41,34 @@ value is 2008-01-01).}
 
 \item{end_date}{The end date in YYYY-MM-DD format.}
 
-\item{showWarnings}{Deprecated; use show_messages instead.}
+\item{showWarnings}{deprecated; you can use the function
+\code{\link[base]{suppressWarnings}} instead.}
 
 \item{show_messages}{show a message about issues with performing the
 conversion}
 }
 \value{
-A data.frame with pollution data measured in IMECAS, by geographic
-zone. The hours
-correspond to the \emph{Etc/GMT+6} timezone, with no daylight saving time
+A data.frame with pollution data measured in IMECAs, by geographic
+  zone. The hours correspond to the \emph{Etc/GMT+6} timezone, with no
+  daylight saving time
 }
 \description{
-retrieve pollution data in IMECAs by geographic zone from the air quality
+Retrieve pollution data in IMECAs by geographic zone from the air quality
 server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
 }
 \details{
-Note that the which stations belong to which zones may change over time, also
-the way the IMECA is computed can change so that comparison of
-pollution values across time may not be valid. In
-2015 it was determined that the stations with codes ACO, AJU, INN, MON
-and MPA would no longer be taken into consideration when computing the
-pollution index and at some point in the future would be no longer
-included in the data by zone.
+Note that in 2015 it was determined that the stations with codes ACO, AJU,
+INN, MON and MPA would no longer be taken into consideration when computing
+the pollution index because they didn't meet the
+\href{http://www.aire.cdmx.gob.mx/objetivos-monitoreo-calidad-aire.html}{objectives
+of monitoring air quality}, and are no longer included in the index, even if
+they are still part of the SIMAT (Sistema de Monitoreo Atmosférico de la
+Ciudad de México). Thus, even if they are located inside a zone, they are not
+included in the pollution values for that zone.
 
-The different geographic zones were defined in the Gaceta Oficial
-CDMX, No 106, 1 de julio 2016.
+The different geographic zones were defined in the
+\href{http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/Gaceta_Oficial_CDMX.pdf}{ Gaceta Oficial de la Ciudad de México}
+No. 230, 27 de Diciembre de 2016.
 
 \strong{Zona Centro}: Benito Juárez,
 Cuauhtémoc, Iztacalco and Venustiano Carranza.
@@ -112,4 +115,13 @@ df2$mxc_time <- format(as.POSIXct(paste0(df2$date, " ", df2$hour, ":00"),
 head(df2)
 }
 
+}
+\seealso{
+\code{\link{zones}} for a data.frame containing the municipios
+  belonging to each zone, and
+  \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmI='}{Índice de
+  calidad del aire por zonas}
+
+Other IMECA functions: \code{\link{get_latest_imeca}},
+  \code{\link{get_station_imeca}}
 }

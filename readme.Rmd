@@ -1,5 +1,5 @@
 ---
-title: "Mexico City Pollution Data"
+title: "Mexico City Air Quality Data"
 author: "Diego Valle-Jones"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output: 
@@ -24,13 +24,13 @@ knitr::opts_chunk$set(
 |-----------------------|-------------------------------------------------------|
 | __Author:__           | Diego Valle-Jones                                     |
 | __License:__          | [BSD_3](https://opensource.org/licenses/BSD-3-Clause) |
-| __Status:__           | Version 0.5.0 on CRAN                                 |
+| __Status:__           |  ![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version-ago/aire.zmvm?color=green)                                |
 | __Website:__          | [https://hoyodesmog.diegovalle.net/aire.zmvm.html](https://hoyodesmog.diegovalle.net/aire.zmvm.html) |
 
 
 ## What does it do?
 
-Tools for downloading pollution data for the Mexico City metro area. It can download real-time, daily maximum, minimum, or hourly average data for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City). It also includes the locations of all the measuring stations and a function to perform inverse distance weighting modified to work with wind direction.
+Tools for downloading airquality data for the Mexico City metro area. This package can download real-time, daily maximum, minimum, or hourly average data for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City). It also includes the locations of all the measuring stations and a function to perform inverse distance weighting modified to work with wind direction.
 
 
 ```{r setup, include=FALSE}
@@ -56,28 +56,38 @@ library(aire.zmvm)
 ```
 Note that the version on CRAN might not reflect the most recent changes made to this package.
 
+## Core Functions
+
+The package consists mainly of six functions: 
+
+* ```get_station_data``` and ```get_station_month_data``` download pollution, wind and temperature data for each of the measuring stations in the original units (ppb, µg/m³, etc).
+* ```get_station_imeca``` download pollution values for each station in IMECAs
+* ```get_zone_imeca``` download pollution data in IMECAs for each of the 5 geographic zones of Mexico City 
+* ```get_latest_imeca``` download the latest pollution hourly maximums for each of the measuring stations.
+* ```idw360``` inverse distance weighting modified to work with degrees, useful for wind data
+
+| Function                  | Date range     | Units    | Wind, Tmp, RH | Earliest Date | Pollutants  | Includes All Stations | Criterion |
+|---------------------------|----------------|----------|------------------|------------|------------|-------|-------|
+| get_station_data          | years          | Original | Yes              | 1986       | SO2, CO, NO2, O3, PM10, PM25,  WSP, WDR, TMP, RH | Yes | hourly, daily&nbsp;maximum, daily&nbsp;minimum |
+| get_station_month_data  | 1&nbsp;month        | Original | Yes              | 2005‑01    | SO2, CO, NO2, O3, PM10, PM25,  WSP, WDR, TMP, RH | Yes | hourly, daily&nbsp;maximum, daily&nbsp;minimum |
+| get_station_imeca         | 1&nbsp;day          | IMECA    | No               | 2009‑01‑01 | SO2, CO, NO2, O3, PM10 | No | hourly |
+| get_zone_imeca            | 1 or more days | IMECA    | No               | 2008‑01‑01 | SO2, CO, NO2, O3, PM10 | Only zones | hourly, daily&nbsp;maximum |
+| get_latest_imeca          | 1&nbsp;hour         | IMECA    | No               | Latest only| Maximum value of SO2, CO, NO2, O3, PM10 | No |latest&nbsp;hourly |
+
 ## Quick Example
 
-The package consists mainly of four functions: 
-
-* ```get_station_data``` download data for each of the pollution (and wind and temperature) measuring stations in the original units.
-* ```get_station_imeca``` download data for each of the pollution stations in IMECAs
-* ```get_zone_imeca``` download data for each of the 5 geographic zones of Mexico City 
-* ```get_latest_imeca``` download the latest values in IMECAs for each of the pollution measuring stations.
-* ```idw360``` Inverse distance weighting modified to work with degrees
-
-```{r, fig.show='hold',  message=FALSE, fig.width=11}
+```{r, fig.show='hold', fig.width=11, warning=FALSE, message=FALSE}
 library("aire.zmvm")
 library("dplyr")
 library("ggplot2")
 library("ggseas")
 
 o3 <- get_station_data(criterion = "MAXIMOS", # Can be one of MAXIMOS (daily maximum), 
-                                                # MINIMOS (daily minimum), 
-                                                # or HORARIOS (hourly average)
+                                              # MINIMOS (daily minimum), 
+                                              # or HORARIOS (hourly average)
                        pollutant = "O3", # Can be one of "SO2", "CO", "NOX", "NO2", "NO", "O3", 
                                          # "PM10", "PM25", "WSP", "WDR", "TMP", "RH"
-                       year = 2009:2017) # A numeric vector, the earliest year allowed is 1986
+                       year = 2009:2018) # A numeric vector, the earliest year allowed is 1986
 knitr::kable(head(o3))
 
 # Daily max among all base stations
@@ -92,8 +102,10 @@ o3_max <- o3 %>%
 # and the dates during which they were valid
 # source: http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/pcaa-modificaciones.pdf
 contingencia <- data.frame(ppb = c(216, 210, 205, 199, 185, 155, 155),
-  start = c(2009, 2009.4973, 2010.4973, 2011.5795, 2012.6052, 2016.291, 2016.4986),
-  end = c(2009.4973, 2010.4945, 2011.4945, 2012.6025, 2016.2883, 2016.4959, Inf))
+  start = c(2009, 2009.4973, 2010.4973, 2011.5795, 
+            2012.6052, 2016.291, 2016.4986),
+  end = c(2009.4973, 2010.4945, 2011.4945, 
+          2012.6025, 2016.2883, 2016.4959, Inf))
 max_daily_df <- tsdf(ts(o3_max$max, start = c(2009,1), frequency = 365.25))
 ggplot(max_daily_df,
        aes(x = x, y = y)) + 
@@ -101,11 +113,14 @@ ggplot(max_daily_df,
   stat_rollapplyr(width = 30, align = "right", color = "#01C5D2") +
   #geom_vline(xintercept = 2015 + 183/365) +
   geom_segment(data = contingencia, 
-               aes(x=start, y=ppb, xend=end, yend=ppb), color="darkred", linetype = 2)  +
+               aes(x=start, y=ppb, xend=end, yend=ppb), color="darkred", 
+               linetype = 2)  +
   xlab("date") +
   ylab("parts per billion") +
   ggtitle("Maximum daily ozone concentration and 30 day rolling average", 
-          subtitle = "Red lines indicate the values necessary to activate a phase I smog alert. \nData source: SEDEMA")
+          subtitle = paste0("Red lines indicate the values necessary to ",
+                            "activate a phase I smog alert.",
+                            "\nData source: SEDEMA"))
 
 ```
 

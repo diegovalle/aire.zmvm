@@ -16,20 +16,20 @@ get_station_month_data(criterion, pollutant, year, month)
 
 \item{pollutant}{The type of pollutant to download.
 \itemize{
- \item{"SO2"}{ - Dioxido de azufre (partes por billon)}
- \item{"CO"}{ - Monoxido de carbono (partes por millon)}
- \item{"NOX"}{ - Oxidos de nitrogeno (partes por billon)}
- \item{"NO2"}{ - Dioxido de nitrogeno (partes por billon)}
- \item{"NO"}{ - Oxido nitrico (partes por billon)}
- \item{"O3"}{ - Ozono (partes por billon)}
- \item{"PM10"}{ - Particulas menores a 10 micrometros
- (microgramos por metro cubico)}
- \item{"PM25"}{ - Particulas menores a 2.5 micrometros
- (microgramos por metro cubico)}
- \item{"WSP"}{ - Velocidad del viento (metros por segundo)}
- \item{"WDR"}{ - Direccion del viento (grados)}
- \item{"TMP"}{ - Temperatura ambiente (grados Celsius)}
- \item{"RH"}{ - Humedad relativa (porcentaje)}
+ \item{"SO2"}{ - Sulfur Dioxide (parts per billion)}
+ \item{"CO"}{ - Carbon Monoxide (parts per million)}
+ \item{"NOX"}{ - Nitrogen Oxides (parts per billion)}
+ \item{"NO2"}{ - Nitrogen Dioxide (parts per billion)}
+ \item{"NO"}{ - Nitric Oxide (parts per billion)}
+ \item{"O3"}{ - Ozone (parts per billion)}
+ \item{"PM10"}{ - Particulate matter 10 micrometers or less
+ (micrograms per cubic meter)}
+ \item{"PM25"}{ - Particulate matter 2.5 micrometers or less
+ (micrograms per cubic meter)}
+ \item{"WSP"}{ - Wind velocity (meters per second)}
+ \item{"WDR"}{ - Wind direction (degrees)}
+ \item{"TMP"}{ - Temperature (degrees Celsius)}
+ \item{"RH"}{ - Relative humidity (percentage)}
 }}
 
 \item{year}{an integer indicating the year for which to download data
@@ -38,14 +38,24 @@ get_station_month_data(criterion, pollutant, year, month)
 \item{month}{month number to download}
 }
 \value{
-a data.frame with pollution data, the hours correspond to the
+A data.frame with pollution data, the hours correspond to the
 \emph{Etc/GMT+6} timezone, with no daylight saving time
 }
 \description{
-retrieve hourly averages, daily maximums or daily minimums of pollution data
+Retrieve hourly averages, daily maximums, or daily minimums of pollution data
 in the original units, by station, from the air quality server at
-\url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
+\href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
 }
+\details{
+Temperature (TMP) data was rounded to the nearest integer, but the
+\code{\link{get_station_data}} function allows you to download data accurate
+to one decimal point in some cases (i.e. for old data).
+}
+\section{Warning}{
+
+The data for the current month is in the process of being validated
+}
+
 \examples{
 \dontrun{
 ## Download daily hourly PM10 data (particulate matter 10 micrometers or
@@ -63,4 +73,10 @@ df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date,
                          tz = "America/Mexico_City")
 head(df_o3)
 }
+}
+\seealso{
+\code{\link{stations}} for a data.frame with the location and names
+of all polution measuring stations
+
+Other raw data functions: \code{\link{get_station_data}}
 }

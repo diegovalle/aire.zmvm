@@ -16,20 +16,20 @@ get_station_data(criterion, pollutant, year, progress = interactive())
 
 \item{pollutant}{The type of pollutant to download.
 \itemize{
- \item{"SO2"}{ - Dioxido de azufre (partes por billon)}
- \item{"CO"}{ - Monoxido de carbono (partes por millon)}
- \item{"NOX"}{ - Oxidos de nitrogeno (partes por billon)}
- \item{"NO2"}{ - Dioxido de nitrogeno (partes por billon)}
- \item{"NO"}{ - Oxido nitrico (partes por billon)}
- \item{"O3"}{ - Ozono (partes por billon)}
- \item{"PM10"}{ - Particulas menores a 10 micrometros
- (microgramos por metro cubico)}
- \item{"PM25"}{ - Particulas menores a 2.5 micrometros
- (microgramos por metro cubico)}
- \item{"WSP"}{ - Velocidad del viento (metros por segundo)}
- \item{"WDR"}{ - Direccion del viento (grados)}
- \item{"TMP"}{ - Temperatura ambiente (grados Celsius)}
- \item{"RH"}{ - Humedad relativa (porcentaje)}
+ \item{"SO2"}{ - Sulfur Dioxide (parts per billion)}
+ \item{"CO"}{ - Carbon Monoxide (parts per million)}
+ \item{"NOX"}{ - Nitrogen Oxides (parts per billion)}
+ \item{"NO2"}{ - Nitrogen Dioxide (parts per billion)}
+ \item{"NO"}{ - Nitric Oxide (parts per billion)}
+ \item{"O3"}{ - Ozone (parts per billion)}
+ \item{"PM10"}{ - Particulate matter 10 micrometers or less
+ (micrograms per cubic meter)}
+ \item{"PM25"}{ - Particulate matter 2.5 micrometers or less
+ (micrograms per cubic meter)}
+ \item{"WSP"}{ - Wind velocity (meters per second)}
+ \item{"WDR"}{ - Wind direction (degrees)}
+ \item{"TMP"}{ - Temperature (degrees Celsius)}
+ \item{"RH"}{ - Relative humidity (percentage)}
 }}
 
 \item{year}{a numeric vector containing the years for which to download data
@@ -39,19 +39,28 @@ get_station_data(criterion, pollutant, year, progress = interactive())
 By default it will only display in an interactive session.}
 }
 \value{
-a data.frame with pollution data, when downloading "HORARIOS" the
+A data.frame with pollution data. When downloading "HORARIOS" the
 hours correspond to the
 \emph{Etc/GMT+6} timezone, with no daylight saving time
 }
 \description{
-retrieve pollution data by station in the original units from the air quality
+Retrieve pollution data by station, in the original units, from the air quality
 server at
-\url{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}
-for 2016-2018 data.
-For earlier years the archive files from
-\url{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}
-are used
+\href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones},
+or for earlier years use the archive files available from
+\href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}{Contaminante}, or
+\href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI='&opcion=Zw==}{Meteorología} for
+meteorological data.
 }
+\details{
+Temperature (TMP) archive values are correct to one decimal place, but the
+most recent data is only available rounded to the nearest integer.
+}
+\section{Warning}{
+
+The data for the current month is in the process of being validated
+}
+
 \examples{
 \dontrun{
 ## Download daily maximum PM10 data (particulate matter 10 micrometers or
@@ -68,4 +77,10 @@ df2$mxc_time <- format(as.POSIXct(paste0(df2$date, " ", df2$hour, ":00"),
                        tz = "America/Mexico_City")
 head(df2)
 }
+}
+\seealso{
+\code{\link{stations}} for a data.frame with the location and names
+of all polution measuring stations,
+
+Other raw data functions: \code{\link{get_station_month_data}}
 }

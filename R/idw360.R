@@ -1,6 +1,6 @@
 #' Inverse Distance Weighting with Directional Data
 #'
-#' function for inverse distance weighted interpolation with directional data.
+#' Function for inverse distance weighted interpolation with directional data.
 #' Useful for when you are working with data whose unit of measurement is
 #' degrees (i.e. the average of 35 degrees and 355 degrees should be 15
 #' degrees). It works by finding the shortest distance between two degree
@@ -8,9 +8,9 @@
 #'
 #' @param values the dependent variable
 #' @param coords the spatial data locations where the values were measured.
-#' First column x/longitud, second y/latitude
+#' First column x/longitude, second y/latitude
 #' @param grid data frame or Spatial object with the locations to predict.
-#' First column x/longitud, second y/latitude
+#' First column x/longitude, second y/latitude
 #' @param idp The inverse distance weighting power
 #'
 #' @importFrom sp spDists

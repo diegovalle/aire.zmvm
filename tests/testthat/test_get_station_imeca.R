@@ -1,12 +1,10 @@
-
-test_that("is.Date", {
-
-  expect_false(is.Date("test"))
-  expect_true(is.Date("2018-01-21"))
-  expect_true(is.Date("2005-01-01"))
-})
-
 test_that("get_station_imeca pollution data matches the website", {
+  # Invalid function arguments
+  expect_error(get_station_imeca("INVALID", "2009-01-01"))
+  expect_error(get_station_imeca("SO2", "INVALID"))
+  expect_error(get_station_imeca("O3", "2009-02-31"))
+  expect_error(get_station_imeca(c("O3", "SO2"), "2009-02-31"))
+
   skip_on_cran()
 
   df <- get_station_imeca("O3", "2017-05-15")
@@ -24,16 +22,3 @@ test_that("get_station_imeca pollution data matches the website", {
                  58, 77, 60, 42, 43, 38,
                  31, 15, 6, 4, 4, 2, 2))
 })
-
-test_that("is.Date works", {
-  expect_true(is.Date("2009-01-01"))
-  expect_false(is.Date("2009-13-01"))
-  expect_false(is.Date("20011-13-01"))
-  expect_false(is.Date("2009-11-34"))
-  expect_false(is.Date("2009-02-30"))
-  expect_false(is.Date(character(0)))
-  expect_false(is.Date(NULL))
-  expect_false(is.Date(NA))
-})
-
-

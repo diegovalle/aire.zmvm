@@ -1,35 +1,37 @@
-is.Date <- function(date, date.format = "%Y-%m-%d") {
-  if (length(date) < 1)
-    return(FALSE)
-  tryCatch(!is.na(as.Date(date, date.format)),
-           error = function(e) {FALSE})
-}
 
-#' Download pollution data by station in IMECAS
+
+#' Download pollution data by station in IMECAs
 #'
-#' Note that in
-#' 2015 it was determined that the stations with codes ACO, AJU, INN, MON
-#' and MPA would no longer be taken into consideration when computing the
-#' pollution index and at some point in the future would no longer be inclued
-#' in the data returned by this function
+#' Retrieve hourly averages of pollution data, by station, measured in
+#' \href{https://en.wikipedia.org/wiki/Índice_Metropolitano_de_la_Calidad_del_Aire}{IMECAs}
+#'
+#' Note that in 2015 it was determined that the stations with codes ACO, AJU,
+#' INN, MON and MPA would no longer be taken into consideration when computing
+#' the pollution index because they didn't meet the
+#' \href{http://www.aire.cdmx.gob.mx/objetivos-monitoreo-calidad-aire.html}{objectives
+#' of monitoring air quality}, and are no longer included in the index, even if
+#' they are still part of the SIMAT (Sistema de Monitoreo Atmosférico de la
+#' Ciudad de México). Thus, even if they are located inside a zone, they are not
+#' included in the pollution values for that zone.
 #'
 #' @param pollutant The type of pollutant to download
 #' \itemize{
-#'  \item{"SO2"}{ - Dioxido de azufre}
-#'  \item{"CO"}{ - Monoxido de carbono}
-#'  \item{"NO2"}{ - Dioxido de nitrogeno}
-#'  \item{"O3"}{ - Ozono}
-#'  \item{"PM10"}{ - Particulas menores a 10 micrometros}
+#'  \item{"SO2"}{ - Sulfur Dioxide}
+#'  \item{"CO"}{ - Carbon Monoxide}
+#'  \item{"NO2"}{ - Nitrogen Dioxide}
+#'  \item{"O3"}{ - Ozone}
+#'  \item{"PM10"}{ - Particulate matter 10 micrometers or less}
 #' }
 #' @param date The date for which to download data in YYYY-MM-DD format
 #' (the earliest possible date is 2009-01-01).
-#' @param show_messages show a message about issues with performing the
-#' conversion
+#' @param show_messages show a message about issues with excluded stations
 #'
-#' @return A data.frame with pollution data measured in IMECAS, by station.
+#' @return A data.frame with pollution data measured in IMECAs, by station.
 #' The hours correspond to the \emph{Etc/GMT+6} timezone, with no daylight
 #' saving time
 #' @export
+#' @family IMECA functions
+#' @seealso \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmc='}{Índice de calidad del aire por estaciones}
 #' @importFrom rvest html_nodes html_table
 #' @importFrom xml2 read_html
 #' @importFrom tidyr gather
@@ -50,14 +52,14 @@ get_station_imeca <- function(pollutant, date,
                               show_messages = TRUE) {
   if (missing(date))
     stop("You need to specify a start date (YYYY-MM-DD)")
-  if(length(date) != 1)
+  if (length(date) != 1)
     stop("date should be a date in YYYY-MM-DD format")
-  if(!is.Date(date))
+  if (!is.Date(date))
     stop("date should be a date in YYYY-MM-DD format")
   if (date < "2009-01-01")
     stop("date should be after 2009-01-01")
-  if (!(identical("O3", pollutant) | identical("NO2", pollutant) |
-      identical("SO2", pollutant) | identical("CO", pollutant) |
+  if (!(identical("O3", pollutant) || identical("NO2", pollutant) |
+      identical("SO2", pollutant) || identical("CO", pollutant) |
       identical("PM10", pollutant)))
      stop("Invalid pollutant value")
 
@@ -68,15 +70,15 @@ get_station_imeca <- function(pollutant, date,
 
   url <- "http://www.aire.cdmx.gob.mx/default.php?opc=%27aqBjnmc=%27"
   fd <- list(
-    fecha	= date,
-    RadioGroup1	= switch(pollutant,
+    fecha       = date,
+    RadioGroup1 = switch(pollutant,
                          "O3" = 0,
                          "NO2" = 1,
                          "SO2" = 2,
                          "CO" = 3,
                          "PM10" = 4),
-    aceptar	= "Submit",
-    consulta	= 1
+    aceptar     = "Submit",
+    consulta    = 1
   )
 
   result <- httr::POST(url,
@@ -90,7 +92,7 @@ get_station_imeca <- function(pollutant, date,
   if (nrow(df) <= 1)
     stop("The website returned invalid data. Please check the date format.")
   pollutant2 <- names(df)[3]
-  df <- df[,!is.na( df[1, ])]
+  df <- df[, !is.na( df[1, ])]
   names(df) <- df[1, ]
   names(df)[1] <- "date"
   names(df)[2] <- "hour"
@@ -100,6 +102,5 @@ get_station_imeca <- function(pollutant, date,
   df$value <- as.numeric(as.character(df$value))
   df$pollutant <- pollutant2
   df$unit <- "IMECA"
-  df[,c("date", "hour", "station_code", "pollutant", "unit", "value" )]
+  df[, c("date", "hour", "station_code", "pollutant", "unit", "value" )]
 }
-

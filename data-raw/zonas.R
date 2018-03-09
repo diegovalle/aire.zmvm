@@ -10,5 +10,7 @@ zones <- read_csv("data-raw/zonas.csv", col_types = cols(
   zone = col_character()
 )) %>%
   arrange(zone)
-head(zones)
+tail(zones)
+zones <- as.data.frame(zones)
+Encoding(zones$municipio_name) <- "UTF-8"
 devtools::use_data(zones, overwrite = TRUE)

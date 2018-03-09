@@ -13,11 +13,14 @@ maximums and daily minimums
 * Correct the date ranges for the values needed to declare pollution emergencies in the README
 * Messages about measuring stations no longer included in the index are now shown with `message()` instead of `warning()`
 * Messages about changes in the way the IMECA is computed are now shown with `message()` instead of `warning()`
+* `get_station_data` no longer gives a warning when downloading data from 2012 to 2015
+* `get_station_data` progress bar now works correctly
 
 ## Deprecated and Defunct
 * `get_latest_data` is deprecated. You should instead use `get_latest_imeca`. 
 * `get_zone_data` is deprecated. You should instead use `get_zone_imeca`.
-* `showWarnings` argument to `get_zone_imeca` was deprecated for `show_messages`
+* `get_station_data_monthly` is deprecadet. You should instead use `get_station_month_data`.
+* `showWarnings` argument to `get_zone_imeca` was deprecated for `show_messages`.
 
 
 # aire.zmvm 0.5.0
