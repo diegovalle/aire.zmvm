@@ -1,0 +1,92 @@
+---
+title: "Wind direction and speed"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 7, 
+                      fig.height = 7,
+                      fig.align = 'center',
+                      out.width='95%', 
+                      dpi = 200,
+                      echo = TRUE)
+```
+
+You can use the ```idw360``` function to extrapolate wind direction inside a grid.
+
+```{r warning=FALSE}
+## Auto-install required R packages
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(aire.zmvm, dplyr, ggplot2, lubridate, stringr, sp, mapproj,
+               gstat, geojsonio)
+## The mxmaps packages has to be installed from GitHub
+## if (!require("devtools")) {
+##     install.packages("devtools")
+## }
+## devtools::install_github("diegovalle/mxmaps")
+library(mxmaps)
+
+wsp <- get_station_month_data(criterion = "HORARIOS",
+                              pollutant = "WSP",
+                              2018, 3)%>%
+  filter(date == "2018-03-09" & hour == 20) %>%
+  na.omit()
+wdr <- get_station_month_data(criterion = "HORARIOS", 
+                        pollutant = "WDR", 
+                        year = 2018, 3) %>%
+  filter(date == "2018-03-09" & hour == 20) %>%
+  na.omit()
+
+## Location of sensors. First column x/longitud, second y/latitude
+locations <- stations[, c("station_code", "lon", "lat")]
+locations <- merge(wdr, locations)
+coordinates(locations) <- ~lon+lat
+proj4string(locations) <- CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
+
+## The grid for which to extrapolate values
+pixels = 30
+grid <- expand.grid(lon = seq((min(coordinates(locations)[, 1]) - .1),
+                              (max(coordinates(locations)[, 1]) + .1),
+                              length.out = pixels),
+                    lat = seq((min(coordinates(locations)[, 2]) - .1),
+                              (max(coordinates(locations)[, 2]) + .1),
+                              length.out = pixels))
+grid<- SpatialPoints(grid)
+proj4string(grid) <- CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
+
+
+res <- idw360(wdr$value, locations, grid)
+
+wsp <- left_join(wsp, stations, by = "station_code")
+wsp <- wsp[!is.na(wsp$value),]
+wsp <- wsp[,c("lat", "lon", "value")]
+coordinates(wsp) <- ~lon+lat
+proj4string(wsp) <- CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
+wsp <- idw(value ~ 1, wsp, grid, idp = 2, debug.level = 0)
+wsp = as.data.frame(wsp)
+names(wsp) <- c("lon", "lat", "var1.wsp", "var1.var")
+
+df <- cbind(res, as.data.frame(grid), wsp = wsp$var1.wsp)
+df$group <- 1
+
+
+data(mxstate.topoJSON)
+tmpdir <- tempdir()
+# have to use RJSONIO or else the topojson isn't valid
+write(RJSONIO::toJSON(mxstate.topoJSON), file.path(tmpdir, "state.topojson"))
+states <- topojson_read(file.path(tmpdir, "state.topojson"))
+states <- states[states$id == "09", ]
+states <- fortify(states, region="id")
+
+# The wind direction compass starts where the 90 degree mark is located
+ggplot(df, aes(lon, lat)) +
+  geom_path(data = states,
+            aes(long, lat, group = group), color = "darkgray") +
+  geom_point(size = .1) +
+  geom_spoke(aes(angle = ((270 -  pred) %% 360) * pi / 180,
+                 radius = wsp * .006),
+             arrow = arrow(length = unit(0.09, "cm"))) +
+  coord_map() +
+  theme_void() + 
+  ggtitle("Wind direction and speed, 2018-03-09 at 20:00")
+```

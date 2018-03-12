@@ -6,6 +6,11 @@ readme.Rmd
 readme.md
 readme.html
 readme_files
+index.Rmd
+index.md
+vignettes/articles*
+docs/*
+_pkgdown.yaml
 ^cran-comments\.md$
 cran-comments.md
 ^appveyor\.yml$

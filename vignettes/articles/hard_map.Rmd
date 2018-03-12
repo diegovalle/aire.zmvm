@@ -1,0 +1,236 @@
+---
+title: "Pollution Map (the hard way)"
+output: github_document
+---
+
+We can also recreate the [Get Started](/articles/aire.zmvm.html) article but downloading the data in the original units and then using the `convert_to_imeca` function to recreate the pollution map.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 7, 
+                      fig.height = 7,
+                      fig.align = 'center',
+                      out.width='95%', 
+                      dpi = 200,
+                      echo = TRUE)
+```
+
+First we use the function ```get_latest_imeca``` to download real-time data of the pollutant with the highest value at each station. But be warned that some stations are missing sensors for some pollutants.
+
+```{r warning=FALSE, message=FALSE}
+
+## Auto-install required R packages
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(aire.zmvm, dplyr, ggplot2, lubridate, stringr, ggmap, 
+               viridis, gstat, sp, zoo)
+```
+
+```{r warning=FALSE, message=FALSE }
+mxc <- get_latest_imeca()
+print(mxc$datetime[[1]])
+```
+
+The package also includes a data.frame with the location of all stations
+
+```{r message=FALSE, warning=FALSE}
+data("stations")
+knitr::kable(head(stations))
+qmplot(lon, lat, data = stations, maptype = "toner-background")
+```
+
+
+### Map of stations
+
+but only a subset of stations are functioning at any given time (and some are no longer in service)
+
+```{r warning=FALSE }
+mxc <- na.omit(left_join(mxc, stations, by = "station_code"))
+qmplot(lon, lat, data = mxc, maptype = "toner-background", zoom = 11) +
+  geom_point(aes(color = value), size = 8) +
+  scale_color_viridis()
+
+```
+
+
+One problem with the plot is that not all stations measure all pollutants (some are missing PM10 sensors and so on). In the picture below all the stations marked orange have PM10 sensors, but the one marked green doesn't, it is incorrect to think that just because it is missing a sensor there is no PM10 pollution.
+
+![](aire-error.png)
+
+![If you close your eyes (or don't have working pollution sensors) there is no smog](pano-mxc.jpg)
+
+
+We can improve on the dot plot of the data by creating a grid of Mexico City and using inverse
+distance weighting to color each cell with the maximum pollution value extrapolated from all stations.
+
+```{r}
+geography.o3 <- mxc[,c("lat", "lon", "value")]
+coordinates(geography.o3) <- ~lon+lat
+#spplot(geography.o3)
+
+pixels = 100
+geography.grd <- expand.grid(x=seq((min(coordinates(geography.o3)[,1])-.1),
+                          (max(coordinates(geography.o3)[,1])+.1),
+                          length.out=pixels),
+                        y=seq((min(coordinates(geography.o3)[,2])-.1),
+                          (max(coordinates(geography.o3)[,2])+.1),
+                          length.out=pixels))
+
+geography.pts <- SpatialPixels(SpatialPoints((geography.grd)))
+geography.pts <- as(geography.pts, "SpatialGrid")
+```
+
+Here's what the grid looks like:
+
+```{r}
+plot(geography.pts, cex = 1.5, col = "grey")
+points(geography.o3, pch = 1, col = "red", cex = 1)
+
+# For radiation pollution the exponent should be 2
+# See http://www.sciencedirect.com/science/article/pii/S009830041200372X
+geography.idw <- idw(value ~ 1, geography.o3, geography.pts, idp = 2)
+```
+
+
+### Converting to IMECAs
+
+What we want is to somehow extrapolate the values for each of the pollutants at each cell in the grid and display the one with the maximum value. As I mentioned, the function ```get_latest_imeca``` only returns the maximum pollutant data for each station, so instead we need to download data for all the pollutants using the function ```get_station_month_data```, which returns data in the original measurements (ug/m^3, ppb), and covert them to IMECA (Índice Metropolitano de la Calidad del Aire) a dimensionless scale where all the pollutants can be compared.
+
+I ran into some problems when converting to IMECA since the formulas supplied don't always match the values provided by the SEDEMA, but in general they come quite close:
+
+```{r warning=FALSE}
+df_max_zone <- get_zone_imeca("MAXIMOS", c("O3"), c("TZ"),
+              "2015-01-01", "2015-12-31")
+df_max_station <- get_station_data("MAXIMOS", "O3", 2015)
+
+
+zone_max <- df_max_zone %>%
+  group_by(date) %>%
+  summarise(max = max(value, na.rm = TRUE))
+station_max <- df_max_station %>%
+  group_by(date) %>%
+  summarise(max = max(value, na.rm = TRUE)) %>%
+  mutate(max_imeca = convert_to_imeca(max, "O3"))
+
+ggplot(data.frame(station_max$max_imeca, zone_max$max), 
+       aes(zone_max.max, station_max.max_imeca)) +
+  geom_point(alpha = .2) +
+  labs(title = "Converting Ozone ppb to IMECA") +
+  ylab("IMECA from formula") +
+  xlab("IMECA from SEDEMA")
+
+
+df_pm10_stations <- get_station_data("HORARIOS", "PM10", 2016) %>% 
+  group_by(station_code) %>%
+  mutate(rollave = rollapply(value, 24,
+                             function(x) {
+                               if(sum(is.na(x)) > 6)
+                                 return(NA)
+                               mean(x, na.rm = TRUE)},
+                             fill = NA, align = "right")) %>%
+    mutate(value = convert_to_imeca(rollave, "PM10")) %>%
+  ungroup() %>%
+  group_by(date) %>%
+  summarise(max = max(value, na.rm = TRUE)) 
+
+df_max_zone <- get_zone_imeca("MAXIMOS", c("PM10"), c("TZ"),
+              "2016-01-01", "2016-12-31")
+
+
+zone_max <- df_max_zone %>%
+  group_by(date) %>%
+  summarise(max = max(value, na.rm = TRUE))
+
+ggplot(data.frame(df_pm10_stations$max, zone_max$max), 
+       aes(zone_max.max, df_pm10_stations.max)) +
+  geom_point(alpha = .2) +
+  labs(title = "Converting PM10 µg/m³ to IMECA") +
+  ylab("IMECA from formula") +
+  xlab("IMECA from SEDEMA")
+
+
+```
+
+now we create a heatmap for each pollutant and plot the maximum value in each cell
+
+```{r cache=TRUE}
+# PM10, SO2 require a 24 average, CO an 8 hour ma, others are just the latest value
+get_data_roll <- function(pollutant, mxc, ave) {
+  df <- get_station_month_data(criterion = "HORARIOS", pollutant, 2017, "05") %>% 
+    group_by(station_code) %>%
+    mutate(rollave = rollapply(value, ave,
+                               function(x) {
+                                 if(sum(is.na(x)) > ave / 4)
+                                   return(NA)
+                                 mean(x, na.rm = TRUE)},
+                               fill = NA, align = "right")) %>%
+    mutate(value = convert_to_imeca(rollave, pollutant)) %>%
+    filter(row_number() == n())
+  df
+}
+
+get_grid <- function(df) {
+  df <- left_join(df, stations, by = "station_code")
+  df <- df[!is.na(df$value),]
+  geog <- df[,c("lat", "lon", "value")]
+  coordinates(geog) <- ~lon+lat
+  
+  pixels = 100
+  geog.grd <- expand.grid(x=seq((min(coordinates(geog)[,1])-.1),
+                                (max(coordinates(geog)[,1])+.1),
+                                length.out=pixels),
+                          y=seq((min(coordinates(geog)[,2])-.1),
+                                (max(coordinates(geog)[,2])+.1),
+                                length.out=pixels))
+  
+  grd.pts <- SpatialPixels(SpatialPoints((geog.grd)))
+  as(grd.pts, "SpatialGrid")
+}
+
+heatmap <- function(df, grid){
+  if(nrow(df) == 0){
+    return(data.frame(var1.pred = NA, var1.var = NA, lon = NA, lat = NA))
+  }
+  
+  df <- left_join(df, stations, by = "station_code")
+  df <- df[!is.na(df$value),]
+  df <- df[,c("lat", "lon", "value")]
+  coordinates(df) <- ~lon+lat
+  df.idw <- idw(value ~ 1, df, grid, idp = 2, debug.level = 0)
+  
+  idw = as.data.frame(df.idw)
+  names(idw) <- c("var1.pred", "var1.var", "lon", "lat")
+
+  idw
+}
+
+grid <- get_grid(get_latest_imeca())
+pm10 <- heatmap(get_data_roll("PM10", mxc, 24), grid)
+o3 <- heatmap(get_data_roll("O3", mxc, 1), grid)
+co <- heatmap(get_data_roll("CO", mxc, 8), grid)
+no2 <- heatmap(get_data_roll("NO2", mxc, 1), grid)
+so2 <- heatmap(get_data_roll("SO2", mxc, 24), grid)
+
+idw <- pm10
+idw$var1.pred <- pmax(pm10$var1.pred, 
+                      o3$var1.pred,
+                      co$var1.pred,
+                      no2$var1.pred,
+                      so2$var1.pred, na.rm = TRUE)
+```
+
+
+```{r, warning=FALSE, message=FALSE}
+
+
+qmplot(x, y, data = geography.grd, geom = "blank", 
+       maptype = "roadmap", source = "google", zoom = 10)  +
+  geom_tile(data = idw, aes(x = lon, y = lat, fill = var1.pred), alpha = .8) + 
+  scale_fill_viridis("IMECAS", limits = c(0, max(idw$var1.pred)), option = "magma") +
+  geom_point(data = left_join(get_latest_imeca(), stations, by = "station_code"), 
+             aes(x = lon, y = lat), shape = 21, 
+             color = "black", size = 2, alpha = 1) +
+  #scale_color_viridis("IMECAS", discrite = TRUE, limits = c(0,200), option = "magma") +
+  #scale_color_manual(breaks = c("BUENA", "REGULAR", "MALA", "MUY MALA",
+  #                              "EXTREMADAMENTE MALA"),
+  #                   values = viridis(5, option = "magma")) +
+  ggtitle("Pollution in Mexico City")
+```

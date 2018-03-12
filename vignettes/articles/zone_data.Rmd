@@ -1,0 +1,71 @@
+---
+title: "Zone Data"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 7, 
+                      fig.height = 7,
+                      fig.align = 'center',
+                      out.width='95%', 
+                      dpi = 200,
+                      echo = TRUE)
+```
+
+For analyzing the effect of pollution, Mexico City was divided into five zones. The function ```get_zone_imeca``` can download data for each zone as measured in IMECAs as opposed to the original units that ```get_station_data``` uses. 
+
+
+```{r warning=FALSE}
+## Auto-install required R packages
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(aire.zmvm, dplyr, ggplot2)
+## The mxmaps packages has to be installed from GitHub
+## if (!require("devtools")) {
+##     install.packages("devtools")
+## }
+## devtools::install_github("diegovalle/mxmaps")
+library(mxmaps)
+
+df <- zones
+df$value <- df$zone
+
+p <- mxmunicipio_choropleth(df, num_colors = 6,
+                       zoom = df$region,
+                       title = "Geographic Zones of Mexico City") +
+  scale_fill_manual("Zone", values = c("Centro" = "#e41a1c", "Noreste" = "#377eb8", 
+                               "Noroeste" = "#4daf4a", 
+                               "Sureste" = "#984ea3",
+                               "Suroeste" = "#ff7f00"))
+plot(p)
+```
+
+Note that the standards for measuring PM10 and O3 in IMECAS changed in October 2014 and the function prints a message
+
+
+```{r, fig.show='hold', message=TRUE}
+
+# Download pm10 data since 2008 for all available zones ("TZ")
+pm_10 <- get_zone_imeca(criterion = "MAXIMOS", # Can be MAXIMOS (daily maximum) or 
+                                              # HORARIOS (hourly average)
+                       pollutant = "PM10", # "SO2", "CO", "NO2", "O3", "PM10", 
+                                           # "TC" (All pollutants)
+                       zone = "TZ", # "NO", "NE", "CE", "SO", "SE", "TZ" (All zones)
+                       start_date = "2010-01-01", # Can't be earlier than 2008-01-01
+                       end_date = "2017-01-15") # Can be up to the current date
+knitr::kable(head(pm_10))
+```
+
+
+Plotting the data makes the change that took place in October 2014 really obvious:
+
+```{r}
+
+# Plot the overall highest maximum pm10 level with trendline
+ggplot(pm_10 %>% group_by(date) %>% summarise(max = max(value, na.rm = TRUE)), 
+                      aes(date, max, group = 1)) +
+  geom_line(color = "darkgray", size = .2) +
+  geom_smooth(method = "gam", formula = y ~ s(x, k = 50), se = FALSE) +
+  ggtitle("Daily maximum PM10 levels in IMECAS") +
+  geom_vline(xintercept = as.numeric(as.Date("2014-10-28"))) +
+  theme_bw()
+```
