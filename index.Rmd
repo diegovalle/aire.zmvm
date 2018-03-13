@@ -44,7 +44,7 @@ Note that the version on CRAN might not reflect the most recent changes made to 
 
 ## Usage
 
-Create a time series of ozone levels in ppb from 2009 to 2018
+Create a time series of ozone levels in ppb from 2009 to 2018 and highlight the phase I smog alerts.
 
 ```{r, fig.show='hold', fig.width=11, warning=FALSE, message=FALSE}
 ## Auto-install required R packages

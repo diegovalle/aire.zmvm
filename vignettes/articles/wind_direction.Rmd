@@ -57,6 +57,7 @@ proj4string(grid) <- CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
 
 res <- idw360(wdr$value, locations, grid)
 
+# Extrapolate wind speed
 wsp <- left_join(wsp, stations, by = "station_code")
 wsp <- wsp[!is.na(wsp$value),]
 wsp <- wsp[,c("lat", "lon", "value")]
@@ -66,6 +67,7 @@ wsp <- idw(value ~ 1, wsp, grid, idp = 2, debug.level = 0)
 wsp = as.data.frame(wsp)
 names(wsp) <- c("lon", "lat", "var1.wsp", "var1.var")
 
+# Combine wind direction and speed with the grid
 df <- cbind(res, as.data.frame(grid), wsp = wsp$var1.wsp)
 df$group <- 1
 
