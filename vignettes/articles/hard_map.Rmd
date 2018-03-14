@@ -3,7 +3,7 @@ title: "Pollution Map (the hard way)"
 output: github_document
 ---
 
-We can also recreate the [Get Started](/articles/aire.zmvm.html) article but downloading the data in the original units and then using the `convert_to_imeca` function to recreate the pollution map.
+We can also recreate the [Get Started](../aire.zmvm.html) article, but instead of downloading the data in IMECAS we can download it in the original units and then use the `convert_to_imeca` function to recreate the pollution map.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.width = 7, 

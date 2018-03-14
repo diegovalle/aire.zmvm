@@ -1,5 +1,6 @@
 ---
 title: "Cold Weather School Closings"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output: github_document
 ---
 
@@ -13,7 +14,7 @@ knitr::opts_chunk$set(fig.width = 7,
                       comment = "#>")
 ```
 
-Education authorities decided to suspend classes in public and private schools in some parts of Mexico City on Wednesday January 31, 2018, because of low temperatures. We will download and graph the daily morning hourly temperature and compare the days of January 30 and 31 with the rest of the month.
+Because of low temperatures education authorities decided to suspend classes in public and private schools in some parts of Mexico City on Wednesday January 31, 2018. We will download and graph the daily morning hourly temperature and compare the days of January 30 and 31 with the rest of the month.
 
 ### Data Aquisition
 

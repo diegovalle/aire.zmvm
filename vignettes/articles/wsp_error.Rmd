@@ -1,0 +1,44 @@
+---
+title: "Error in Wind Speed Data"
+author: "Diego Valle-Jones"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:  github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+There's an error in the 2016 wind speed data. First we install the necessary packages:
+
+```{r packages, message=FALSE, warning=FALSE}
+# based on https://cran.r-project.org/web/packages/ggjoy/vignettes/gallery.html
+## Auto-install required R packages
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(aire.zmvm, dplyr, ggplot2, functional, lubridate)
+```
+
+Next, we download and plot the data, the error is really obvious. 
+
+```{r download}
+df <- do.call(rbind, 
+              lapply(2015:2017, Curry(get_station_data, "HORARIOS", "WSP"))
+              )
+
+ggplot(na.omit(df), aes(date, value)) +
+  geom_point(alpha = .01) +
+  geom_smooth(method = 'gam', formula = y~s(x)) +
+  theme_bw()
+```
+
+If we treat the 2016 values as if they were incorrectly converted to miles per hour (mph) and multiply by 2.2, then the 2016 wind speed data looks better, although there still is some error, probably due to rounding.
+
+```{r plot-corrected}
+df$value[year(df$date) == 2016] <- df$value[year(df$date) == 2016] * 2.23694
+
+ggplot(na.omit(df), aes(date, value)) +
+  geom_point(alpha = .01) +
+  geom_smooth(method = 'gam', formula = y~s(x)) +
+  theme_bw()
+```

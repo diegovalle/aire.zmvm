@@ -12,20 +12,15 @@ knitr::opts_chunk$set(fig.width = 7,
                       echo = TRUE)
 ```
 
-You can use the ```idw360``` function to extrapolate wind direction inside a grid.
+We can use the ```idw360``` function to extrapolate wind direction and speed inside a grid.
 
-```{r warning=FALSE}
+```{r warning=FALSE, messages=FALSE, warning=FALSE}
 ## Auto-install required R packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(aire.zmvm, dplyr, ggplot2, lubridate, stringr, sp, mapproj,
-               gstat, geojsonio)
-## The mxmaps packages has to be installed from GitHub
-## if (!require("devtools")) {
-##     install.packages("devtools")
-## }
-## devtools::install_github("diegovalle/mxmaps")
-library(mxmaps)
+               gstat, ggmap)
 
+# download wind speed and direction
 wsp <- get_station_month_data(criterion = "HORARIOS",
                               pollutant = "WSP",
                               2018, 3)%>%
@@ -37,7 +32,7 @@ wdr <- get_station_month_data(criterion = "HORARIOS",
   filter(date == "2018-03-09" & hour == 20) %>%
   na.omit()
 
-## Location of sensors. First column x/longitud, second y/latitude
+## Location of sensors. First column x/longitude, second y/latitude
 locations <- stations[, c("station_code", "lon", "lat")]
 locations <- merge(wdr, locations)
 coordinates(locations) <- ~lon+lat
@@ -54,7 +49,7 @@ grid <- expand.grid(lon = seq((min(coordinates(locations)[, 1]) - .1),
 grid<- SpatialPoints(grid)
 proj4string(grid) <- CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
 
-
+# extrapolate wind direction
 res <- idw360(wdr$value, locations, grid)
 
 # Extrapolate wind speed
@@ -71,24 +66,12 @@ names(wsp) <- c("lon", "lat", "var1.wsp", "var1.var")
 df <- cbind(res, as.data.frame(grid), wsp = wsp$var1.wsp)
 df$group <- 1
 
-
-data(mxstate.topoJSON)
-tmpdir <- tempdir()
-# have to use RJSONIO or else the topojson isn't valid
-write(RJSONIO::toJSON(mxstate.topoJSON), file.path(tmpdir, "state.topojson"))
-states <- topojson_read(file.path(tmpdir, "state.topojson"))
-states <- states[states$id == "09", ]
-states <- fortify(states, region="id")
-
-# The wind direction compass starts where the 90 degree mark is located
-ggplot(df, aes(lon, lat)) +
-  geom_path(data = states,
-            aes(long, lat, group = group), color = "darkgray") +
+qmplot(lon, lat, data = df, geom = "blank", 
+       maptype = "terrain-background", source = "stamen",  zoom = 10)+
   geom_point(size = .1) +
+  # The wind direction compass starts where the 90 degree mark is located
   geom_spoke(aes(angle = ((270 -  pred) %% 360) * pi / 180,
                  radius = wsp * .006),
-             arrow = arrow(length = unit(0.09, "cm"))) +
-  coord_map() +
-  theme_void() + 
-  ggtitle("Wind direction and speed, 2018-03-09 at 20:00")
+             arrow = arrow(length = unit(0.09, "cm"))) 
+
 ```

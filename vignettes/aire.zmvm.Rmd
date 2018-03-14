@@ -48,7 +48,7 @@ Because of limitations with the SEDEMA website [http://www.aire.cdmx.gob.mx/](ht
 ## Map of Pollution Levels
 
 Pollution is monitored by a series of stations located throughout the Mexico City Metro Area. Since there are different pollutants to monitor, each measured in different units, and each with different specified averaging periods, a common scale called [IMECA](https://en.wikipedia.org/wiki/%C3%8Dndice_Metropolitano_de_la_Calidad_del_Aire) was created to make them comparable. If 
-pollutants reach an hourly average of 151 IMECA points or more the Mexico City government can declare a phase I smog alert and order cars off the streets and place limits on polluting industries.
+pollutants reach 151 IMECA points or more the Mexico City government can declare a phase I smog alert and order cars off the streets and place limits on polluting industries.
 
 On May 20, 2017 a phase I smog alert was declared. We'll show just how easy it is to make a map of pollution levels during the alert with this package. First we load the packages we need to run this vignette and download the pollution data:
 
@@ -77,7 +77,7 @@ knitr::kable(head(ldf[[2]][order(-ldf[[2]]$value), ], 10), row.names = FALSE)
 ```
 
 You may have noticed that the code comments mention the local time as being 1 hour ahead
-of that returned by the function. That's because the hourly data returned by `get_station_imeca` comes in a format that is not affected by daylight savings time—i.e. 6 hours behind UTC (*Etc/GMT+6*). If, for example, you ever want to analyze pollution levels at peak commuting times, you'll want to convert the time to the local timezone of *America/Mexico_City*. You can use the following code to perform the conversion:
+of that returned by the function. That's because the hourly data returned by `get_station_imeca` comes in a format that is not affected by daylight savings time—i.e. 6 hours behind UTC (*Etc/GMT+6*). If, for example, you ever want to analyze pollution levels at peak commuting times, you'll want to convert the time to the local timezone of *America/Mexico_City*. You can use the following code to do the conversion:
 
 ```{r}
 format(as.POSIXct("2017-05-20 17:00", tz = "Etc/GMT+6"), 
@@ -121,8 +121,7 @@ grid <- create_grid(reporting_stations, 50)
 
 plot(grid, main = "Grid covering Mexico City and Locations of\nPollution Measuring Stations (red)")
 # Plot the locations of the stations
-geog <- stations[stations$station_code %in% reporting_stations, ][ ,c("lat", 
-                                                                      "lon")]
+geog <- stations[stations$station_code %in% reporting_stations, c("lat", "lon")]
 coordinates(geog) <- ~lon+lat
 points(geog, pch = 22, col = "lightgray", bg = "red", cex = 1.2)
 ```

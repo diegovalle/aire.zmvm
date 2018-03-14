@@ -7,7 +7,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-In an effort to lower pollution levels the Mexico City government introduced in 1989 the *Hoy no circula program* program, a ban on most cars from circulating once a week. But did it really work? 
+In an effort to lower pollution levels the Mexico City government introduced in 1989 the *Hoy no circula* program, a ban on most cars from circulating once a week. But did it really work? 
 
 ## Station data
 
@@ -30,7 +30,7 @@ download_data <- function(pollutant) {
                            # or HORARIOS (hourly average)
                            pollutant = pollutant, # "SO2", "CO", "NOX", "NO2", "NO", "O3", 
                                                   # "PM10", "PM25", "WSP", "WDR", "TMP", "RH"
-                           year = 1986:2017, # The earliest year allowed is 1986
+                           year = 1986:2018, # The earliest year allowed is 1986
                            progress = FALSE)
   })
   o3$pollutant <- pollutant
