@@ -1,7 +1,7 @@
 Mexico City Air Quality Data
 ================
 Diego Valle-Jones
-March 08, 2018
+March 14, 2018
 
 -   [What does it do?](#what-does-it-do)
 -   [Installation](#installation)
@@ -46,7 +46,7 @@ Note that the version on CRAN might not reflect the most recent changes made to 
 Core Functions
 --------------
 
-The package consists mainly of six functions:
+The package core functions:
 
 -   `get_station_data` and `get_station_month_data` download pollution, wind and temperature data for each of the measuring stations in the original units (ppb, µg/m³, etc).
 -   `get_station_imeca` download pollution values for each station in IMECAs
@@ -145,7 +145,7 @@ o3 <- get_station_data(criterion = "MAXIMOS", # Can be one of MAXIMOS (daily max
                                               # or HORARIOS (hourly average)
                        pollutant = "O3", # Can be one of "SO2", "CO", "NOX", "NO2", "NO", "O3", 
                                          # "PM10", "PM25", "WSP", "WDR", "TMP", "RH"
-                       year = 2009:2018) # A numeric vector, the earliest year allowed is 1986
+                       year = 2009:2017) # A numeric vector, the earliest year allowed is 1986
 knitr::kable(head(o3))
 ```
 
