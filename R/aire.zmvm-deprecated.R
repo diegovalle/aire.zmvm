@@ -33,7 +33,8 @@ get_zone_data <- function(...) {
   get_zone_imeca(...)
 }
 get_station_single_month <- function (...) {
-  .Deprecated('get_station_month_data(criterion = "HORARIOS", ...)', package = "aire.zmvm")
+  .Deprecated('get_station_month_data(criterion = "HORARIOS", ...)',
+              package = "aire.zmvm")
   get_station_month_data(criterion = "HORARIOS", ...)
 }
 NULL
