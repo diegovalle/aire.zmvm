@@ -194,7 +194,7 @@ recode_pollutant <- function(pollutant) {
 # Temporary hack (hopefully) to download yearly hourly data by month
 download_horario_by_month <- function(pollutant, year){
   df <- data.frame()
-  cur_date <- Sys.Date()
+  cur_date <- lubridate::with_tz(Sys.time(), tz = "America/Mexico_City")
   cur_year <- lubridate::year(cur_date)
   cur_month <- lubridate::month(cur_date)
 
