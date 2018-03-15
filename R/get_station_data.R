@@ -352,6 +352,12 @@ get_station_data <- function(criterion, pollutant, year,
   if (min(year) < 1986)
     stop("Data is only available from 1986 onwards")
 
+  if (2016 %in% year & pollutant == "WSP")
+    warning(paste0("There's an error in the 2016 WSP data. It seems ",
+                   "someone incorrectly ",
+                   "converted the data from mph to m/s. ",
+                   "Try multiplying by 2.23694"))
+
   pollutant <- tolower(pollutant)
 
   if (identical(progress, TRUE) && length(year) > 1) {
@@ -464,7 +470,11 @@ get_station_month_data <- function(criterion, pollutant, year, month) {
             " you can download data accurate to",
             " one decimal point using the `get_station_data` function. ",
             "See the documentation for more information."), call. = FALSE)
-
+  if (2016 %in% year & pollutant == "WSP")
+    warning(paste0("There's an error in the 2016 WSP data. It seems ",
+                   "someone incorrectly ",
+                   "converted the data from mph to m/s. ",
+                   "Try multiplying by 2.23694. Except maybe for ACO."))
   month <- str_pad(as.character(month), 2, "left", "0")
   if (!(identical("01", month) || identical("02", month) |
         identical("03", month) || identical("04", month) |
