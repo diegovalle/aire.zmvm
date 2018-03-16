@@ -460,7 +460,7 @@ get_station_month_data <- function(criterion, pollutant, year, month) {
       stop("year should be an integer in YYYY format")
   if (min(year) < 2005)
     stop(paste("Data is only available from 2005 onwards. Try the using the",
-               " function `get_station_data` to download data by year",
+               " function `get_station_data` to download data",
                " from 1986 onwards"))
   if (length(month) != 1)
     stop("you can only download a single month at a time")
@@ -470,11 +470,25 @@ get_station_month_data <- function(criterion, pollutant, year, month) {
             " you can download data accurate to",
             " one decimal point using the `get_station_data` function. ",
             "See the documentation for more information."), call. = FALSE)
+
   if (2016 %in% year & pollutant == "WSP")
     warning(paste0("There's an error in the 2016 WSP data. It seems ",
                    "someone incorrectly ",
                    "converted the data from mph to m/s. ",
-                   "Try multiplying by 2.23694. Except maybe for ACO."))
+                   "Try multiplying by 2.23694."))
+  if (year %in% c(2005, 2006, 2007) & pollutant == "WSP")
+    warning(paste0("Some stations are missing from wind speed data ",
+                   "for the years of ",
+                   "2005, 2006, and 2007. Try using the function ",
+                   "`get_station_data` to get the complete data."))
+  if (year %in% c(2012, 2013, 2014, 2015, 2017) & pollutant == "WSP" &
+      criterion != "HORARIOS")
+    warning(paste0("There's an error in the WSP data. It seems ",
+                   "someone incorrectly ",
+                   "converted the data for the station ACO to mph instead ",
+                   "of m/s like the rest of the data. Try multiplying by ",
+                   "0.44704"))
+
   month <- str_pad(as.character(month), 2, "left", "0")
   if (!(identical("01", month) || identical("02", month) |
         identical("03", month) || identical("04", month) |
