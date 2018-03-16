@@ -7,7 +7,7 @@ Description: Tools for downloading hourly averages, daily maximums and minimums 
     pollution, wind, and temperature measuring stations or geographic zones in the Mexico City 
     metro area. The package also includes the locations of each of the stations and zones. See 
     <http://aire.cdmx.gob.mx/> for more information.
-URL: https://hoyodesmog.diegovalle.net/aire.zmvm.html, https://github.com/diegovalle/aire.zmvm
+URL: https://hoyodesmog.diegovalle.net/aire.zmvm, https://github.com/diegovalle/aire.zmvm
 BugReports: https://github.com/diegovalle/aire.zmvm/issues
 License: BSD_3_clause + file LICENSE
 LazyData: TRUE

@@ -51,15 +51,19 @@ test_that("get_station_data matches website", {
 
   skip_on_cran()
 
-  df_min_2016 <- get_station_data("MINIMOS", "PM10", 2016, progress = NULL)
+  expect_warning(df_min_2016 <- get_station_data("MINIMOS",
+                                                 "WSP", 2016,
+                                                 progress = NULL),
+                                "There's an error in the 2016 WSP data")
   df_max_2016 <- get_station_data("MAXIMOS", "PM10", 2016, progress = FALSE)
-  df_min_2015_18 <- get_station_data("MINIMOS", "PM10", c(2015,2018),
+  df_min_2015_18 <- get_station_data("MINIMOS", "PM10", c(2015, 2018),
                                      progress = TRUE)
-  df_max_2015 <- get_station_data("MAXIMOS", "O3", 2015)
-  df_max_2005 <- get_station_data("MAXIMOS", "SO2", 2005)
+  expect_silent(df_max_2015 <- get_station_data("MAXIMOS", "O3", 2015))
+  expect_silent(df_max_2005 <-  get_station_data("MAXIMOS", "SO2", 2005))
   df_wdr_2005 <- get_station_data("MAXIMOS", "WDR", 2005)
   df_horarios_2010 <- get_station_data("HORARIOS", "PM10", 2010)
-  df_horarios_2018 <- get_station_data("HORARIOS", "O3", 2018)
+  # 2018 data can still change so test it at a later date
+  #df_horarios_2018 <- get_station_data("HORARIOS", "O3", 2018)
 
   df_wsp_2005 <- get_station_data("MAXIMOS", "WSP", 2005)
 
@@ -87,10 +91,9 @@ test_that("get_station_data matches website", {
   expect_true("MON" %in% unique(df_max_2015$station_code))
 
   expect_equal(unname(unlist(subset(df_min_2016,
-                                    date == as.Date("2016-01-03"))$value)),
-               c(21, 26, 0, 4, 26, 18, 0, NA, 0, 17, 0, 6, 6, 3, 0, 29, NA,
-                 24, 0, 0, NA, 21, 27, NA, 0, NA, NA, 50, NA, 0, 0, 11, NA, 0,
-                 25, 3, 0, 0, NA, 21, 47))
+                                    date == as.Date("2016-01-01"))$value)),
+               c(0.7, 0.2, 0.4, 0.5, 0.1, 0.4, 0.1, 0.2, 0.4, 0.2, NA, NA, 0.4,
+                 0.1, 0.2, 0.6, NA, 0.4, 0.3, 0.3, 0.2, 0.2, 0.5, 0.4, 0.3))
   expect_equal(unname(unlist(subset(df_max_2016,
                                     date == as.Date("2016-01-05"))$value)),
                c(52, 30, 0, 82, 76, 242, 0, NA, 0, 84, 0, 42, 112, 86, 0, 88,
@@ -118,10 +121,10 @@ test_that("get_station_data matches website", {
                                      hour == 1)$value)),
               c(115, 98, 195, 104, 83, 62, 182, 275, 73, 225, 81, 129, 71,
                 107))
-  expect_equal(unname(unlist(subset(df_horarios_2018,
-                                    date == as.Date("2018-02-28") &
-                                      hour == 1)$value)),
-               c(NA, 48, NA, 31, NA, 24, 24, 30, NA, NA, 25, NA, 35, 3, 17,
-                 6, NA, NA, NA, NA, 2, 2, 12, 16, NA, NA, 33, NA, NA, 32, NA,
-                 NA, NA, 35, NA, NA, 6, 1, NA, 22, NA, NA, 3))
+  # expect_equal(unname(unlist(subset(df_horarios_2018,
+  #                                   date == as.Date("2018-02-28") &
+  #                                     hour == 1)$value)),
+  #              c(NA, 48, NA, 29, NA, 24, 24, 29, NA, NA, 25, NA, 34, 3, 17,
+  #                4, 29, NA, NA, NA, NA, 2, 12, 16, NA, 40, 33, NA, NA, 32, NA,
+  #                NA, NA, 35, NA, NA, 6, 1, NA, 22, NA, NA, 1))
 })
