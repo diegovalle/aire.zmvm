@@ -10,7 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-There's an error in the 2016 wind speed data. First we install the necessary packages:
+There's an error in the 2016 wind speed data. 
+
+First we install the necessary packages:
 
 ```{r packages, message=FALSE, warning=FALSE}
 # based on https://cran.r-project.org/web/packages/ggjoy/vignettes/gallery.html
@@ -28,17 +30,21 @@ df <- do.call(rbind,
 
 ggplot(na.omit(df), aes(date, value)) +
   geom_point(alpha = .01) +
-  geom_smooth(method = 'gam', formula = y~s(x)) +
-  theme_bw()
+  geom_smooth(method = 'gam', formula = y ~ s(x)) +
+  theme_bw() +
+  ylab("wind speed (m/s)") +
+  ggtitle("Wind Speed in Mexico City (Original Data)")
 ```
 
-If we treat the 2016 values as if they were incorrectly converted to miles per hour (mph) and multiply by 2.2, then the 2016 wind speed data looks better, although there still is some error, probably due to rounding.
+If we treat the 2016 values as if they were incorrectly converted to miles per hour (mph) and multiply by 2.2 to correct them, then the 2016 wind speed data looks better, although there still is some error, probably due to rounding.
 
 ```{r plot-corrected}
 df$value[year(df$date) == 2016] <- df$value[year(df$date) == 2016] * 2.23694
 
 ggplot(na.omit(df), aes(date, value)) +
   geom_point(alpha = .01) +
-  geom_smooth(method = 'gam', formula = y~s(x)) +
-  theme_bw()
+  geom_smooth(method = 'gam', formula = y ~ s(x)) +
+  theme_bw() +
+  xlab("wind speed (m/s)") +
+  ggtitle("Wind Speed in Mexico City (2016 data multiplied by 2.2)")
 ```

@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 # aire.zmvm
 
-[![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.svg?branch=master)](https://travis-ci.org/diegovalle/aire.zmvm) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/c7kg6o68exx0lirg?svg=true)](https://ci.appveyor.com/project/diegovalle/aire-zmvm/branch/master) [![Coverage Status](https://img.shields.io/codecov/c/github/diegovalle/aire.zmvm/master.svg)](https://codecov.io/github/diegovalle/aire.zmvm?branch=master) <a href="https://cran.r-project.org/package=aire.zmvm"><img src="https://www.r-pkg.org/badges/version/aire.zmvm" alt="Cran Status Badge"></a>
+[![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.svg?branch=master)](https://travis-ci.org/diegovalle/aire.zmvm) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/c7kg6o68exx0lirg?svg=true)](https://ci.appveyor.com/project/diegovalle/aire-zmvm/branch/master) [![Coverage Status](https://img.shields.io/codecov/c/github/diegovalle/aire.zmvm/master.svg)](https://codecov.io/github/diegovalle/aire.zmvm?branch=master) [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) <a href="https://cran.r-project.org/package=aire.zmvm"><img src="https://www.r-pkg.org/badges/version/aire.zmvm" alt="Cran Status Badge"></a>
 
 ![](pano-mxc.jpg)
 
