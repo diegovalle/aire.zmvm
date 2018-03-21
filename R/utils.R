@@ -47,21 +47,6 @@ round_away_from_zero <- function(r) {
 #' @importFrom tidyr gather
 #' @importFrom utils download.file unzip
 .get_archive_wsp_2016 <- function() {
-  # RADIACION <- "http://www.aire.cdmx.gob.mx/default.php?opc='aKBm'"
-  # fd <- list(
-  #   seluniano  = "16",
-  #   unibaja    = "Descargar archivo"
-  # )
-  # url <- "http://www.aire.cdmx.gob.mx/default.php?opc='aKBi'"
-  # result <- POST(url,
-  #                body = fd,
-  #                encode = "form")
-  # if (http_error(result))
-  #   stop("The request to <%s> failed [%s]",
-  #        url,
-  #        status_code(resp))
-  # if (http_type(result) != "text/html")
-  #   stop(paste0(url, " did not return text/html", call. = FALSE))
   download_loc <- paste0("http://148.243.232.112:8080/opendata/excel/",
                          "REDMET/16REDMET.zip")
 

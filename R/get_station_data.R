@@ -139,7 +139,15 @@ recode_pollutant <- function(pollutant) {
                "parametro=", pollutant, "&",
                "anio=", year, "&",
                "qmes=", month)
-  poll_table <- read_html(httr::GET(url,  httr::timeout(120)))
+  result <- GET(url,  httr::timeout(120))
+  if (http_error(result))
+    stop("The request to <%s> failed [%s]",
+         url,
+         status_code(result), call. = FALSE)
+  if (http_type(result) != "text/html")
+    stop(paste0(url, " did not return text/html", call. = FALSE))
+
+  poll_table <- read_html(result)
   df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE)
   names(df) <- df[1, ]
   names(df)[1] <- "date"

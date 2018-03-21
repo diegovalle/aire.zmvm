@@ -35,6 +35,7 @@
 #' @importFrom rvest html_nodes html_table
 #' @importFrom xml2 read_html
 #' @importFrom tidyr gather
+#' @importFrom httr POST http_error status_code http_type
 #'
 #' @examples
 #' ## There was an ozone pollution emergency on May 15, 2017
@@ -81,9 +82,15 @@ get_station_imeca <- function(pollutant, date,
     consulta    = 1
   )
 
-  result <- httr::POST(url,
-                       body = fd,
-                       encode = "form")
+  result <- POST(url,
+                 body = fd,
+                 encode = "form")
+  if (http_error(result))
+    stop("The request to <%s> failed [%s]",
+         url,
+         status_code(result), call. = FALSE)
+  if (http_type(result) != "text/html")
+    stop(paste0(url, " did not return text/html", call. = FALSE))
   poll_table <- xml2::read_html(content(result, "text"))
 
   df <- rvest::html_table(rvest::html_nodes(poll_table, "table")[[1]],

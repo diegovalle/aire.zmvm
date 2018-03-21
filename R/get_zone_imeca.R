@@ -11,7 +11,8 @@
 #' @importFrom stringr str_c  str_replace_all
 #' @importFrom rvest html_nodes html_table
 #' @importFrom lubridate day month year
-#' @importFrom httr content
+#' @importFrom httr content POST http_error status_code http_type
+#' @importFrom xml2 read_html
 #' @keywords internal
 .download_data_zone <- function(criterion, pollutant, zone, start_date,
                                 end_date) {
@@ -37,12 +38,20 @@
   names(zones_tmp) <- zone
   fd <- append(fd, zones_tmp)
 
-  result <- httr::POST(url,
-                       body = fd,
-                       encode = "form")
-  poll_table <- xml2::read_html(content(result, "text"))
+  result <- POST(url,
+                 body = fd,
+                 encode = "form")
 
-  df <- rvest::html_table(rvest::html_nodes(poll_table, "table")[[1]],
+  if (http_error(result))
+    stop("The request to <%s> failed [%s]",
+         url,
+         status_code(result), call. = FALSE)
+  if (http_type(result) != "text/html")
+    stop(paste0(url, " did not return text/html", call. = FALSE))
+
+  poll_table <- read_html(content(result, "text"))
+
+  df <- html_table(html_nodes(poll_table, "table")[[1]],
                           header = TRUE)
   df
 }
