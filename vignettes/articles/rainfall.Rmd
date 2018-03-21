@@ -1,0 +1,90 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## GitHub Documents
+
+```{r}
+## Auto-install required R packages
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(aire.zmvm, dplyr, ggplot2, lubridate, readr, stringr, mgcv)
+```
+
+```{r}
+
+df <- get_redda(deposition = "HUMEDO", type = "CONCENTRACION") %>%
+  filter(pollutant == "PP")
+
+# When does the SIMAT start recording rainfall each year?
+df %>% 
+  group_by(year(date)) %>%
+  summarise(min = min(date))
+
+# starting dates before 2003 are different
+df <- df %>% filter(year(df$date) >= 2003)
+df$week <- week(df$date)
+df$year <- year(df$date)
+df <- full_join(df,
+          data.frame(
+            year = year(seq(as.Date("2003-01-01"), 
+                            as.Date("2016-12-31"), 
+                            by = "week")),
+            week = week(seq(as.Date("2003-01-01"), 
+                                as.Date("2016-12-31"), 
+                                by = "week"))
+            ),
+          by = c("year", "week")) %>%
+  arrange(year, week)
+df$value[is.na(df$value)] <- 0
+
+df$date <- as.Date(str_c(df$year, "-", df$week,"-",1), format = "%Y-%U-%u")
+#df$num <- 1:nrow(df)
+# df$year <- year(df$date)
+# df$yday <- yday(df$date)
+# df$month <- month(df$date)
+# df$value <- log1p(df$value)
+
+#fit <- gam(value ~ te(as.numeric(date), week, bs = c("tp", "cc"), k = c(10, 52)),
+#           data = df, family = nb())
+#plot(fit, pers = TRUE)
+fit2 <- gam(value ~ s(as.numeric(date)) + s(week), data = df, family = tw())
+
+summary(fit)
+df$pred <- predict(fit2, newdata = df, type = "response")
+
+
+ggplot(df, aes(date, value)) +
+  geom_point(alpha = .05) +
+  geom_smooth(method = 'gam', formula = y ~ s(x, k = 53),
+              method.args= list(family = nb())) +
+  ggtitle("Weekly rainfall in Mexico City (2003-2016)") +
+  ylab("mm") +
+  theme_bw()
+
+ggplot(df, aes(week, value, group = year, color = year)) +
+  geom_point(alpha = .05) +
+  ggtitle("Average rainfall in Mexico city",
+          subtitle = "Based on a GAM model\nSource: SIMAT") +
+  ylab("rainfall in mm") +
+  scale_x_continuous(breaks = c(1,  week("2016-06-01"),  
+                                week("2016-09-01"), week("2016-12-01")), 
+                     labels = c("Jan", "Jun", "Aug", "Dec")) +
+  scale_color_continuous(low="#dddddd", high = "black") +
+  theme_bw()
+
+ggplot(df, aes(week, pred, group = year, color = year)) +
+  geom_line() +
+  ggtitle("Modeled weekly rainfall in Mexico City (2003-2016)",
+          subtitle = "Based on a GAM model\nSource: SIMAT") +
+  ylab("rainfall in mm") +
+  scale_x_continuous(breaks = c(1,  week("2016-06-01"),  
+                                week("2016-09-01"), week("2016-12-01")), 
+                     labels = c("Jan", "Jun", "Aug", "Dec")) +
+  scale_color_continuous(low="#dddddd", high = "black") +
+  theme_bw()
+```
