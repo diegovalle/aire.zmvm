@@ -52,17 +52,17 @@
 get_station_imeca <- function(pollutant, date,
                               show_messages = TRUE) {
   if (missing(date))
-    stop("You need to specify a start date (YYYY-MM-DD)")
+    stop("You need to specify a start date (YYYY-MM-DD)", call. = FALSE)
   if (length(date) != 1)
-    stop("date should be a date in YYYY-MM-DD format")
+    stop("date should be a date in YYYY-MM-DD format", call. = FALSE)
   if (!is.Date(date))
-    stop("date should be a date in YYYY-MM-DD format")
+    stop("date should be a date in YYYY-MM-DD format", call. = FALSE)
   if (date < "2009-01-01")
-    stop("date should be after 2009-01-01")
+    stop("date should be after 2009-01-01", call. = FALSE)
   if (!(identical("O3", pollutant) || identical("NO2", pollutant) |
       identical("SO2", pollutant) || identical("CO", pollutant) |
       identical("PM10", pollutant)))
-     stop("Invalid pollutant value")
+     stop("Invalid pollutant value", call. = FALSE)
 
   if (date >= "2017-01-01" && show_messages)
     message(paste0("Sometime in 2015-2017 the stations with codes",
@@ -97,7 +97,8 @@ get_station_imeca <- function(pollutant, date,
                           header = TRUE,
                           fill = TRUE)
   if (nrow(df) <= 1)
-    stop("The website returned invalid data. Please check the date format.")
+    stop("The website returned invalid data. Please check the date format.",
+         call. = FALSE)
   pollutant2 <- names(df)[3]
   df <- df[, !is.na( df[1, ])]
   names(df) <- df[1, ]

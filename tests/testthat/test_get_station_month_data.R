@@ -10,6 +10,13 @@ test_that("test get_station_month_data", {
   expect_error(get_station_month_data("MAXIMOS", "PM10", -2016, 13))
   expect_error(get_station_month_data("MAXIMOS", "PM10", -2016, 1.5))
   expect_error(get_station_month_data("MAXIMOS", c("PM10", "O3"), 2016, 1))
+  # There's an error in the 2016 WSP data
+  expect_error(get_station_month_data("MAXIMOS", "WSP", 2016, 1))
+  expect_error(get_station_month_data("HORARIOS", "WSP", 2016, 1))
+  expect_error(get_station_month_data("MINIMOS", "WSP", 2016, 1))
+  # Error in the ACO station
+  expect_error(get_station_month_data("MINIMOS", "WSP", 2012, 1))
+  expect_error(get_station_month_data("MAXIMOS", "WSP", 2012, 1))
 
   skip_on_cran()
 
