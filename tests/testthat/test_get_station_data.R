@@ -51,10 +51,9 @@ test_that("get_station_data matches website", {
 
   skip_on_cran()
 
-  expect_warning(df_min_2016 <- get_station_data("MINIMOS",
-                                                 "WSP", 2016,
-                                                 progress = NULL),
-                                "There's an error in the 2016 WSP data")
+  df_hor_2016 <- get_station_data("HORARIOS",
+                                  "WSP", 2016,
+                                  progress = NULL)
   df_max_2016 <- get_station_data("MAXIMOS", "PM10", 2016, progress = FALSE)
   df_min_2015_18 <- get_station_data("MINIMOS", "PM10", c(2015, 2018),
                                      progress = TRUE)
@@ -90,10 +89,11 @@ test_that("get_station_data matches website", {
   expect_false("CHA" %in% unique(df_max_2005$station_code))
   expect_true("MON" %in% unique(df_max_2015$station_code))
 
-  expect_equal(unname(unlist(subset(df_min_2016,
-                                    date == as.Date("2016-01-01"))$value)),
-               c(0.7, 0.2, 0.4, 0.5, 0.1, 0.4, 0.1, 0.2, 0.4, 0.2, NA, NA, 0.4,
-                 0.1, 0.2, 0.6, NA, 0.4, 0.3, 0.3, 0.2, 0.2, 0.5, 0.4, 0.3))
+  expect_equal(unname(unlist(subset(df_hor_2016,
+                                    date == as.Date("2016-01-01") &
+                                      station_code == "ACO")$value)),
+               c(2, 1.5, 1.7, 1.9, 1.5, 2, 1.9, 2.1, 2.2, 2.5, 2.4, 1.6, 2.5,
+                 2.2, 1.7, 2.4, 2, 2.6, 3.4, 3.7, 3, 3.7, 3.3, 2.9))
   expect_equal(unname(unlist(subset(df_max_2016,
                                     date == as.Date("2016-01-05"))$value)),
                c(52, 30, 0, 82, 76, 242, 0, NA, 0, 84, 0, 42, 112, 86, 0, 88,

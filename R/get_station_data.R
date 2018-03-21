@@ -45,6 +45,10 @@ recode_pollutant <- function(pollutant) {
 #' @keywords internal
 #'
 .download_old_station_data <- function(pollutant, year) {
+  # Hack to download the 2016 WSP data
+  if (pollutant == "wsp" & year == 2016)
+    return(.get_archive_wsp_2016())
+  # End hack
   upollutant <- toupper(pollutant)
   if (upollutant == "PM25")
     upollutant <- "PM2.5"
@@ -151,8 +155,11 @@ recode_pollutant <- function(pollutant) {
   if (criterion == "HORARIOS") {
     names(df)[2] <- "hour"
   }
-  # The website sometimes messes up and changes the station_code of the
-  # Montecillo (Texcoco) station to CHA instead of MON
+  # En 2011 se realizó un rediseño al Sistema de Monitoreo Atmosférico (SIMAT) en el
+  # cual se modificó la nomenclatura de la estación Chapingo (CHA) y a partir de ese año se
+  # denomina Montecillo (MON). Si deseas mas información al respecto lo puedes consultar
+  # en la siguiente liga de internet:
+  # http://www.aire.cdmx.gob.mx/descargas/publicaciones/flippingbook/informe_anual_calidad_aire_2011/#p=1.
   if ("CHA" %in% names(df)) {
     if (!"MON" %in% names(df)) {
       names(df)[which(names(df) == "CHA")] <- "MON"
@@ -280,7 +287,7 @@ download_horario_by_month <- function(pollutant, year){
 #' @param criterion Type of data to download.
 #' \itemize{
 #'  \item{"HORARIOS"}{ - Hourly data}
-#'  \item{"MAXIMOS""}{ - Daily maximums}
+#'  \item{"MAXIMOS"}{ - Daily maximums}
 #'  \item{"MINIMOS"}{ - Daily minimums}
 #' }
 #' @param pollutant The type of pollutant to download.
@@ -302,7 +309,7 @@ download_horario_by_month <- function(pollutant, year){
 #' }
 #' @param year a numeric vector containing the years for which to download data
 #' (the earliest possible value is 1986)
-#' @param progress Whether to display a progress bar (TRUE or FALSE).
+#' @param progress whether to display a progress bar (TRUE or FALSE).
 #' By default it will only display in an interactive session.
 #'
 #' @return A data.frame with pollution data. When downloading "HORARIOS" the
@@ -351,12 +358,6 @@ get_station_data <- function(criterion, pollutant, year,
       stop("year should be an integer in YYYY format")
   if (min(year) < 1986)
     stop("Data is only available from 1986 onwards")
-
-  if (2016 %in% year & pollutant == "WSP")
-    warning(paste0("There's an error in the 2016 WSP data. It seems ",
-                   "someone incorrectly ",
-                   "converted the data from mph to m/s. ",
-                   "Try multiplying by 2.23694"))
 
   pollutant <- tolower(pollutant)
 
@@ -480,7 +481,7 @@ get_station_month_data <- function(criterion, pollutant, year, month) {
     warning(paste0("Some stations are missing from wind speed data ",
                    "for the years of ",
                    "2005, 2006, and 2007. Try using the function ",
-                   "`get_station_data` to get the complete data."))
+                   "`get_station_data` to get data for all stations."))
   if (year %in% c(2012, 2013, 2014, 2015, 2017) & pollutant == "WSP" &
       criterion != "HORARIOS")
     warning(paste0("There's an error in the WSP data. It seems ",
