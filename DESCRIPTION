@@ -33,7 +33,8 @@ Imports:
     httr,
     readr,
     sp,
-    progress
+    progress,
+    readxl
 RoxygenNote: 6.0.1
 Encoding: UTF-8
 VignetteBuilder: knitr
