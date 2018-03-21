@@ -203,23 +203,23 @@ convert_to_imeca <- function(value, pollutant, showWarnings = TRUE) {
             call. = FALSE)
   }
   if (length(pollutant) < 1)
-    stop("Invalid pollutant value")
+    stop("Invalid pollutant value", call. = FALSE)
   pollutant <- toupper(pollutant)
   for (i in seq_len(length(pollutant)))
     if (!(identical("O3", pollutant[i]) | identical("NO2", pollutant[i]) |
           identical("SO2", pollutant[i]) | identical("CO", pollutant[i]) |
           identical("PM10", pollutant[i]) | identical("PM25", pollutant[i])))
-      stop("Invalid pollutant value")
+      stop("Invalid pollutant value", call. = FALSE)
   if (length(value) < 1)
-    stop("value should be numeric")
+    stop("value should be numeric", call. = FALSE)
   if (is.factor(value))
-    stop("value should be numeric")
+    stop("value should be numeric", call. = FALSE)
   if (!suppressWarnings(!any(is.na(as.numeric(na.omit(value))))))
-    stop("value should be numeric")
+    stop("value should be numeric", call. = FALSE)
   if (length(value) != length(pollutant)) {
     if ( max(length(value), length(pollutant)) %%
          min(length(value), length(pollutant)) != 0)
-      stop("longer argument not a multiple of length of shorter")
+      stop("longer argument not a multiple of length of shorter", call. = FALSE)
     warning(paste0("The vectors are of unequal length. Recycling elements ",
                    "of the shorter vector to match the longer vector."),
             call. = FALSE)

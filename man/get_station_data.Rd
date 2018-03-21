@@ -10,7 +10,7 @@ get_station_data(criterion, pollutant, year, progress = interactive())
 \item{criterion}{Type of data to download.
 \itemize{
  \item{"HORARIOS"}{ - Hourly data}
- \item{"MAXIMOS""}{ - Daily maximums}
+ \item{"MAXIMOS"}{ - Daily maximums}
  \item{"MINIMOS"}{ - Daily minimums}
 }}
 
@@ -35,7 +35,7 @@ get_station_data(criterion, pollutant, year, progress = interactive())
 \item{year}{a numeric vector containing the years for which to download data
 (the earliest possible value is 1986)}
 
-\item{progress}{Whether to display a progress bar (TRUE or FALSE).
+\item{progress}{whether to display a progress bar (TRUE or FALSE).
 By default it will only display in an interactive session.}
 }
 \value{

@@ -11,7 +11,8 @@
 #' @importFrom stringr str_c  str_replace_all
 #' @importFrom rvest html_nodes html_table
 #' @importFrom lubridate day month year
-#' @importFrom httr content
+#' @importFrom httr content POST http_error status_code http_type
+#' @importFrom xml2 read_html
 #' @keywords internal
 .download_data_zone <- function(criterion, pollutant, zone, start_date,
                                 end_date) {
@@ -37,12 +38,20 @@
   names(zones_tmp) <- zone
   fd <- append(fd, zones_tmp)
 
-  result <- httr::POST(url,
-                       body = fd,
-                       encode = "form")
-  poll_table <- xml2::read_html(content(result, "text"))
+  result <- POST(url,
+                 body = fd,
+                 encode = "form")
 
-  df <- rvest::html_table(rvest::html_nodes(poll_table, "table")[[1]],
+  if (http_error(result))
+    stop("The request to <%s> failed [%s]",
+         url,
+         status_code(result), call. = FALSE)
+  if (http_type(result) != "text/html")
+    stop(paste0(url, " did not return text/html", call. = FALSE))
+
+  poll_table <- read_html(content(result, "text"))
+
+  df <- html_table(html_nodes(poll_table, "table")[[1]],
                           header = TRUE)
   df
 }
@@ -165,24 +174,24 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
                    "`suppressWarnings` instead."),
             call. = FALSE)
   if (missing(pollutant))
-    stop("You need to specify a pollutant")
+    stop("You need to specify a pollutant", call. = FALSE)
   if (missing(zone))
-    stop("You need to specify a zona")
+    stop("You need to specify a zona", call. = FALSE)
   if (missing(criterion))
-    stop("You need to specify a start date")
+    stop("You need to specify a start date", call. = FALSE)
   if (missing(end_date))
-    stop("You need to specify an end_date (YYYY-MM-DD)")
+    stop("You need to specify an end_date (YYYY-MM-DD)", call. = FALSE)
   if (!is.Date(end_date))
-    stop("end_ate should be a date in YYYY-MM-DD format")
+    stop("end_ate should be a date in YYYY-MM-DD format", call. = FALSE)
   if (missing(start_date))
-    stop("You need to specify a start_date (YYYY-MM-DD)")
+    stop("You need to specify a start_date (YYYY-MM-DD)", call. = FALSE)
   if (!is.Date(start_date))
-    stop("start_date should be a string in YYYY-MM-DD format")
+    stop("start_date should be a string in YYYY-MM-DD format", call. = FALSE)
   if (start_date < "2008-01-01")
     stop(paste0("start_date should be after 2008-01-01, but you can visit",
                 " http://www.aire.cdmx.gob.mx/",
                 "default.php?opc=%27aKBhnmI=%27&opcion=aw==",
-                " to download data going back to 1992"))
+                " to download data going back to 1992"), call. = FALSE)
 
   # standarize on uppercase since the station api expects upper, but
   # zone api expects lower
@@ -191,16 +200,17 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
     if (!(identical("O3", pollutant[i]) || identical("NO2", pollutant[i]) ||
           identical("SO2", pollutant[i]) || identical("CO", pollutant[i]) ||
           identical("PM10", pollutant[i]) || identical("TC", pollutant[i])))
-      stop("Invalid pollutant value")
+      stop("Invalid pollutant value", call. = FALSE)
   pollutant <- unique(pollutant)
   for (i in seq_len(length(zone)))
     if (!(identical("NO", zone[i]) || identical("NE", zone[i]) ||
           identical("CE", zone[i]) || identical("SO", zone[i]) ||
           identical("SE", zone[i]) || identical("TZ", zone[i]) ))
-      stop("zone should be one of 'NO', 'NE', 'CE', 'SO', 'SE', or 'TZ'")
+      stop("zone should be one of 'NO', 'NE', 'CE', 'SO', 'SE', or 'TZ'",
+           call. = FALSE)
   zone <- unique(zone)
   if (!(identical("HORARIOS", criterion) || identical("MAXIMOS", criterion)))
-      stop("criterion should be 'HORARIOS' or 'MAXIMOS'")
+      stop("criterion should be 'HORARIOS' or 'MAXIMOS'", call. = FALSE)
   # the API expects lowercase letters
   criterion <- tolower(criterion)
 

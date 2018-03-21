@@ -35,3 +35,42 @@ round_away_from_zero <- function(r) {
   z <- trunc(z + 0.5)
   z * posneg
 }
+
+#' Hack to download 2016 WSP HORARIO data since the csv files were converted
+#' from mph to m/s (when the original data were already in m/s)
+#'
+#'
+#' @return data.frame
+#' @export
+#' @importFrom stringr str_extract
+#' @importFrom readxl read_excel
+#' @importFrom tidyr gather
+#' @importFrom utils download.file unzip
+.get_archive_wsp_2016 <- function() {
+  download_loc <- paste0("http://148.243.232.112:8080/opendata/excel/",
+                         "REDMET/16REDMET.zip")
+
+  # unzip
+  tmpdir <- tempdir()
+  file <- basename(download_loc)
+  download.file(download_loc, file.path(tmpdir, file), quiet = TRUE)
+  # get the contents of the archive before unziping
+  xls_files <- unzip(file.path(tmpdir, file), exdir = tmpdir,
+                     list = TRUE)[, "Name"]
+  if (!length(xls_files)) {
+    stop("Zip file is empty")
+  }
+
+  unzip(file.path(tmpdir, file), exdir = tmpdir)
+  df <- read_excel(file.path(tmpdir,
+                             xls_files[which(xls_files == "2016WSP.xls")]),
+                   na = c("-99", ""))
+  # Clean the data
+  names(df)[1] <- "date"
+  names(df)[2] <- "hour"
+  df <- gather(df, station_code, value, -date, -hour)
+  df$pollutant <- "WSP"
+  df$unit <- "m/s"
+  df <- df[, c("date", "hour", "station_code", "pollutant", "unit", "value")]
+  as.data.frame(df)
+}
