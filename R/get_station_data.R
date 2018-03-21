@@ -151,8 +151,11 @@ recode_pollutant <- function(pollutant) {
   if (criterion == "HORARIOS") {
     names(df)[2] <- "hour"
   }
-  # The website sometimes messes up and changes the station_code of the
-  # Montecillo (Texcoco) station to CHA instead of MON
+  # En 2011 se realizó un rediseño al Sistema de Monitoreo Atmosférico (SIMAT) en el
+  # cual se modificó la nomenclatura de la estación Chapingo (CHA) y a partir de ese año se
+  # denomina Montecillo (MON). Si deseas mas información al respecto lo puedes consultar
+  # en la siguiente liga de internet:
+  # http://www.aire.cdmx.gob.mx/descargas/publicaciones/flippingbook/informe_anual_calidad_aire_2011/#p=1.
   if ("CHA" %in% names(df)) {
     if (!"MON" %in% names(df)) {
       names(df)[which(names(df) == "CHA")] <- "MON"
