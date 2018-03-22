@@ -8,14 +8,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-```{r}
+```{r packages, message=FALSE}
 ## Auto-install required R packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(aire.zmvm, dplyr, ggplot2, lubridate, viridis, scales)
 ```
 
-```{r}
-df <- get_radiacion(type = "UVA", 2017)
+```{r plot,fig.width=11, fig.height=6, warning=FALSE}
+df <- download_radiation(type = "UVA", 2017)
 df$mxc_time <- format(as.POSIXct(paste0(df$date, " ", df$hour, ":00"),
                                  tz = "Etc/GMT+6"),
                       tz = "America/Mexico_City")
@@ -36,10 +36,11 @@ ggplot(filter(df), aes(date, hour)) +
   geom_tile(aes(fill = max)) + 
   scale_fill_viridis(expression(mW/cm^{2}), option = "A") +
   scale_x_date(labels = date_format("%b")) +
-  scale_y_discrete(breaks = c(6, 12, 18, 0), 
-                   labels = c("6AM", "12PM",  "6PM", "12AM")) +
+  scale_y_discrete(breaks = c(7, 13, 18, 0), 
+                   labels = c("7AM", "1PM",  "7PM", "12AM")) +
   ggtitle("Maximum Hourly UVA Index in Mexico City (2017)",
           subtitle = "Hours are in local Mexico City time which includes daylight saving time\nSource: SIMAT") +
-  theme_bw()
+  theme_bw() +
+  theme_minimal()
 
 ```

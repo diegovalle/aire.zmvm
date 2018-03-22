@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Rainfall Patterns"
 output: github_document
 ---
 
@@ -7,28 +7,36 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## GitHub Documents
+### Load packages
 
-```{r}
+```{r packages, warning=FALSE, message=FALSE}
 ## Auto-install required R packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(aire.zmvm, dplyr, ggplot2, lubridate, readr, stringr, mgcv)
 ```
 
-```{r}
+### Download the data
 
-df <- get_redda(deposition = "HUMEDO", type = "CONCENTRACION") %>%
+```{r getdata}
+
+df <- download_deposition(deposition = "HUMEDO", type = "CONCENTRACION") %>%
   filter(pollutant == "PP")
 
 # When does the SIMAT start recording rainfall each year?
-df %>% 
-  group_by(year(date)) %>%
-  summarise(min = min(date))
+knitr::kable(df %>% 
+        group_by(year(date)) %>%
+        summarise(min = min(date)))
+```
 
-# starting dates before 2003 are different
+### Model with a GAM
+
+```{r gam}
+# rainfall is measured around the begginig of may starting in May 2003
 df <- df %>% filter(year(df$date) >= 2003)
 df$week <- week(df$date)
 df$year <- year(df$date)
+
+# no measures of rainfall outside the rainy season, so set them to zero
 df <- full_join(df,
           data.frame(
             year = year(seq(as.Date("2003-01-01"), 
@@ -43,21 +51,20 @@ df <- full_join(df,
 df$value[is.na(df$value)] <- 0
 
 df$date <- as.Date(str_c(df$year, "-", df$week,"-",1), format = "%Y-%U-%u")
-#df$num <- 1:nrow(df)
-# df$year <- year(df$date)
-# df$yday <- yday(df$date)
-# df$month <- month(df$date)
-# df$value <- log1p(df$value)
-
 #fit <- gam(value ~ te(as.numeric(date), week, bs = c("tp", "cc"), k = c(10, 52)),
 #           data = df, family = nb())
 #plot(fit, pers = TRUE)
-fit2 <- gam(value ~ s(as.numeric(date)) + s(week), data = df, family = tw())
+fit2 <- gam(value ~ s(as.numeric(date)) + s(week), data = df, family = nb())
 
-summary(fit)
+summary(fit2)
 df$pred <- predict(fit2, newdata = df, type = "response")
 
+```
 
+
+### Plots
+
+```{r plots, warning=FALSE}
 ggplot(df, aes(date, value)) +
   geom_point(alpha = .05) +
   geom_smooth(method = 'gam', formula = y ~ s(x, k = 53),
