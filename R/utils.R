@@ -36,6 +36,84 @@ round_away_from_zero <- function(r) {
   z * posneg
 }
 
+#' Title
+#'
+#' @param code
+#'
+#' @return data.frame
+#' @export
+#' @importFrom dplyr recode
+.recode_pollutant <- function(pollutant) {
+  recode(pollutant,
+         "pm2" = "PM25",
+         "so2" = "SO2",
+         "co" = "CO",
+         "nox" = "NOX",
+         "no2" = "NO2",
+         "no" = "NO",
+         "o3" = "O3",
+         "pm10" = "PM10",
+         "pm25" = "PM25",
+         "wsp" = "WSP",
+         "wdr" = "WDR",
+         "tmp" = "TMP",
+         "rh" = "RH",
+         "PM2.5" = "PM25")
+}
+
+#' Title
+#'
+#' @param code
+#'
+#' @return data.frame
+#' @export
+#' @importFrom dplyr recode
+.recode_unit_code <- function(code) {
+  recode(code,
+         `1`  =	"ppb",
+         `2`  =	"\u00b5g/m\u00b3", # µg/m³",
+         `3`  =	"m/s",
+         `4`  =	"\u00b0", # "°",
+         `5`  =	"\u00b0C", # "°C",
+         `6`  =	"%",
+         `7`  =	"W/m\u00b2", # "W/m²",
+         `8`  =	"\u00b5mol/m\u00b2/s", # "µmol/m²/s",
+         `9`  =	"mmHg",
+         `10` =	"pH",
+         `11` =	"mm",
+         `12` =	"\u00b5S/cm", # "µS/cm",
+         `13` =	"mg/L",
+         `14` =	"mg/m\u00b2", # "mg/m²",
+         `15` =	"ppm",
+         `16` =	"MED/h",
+         `17` =	"mW/cm\u00b2" # mW/cm²
+  )
+}
+
+#' Title
+#'
+#' @param code
+#'
+#' @return data.frame
+#' @export
+#' @importFrom dplyr recode
+.recode_unit <- function(pollutant) {
+  recode(pollutant,
+         "pm2" = "\u00B5g/m\u00B3",
+         "so2" = "ppb",
+         "co" = "ppm",
+         "nox" = "ppb",
+         "no2" = "ppb",
+         "no" = "ppb",
+         "o3" = "ppb",
+         "pm10" = "\u00B5g/m\u00B3",
+         "pm25" = "\u00B5g/m\u00B3",
+         "wsp" = "m/s",
+         "wdr" = "\u00B0",
+         "tmp" = "\u00B0C",
+         "rh" = "%")
+}
+
 #' Hack to download 2016 WSP HORARIO data since the csv files were converted
 #' from mph to m/s (when the original data were already in m/s)
 #'

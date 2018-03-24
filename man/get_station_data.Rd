@@ -50,7 +50,8 @@ server at
 or for earlier years use the archive files available from
 \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}{Contaminante}, or
 \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI='&opcion=Zw==}{Meteorología} for
-meteorological data.
+meteorological data. There's a mistake in the 2016 wind speed data so for this year and
+only this year the alternative \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBi'}{Excel} file was used.
 }
 \details{
 Temperature (TMP) archive values are correct to one decimal place, but the

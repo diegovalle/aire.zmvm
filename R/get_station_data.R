@@ -1,37 +1,3 @@
-
-
-recode_unit <- function(pollutant) {
-  str_replace_all(pollutant, c("pm2" = "\u00B5g/m\u00B3",
-                               "so2" = "ppb",
-                               "co" = "ppm",
-                               "nox" = "ppb",
-                               "no2" = "ppb",
-                               "no" = "ppb",
-                               "o3" = "ppb",
-                               "pm10" = "\u00B5g/m\u00B3",
-                               "pm25" = "\u00B5g/m\u00B3",
-                               "wsp" = "m/s",
-                               "wdr" = "\u00B0",
-                               "tmp" = "\u00B0C",
-                               "rh" = "%"))
-}
-
-recode_pollutant <- function(pollutant) {
-  str_replace_all(pollutant, c("pm2" = "PM25",
-                               "so2" = "SO2",
-                               "co" = "CO",
-                               "nox" = "NOX",
-                               "no2" = "NO2",
-                               "no" = "NO",
-                               "o3" = "O3",
-                               "pm10" = "PM10",
-                               "pm25" = "PM25",
-                               "wsp" = "WSP",
-                               "wdr" = "WDR",
-                               "tmp" = "TMP",
-                               "rh" = "RH",
-                               "PM2.5" = "PM25"))
-}
 #' Title
 #'
 #' @param year year to download
@@ -98,16 +64,8 @@ recode_pollutant <- function(pollutant) {
   df$value <- as.numeric(df$value)
   df$date <- as.Date(df$date)
 
-  df$unit <- str_replace_all(as.character(df$unit),
-                             c("15" = "ppm",
-                               "1" = "ppb",
-                               "2" = "\u00B5g/m\u00B3",
-                               "3" = "m/s",
-                               "4" = "\u00B0",
-                               "5" = "\u00B0C",
-                               "6" = "%"
-                                 ))
-  df$pollutant <- recode_pollutant(upollutant)
+  df$unit <- .recode_unit_code(df$unit)
+  df$pollutant <- .recode_pollutant(upollutant)
 
   df <- df[, c("date", "hour", "station_code", "pollutant", "unit", "value")]
   as.data.frame(df)
@@ -163,10 +121,10 @@ recode_pollutant <- function(pollutant) {
   if (criterion == "HORARIOS") {
     names(df)[2] <- "hour"
   }
-  # En 2011 se realizó un rediseño al Sistema de Monitoreo Atmosférico (SIMAT) en el
-  # cual se modificó la nomenclatura de la estación Chapingo (CHA) y a partir de ese año se
-  # denomina Montecillo (MON). Si deseas mas información al respecto lo puedes consultar
-  # en la siguiente liga de internet:
+  # En 2011 se realizó un rediseño al Sistema de Monitoreo Atmosférico (SIMAT)
+  # en el cual se modificó la nomenclatura de la estación Chapingo (CHA) y a
+  # partir de ese año se denomina Montecillo (MON). Si deseas mas información al
+  # respecto lo puedes consultar en la siguiente liga de internet:
   # http://www.aire.cdmx.gob.mx/descargas/publicaciones/flippingbook/informe_anual_calidad_aire_2011/#p=1.
   if ("CHA" %in% names(df)) {
     if (!"MON" %in% names(df)) {
@@ -186,8 +144,8 @@ recode_pollutant <- function(pollutant) {
   }
   df$station_code <- as.character(df$station_code)
 
-  df$unit <- recode_unit(pollutant)
-  df$pollutant <- recode_pollutant(pollutant)
+  df$unit <- .recode_unit(pollutant)
+  df$pollutant <- .recode_pollutant(pollutant)
 
   if (criterion != "HORARIOS") {
     df <- df[, c("date", "station_code", "pollutant", "unit", "value")]
@@ -197,8 +155,6 @@ recode_pollutant <- function(pollutant) {
                       "05", "06", "07", "08",
                       "09", "10", "11", "12")) )
       df <- dplyr::filter(df, month(date) == as.numeric(month))
-    # convert from mph to m/s
-    #df$value <- round(df$value * 0.44704, 1)
   } else {
     df <- df[, c("date", "hour", "station_code", "pollutant", "unit", "value")]
   }
@@ -284,7 +240,8 @@ download_horario_by_month <- function(pollutant, year){
 #' or for earlier years use the archive files available from
 #' \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}{Contaminante}, or
 #' \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI='&opcion=Zw==}{Meteorología} for
-#' meteorological data.
+#' meteorological data. There's a mistake in the 2016 wind speed data so for this year and
+#' only this year the alternative \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBi'}{Excel} file was used.
 #'
 #' Temperature (TMP) archive values are correct to one decimal place, but the
 #' most recent data is only available rounded to the nearest integer.
@@ -348,15 +305,15 @@ download_horario_by_month <- function(pollutant, year){
 #' }
 get_station_data <- function(criterion, pollutant, year,
                              progress = interactive()) {
-  if (!(identical("HORARIOS", criterion) || identical("MAXIMOS", criterion) |
+  if (!(identical("HORARIOS", criterion) || identical("MAXIMOS", criterion) ||
         identical("MINIMOS", criterion)))
     stop("criterion should be 'HORARIOS', 'MINIMOS', or 'MAXIMOS'",
          call. = FALSE)
-  if (!(identical("O3", pollutant) || identical("NO2", pollutant) |
-        identical("SO2", pollutant) || identical("CO", pollutant) |
-        identical("PM10", pollutant) || identical("WSP", pollutant) |
-        identical("WDR", pollutant) || identical("TMP", pollutant) |
-        identical("NOX", pollutant) || identical("NO", pollutant) |
+  if (!(identical("O3", pollutant) || identical("NO2", pollutant) ||
+        identical("SO2", pollutant) || identical("CO", pollutant) ||
+        identical("PM10", pollutant) || identical("WSP", pollutant) ||
+        identical("WDR", pollutant) || identical("TMP", pollutant) ||
+        identical("NOX", pollutant) || identical("NO", pollutant) ||
         identical("PM25", pollutant) || identical("RH", pollutant)))
     stop("Invalid pollutant value", call. = FALSE)
   ## Check the year argument is an integer or vector of integers
@@ -452,7 +409,7 @@ get_station_data <- function(criterion, pollutant, year,
 get_station_month_data <- function(criterion, pollutant, year, month) {
   if ( missing(pollutant) || missing(year) || missing(month))
     stop("arguments missing", call. = FALSE)
-  if (!(identical("HORARIOS", criterion) || identical("MAXIMOS", criterion) |
+  if (!(identical("HORARIOS", criterion) || identical("MAXIMOS", criterion) ||
         identical("MINIMOS", criterion)))
     stop("criterion should be 'HORARIOS', 'MINIMOS', or 'MAXIMOS'",
          call. = FALSE)
@@ -482,17 +439,28 @@ get_station_month_data <- function(criterion, pollutant, year, month) {
             " one decimal point using the `get_station_data` function. ",
             "See the documentation for more information."), call. = FALSE)
 
-  if (2016 %in% year & pollutant == "WSP")
+  if (2016 %in% year && pollutant == "WSP")
     stop(paste0("There's an error in the 2016 WSP data. It seems ",
                    "someone incorrectly ",
                    "converted the data from mph to m/s. ",
                    "Try using the function `get_station_data`"), call. = FALSE)
-  if (year %in% c(2005, 2006, 2007) & pollutant == "WSP")
-    warning(paste0("Some stations are missing from wind speed data ",
+  if (year %in% c(2005, 2006, 2007))
+    warning(paste0("Some stations are missing from the data ",
                    "for the years of ",
                    "2005, 2006, and 2007. Try using the function ",
-                   "`get_station_data` to get data for all stations."))
-  if (year %in% c(2012, 2013, 2014, 2015, 2017) & pollutant == "WSP" &
+                   "`get_station_data` to get data for all stations."),
+            call. = FALSE)
+  ## More errors! When requesting HORARIOS
+  #RH 2017
+  #PM25 2008, 2009, 2010
+  #WDR 2017
+  if ( (year == 2017 && pollutant == "RH") ||
+       (year %in% c(2008, 2009, 2010) && pollutant == "PM25") ||
+       (year == 2017 && pollutant == "WDR"))
+    warning(paste0("There are some missing stations in the monthly datasets. ",
+                   "Please use the ",
+                   "`get_station_data` function to download the data"))
+  if (year %in% c(2012, 2013, 2014, 2015, 2017, 2018) && pollutant == "WSP" &&
       criterion != "HORARIOS")
     stop(paste0("There's an error in the WSP data. It seems ",
                    "someone incorrectly ",
