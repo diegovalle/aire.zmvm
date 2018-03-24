@@ -35,3 +35,120 @@ round_away_from_zero <- function(r) {
   z <- trunc(z + 0.5)
   z * posneg
 }
+
+#' Title
+#'
+#' @param code
+#'
+#' @return data.frame
+#' @export
+#' @importFrom dplyr recode
+.recode_pollutant <- function(pollutant) {
+  recode(pollutant,
+         "pm2" = "PM25",
+         "so2" = "SO2",
+         "co" = "CO",
+         "nox" = "NOX",
+         "no2" = "NO2",
+         "no" = "NO",
+         "o3" = "O3",
+         "pm10" = "PM10",
+         "pm25" = "PM25",
+         "wsp" = "WSP",
+         "wdr" = "WDR",
+         "tmp" = "TMP",
+         "rh" = "RH",
+         "PM2.5" = "PM25")
+}
+
+#' Title
+#'
+#' @param code
+#'
+#' @return data.frame
+#' @export
+#' @importFrom dplyr recode
+.recode_unit_code <- function(code) {
+  recode(code,
+         `1`  =	"ppb",
+         `2`  =	"\u00b5g/m\u00b3", # µg/m³",
+         `3`  =	"m/s",
+         `4`  =	"\u00b0", # "°",
+         `5`  =	"\u00b0C", # "°C",
+         `6`  =	"%",
+         `7`  =	"W/m\u00b2", # "W/m²",
+         `8`  =	"\u00b5mol/m\u00b2/s", # "µmol/m²/s",
+         `9`  =	"mmHg",
+         `10` =	"pH",
+         `11` =	"mm",
+         `12` =	"\u00b5S/cm", # "µS/cm",
+         `13` =	"mg/L",
+         `14` =	"mg/m\u00b2", # "mg/m²",
+         `15` =	"ppm",
+         `16` =	"MED/h",
+         `17` =	"mW/cm\u00b2" # mW/cm²
+  )
+}
+
+#' Title
+#'
+#' @param code
+#'
+#' @return data.frame
+#' @export
+#' @importFrom dplyr recode
+.recode_unit <- function(pollutant) {
+  recode(pollutant,
+         "pm2" = "\u00B5g/m\u00B3",
+         "so2" = "ppb",
+         "co" = "ppm",
+         "nox" = "ppb",
+         "no2" = "ppb",
+         "no" = "ppb",
+         "o3" = "ppb",
+         "pm10" = "\u00B5g/m\u00B3",
+         "pm25" = "\u00B5g/m\u00B3",
+         "wsp" = "m/s",
+         "wdr" = "\u00B0",
+         "tmp" = "\u00B0C",
+         "rh" = "%")
+}
+
+#' Hack to download 2016 WSP HORARIO data since the csv files were converted
+#' from mph to m/s (when the original data were already in m/s)
+#'
+#'
+#' @return data.frame
+#' @export
+#' @importFrom stringr str_extract
+#' @importFrom readxl read_excel
+#' @importFrom tidyr gather
+#' @importFrom utils download.file unzip
+.get_archive_wsp_2016 <- function() {
+  download_loc <- paste0("http://148.243.232.112:8080/opendata/excel/",
+                         "REDMET/16REDMET.zip")
+
+  # unzip
+  tmpdir <- tempdir()
+  file <- basename(download_loc)
+  download.file(download_loc, file.path(tmpdir, file), quiet = TRUE)
+  # get the contents of the archive before unziping
+  xls_files <- unzip(file.path(tmpdir, file), exdir = tmpdir,
+                     list = TRUE)[, "Name"]
+  if (!length(xls_files)) {
+    stop("Zip file is empty")
+  }
+
+  unzip(file.path(tmpdir, file), exdir = tmpdir)
+  df <- read_excel(file.path(tmpdir,
+                             xls_files[which(xls_files == "2016WSP.xls")]),
+                   na = c("-99", ""))
+  # Clean the data
+  names(df)[1] <- "date"
+  names(df)[2] <- "hour"
+  df <- gather(df, station_code, value, -date, -hour)
+  df$pollutant <- "WSP"
+  df$unit <- "m/s"
+  df <- df[, c("date", "hour", "station_code", "pollutant", "unit", "value")]
+  as.data.frame(df)
+}

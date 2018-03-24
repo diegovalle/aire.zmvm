@@ -57,7 +57,15 @@
 get_latest_imeca <- function() {
   url <- "http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php"
 
-  poll_table <- read_html(httr::GET(url,  httr::timeout(120)))
+  result <- GET(url,  httr::timeout(120))
+  if (http_error(result))
+    stop("The request to <%s> failed [%s]",
+         url,
+         status_code(result), call. = FALSE)
+  if (http_type(result) != "text/html")
+    stop(paste0(url, " did not return text/html", call. = FALSE))
+
+  poll_table <- read_html(result)
   time <- .convert_time(html_text(html_nodes(poll_table, "div#textohora")))
 
   df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE,

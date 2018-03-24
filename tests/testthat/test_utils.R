@@ -42,3 +42,21 @@ test_that("round_away_from_zero", {
   expect_equal(round_away_from_zero(2.4), 2)
   expect_equal(round_away_from_zero(3.6), 4)
 })
+
+test_that("recode pollutants", {
+  expect_equal(.recode_pollutant("pm2"), "PM25")
+  expect_equal(.recode_pollutant("no"), "NO")
+  expect_equal(.recode_pollutant("PM2.5"), "PM25")
+})
+
+test_that("recode units", {
+  expect_equal(.recode_unit_code(c(3, 11)), c("m/s", "mm"))
+  expect_equal(.recode_unit_code(8), "\u00b5mol/m\u00b2/s")
+  expect_equal(.recode_unit_code(12), "\u00b5S/cm")
+})
+
+test_that("recode unit codes", {
+  expect_equal(.recode_unit("pm2"), "\u00B5g/m\u00B3")
+  expect_equal(.recode_unit("nox"), "ppb")
+  expect_equal(.recode_unit("pm25"), "\u00B5g/m\u00B3")
+})
