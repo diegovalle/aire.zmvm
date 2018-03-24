@@ -1,4 +1,4 @@
-# aire.zmvm 0.5.0.9000
+# aire.zmvm 0.6
 
 ## New features
 
@@ -6,6 +6,7 @@
 * `get_station_month_data` replaces `get_station_data_monthly`. Allows for downloading daily
 maximums and daily minimums
 * `get_station_data` now can download TMP, WSP, WDR and RH data back to 1986
+* `zones` data.frame with the municipios belonging to each geographic zone of Mexico city
 
 ## Bug fixes and improvements
 
@@ -15,6 +16,7 @@ maximums and daily minimums
 * Messages about changes in the way the IMECA is computed are now shown with `message()` instead of `warning()`
 * `get_station_data` no longer gives a warning when downloading data from 2012 to 2015
 * `get_station_data` progress bar now works correctly
+* `get_station_month_data` warnings when data doesn't match the archives
 
 ## Deprecated and Defunct
 * `get_latest_data` is deprecated. You should instead use `get_latest_imeca`. 
