@@ -1,21 +1,20 @@
 Mexico City Air Quality Data
 ================
 Diego Valle-Jones
-March 14, 2018
+March 25, 2018
 
 -   [What does it do?](#what-does-it-do)
 -   [Installation](#installation)
 -   [Core Functions](#core-functions)
 -   [Quick Example](#quick-example)
 
-[![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.svg?branch=master)](https://travis-ci.org/diegovalle/aire.zmvm) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/c7kg6o68exx0lirg?svg=true)](https://ci.appveyor.com/project/diegovalle/aire-zmvm/branch/master) [![Coverage Status](https://img.shields.io/codecov/c/github/diegovalle/aire.zmvm/master.svg)](https://codecov.io/github/diegovalle/aire.zmvm?branch=master)
+[![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.svg?branch=master)](https://travis-ci.org/diegovalle/aire.zmvm) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/c7kg6o68exx0lirg?svg=true)](https://ci.appveyor.com/project/diegovalle/aire-zmvm/branch/master) [![Coverage Status](https://img.shields.io/codecov/c/github/diegovalle/aire.zmvm/master.svg)](https://codecov.io/github/diegovalle/aire.zmvm?branch=master) ![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version-ago/aire.zmvm?color=green)
 
-|              |                                                                                       |
-|--------------|---------------------------------------------------------------------------------------|
-| **Author:**  | Diego Valle-Jones                                                                     |
-| **License:** | [BSD\_3](https://opensource.org/licenses/BSD-3-Clause)                                |
-| **Status:**  | ![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version-ago/aire.zmvm?color=green) |
-| **Website:** | <https://hoyodesmog.diegovalle.net/aire.zmvm.html>                                    |
+|              |                                                        |
+|--------------|--------------------------------------------------------|
+| **Author:**  | Diego Valle-Jones                                      |
+| **License:** | [BSD\_3](https://opensource.org/licenses/BSD-3-Clause) |
+| **Website:** | <https://hoyodesmog.diegovalle.net/aire.zmvm/>         |
 
 What does it do?
 ----------------
