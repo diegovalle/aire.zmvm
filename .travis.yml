@@ -1,10 +1,14 @@
 # Sample .travis.yml for R projects
 
 language: r
+cache: packages
 warnings_are_errors: true
 
 env:
   - NOT_CRAN=true
+
+r_packages:
+  - devtools
 
 matrix:
   include:
