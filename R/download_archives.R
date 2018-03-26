@@ -1,112 +1,3 @@
-#' Title
-#'
-#' @param code
-#'
-#' @return data.frame
-#' @export
-#' @importFrom dplyr recode
-
-.recode_pollutant <- function(pollutant) {
-  recode(pollutant,
-         "pm2" = "PM25",
-         "so2" = "SO2",
-         "co" = "CO",
-         "nox" = "NOX",
-         "no2" = "NO2",
-         "no" = "NO",
-         "o3" = "O3",
-         "pm10" = "PM10",
-         "pm25" = "PM25",
-         "wsp" = "WSP",
-         "wdr" = "WDR",
-         "tmp" = "TMP",
-         "rh" = "RH",
-         "PM2.5" = "PM25")
-}
-#' Title
-#'
-#' @param code
-#'
-#' @return data.frame
-#' @export
-#' @importFrom dplyr recode
-.recode_unit_code <- function(code) {
-  recode(code,
-         `1`  =	"ppb",
-         `2`  =	"\u00b5g/m\u00b3", # µg/m³",
-         `3`  =	"m/s",
-         `4`  =	"\u00b0", # "°",
-         `5`  =	"\u00b0C", # "°C",
-         `6`  =	"%",
-         `7`  =	"W/m\u00b2", # "W/m²",
-         `8`  =	"\u00b5mol/m\u00b2/s", # "µmol/m²/s",
-         `9`  =	"mmHg",
-         `10` =	"pH",
-         `11` =	"mm",
-         `12` =	"\u00b5S/cm", # "µS/cm",
-         `13` =	"mg/L",
-         `14` =	"mg/m\u00b2", # "mg/m²",
-         `15` =	"ppm",
-         `16` =	"MED/h",
-         `17` =	"mW/cm\u00b2" # mW/cm²
-  )
-}
-
-#' Title
-#'
-#' @param red
-#'
-#' @return data.frame
-#' @export
-#' @importFrom stringr str_extract
-#' @importFrom readxl read_excel
-#' @importFrom tidyr gather
-#' @importFrom utils download.file unzip
-.get_archive_wsp_2016 <- function() {
-  # RADIACION <- "http://www.aire.cdmx.gob.mx/default.php?opc='aKBm'"
-  # fd <- list(
-  #   seluniano  = "16",
-  #   unibaja    = "Descargar archivo"
-  # )
-  # url <- "http://www.aire.cdmx.gob.mx/default.php?opc='aKBi'"
-  # result <- POST(url,
-  #                body = fd,
-  #                encode = "form")
-  # if (http_error(result))
-  #   stop("The request to <%s> failed [%s]",
-  #        url,
-  #        status_code(resp))
-  # if (http_type(result) != "text/html")
-  #   stop(paste0(url, " did not return text/html", call. = FALSE))
-  download_loc <- paste0("http://148.243.232.112:8080/opendata/excel/",
-                         "REDMET/16REDMET.zip")
-
-  # unzip
-  tmpdir <- tempdir()
-  file <- basename(url)
-  download.file(download_loc, file.path(tmpdir, file), quiet = TRUE)
-  # get the contents of the archive before unziping
-  xls_files <- unzip(file.path(tmpdir, file), exdir = tmpdir,
-                     list = TRUE)[, "Name"]
-  if (!length(xls_files)) {
-    stop("Zip file is empty")
-  }
-
-  unzip(file.path(tmpdir, file), exdir = tmpdir)
-  df <- read_excel(file.path(tmpdir,
-                                     xls_files[which(xls_files == "2016WSP.xls")]),
-                     na = c("-99", ""))
-  # Clean the data
-  names(df)[1] <- "date"
-  names(df)[2] <- "hour"
-  df <- gather(df, station_code, value, -date, -hour)
-  df$pollutant <- "WSP"
-  df$unit <- "m/s"
-  df <- df[, c("date", "hour", "station_code", "pollutant", "unit", "value")]
-  as.data.frame(df)
-}
-
-
 #' Download Pollution Archives
 #'
 #' Download the pollution files available at
@@ -439,15 +330,26 @@ download_24hr_average <- function(type, year, progress = interactive()) {
     else if (type == "SO2")
       base_url <- paste0("http://148.243.232.112:8080/opendata/",
                          "promedios_diarios/promedios_")
-    df <- read_csv(str_c(base_url, year, "_", tolower(type), ".csv"),
-                   skip = 8, progress = FALSE,
-                   col_types = list(
-                     `	date`     = col_character(),
-                     id_station   = col_character(),
-                     id_parameter = col_character(),
-                     value        = col_double(),
-                     unit         = col_integer()
-                   ))
+    if (year >= 2008)
+      df <- read_csv(str_c(base_url, year, "_", tolower(type), ".csv"),
+                     skip = 8, progress = FALSE,
+                     col_types = list(
+                       `	date`     = col_character(),
+                       id_station   = col_character(),
+                       id_parameter = col_character(),
+                       value        = col_double(),
+                       unit         = col_integer()
+                     ))
+    else
+      df <- read_csv(str_c(base_url, year, "_", tolower(type), ".csv"),
+                     skip = 8, progress = FALSE,
+                     col_types = list(
+                       date         = col_character(),
+                       id_station   = col_character(),
+                       id_parameter = col_character(),
+                       value        = col_double(),
+                       unit         = col_integer()
+                     ))
     .clean_archive(df, FALSE)
   }
   ## Check the year argument is an integer or vector of integers
@@ -513,7 +415,7 @@ download_pressure <- function(year, progress = interactive()) {
   for (i in seq_len(length(year)))
     if (is.integer2(year[i]) == FALSE)
       stop("year should be an integer in YYYY format")
-  if (min(year) <= 2009)
+  if (min(year) < 2009)
     stop("year must be equal or greater than 2009")
 
   if (identical(progress, TRUE) && length(year) > 1) {
