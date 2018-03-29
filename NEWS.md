@@ -1,4 +1,4 @@
-# aire.zmvm 0.6
+# aire.zmvm 0.6.0
 
 ## New features
 
