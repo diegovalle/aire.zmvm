@@ -38,6 +38,7 @@
 #' @importFrom httr POST http_error status_code http_type
 #'
 #' @examples
+#' \dontrun{
 #' ## There was an ozone pollution emergency on May 15, 2017
 #' df_o3 <- get_station_imeca("O3", "2017-05-15", show_messages = FALSE)
 #'
@@ -49,6 +50,7 @@
 #'                                     tz = "Etc/GMT+6"),
 #'                          tz = "America/Mexico_City")
 #' head(df_o3[order(-df_o3$value), ])
+#' }
 get_station_imeca <- function(pollutant, date,
                               show_messages = TRUE) {
   if (missing(date))
@@ -91,9 +93,9 @@ get_station_imeca <- function(pollutant, date,
          status_code(result), call. = FALSE)
   if (http_type(result) != "text/html")
     stop(paste0(url, " did not return text/html", call. = FALSE))
-  poll_table <- xml2::read_html(content(result, "text"))
+  poll_table <- read_html(content(result, "text"))
 
-  df <- rvest::html_table(rvest::html_nodes(poll_table, "table")[[1]],
+  df <- html_table(html_nodes(poll_table, "table")[[1]],
                           header = TRUE,
                           fill = TRUE)
   if (nrow(df) <= 1)

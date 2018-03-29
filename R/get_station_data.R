@@ -83,7 +83,7 @@
 #' @importFrom xml2 read_html
 #' @importFrom dplyr %>%
 #' @importFrom lubridate fast_strptime month
-#' @importFrom httr GET
+#' @importFrom httr GET timeout
 #' @importFrom tidyr gather
 #' @keywords internal
 #'

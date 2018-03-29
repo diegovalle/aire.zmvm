@@ -41,6 +41,7 @@ Ciudad de México). Thus, even if they are located inside a zone, they are not
 included in the pollution values for that zone.
 }
 \examples{
+\dontrun{
 ## There was an ozone pollution emergency on May 15, 2017
 df_o3 <- get_station_imeca("O3", "2017-05-15", show_messages = FALSE)
 
@@ -52,6 +53,7 @@ df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date,
                                     tz = "Etc/GMT+6"),
                          tz = "America/Mexico_City")
 head(df_o3[order(-df_o3$value), ])
+}
 }
 \seealso{
 \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmc='}{Índice de calidad del aire por estaciones}
