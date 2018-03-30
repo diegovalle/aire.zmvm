@@ -11,7 +11,7 @@ r_packages:
   - devtools
 
 matrix:
-  include:   
+  include:
     - os: linux
       dist: trusty
       sudo: false
@@ -31,6 +31,7 @@ branches:
   only:
     - master
     - develop
+    - v0.7.0
 
 after_success:
   - Rscript -e 'covr::codecov()'
