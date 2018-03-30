@@ -12,13 +12,11 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(fig.width = 7, 
-                      fig.height = 7,
+knitr::opts_chunk$set(fig.dim=c(4.5, 4.5),
                       fig.align = 'center',
-                      out.width='95%', 
-                      dpi = 200,
                       collapse = TRUE,
-                      comment = "#>"
+                      comment = "#>",
+                      out.width = '100%'
 )
 ```
 
@@ -117,7 +115,7 @@ create_grid <- function(station_vec, pixels = 20) {
 # that weren't reporting data
 reporting_stations <- unique(na.omit(do.call(rbind, ldf))$station_code)
 # 50x50 grid covering Mexico City
-grid <- create_grid(reporting_stations, 50)
+grid <- create_grid(reporting_stations, 100)
 
 plot(grid, main = "Grid covering Mexico City and Locations of\nPollution Measuring Stations (red)")
 # Plot the locations of the stations

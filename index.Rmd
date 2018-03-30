@@ -7,7 +7,8 @@ output: github_document
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  out.width = '100%'
 )
 ```
 
@@ -45,7 +46,7 @@ Note that the version on CRAN might not reflect the most recent changes made to 
 
 Create a time series of ozone levels in ppb from 2009 to 2018 and highlight the phase I smog alerts.
 
-```{r, fig.show='hold', fig.width=11, warning=FALSE, message=FALSE}
+```{r load, warning=FALSE, message=FALSE}
 ## Auto-install required R packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(aire.zmvm, dplyr, ggplot2, ggseas)
@@ -91,7 +92,7 @@ Here's what the data we just downloaded looks like:
 knitr::kable(head(o3))
 ```
 
-```{r contingencias,fig.width=11, fig.height=6, warning=FALSE}
+```{r contingencias, fig.dim=c(11,6), warning=FALSE}
 ggplot(max_daily_df,
        aes(x = x, y = y)) + 
   geom_line(colour = "grey75", alpha = .5) +

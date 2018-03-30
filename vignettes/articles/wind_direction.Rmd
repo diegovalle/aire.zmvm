@@ -24,12 +24,12 @@ pacman::p_load(aire.zmvm, dplyr, ggplot2, lubridate, stringr, sp, mapproj,
 wsp <- get_station_month_data(criterion = "HORARIOS",
                               pollutant = "WSP",
                               2018, 3)%>%
-  filter(date == "2018-03-09" & hour == 20) %>%
+  filter(date == "2018-03-28" & hour == 19) %>%
   na.omit()
 wdr <- get_station_month_data(criterion = "HORARIOS", 
                         pollutant = "WDR", 
                         year = 2018, 3) %>%
-  filter(date == "2018-03-09" & hour == 20) %>%
+  filter(date == "2018-03-28" & hour == 19)  %>%
   na.omit()
 
 ## Location of sensors. First column x/longitude, second y/latitude
@@ -71,7 +71,7 @@ qmplot(lon, lat, data = df, geom = "blank",
   geom_point(size = .1) +
   # The wind direction compass starts where the 90 degree mark is located
   geom_spoke(aes(angle = ((270 -  pred) %% 360) * pi / 180,
-                 radius = wsp * .006),
+                 radius = wsp * .003),
              arrow = arrow(length = unit(0.09, "cm"))) 
 
 ```
