@@ -12,38 +12,17 @@
 #'
 .download_old_station_data <- function(pollutant, year) {
   # Hack to download the 2016 WSP data
-  if (pollutant == "wsp" & year == 2016)
+  # cause it was converted to m/s twice
+  if (pollutant == "wsp" && year == 2016)
     return(.get_archive_wsp_2016())
   # End hack
   upollutant <- toupper(pollutant)
-  if (upollutant == "PM25")
-    upollutant <- "PM2.5"
-  base_url <- paste0("http://148.243.232.112:8080/",
-                     "opendata/anuales_horarios_gz/contaminantes_")
+
   if (upollutant %in% c("WSP", "WDR", "TMP", "RH"))
-    base_url <- paste0("http://148.243.232.112:8080/",
-                       "opendata/anuales_horarios_gz/meteorolog%C3%ADa_")
-  ## The files from 2012 onwards changed the name of the columns
-  ## cve_station and cve_parameter to id_station and id_parameter
-  if (year >= 2012)
-    df <- read_csv(str_c(base_url, year, ".csv.gz"),
-                   skip = 10, progress = FALSE, col_types = list(
-                     date = col_character(),
-                     id_station = col_character(),
-                     id_parameter = col_character(),
-                     value = col_double(),
-                     unit = col_integer()
-                   ))
+    df <- download_meteorological(year, FALSE)
   else
-    df <- read_csv(str_c(base_url, year, ".csv.gz"),
-                 skip = 10, progress = FALSE, col_types = list(
-                   date = col_character(),
-                   cve_station = col_character(),
-                   cve_parameter = col_character(),
-                   value = col_double(),
-                   unit = col_integer()
-                 ))
-  names(df) <- c("date", "station_code", "pollutant", "value", "unit")
+    df <- download_pollution(year, FALSE)
+
   if (!upollutant %in% unique(df$pollutant)) {
     warning(str_c("No data for '", upollutant, "' in the year of ", year))
     return(data.frame(date = as.Date(character()),
@@ -56,18 +35,6 @@
            )
   }
   df <- dplyr::filter(df, pollutant == upollutant)
-
-  df$hour <- as.numeric(str_sub(df$date, 12, 13))
-  df$date <- str_c(str_sub(df$date, 7, 10), "-",
-                   str_sub(df$date, 4, 5), "-",
-                   str_sub(df$date, 1, 2))
-  df$value <- as.numeric(df$value)
-  df$date <- as.Date(df$date)
-
-  df$unit <- .recode_unit_code(df$unit)
-  df$pollutant <- .recode_pollutant(upollutant)
-
-  df <- df[, c("date", "hour", "station_code", "pollutant", "unit", "value")]
   as.data.frame(df)
 }
 

@@ -1,0 +1,183 @@
+---
+title: "Introduction to the aire.zmvm package"
+author: "Diego Valle-Jones"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(fig.width = 7, 
+                      fig.height = 7,
+                      fig.align = 'center',
+                      out.width='95%', 
+                      dpi = 200,
+                      collapse = TRUE,
+                      comment = "#>"
+)
+```
+
+This document introduces you to tools for downloading data from each of the pollution, wind and temperature measuring stations in the Zona Metropolitana del Valle de México (greater Mexico City).
+
+## Core Functions
+
+The basic set of functions provided by the package:
+
+* ```get_station_data``` and ```get_station_month_data``` download pollution, wind and temperature data for each of the measuring stations in the original units (ppb, µg/m³, etc).
+* ```get_station_imeca``` download pollution values for each station in IMECAs
+* ```get_zone_imeca``` download pollution data in IMECAs for each of the 5 geographic zones of Mexico City 
+* ```get_latest_imeca``` download the latest pollution hourly maximums for each of the measuring stations.
+* ```idw360``` inverse distance weighting modified to work with degrees, useful for wind data
+
+Because of limitations with the SEDEMA website [http://www.aire.cdmx.gob.mx/](http://www.aire.cdmx.gob.mx/default.php) (where all data downloaded by the aire.zmvm comes from), options for each of the function aren't entirely consistent but hopefully the following table will make them clearer.
+
+| function                  | date range     | Units    | Wind / Tmp / RH | Earliest Date | Pollutants  | Includes All Stations | Criterion |
+|---------------------------|----------------|----------|------------------|------------|------------|-------|-------|
+| get_station_data          | years          | Original | Yes              | 1986       | SO2, CO, NO2, O3, PM10, PM25,  WSP, WDR, TMP, RH | Yes | hourly, daily&nbsp;maximum, daily&nbsp;minimum |
+| get_station_month_data  | 1&nbsp;month        | Original | Yes              | 2005‑01    | SO2, CO, NO2, O3, PM10, PM25,  WSP, WDR, TMP, RH | Yes | hourly, daily&nbsp;maximum, daily&nbsp;minimum |
+| get_station_imeca         | 1&nbsp;day          | IMECA    | No               | 2009‑01‑01 | SO2, CO, NO2, O3, PM10 | No | hourly |
+| get_zone_imeca            | 1 or more days | IMECA    | No               | 2008‑01‑01 | SO2, CO, NO2, O3, PM10 | Only zones | hourly, daily&nbsp;maximum |
+| get_latest_imeca          | 1&nbsp;hour         | IMECA    | No               | Latest only| Maximum value of SO2, CO, NO2, O3, PM10 | No |latest&nbsp;hourly |
+
+
+## Map of Pollution Levels
+
+Pollution is monitored by a series of stations located throughout the Mexico City Metro Area. Since there are different pollutants to monitor, each measured in different units, and each with different specified averaging periods, a common scale called [IMECA](https://en.wikipedia.org/wiki/%C3%8Dndice_Metropolitano_de_la_Calidad_del_Aire) was created to make them comparable. If 
+pollutants reach 151 IMECA points or more the Mexico City government can declare a phase I smog alert and order cars off the streets and place limits on polluting industries.
+
+On May 20, 2017 a phase I smog alert was declared. We'll show just how easy it is to make a map of pollution levels during the alert with this package. First we load the packages we need to run this vignette and download the pollution data:
+
+```{r, message = FALSE, warning=FALSE}
+library("aire.zmvm")
+library("lubridate")
+library("dplyr")
+library("ggplot2")
+library("ggmap")
+library("sp")
+library("gstat")
+
+# Download hourly data for all pollutants during February 20, 2018 
+# The maximum Ozone level was reached at 18:00 PM local time,
+# 17:00 with no daylight savings time
+ldf <- lapply(c("PM10", "O3", "SO2", "NO2", "CO"), 
+              function(x) get_station_imeca(x, "2017-05-20") %>% 
+                filter(hour == 17) )
+```
+
+
+Here's what the data we just downloaded looks like:
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(ldf[[2]][order(-ldf[[2]]$value), ], 10), row.names = FALSE)
+```
+
+You may have noticed that the code comments mention the local time as being 1 hour ahead
+of that returned by the function. That's because the hourly data returned by `get_station_imeca` comes in a format that is not affected by daylight savings time—i.e. 6 hours behind UTC (*Etc/GMT+6*). If, for example, you ever want to analyze pollution levels at peak commuting times, you'll want to convert the time to the local timezone of *America/Mexico_City*. You can use the following code to do the conversion:
+
+```{r}
+format(as.POSIXct("2017-05-20 17:00", tz = "Etc/GMT+6"), 
+       tz = "America/Mexico_City", 
+       usetz = TRUE)
+```
+
+The package also includes a data.frame named ```stations``` that includes the latitude and longitude of all pollution measuring stations. 
+
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(stations, 5))
+```
+
+We will use this data to create a grid covering Mexico City and extrapolate the pollution values to each cell in the grid by inverse distance weighting from the locations of the measuring stations. 
+
+```{r}
+
+create_grid <- function(station_vec, pixels = 20) {
+  df <- stations[stations$station_code %in% station_vec,]
+  geog <- df[,c("lat", "lon")]
+  coordinates(geog) <- ~lon+lat
+  
+  geog.grd <- expand.grid(x = seq((min(coordinates(geog)[ ,1]) - .1),
+                                (max(coordinates(geog)[ ,1]) + .1),
+                                length.out=pixels),
+                          y = seq((min(coordinates(geog)[ ,2]) - .1),
+                                (max(coordinates(geog)[ ,2]) + .1),
+                                length.out = pixels))
+  
+  grd.pts <- SpatialPixels(SpatialPoints(geog.grd))
+  as(grd.pts, "SpatialGrid")
+}
+
+
+# Sometimes stations are taken offline for maintenance, exclude those
+# that weren't reporting data
+reporting_stations <- unique(na.omit(do.call(rbind, ldf))$station_code)
+# 50x50 grid covering Mexico City
+grid <- create_grid(reporting_stations, 50)
+
+plot(grid, main = "Grid covering Mexico City and Locations of\nPollution Measuring Stations (red)")
+# Plot the locations of the stations
+geog <- stations[stations$station_code %in% reporting_stations, c("lat", "lon")]
+coordinates(geog) <- ~lon+lat
+points(geog, pch = 22, col = "lightgray", bg = "red", cex = 1.2)
+```
+
+There are probably additive or interaction effects between pollutants, but to keep things simple
+we'll do like the Mexico City government when it reports pollution levels and simply ignore them. We'll take the maximum pollution value in each cell of the grid to create the map.
+
+```{r}
+heatmap <- function(df, grid){
+  if(nrow(df) == 0){
+    return(data.frame(var1.pred = NA, var1.var = NA, lon = NA, lat = NA))
+  }
+  
+  df <- left_join(df, stations, by = "station_code")
+  df <- df[!is.na(df$value),]
+  df <- df[,c("lat", "lon", "value")]
+  coordinates(df) <- ~lon+lat
+  # For radiation pollution the exponent should be 2
+  # See http://www.sciencedirect.com/science/article/pii/S009830041200372X
+  df.idw <- idw(value ~ 1, df, grid, idp = 2, debug.level = 0)
+  
+  idw = as.data.frame(df.idw)
+  names(idw) <- c("var1.pred", "var1.var", "lon", "lat")
+
+  idw
+}
+
+
+# Create the IDW heatmap for each pollutant
+idw_tiles <- lapply(ldf, heatmap, grid)
+# Calculate the maximum value across all pollutants
+maxes <- apply(do.call(cbind, lapply(idw_tiles, 
+                                     function(x) x[["var1.pred"]])), 
+               1, max)
+idw_tiles_max <- data.frame(var1.pred = maxes, 
+                       lat = idw_tiles[[1]]$lat, 
+                       lon = idw_tiles[[1]]$lon)
+```
+
+### Plot
+
+Now we will use the package ggmap to plot the locations of the stations and the pollution grid on top of a map.
+
+```{r, message=FALSE, warning=FALSE, fig.cap = "Map of Pollution in Mexico City"}
+qmplot(x, y, data = data.frame(grid), geom = "blank", 
+       maptype = "toner-lite", source = "stamen", zoom = 10)  +
+  geom_tile(data = idw_tiles_max, aes(x = lon, y = lat, fill = var1.pred), 
+            alpha = .8) + 
+  scale_fill_distiller("IMECAs", limits = c(0, max(idw_tiles_max$var1.pred)), 
+                       palette = "RdYlBu",
+                       direction = -1) +
+  geom_point(data = stations[stations$station_code %in% reporting_stations, ],
+             aes(lon, lat), shape = 22, size = 1.6) +
+  ggtitle(paste0("Pollution in Mexico City during the pollution",
+                 " emergency of May 20, 2017"))
+
+```
+
+

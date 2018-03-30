@@ -9,7 +9,7 @@ is.integer2 <- function(int) {
              identical(int, as.single(floor(int))),
            error = function(e) {
              FALSE
-             })
+           })
 }
 
 # test if date is in YYYY-MM-DD format
@@ -19,7 +19,7 @@ is.Date <- function(date, date.format = "%Y-%m-%d") {
   tryCatch(!is.na(as.Date(date, date.format)),
            error = function(e) {
              FALSE
-             })
+           })
 }
 
 # http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
