@@ -8,13 +8,13 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "INDEX-"
+  out.width = '100%'
 )
 ```
 
 # aire.zmvm
 
-[![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.svg?branch=master)](https://travis-ci.org/diegovalle/aire.zmvm) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/c7kg6o68exx0lirg?svg=true)](https://ci.appveyor.com/project/diegovalle/aire-zmvm/branch/master) [![Coverage Status](https://img.shields.io/codecov/c/github/diegovalle/aire.zmvm/master.svg)](https://codecov.io/github/diegovalle/aire.zmvm?branch=master) [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) <a href="https://cran.r-project.org/package=aire.zmvm"><img src="https://www.r-pkg.org/badges/version/aire.zmvm" alt="Cran Status Badge"></a>
+[![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.svg?branch=master)](https://travis-ci.org/diegovalle/aire.zmvm) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/c7kg6o68exx0lirg?svg=true)](https://ci.appveyor.com/project/diegovalle/aire-zmvm/branch/master) [![Coverage Status](https://img.shields.io/codecov/c/github/diegovalle/aire.zmvm/master.svg)](https://codecov.io/github/diegovalle/aire.zmvm?branch=master) [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-red.svg)](https://www.tidyverse.org/lifecycle/#experitmental) <a href="https://cran.r-project.org/package=aire.zmvm"><img src="https://www.r-pkg.org/badges/version/aire.zmvm" alt="Cran Status Badge"></a>
 
 ![](pano-mxc.jpg)
 
@@ -46,7 +46,7 @@ Note that the version on CRAN might not reflect the most recent changes made to 
 
 Create a time series of ozone levels in ppb from 2009 to 2018 and highlight the phase I smog alerts.
 
-```{r, fig.show='hold', fig.width=11, warning=FALSE, message=FALSE}
+```{r load, warning=FALSE, message=FALSE}
 ## Auto-install required R packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(aire.zmvm, dplyr, ggplot2, ggseas)
@@ -92,7 +92,7 @@ Here's what the data we just downloaded looks like:
 knitr::kable(head(o3))
 ```
 
-```{r contingencias,fig.width=11, fig.height=6, warning=FALSE}
+```{r contingencias, fig.dim=c(11,6), warning=FALSE}
 ggplot(max_daily_df,
        aes(x = x, y = y)) + 
   geom_line(colour = "grey75", alpha = .5) +
