@@ -18,6 +18,10 @@ reference:
       - '`get_latest_imeca`'
       - '`get_zone_imeca`'
       - '`get_station_imeca`'
+  - title: Download data generated from atmospheric monitoring
+    desc: Functions for downloading archived data
+    contents:
+      - starts_with("download")
   - title: Other Functions
     desc: Helper functions
     contents:

@@ -1,3 +1,16 @@
+# aire.zmvm 0.7.0
+
+## New features
+
+* `download_24hr_average` Download archives of the 24 hour averages of PM10 and SO2
+* `download_deposition` Download Rainfall Samples Archives
+* `download_lead` Download Lead Pollution Archives
+* `download_meteorological` Download Meteorological Data Archives
+* `download_pollution` Download Pollution Archives
+* `download_pressure` Download Atmospheric Pressure Archives
+* `download_radiation` Download Ultraviolet Radiation Archives
+
+
 # aire.zmvm 0.6.0
 
 ## New features
@@ -21,7 +34,7 @@ maximums and daily minimums
 ## Deprecated and Defunct
 * `get_latest_data` is deprecated. You should instead use `get_latest_imeca`. 
 * `get_zone_data` is deprecated. You should instead use `get_zone_imeca`.
-* `get_station_data_monthly` is deprecadet. You should instead use `get_station_month_data`.
+* `get_station_data_monthly` is deprecated. You should instead use `get_station_month_data`.
 * `showWarnings` argument to `get_zone_imeca` was deprecated for `show_messages`.
 
 

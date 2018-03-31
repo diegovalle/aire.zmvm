@@ -14,7 +14,7 @@ knitr::opts_chunk$set(fig.width = 7,
 
 We can use the ```idw360``` function to extrapolate wind direction and speed inside a grid.
 
-```{r warning=FALSE, messages=FALSE, warning=FALSE}
+```{r warning=FALSE, message=FALSE}
 ## Auto-install required R packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(aire.zmvm, dplyr, ggplot2, lubridate, stringr, sp, mapproj,

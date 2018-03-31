@@ -176,7 +176,7 @@ download_lead <- function(type) {
   .clean_archive(df, FALSE)
 }
 
-#' Download Rainfall Archives
+#' Download Acid Rain Measurements Archives
 #'
 #' Download data on rainfall samples collected weekly during the rainy season, available at
 #' \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmE='&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZGRhL2RlcG9zaXRvLmNzdg==}{Depósito}
@@ -379,7 +379,7 @@ download_24hr_average <- function(type, year, progress = interactive()) {
   as.data.frame(df)
 }
 
-#' Download Athmospheric Pressure Archives
+#' Download Atmospheric Pressure Archives
 #'
 #' @param year a numeric vector containing the years for which to download data
 #' (the earliest possible value is 2009)
