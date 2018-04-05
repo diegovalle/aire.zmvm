@@ -4,7 +4,13 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.dim=c(7.2, 3),
+                      fig.align = 'center',
+                      collapse = TRUE,
+                      comment = "#>",
+                      out.width = '100%',
+                      dpi=100,
+                      echo = TRUE)
 ```
 
 
@@ -14,7 +20,7 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(aire.zmvm, dplyr, ggplot2, lubridate, viridis, scales)
 ```
 
-```{r plot,fig.width=11, fig.height=6, warning=FALSE}
+```{r plot,warning=FALSE}
 df <- download_radiation(type = "UVA", 2017)
 df$mxc_time <- format(as.POSIXct(paste0(df$date, " ", df$hour, ":00"),
                                  tz = "Etc/GMT+6"),

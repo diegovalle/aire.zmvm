@@ -1,5 +1,5 @@
 title: Download Mexico City Air Quality Data
-url: https://hoyodesmog.diegovalle.net/aire.zmvm.html
+url: https://hoyodesmog.diegovalle.net/aire.zmvm
 template:
   params:
     docsearch:
