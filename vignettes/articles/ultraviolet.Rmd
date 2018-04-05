@@ -19,10 +19,10 @@ df <- download_radiation(type = "UVA", 2017)
 df$mxc_time <- format(as.POSIXct(paste0(df$date, " ", df$hour, ":00"),
                                  tz = "Etc/GMT+6"),
                       tz = "America/Mexico_City")
-df$hour <- hour(df$mxc_time)
+df$hour_mxc <- hour(df$mxc_time)
 df <- df %>%
-  group_by(date, hour) %>%
-  summarise(max = max(value, na.rm = TRUE))
+  group_by(date, hour_mxc) %>%
+  summarise(mean = mean(value, na.rm = TRUE))
 
 
 
@@ -30,17 +30,18 @@ df$year <- year(df$date)
 df$yday <- yday(df$date)
 df$day <- day(df$date)
 df$month <- month(df$date)
-df$hour <- factor(df$hour, levels = c(6:23,0:5))
+df$hour_mxc <- factor(df$hour_mxc, levels = c(6:23,0:5))
 
-ggplot(filter(df), aes(date, hour)) + 
-  geom_tile(aes(fill = max)) + 
+ggplot(filter(df), aes(date, hour_mxc)) + 
+  geom_tile(aes(fill = mean)) + 
   scale_fill_viridis(expression(mW/cm^{2}), option = "A") +
   scale_x_date(labels = date_format("%b")) +
   scale_y_discrete(breaks = c(7, 13, 18, 0), 
                    labels = c("7AM", "1PM",  "7PM", "12AM")) +
-  ggtitle("Maximum Hourly UVA Index in Mexico City (2017)",
+  ggtitle("Average Hourly UVA Index in Mexico City (2017)",
           subtitle = "Hours are in local Mexico City time which includes daylight saving time\nSource: SIMAT") +
   theme_bw() +
+  ylab("hour") +
   theme_minimal()
 
 ```
