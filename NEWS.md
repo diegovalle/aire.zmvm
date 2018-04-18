@@ -1,3 +1,7 @@
+# aire.zmvm 0.6.1
+
+* Make sure the `get_station_imeca` example is not run
+
 # aire.zmvm 0.6.0
 
 ## New features
