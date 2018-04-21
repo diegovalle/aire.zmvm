@@ -2,7 +2,7 @@
 % Please edit documentation in R/download_archives.R
 \name{download_deposition}
 \alias{download_deposition}
-\title{Download Rainfall Archives}
+\title{Download Acid Rain Measurements Archives}
 \usage{
 download_deposition(deposition, type)
 }

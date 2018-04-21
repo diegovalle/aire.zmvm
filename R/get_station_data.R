@@ -92,7 +92,8 @@
   # en el cual se modificó la nomenclatura de la estación Chapingo (CHA) y a
   # partir de ese año se denomina Montecillo (MON). Si deseas mas información al
   # respecto lo puedes consultar en la siguiente liga de internet:
-  # http://www.aire.cdmx.gob.mx/descargas/publicaciones/flippingbook/informe_anual_calidad_aire_2011/#p=1.
+  # http://www.aire.cdmx.gob.mx/descargas/publicaciones/flippingbook/
+  # informe_anual_calidad_aire_2011/#p=1.
   if ("CHA" %in% names(df)) {
     if (!"MON" %in% names(df)) {
       names(df)[which(names(df) == "CHA")] <- "MON"

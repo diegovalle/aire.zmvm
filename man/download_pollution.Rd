@@ -14,7 +14,7 @@ download_pollution(year, progress = interactive())
 By default it will only display in an interactive session.}
 }
 \value{
-a data.frame with pollution information:
+a data.frame with pollution information for the following polutants
 "CO", "NO", "NO2", "NOX", "O3", "PM10", "SO2", "PM25", and "PMCO"
 }
 \description{

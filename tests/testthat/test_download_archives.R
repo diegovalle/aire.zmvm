@@ -1,4 +1,4 @@
-test_that( ("download_pollution"), {
+test_that("download_pollution", {
   expect_error(download_pollution(1985))
   expect_error(download_pollution(numeric(0)))
   expect_error(download_pollution("a"))
@@ -14,7 +14,7 @@ test_that( ("download_pollution"), {
                         hour == 14 & pollutant == "CO")$value, 1.7)
 })
 
-test_that( ("download_meteorological "), {
+test_that("download_meteorological ", {
 
   expect_error(download_meteorological(1985))
   expect_error(download_meteorological(numeric(0)))
@@ -131,4 +131,3 @@ test_that( ("download_pressure "), {
   expect_equal(subset(df, date == "2009-01-01" & station_code == "MER" &
                         pollutant == "PA" & hour == 1)$value, 588)
 })
-

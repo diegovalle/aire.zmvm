@@ -2,7 +2,7 @@
 % Please edit documentation in R/download_archives.R
 \name{download_pressure}
 \alias{download_pressure}
-\title{Download Athmospheric Pressure Archives}
+\title{Download Atmospheric Pressure Archives}
 \usage{
 download_pressure(year, progress = interactive())
 }
@@ -17,7 +17,7 @@ By default it will only display in an interactive session.}
 A data.frame with atmospheric pressure data.
 }
 \description{
-Download Athmospheric Pressure Archives
+Download Atmospheric Pressure Archives
 }
 \examples{
 \dontrun{

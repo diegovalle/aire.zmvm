@@ -8,7 +8,7 @@
 #' @param progress whether to display a progress bar (TRUE or FALSE).
 #' By default it will only display in an interactive session.
 #'
-#' @return a data.frame with pollution information:
+#' @return a data.frame with pollution information for the following polutants
 #' "CO", "NO", "NO2", "NOX", "O3", "PM10", "SO2", "PM25", and "PMCO"
 #' @export
 #' @importFrom readr read_csv
