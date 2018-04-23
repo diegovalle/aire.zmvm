@@ -67,7 +67,7 @@ df <- cbind(res, as.data.frame(grid), wsp = wsp$var1.wsp)
 df$group <- 1
 
 qmplot(lon, lat, data = df, geom = "blank", 
-       maptype = "terrain-background", source = "stamen",  zoom = 10)+
+       maptype = "terrain", source = "google",  zoom = 10, mapcolor = "bw") +
   geom_point(size = .1) +
   # The wind direction compass starts where the 90 degree mark is located
   geom_spoke(aes(angle = ((270 -  pred) %% 360) * pi / 180,
