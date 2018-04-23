@@ -30,6 +30,7 @@ reference:
     contents:
       - '`idw360`'
       - '`convert_to_imeca`'
+      - '`convert_to_index`'
   - title: Datasets
     desc: Station locations and municipios by zone
     contents:
