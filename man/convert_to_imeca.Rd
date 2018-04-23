@@ -63,4 +63,6 @@ For the formulas on how to convert O3, PM10, and PM2.5 visit:
   se calcula el Índice de Calidad del Aire?}, and for NO2, CO, and SO2:
   \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf}{NADF-009-AIRE-2006}.
    Also \emph{Solicitud de Información} FOLIO 0112000033218
+
+Other convert functions: \code{\link{convert_to_index}}
 }

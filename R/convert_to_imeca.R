@@ -186,6 +186,7 @@ to_imeca <- function(contaminant, value) {
 #'
 #' @return A vector containing the converted value in IMECAs
 #' @export
+#' @family convert functions
 #' @importFrom stats na.omit
 #' @examples
 #' ## IMECA is a dimensionless scale that allows for the comparison of

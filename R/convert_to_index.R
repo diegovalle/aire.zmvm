@@ -47,9 +47,10 @@ single_to_index <- function(value, pollutant) {
 #' @export
 #' @seealso \href{NADF-009-AIRE-2006}{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf}
 #'
+#' @family convert functions
 #' @examples
-#' concentration_to_index(c(12.1, 215, 355), c("PM25", "PM10", "PM10"))
-concentration_to_index <- function(value, pollutant) {
+#' convert_to_index(c(12.1, 215, 355), c("PM25", "PM10", "PM10"))
+convert_to_index <- function(value, pollutant) {
   if (length(pollutant) < 1)
     stop("Invalid pollutant value", call. = FALSE)
   pollutant <- toupper(pollutant)
