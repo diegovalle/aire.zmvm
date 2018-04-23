@@ -35,7 +35,7 @@
 #' @importFrom rvest html_nodes html_table
 #' @importFrom xml2 read_html
 #' @importFrom tidyr gather
-#' @importFrom httr POST http_error status_code http_type
+#' @importFrom httr POST http_error status_code http_type add_headers
 #'
 #' @examples
 #' \dontrun{
@@ -85,12 +85,15 @@ get_station_imeca <- function(pollutant, date,
   )
 
   result <- POST(url,
+                 add_headers("user-agent" =
+                               "https://github.com/diegovalle/aire.zmvm"),
                  body = fd,
                  encode = "form")
   if (http_error(result))
-    stop("The request to <%s> failed [%s]",
-         url,
-         status_code(result), call. = FALSE)
+    stop(sprintf("The request to <%s> failed [%s]",
+                 url,
+                 status_code(result)
+    ), call. = FALSE)
   if (http_type(result) != "text/html")
     stop(paste0(url, " did not return text/html", call. = FALSE))
   poll_table <- read_html(content(result, "text"))

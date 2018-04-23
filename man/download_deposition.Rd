@@ -20,15 +20,13 @@ download_deposition(deposition, type)
 }}
 }
 \value{
-A data.frame with pollution data. When downloading "HORARIOS" the
-hours correspond to the
-\emph{Etc/GMT+6} timezone, with no daylight saving time
+A data.frame with deposition data.
 }
 \description{
 Download data on rainfall samples collected weekly during the rainy season, available at
-\href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmE='&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZGRhL2RlcG9zaXRvLmNzdg==}{Depósito}
+\href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZGRhL2RlcG9zaXRvLmNzdg==}{Depósito}
 and
-\href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmE='&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZGRhL2RlcG9zaXRvVC5jc3Y=}{Depósito}
+\href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZGRhL2RlcG9zaXRvVC5jc3Y=}{Depósito}
 }
 \examples{
 \dontrun{

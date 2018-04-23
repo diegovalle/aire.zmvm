@@ -64,11 +64,12 @@
                "parametro=", pollutant, "&",
                "anio=", year, "&",
                "qmes=", month)
-  result <- GET(url,  httr::timeout(120))
+  result <- GET(url,  timeout(120))
   if (http_error(result))
-    stop("The request to <%s> failed [%s]",
-         url,
-         status_code(result), call. = FALSE)
+    stop(sprintf("The request to <%s> failed [%s]",
+                 url,
+                 status_code(result)
+    ), call. = FALSE)
   if (http_type(result) != "text/html")
     stop(paste0(url, " did not return text/html", call. = FALSE))
 
@@ -168,7 +169,8 @@ download_horario_by_month <- function(pollutant, year){
   if (toupper(pollutant) == "WSP" || toupper(pollutant) == "TMP")
     year_no_minmax_data <- 2018
   else
-    year_no_minmax_data <- 2005
+    ## Maximums and minimums go back to 2005 using the concentraciones webform
+    year_no_minmax_data <- 2018
   ## Fuck, the website stopped allowing download of HORARIOS yearly data
   ## use the old archives before 2017 and use the monthly data after
   if (criterion == "HORARIOS") {
@@ -206,10 +208,10 @@ download_horario_by_month <- function(pollutant, year){
 #' server at
 #' \href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones},
 #' or for earlier years use the archive files available from
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}{Contaminante}, or
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI='&opcion=Zw==}{Meteorología} for
-#' meteorological data. There's a mistake in the 2016 wind speed data so for this year and
-#' only this year the alternative \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBi'}{Excel} file was used.
+#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI\%27&opcion=Zg==}{Contaminante}, or
+#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=Zw==}{Meteorología} for
+#' meteorological data. There's a mistake in the 2016 wind speed data, so for this year, and
+#' only this year, the alternative \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBi\%27}{Excel} file was used.
 #'
 #' Temperature (TMP) archive values are correct to one decimal place, but the
 #' most recent data is only available rounded to the nearest integer.
@@ -365,7 +367,7 @@ get_station_data <- function(criterion, pollutant, year,
 #' head(df_pm10)
 #'
 #' ## Download daily hourly O3 data from October 2017
-#' df_o3 <- get_station_month_data("O3", 2017, 10)
+#' df_o3 <- get_station_month_data("HORARIOS", "O3", 2018, 1)
 #' ## Convert to local Mexico City time
 #' df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date,
 #'                                            " ",
