@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 <br>
 
-aire.zmv is an R package for downloading air quality data for the Mexico City metro area. This package can download real-time, daily maximum, minimum, or hourly average data for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City). It also includes the locations of all the measuring stations and zones, and a function to perform inverse distance weighting modified to work with wind direction.
+```aire.zmv``` is an R package for downloading air quality data from the Mexico City metro area. This package can download real-time, daily maximum, minimum, or hourly average data for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City). It also includes the locations of all the measuring stations and zones, and a function to perform inverse distance weighting modified to work with wind direction.
  
 ## Installation
 

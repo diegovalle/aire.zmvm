@@ -58,7 +58,7 @@ knitr::kable(head(pm_10))
 
 Plotting the data makes the change that took place in October 2014 really obvious:
 
-```{r}
+```{r, fig.width=7.2,fig.height=4}
 
 # Plot the overall highest maximum pm10 level with trendline
 ggplot(pm_10 %>% group_by(date) %>% summarise(max = max(value, na.rm = TRUE)), 

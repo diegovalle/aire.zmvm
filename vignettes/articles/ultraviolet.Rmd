@@ -4,7 +4,7 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.dim=c(7.2, 3),
+knitr::opts_chunk$set(fig.dim=c(7.2, 4),
                       fig.align = 'center',
                       collapse = TRUE,
                       comment = "#>",

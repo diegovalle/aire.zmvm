@@ -12,7 +12,7 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(fig.dim=c(4.5, 4.5),
+knitr::opts_chunk$set(fig.dim =  c(11,9),
                       fig.align = 'center',
                       collapse = TRUE,
                       comment = "#>",
@@ -94,17 +94,14 @@ We will use this data to create a grid covering Mexico City and extrapolate the 
 
 ```{r}
 
-create_grid <- function(station_vec, pixels = 20) {
+create_grid <- function(station_vec, pixels = 1000) {
   df <- stations[stations$station_code %in% station_vec,]
   geog <- df[,c("lat", "lon")]
   coordinates(geog) <- ~lon+lat
-  
-  geog.grd <- expand.grid(x = seq((min(coordinates(geog)[ ,1]) - .1),
-                                (max(coordinates(geog)[ ,1]) + .1),
-                                length.out=pixels),
-                          y = seq((min(coordinates(geog)[ ,2]) - .1),
-                                (max(coordinates(geog)[ ,2]) + .1),
-                                length.out = pixels))
+  proj4string(geog) <- "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
+  ## Add a margin surrounding the stations
+  geog@bbox <- bbox(geog) + c(-0.05, -0.05, 0.05, 0.05)
+  geog.grd <- makegrid(geog, n = pixels)
   
   grd.pts <- SpatialPixels(SpatialPoints(geog.grd))
   as(grd.pts, "SpatialGrid")
@@ -115,13 +112,14 @@ create_grid <- function(station_vec, pixels = 20) {
 # that weren't reporting data
 reporting_stations <- unique(na.omit(do.call(rbind, ldf))$station_code)
 # 50x50 grid covering Mexico City
-grid <- create_grid(reporting_stations, 100)
+grid <- create_grid(reporting_stations, 15000)
 
-plot(grid, main = "Grid covering Mexico City and Locations of\nPollution Measuring Stations (red)")
+plot(grid, main = "Grid covering Mexico City and Locations of\nPollution Measuring Stations (red)",
+     col = "#666666", lwd = .2)
 # Plot the locations of the stations
 geog <- stations[stations$station_code %in% reporting_stations, c("lat", "lon")]
 coordinates(geog) <- ~lon+lat
-points(geog, pch = 22, col = "lightgray", bg = "red", cex = 1.2)
+points(geog, pch = 22, col = "#333333", bg = "tomato1", cex = 1.2)
 ```
 
 There are probably additive or interaction effects between pollutants, but to keep things simple
@@ -164,7 +162,7 @@ idw_tiles_max <- data.frame(var1.pred = maxes,
 Now we will use the package ggmap to plot the locations of the stations and the pollution grid on top of a map.
 
 ```{r, message=FALSE, warning=FALSE, fig.cap = "Map of Pollution in Mexico City"}
-qmplot(x, y, data = data.frame(grid), geom = "blank", 
+qmplot(x1, x2, data = data.frame(grid), geom = "blank", 
        maptype = "toner-lite", source = "stamen", zoom = 10)  +
   geom_tile(data = idw_tiles_max, aes(x = lon, y = lat, fill = var1.pred), 
             alpha = .8) + 
