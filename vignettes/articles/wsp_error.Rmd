@@ -21,7 +21,7 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(aire.zmvm, dplyr, ggplot2, functional, lubridate)
 ```
 
-Next, we download and plot the data, if we use the function ```get_station_data``` the data will be automatically corrected. 
+Next, we download and plot the data, if we use the function ```get_station_data``` the data will be automatically corrected. Note that the number of stations has increased over time and thus there will be more variation in later years.
 
 ```{r download}
 df <- do.call(rbind, 
@@ -37,15 +37,18 @@ ggplot(na.omit(df), aes(date, value)) +
   ggtitle("Maximum Daily Wind Speed in Mexico City 1986-2018 (get_station_data)")
 ```
 
-but not if we use the ```download_meteorological``` function
+but if we use the ```download_meteorological``` function there will be a warning about the wind speed data being incorrect (the data also includes temperature, wind direction, relative humidity so I can't just throw an error when downloading.)
 
 ```{r}
 df <- download_meteorological(2015:2018) %>%
   filter(pollutant == "WSP") %>%
-  group_by(date, station_code) %>%
-  summarise(value = max(value, na.rm = TRUE)) 
+  group_by(date, station_code)  %>% 
+  summarise(max = ifelse(all(is.na(value)),
+                         NA,
+                         base::max(value, na.rm = TRUE))) %>%
+  na.omit()
 
-ggplot(na.omit(df), aes(date, value)) +
+ggplot(na.omit(df), aes(date, max)) +
   geom_point(alpha = .01) +
   geom_smooth(method = 'gam', formula = y ~ s(x)) +
   theme_bw() +
@@ -57,9 +60,9 @@ ggplot(na.omit(df), aes(date, value)) +
 If we treat the 2016 and 2017 values as if they were incorrectly converted to miles per hour (mph) and multiply by 2.2 to correct them, then the 2016 and 2017 wind speed data looks correct, although it still looks a bit different due to rounding.
 
 ```{r plot-corrected}
-df$value[year(df$date) %in% 2016:2017] <- df$value[year(df$date) %in% 2016:2017] * 2.23694
+df$max[year(df$date) %in% 2016:2017] <- df$max[year(df$date) %in% 2016:2017] * 2.23694
 
-ggplot(na.omit(df), aes(date, value)) +
+ggplot(na.omit(df), aes(date, max)) +
   geom_point(alpha = .01) +
   geom_smooth(method = 'gam', formula = y ~ s(x)) +
   theme_bw() +
