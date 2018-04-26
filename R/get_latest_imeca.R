@@ -57,7 +57,9 @@
 get_latest_imeca <- function() {
   url <- "http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php"
 
-  result <- GET(url,  timeout(120))
+  result <- GET(url, timeout(120),
+                add_headers("user-agent" =
+                              "https://github.com/diegovalle/aire.zmvm"))
   if (http_error(result))
     stop(sprintf("The request to <%s> failed [%s]",
                  url,

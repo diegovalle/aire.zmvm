@@ -8,7 +8,7 @@ download_meteorological(year, progress = interactive())
 }
 \arguments{
 \item{year}{a numeric vector containing the years for which to download data
-(the earliest possible value is 2009)}
+(the earliest possible value is 1986)}
 
 \item{progress}{whether to display a progress bar (TRUE or FALSE).
 By default it will only display in an interactive session.}

@@ -74,7 +74,7 @@ download_pollution <- function(year, progress = interactive()) {
 #' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=Zw==}{Meteorología}
 #'
 #' @param year a numeric vector containing the years for which to download data
-#' (the earliest possible value is 2009)
+#' (the earliest possible value is 1986)
 #' @param progress whether to display a progress bar (TRUE or FALSE).
 #' By default it will only display in an interactive session.
 #'
@@ -122,6 +122,12 @@ download_meteorological <- function(year, progress = interactive()) {
       stop("year should be an integer in YYYY format")
   if (min(year) < 1986)
     stop("year must be greater or equal to 1986")
+  ## Errors in 2016 and 2017 data
+  if (any(year %in% 2016:2017))
+    warning(paste0("There may be errors in the 2016 and 2017 wind speed data.",
+                   " It was incorrectly converted to mph. Use the function",
+                   "`get_station_data` to download the correct values"),
+            call. = FALSE)
   if (identical(progress, TRUE) && length(year) > 1) {
     p <- progress_bar$new(format = "  downloading [:bar] :percent eta: :eta",
                           total = length(year))

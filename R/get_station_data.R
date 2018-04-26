@@ -11,10 +11,12 @@
 #' @keywords internal
 #'
 .download_old_station_data <- function(pollutant, year) {
-  # Hack to download the 2016 WSP data
+  # Hack to download the 2016 and 2017 WSP data
   # cause it was converted to m/s twice
   if (pollutant == "wsp" && year == 2016)
-    return(.get_archive_wsp_2016())
+    return(.get_archive_wsp(16))
+  if (pollutant == "wsp" && year == 2017)
+    return(.get_archive_wsp(17))
   # End hack
   upollutant <- toupper(pollutant)
 
@@ -24,7 +26,8 @@
     df <- download_pollution(year, FALSE)
 
   if (!upollutant %in% unique(df$pollutant)) {
-    warning(str_c("No data for '", upollutant, "' in the year of ", year))
+    warning(str_c("No data for '", upollutant, "' in the year of ", year),
+            call. = FALSE)
     return(data.frame(date = as.Date(character()),
                       hour = character(),
                       station_code = character(),
@@ -64,7 +67,9 @@
                "parametro=", pollutant, "&",
                "anio=", year, "&",
                "qmes=", month)
-  result <- GET(url,  timeout(120))
+  result <- GET(url,  timeout(120),
+                add_headers("user-agent" =
+                              "https://github.com/diegovalle/aire.zmvm"))
   if (http_error(result))
     stop(sprintf("The request to <%s> failed [%s]",
                  url,
@@ -170,7 +175,7 @@ download_horario_by_month <- function(pollutant, year){
     year_no_minmax_data <- 2018
   else
     ## Maximums and minimums go back to 2005 using the concentraciones webform
-    year_no_minmax_data <- 2018
+    year_no_minmax_data <- 2005
   ## Fuck, the website stopped allowing download of HORARIOS yearly data
   ## use the old archives before 2017 and use the monthly data after
   if (criterion == "HORARIOS") {
@@ -409,8 +414,8 @@ get_station_month_data <- function(criterion, pollutant, year, month) {
             " one decimal point using the `get_station_data` function. ",
             "See the documentation for more information."), call. = FALSE)
 
-  if (2016 %in% year && pollutant == "WSP")
-    stop(paste0("There's an error in the 2016 WSP data. It seems ",
+  if (year %in% 2005:2017 && pollutant == "WSP")
+    stop(paste0("There's an error in the 2005-2017 WSP data. It seems ",
                    "someone incorrectly ",
                    "converted the data from mph to m/s. ",
                    "Try using the function `get_station_data`"), call. = FALSE)
@@ -429,7 +434,8 @@ get_station_month_data <- function(criterion, pollutant, year, month) {
        (year == 2017 && pollutant == "WDR"))
     warning(paste0("There are some missing stations in the monthly datasets. ",
                    "Please use the ",
-                   "`get_station_data` function to download the data"))
+                   "`get_station_data` function to download the data"),
+            call. = FALSE)
   if (year %in% c(2012, 2013, 2014, 2015, 2017, 2018) && pollutant == "WSP" &&
       criterion != "HORARIOS")
     stop(paste0("There's an error in the WSP data. It seems ",

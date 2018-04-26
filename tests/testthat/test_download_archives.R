@@ -32,7 +32,7 @@ test_that("download_meteorological ", {
 
   df <- download_meteorological(2017)
   expect_equal(df$station_code[1:5], c("ACO", "ACO", "ACO", "ACO", "AJU"))
-  expect_equal(df$value[1:5], c(70, 12.5, 11, 0.9, 90))
+  expect_equal(df$value[1:5], c(70, 12.5, 11.0, 0.4, 90))
   expect_equal(subset(df, date == "2017-01-01" & station_code == "ACO" &
                         hour == 1 & pollutant == "WDR")$value, 11)
 })

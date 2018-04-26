@@ -118,15 +118,16 @@ round_away_from_zero <- function(r) {
 #' from mph to m/s (when the original data were already in m/s)
 #'
 #'
+#' @param syear shortyear in YY format
 #' @return data.frame
 #' @export
 #' @importFrom stringr str_extract
 #' @importFrom readxl read_excel
 #' @importFrom tidyr gather
 #' @importFrom utils download.file unzip
-.get_archive_wsp_2016 <- function() {
+.get_archive_wsp <- function(syear) {
   download_loc <- paste0("http://148.243.232.112:8080/opendata/excel/",
-                         "REDMET/16REDMET.zip")
+                         "REDMET/", syear, "REDMET.zip")
 
   # unzip
   tmpdir <- tempdir()
@@ -141,7 +142,8 @@ round_away_from_zero <- function(r) {
 
   unzip(file.path(tmpdir, file), exdir = tmpdir)
   df <- read_excel(file.path(tmpdir,
-                             xls_files[which(xls_files == "2016WSP.xls")]),
+                             xls_files[which(xls_files == paste0("20", syear,
+                                                                 "WSP.xls"))]),
                    na = c("-99", ""))
   # Clean the data
   names(df)[1] <- "date"
