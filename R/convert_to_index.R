@@ -6,7 +6,8 @@ single_to_index <- function(value, pollutant) {
           "EXTREMADAMENTE MALA"),
         right = FALSE)
   }
-
+  if (is.na(value))
+    return(NA_character_)
   if (pollutant == "O3" & value < .7)
     warning("Are you sure the O3 value is in ppb. Looks like it is in ppm")
   ret <- switch(pollutant,
