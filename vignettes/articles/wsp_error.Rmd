@@ -37,7 +37,7 @@ ggplot(na.omit(df), aes(date, value)) +
   ggtitle("Maximum Daily Wind Speed in Mexico City 1986-2018 (get_station_data)")
 ```
 
-but if we use the ```download_meteorological``` function there will be a warning about the wind speed data being incorrect (the data also includes temperature, wind direction, relative humidity so I can't just throw an error when downloading.)
+but if we use the ```download_meteorological``` function there will be a warning about the wind speed data being incorrect (the data also includes temperature, wind direction, and relative humidity so I can't just throw an error when downloading.)
 
 ```{r}
 df <- download_meteorological(2015:2018) %>%
