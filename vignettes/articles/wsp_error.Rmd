@@ -1,0 +1,68 @@
+---
+title: "Errors in Wind Speed Data"
+author: "Diego Valle-Jones"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:  github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+There's an error in the 2016 and 2017 wind speed data, they were incorrectly converted to miles per hour (mph). 
+
+First we install the necessary packages:
+
+```{r packages, message=FALSE, warning=FALSE}
+# based on https://cran.r-project.org/web/packages/ggjoy/vignettes/gallery.html
+## Auto-install required R packages
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(aire.zmvm, dplyr, ggplot2, functional, lubridate)
+```
+
+Next, we download and plot the data, if we use the function ```get_station_data``` the data will be automatically corrected. 
+
+```{r download}
+df <- do.call(rbind, 
+              lapply(1986:2018, Curry(get_station_data, "MAXIMOS", "WSP"))
+              ) %>%
+  filter(value < 80)
+
+ggplot(na.omit(df), aes(date, value)) +
+  geom_point(alpha = .01) +
+  geom_smooth(method = 'gam', formula = y ~ s(x)) +
+  theme_bw() +
+  ylab("wind speed (m/s)") +
+  ggtitle("Wind Speed in Mexico City 1986-2018 (get_station_data)")
+```
+
+but not if we use the ```download_meteorological``` function
+
+```{r}
+df <- download_meteorological(2015:2018) %>%
+  filter(pollutant == "WSP") %>%
+  group_by(date, station_code) %>%
+  summarise(value = max(value, na.rm = TRUE)) 
+
+ggplot(na.omit(df), aes(date, value)) +
+  geom_point(alpha = .01) +
+  geom_smooth(method = 'gam', formula = y ~ s(x)) +
+  theme_bw() +
+  ylab("wind speed (m/s)") +
+  ggtitle("Wind Speed in Mexico City 2015-2018 (download_meteorological)")
+
+```
+
+If we treat the 2016 and 2017 values as if they were incorrectly converted to miles per hour (mph) and multiply by 2.2 to correct them, then the 2016 and 2017 wind speed data looks correct, although it still looks a bit different due to rounding.
+
+```{r plot-corrected}
+df$value[year(df$date) %in% 2016:2017] <- df$value[year(df$date) %in% 2016:2017] * 2.23694
+
+ggplot(na.omit(df), aes(date, value)) +
+  geom_point(alpha = .01) +
+  geom_smooth(method = 'gam', formula = y ~ s(x)) +
+  theme_bw() +
+  ylab("wind speed (m/s)") +
+  ggtitle("Wind Speed in Mexico City (2016 and 2017 data multiplied by 2.2)")
+```
