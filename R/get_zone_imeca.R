@@ -11,7 +11,7 @@
 #' @importFrom stringr str_c  str_replace_all
 #' @importFrom rvest html_nodes html_table
 #' @importFrom lubridate day month year
-#' @importFrom httr content POST http_error status_code http_type
+#' @importFrom httr content POST http_error status_code http_type add_headers
 #' @importFrom xml2 read_html
 #' @keywords internal
 .download_data_zone <- function(criterion, pollutant, zone, start_date,
@@ -39,13 +39,16 @@
   fd <- append(fd, zones_tmp)
 
   result <- POST(url,
+                 add_headers("user-agent" =
+                               "https://github.com/diegovalle/aire.zmvm"),
                  body = fd,
                  encode = "form")
 
   if (http_error(result))
-    stop("The request to <%s> failed [%s]",
-         url,
-         status_code(result), call. = FALSE)
+    stop(sprintf("The request to <%s> failed [%s]",
+                 url,
+                 status_code(result)
+    ), call. = FALSE)
   if (http_type(result) != "text/html")
     stop(paste0(url, " did not return text/html", call. = FALSE))
 
@@ -60,13 +63,13 @@
 #' Download pollution data by zone in IMECAs
 #'
 #' Retrieve pollution data in IMECAs by geographic zone from the air quality
-#' server at \url{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmU='}
+#' server at \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aqBjnmU=\%27}{Consultas}
 #'
 #' Note that in 2015 it was determined that the stations with codes ACO, AJU,
 #' INN, MON and MPA would no longer be taken into consideration when computing
 #' the pollution index because they didn't meet the
 #' \href{http://www.aire.cdmx.gob.mx/objetivos-monitoreo-calidad-aire.html}{objectives
-#' of monitoring air quality}, and are no longer included in the index, even if
+#' of monitoring air quality}. They are no longer included in the index, even if
 #' they are still part of the SIMAT (Sistema de Monitoreo Atmosférico de la
 #' Ciudad de México). Thus, even if they are located inside a zone, they are not
 #' included in the pollution values for that zone.
@@ -131,9 +134,9 @@
 #'   zone. The hours correspond to the \emph{Etc/GMT+6} timezone, with no
 #'   daylight saving time
 #' @family IMECA functions
-#' @seealso \code{\link{zones}} for a data.frame containing the municipios
+#' @seealso \code{\link{zones}} a data.frame containing the municipios
 #'   belonging to each zone, and
-#'   \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmI='}{Índice de
+#'   \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aqBjnmI=\%27}{Índice de
 #'   calidad del aire por zonas}
 #' @export
 #' @importFrom stringr str_c  str_replace_all

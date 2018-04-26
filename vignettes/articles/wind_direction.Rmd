@@ -1,0 +1,77 @@
+---
+title: "Wind direction and speed"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 7, 
+                      fig.height = 7,
+                      fig.align = 'center',
+                      out.width='95%', 
+                      dpi = 200,
+                      echo = TRUE)
+```
+
+We can use the ```idw360``` function to extrapolate wind direction and speed inside a grid.
+
+```{r warning=FALSE, message=FALSE}
+## Auto-install required R packages
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(aire.zmvm, dplyr, ggplot2, lubridate, stringr, sp, mapproj,
+               gstat, ggmap)
+
+# download wind speed and direction
+wsp <- get_station_month_data(criterion = "HORARIOS",
+                              pollutant = "WSP",
+                              2018, 3)%>%
+  filter(date == "2018-03-28" & hour == 19) %>%
+  na.omit()
+wdr <- get_station_month_data(criterion = "HORARIOS", 
+                        pollutant = "WDR", 
+                        year = 2018, 3) %>%
+  filter(date == "2018-03-28" & hour == 19)  %>%
+  na.omit()
+
+## Location of sensors. First column x/longitude, second y/latitude
+locations <- stations[, c("station_code", "lon", "lat")]
+locations <- merge(wdr, locations)
+coordinates(locations) <- ~lon+lat
+proj4string(locations) <- CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
+
+## The grid for which to extrapolate values
+pixels = 30
+grid <- expand.grid(lon = seq((min(coordinates(locations)[, 1]) - .1),
+                              (max(coordinates(locations)[, 1]) + .1),
+                              length.out = pixels),
+                    lat = seq((min(coordinates(locations)[, 2]) - .1),
+                              (max(coordinates(locations)[, 2]) + .1),
+                              length.out = pixels))
+grid<- SpatialPoints(grid)
+proj4string(grid) <- CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
+
+# extrapolate wind direction
+res <- idw360(wdr$value, locations, grid)
+
+# Extrapolate wind speed
+wsp <- left_join(wsp, stations, by = "station_code")
+wsp <- wsp[!is.na(wsp$value),]
+wsp <- wsp[,c("lat", "lon", "value")]
+coordinates(wsp) <- ~lon+lat
+proj4string(wsp) <- CRS("+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0")
+wsp <- idw(value ~ 1, wsp, grid, idp = 2, debug.level = 0)
+wsp = as.data.frame(wsp)
+names(wsp) <- c("lon", "lat", "var1.wsp", "var1.var")
+
+# Combine wind direction and speed with the grid
+df <- cbind(res, as.data.frame(grid), wsp = wsp$var1.wsp)
+df$group <- 1
+
+qmplot(lon, lat, data = df, geom = "blank", 
+       maptype = "terrain", source = "google",  zoom = 10, mapcolor = "bw") +
+  geom_point(size = .1) +
+  # The wind direction compass starts where the 90 degree mark is located
+  geom_spoke(aes(angle = ((270 -  pred) %% 360) * pi / 180,
+                 radius = wsp * .003),
+             arrow = arrow(length = unit(0.09, "cm"))) 
+
+```

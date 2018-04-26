@@ -1,0 +1,42 @@
+title: Download Mexico City Air Quality Data
+url: https://hoyodesmog.diegovalle.net/aire.zmvm
+template:
+  params:
+    docsearch:
+      api_key: e207e1b66160419a258ba9eb03372385
+      index_name: aire_zmvm
+    ganalytics: UA-100264-10
+authors:
+  Diego Valle-Jones:
+    href: https://www.diegovalle.net
+reference:
+  - title: Raw Data Functions
+    desc: Functions for downloading pollution, wind, temperature, rh in the original units
+    contents:
+      - '`get_station_data`'
+      - '`get_station_month_data`'
+  - title: IMECA Functions
+    desc: Functions for downloading pollution data in IMECAs
+    contents:
+      - '`get_latest_imeca`'
+      - '`get_zone_imeca`'
+      - '`get_station_imeca`'
+  - title: Download data generated from atmospheric monitoring
+    desc: Functions for downloading archived data
+    contents:
+      - starts_with("download")
+  - title: Other Functions
+    desc: Helper functions
+    contents:
+      - '`idw360`'
+      - '`convert_to_imeca`'
+      - '`convert_to_index`'
+  - title: Datasets
+    desc: Station locations and municipios by zone
+    contents:
+      - '`stations`'
+      - '`zones`'
+  - title: Package
+    desc: aire.zmvm package
+    contents:
+      - '`aire.zmvm`'

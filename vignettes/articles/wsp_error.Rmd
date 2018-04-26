@@ -1,0 +1,71 @@
+---
+title: "Errors in Wind Speed Data"
+author: "Diego Valle-Jones"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:  github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+There's an error in the 2016 wind speed data, they were incorrectly converted from m/s to miles per hour (mph). 
+
+First we install the necessary packages:
+
+```{r packages, message=FALSE, warning=FALSE}
+# based on https://cran.r-project.org/web/packages/ggjoy/vignettes/gallery.html
+## Auto-install required R packages
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(aire.zmvm, dplyr, ggplot2, functional, lubridate)
+```
+
+Next, we download and plot the data, if we use the function ```get_station_data``` the data will be automatically corrected. Note that the number of stations has increased over time and thus there will be more variation in later years.
+
+```{r download}
+df <- do.call(rbind, 
+              lapply(1986:2018, Curry(get_station_data, "MAXIMOS", "WSP"))
+              ) %>%
+  filter(value < 80)
+
+ggplot(na.omit(df), aes(date, value)) +
+  geom_point(alpha = .01) +
+  geom_smooth(method = 'gam', formula = y ~ s(x)) +
+  theme_bw() +
+  ylab("wind speed (m/s)") +
+  ggtitle("Maximum Daily Wind Speed in Mexico City 1986-2018 (get_station_data)")
+```
+
+but if we use the ```download_meteorological``` function there will be a warning about the wind speed data being incorrect (the data also includes temperature, wind direction, and relative humidity so I can't just throw an error when downloading.)
+
+```{r}
+df <- download_meteorological(2015:2018) %>%
+  filter(pollutant == "WSP") %>%
+  group_by(date, station_code)  %>% 
+  summarise(max = ifelse(all(is.na(value)),
+                         NA,
+                         base::max(value, na.rm = TRUE))) %>%
+  na.omit()
+
+ggplot(na.omit(df), aes(date, max)) +
+  geom_point(alpha = .01) +
+  geom_smooth(method = 'gam', formula = y ~ s(x)) +
+  theme_bw() +
+  ylab("wind speed (m/s)") +
+  ggtitle("Maximum Daily Wind Speed in Mexico City 2015-2018 (download_meteorological)")
+
+```
+
+If we treat the 2016 values as if they were incorrectly converted from m/s to miles per hour (mph) and multiply by 2.2 to correct them, then the 2016 wind speed data looks correct, although it still looks a bit different due to rounding.
+
+```{r plot-corrected}
+df$max[year(df$date) %in% 2016] <- df$max[year(df$date) %in% 2016] * 2.23694
+
+ggplot(na.omit(df), aes(date, max)) +
+  geom_point(alpha = .01) +
+  geom_smooth(method = 'gam', formula = y ~ s(x)) +
+  theme_bw() +
+  ylab("wind speed (m/s)") +
+  ggtitle("Maximum Daily Wind Speed in Mexico City (2016 data multiplied by 2.2)")
+```

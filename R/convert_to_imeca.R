@@ -56,6 +56,8 @@ pm25_to_imeca <- function(value){
 
 # http://www.aire.cdmx.gob.mx/default.php?opc=%27ZaBhnmI=&dc=%27aQ==
 o3_to_imeca <- function(value){
+  if (value < .7)
+    warning("Are you sure the O3 value is in ppb. Looks like it is in ppm")
   value <- value / 1000
   if (value >= 0.000 & value <= 0.070){
     ret <- 714.29 * value
@@ -78,6 +80,8 @@ o3_to_imeca <- function(value){
 
 # http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
 no2_to_imeca <- function(value){
+  if (value < .5)
+    warning("Are you sure the NO2 value is in ppb. Looks like it is in ppm")
   value <- value / 1000
   if (value >= 0.000 & value <= 0.105){
     ret <- value * 50 / 0.105
@@ -95,6 +99,8 @@ no2_to_imeca <- function(value){
 
 # http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
 so2_to_imeca <- function(value){
+  if (value < .5)
+    warning("Are you sure the SO2 value is in ppb. Looks like it is in ppm")
   value <- value / 1000
   ret <- value * 100 / 0.13
   return(round_away_from_zero(ret))
@@ -102,6 +108,8 @@ so2_to_imeca <- function(value){
 
 # http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
 co_to_imeca <- function(value){
+  if (value > 50)
+    warning("Are you sure the CO value is in ppm")
   if (value >= 0.000 & value <=  5.50){
     ret <- value * 50 / 5.50
   } else if (value > 5.50  & value <= 11.00){
@@ -150,7 +158,7 @@ to_imeca <- function(contaminant, value) {
 #' \href{https://en.wikipedia.org/wiki/Índice_Metropolitano_de_la_Calidad_del_Aire}{IMECA}
 #'
 #' Air quality in Mexico City is reported in IMECAs (Índice Metropolitano de la
-#' Calidad del Aire), a dimensionless scale where all the pollutants can be
+#' Calidad del Aire), a dimensionless scale where all pollutants can be
 #' compared.
 #'
 #' Note that each pollutant has different averaging periods (see the arguments
@@ -163,9 +171,9 @@ to_imeca <- function(contaminant, value) {
 #'    Also \emph{Solicitud de Información} FOLIO 0112000033218
 #'
 #' @param pollutant type of pollutant. A vector of one or more of the following
-#'   options: \itemize{ \item{"SO2"}{ - Sulfur Dioxide (24 hour average)}
-#'   \item{"CO"}{ - Carbon Monoxide (8 hour average)} \item{"NO2"}{ - Nitrogen
-#'   Dioxide (1 hour average)} \item{"O3"}{ - Ozone (1 hour average)}
+#'   options: \itemize{ \item{"SO2"}{ - Sulfur Dioxide - ppb (24 hour average)}
+#'   \item{"CO"}{ - Carbon Monoxide - ppm (8 hour average)} \item{"NO2"}{ - Nitrogen
+#'   Dioxide - pbb (1 hour average)} \item{"O3"}{ - Ozone ppb (1 hour average)}
 #'   \item{"PM10"}{ - Particulate matter 10 micrometers or less (24 hour
 #'   average)} \item{"PM25"}{ - Particulate matter 2.5 micrometers or less (24
 #'   hour average)} }
@@ -178,6 +186,7 @@ to_imeca <- function(contaminant, value) {
 #'
 #' @return A vector containing the converted value in IMECAs
 #' @export
+#' @family convert functions
 #' @importFrom stats na.omit
 #' @examples
 #' ## IMECA is a dimensionless scale that allows for the comparison of

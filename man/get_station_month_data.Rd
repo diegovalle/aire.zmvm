@@ -64,7 +64,7 @@ df_pm10 <- get_station_month_data("HORARIOS", "PM10", 2016, 3)
 head(df_pm10)
 
 ## Download daily hourly O3 data from October 2017
-df_o3 <- get_station_month_data("O3", 2017, 10)
+df_o3 <- get_station_month_data("HORARIOS", "O3", 2018, 1)
 ## Convert to local Mexico City time
 df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date,
                                            " ",

@@ -74,6 +74,12 @@ test_that( ("convert units"), {
   expect_equal(convert_to_imeca(600, "PM10"), 496)
   expect_equal(convert_to_imeca(1050, "PM10"), NA_real_)
 
+  expect_warning(convert_to_imeca(.155, "O3"),
+                 "Are you sure the O3 value is in ppb")
+  expect_warning(convert_to_imeca(.2, "O3"),
+                 "Are you sure the O3 value is in ppb")
+  expect_silent(convert_to_imeca(1, "O3"))
+
   expect_equal(convert_to_imeca(5, "PM25"), 21)
   expect_equal(convert_to_imeca(30, "PM25"), 78)
   expect_equal(convert_to_imeca(60, "PM25"), 115)

@@ -49,7 +49,7 @@
 #' @importFrom rvest html_nodes html_text
 #' @importFrom xml2 read_html
 #' @importFrom stringr str_match str_replace str_replace_all
-#' @importFrom httr GET
+#' @importFrom httr GET timeout
 #'
 #' @examples
 #' df <- get_latest_imeca()
@@ -57,11 +57,14 @@
 get_latest_imeca <- function() {
   url <- "http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php"
 
-  result <- GET(url,  httr::timeout(120))
+  result <- GET(url, timeout(120),
+                add_headers("user-agent" =
+                              "https://github.com/diegovalle/aire.zmvm"))
   if (http_error(result))
-    stop("The request to <%s> failed [%s]",
-         url,
-         status_code(result), call. = FALSE)
+    stop(sprintf("The request to <%s> failed [%s]",
+                 url,
+                 status_code(result)
+    ), call. = FALSE)
   if (http_type(result) != "text/html")
     stop(paste0(url, " did not return text/html", call. = FALSE))
 

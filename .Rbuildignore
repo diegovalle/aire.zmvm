@@ -8,7 +8,7 @@
 readme_files
 ^index.Rmd
 ^index.md
-vignettes/articles*
+^vignettes/*
 ^docs/*
 _pkgdown.yaml
 ^cran-comments\.md$

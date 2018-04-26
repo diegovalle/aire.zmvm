@@ -17,11 +17,13 @@ test_that("test get_station_month_data", {
   # Error in the ACO station
   expect_error(get_station_month_data("MINIMOS", "WSP", 2012, 1))
   expect_error(get_station_month_data("MAXIMOS", "WSP", 2012, 1))
+  for (year in 2005:2017)
+    expect_error(get_station_month_data("MAXIMOS", "WSP", year, 1))
 
   skip_on_cran()
 
-  df_hor_2017_jan <- get_station_month_data("HORARIOS",
-                                                           "WSP", 2017, 1)
+  df_hor_2018_jan <- get_station_month_data("HORARIOS",
+                                            "WSP", 2018, 1)
   expect_warning(df_tmp_2017_jan <- get_station_month_data("HORARIOS",
                                                          "TMP", 2005, 1),
                  "Temperature \\(TMP\\) was rounded to the nearest integer")
@@ -29,15 +31,15 @@ test_that("test get_station_month_data", {
   df_max_2016_march <- get_station_month_data("MAXIMOS", "O3", 2016, 3)
 
   # test that the data only include one month
-  expect_true(all(month(df_hor_2017_jan$date) == 1))
+  expect_true(all(month(df_hor_2018_jan$date) == 1))
   expect_true(all(month(df_min_2016_april$date) == 4))
   expect_true(all(month(df_max_2016_march$date) == 3))
 
   expect_equal(
-    unname(unlist(subset(df_hor_2017_jan, date == "2017-01-01" &
-                           station_code == "MON")$value)),
-    c(1.4, 1, 0.9, 0.7, 1.3, 1.1, 0.7, 0.5, 0.9, 1.3, 1.6, 1.8, 1.9,
-      1.9, 3, 3.6, 4.3, 5.1, 4.2, 3.6, 3.4, 3.1, 2.2, 1.6))
+    unname(unlist(subset(df_hor_2018_jan, date == "2018-01-01" &
+                           station_code == "CHO")$value)),
+    c(0.5, 0.4, 0.5, 0.4, 0.3, 0.7, 0.5, 0.9, 0.5, 0.6, 1.4, 1.6,
+      1.7, 1.6, 1.6, 1.3, 1.9, 1.7, 2.3, 1, 2.7, 2.4, 1.9, 1.1))
   expect_equal(
     unname(unlist(subset(df_min_2016_april,
                          date == as.Date("2016-04-15"))$value)),

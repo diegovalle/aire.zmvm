@@ -11,41 +11,23 @@
 #' @keywords internal
 #'
 .download_old_station_data <- function(pollutant, year) {
-  # Hack to download the 2016 WSP data
-  if (pollutant == "wsp" & year == 2016)
-    return(.get_archive_wsp_2016())
+  # Hack to download the 2016 and 2017 WSP data
+  # cause it was converted to m/s twice
+  if (pollutant == "wsp" && year == 2016)
+    return(.get_archive_wsp(16))
+  if (pollutant == "wsp" && year == 2017)
+    return(.get_archive_wsp(17))
   # End hack
   upollutant <- toupper(pollutant)
-  if (upollutant == "PM25")
-    upollutant <- "PM2.5"
-  base_url <- paste0("http://148.243.232.112:8080/",
-                     "opendata/anuales_horarios_gz/contaminantes_")
+
   if (upollutant %in% c("WSP", "WDR", "TMP", "RH"))
-    base_url <- paste0("http://148.243.232.112:8080/",
-                       "opendata/anuales_horarios_gz/meteorolog%C3%ADa_")
-  ## The files from 2012 onwards changed the name of the columns
-  ## cve_station and cve_parameter to id_station and id_parameter
-  if (year >= 2012)
-    df <- read_csv(str_c(base_url, year, ".csv.gz"),
-                   skip = 10, progress = FALSE, col_types = list(
-                     date = col_character(),
-                     id_station = col_character(),
-                     id_parameter = col_character(),
-                     value = col_double(),
-                     unit = col_integer()
-                   ))
+    df <- download_meteorological(year, FALSE)
   else
-    df <- read_csv(str_c(base_url, year, ".csv.gz"),
-                 skip = 10, progress = FALSE, col_types = list(
-                   date = col_character(),
-                   cve_station = col_character(),
-                   cve_parameter = col_character(),
-                   value = col_double(),
-                   unit = col_integer()
-                 ))
-  names(df) <- c("date", "station_code", "pollutant", "value", "unit")
+    df <- download_pollution(year, FALSE)
+
   if (!upollutant %in% unique(df$pollutant)) {
-    warning(str_c("No data for '", upollutant, "' in the year of ", year))
+    warning(str_c("No data for '", upollutant, "' in the year of ", year),
+            call. = FALSE)
     return(data.frame(date = as.Date(character()),
                       hour = character(),
                       station_code = character(),
@@ -56,18 +38,6 @@
            )
   }
   df <- dplyr::filter(df, pollutant == upollutant)
-
-  df$hour <- as.numeric(str_sub(df$date, 12, 13))
-  df$date <- str_c(str_sub(df$date, 7, 10), "-",
-                   str_sub(df$date, 4, 5), "-",
-                   str_sub(df$date, 1, 2))
-  df$value <- as.numeric(df$value)
-  df$date <- as.Date(df$date)
-
-  df$unit <- .recode_unit_code(df$unit)
-  df$pollutant <- .recode_pollutant(upollutant)
-
-  df <- df[, c("date", "hour", "station_code", "pollutant", "unit", "value")]
   as.data.frame(df)
 }
 
@@ -97,11 +67,14 @@
                "parametro=", pollutant, "&",
                "anio=", year, "&",
                "qmes=", month)
-  result <- GET(url,  httr::timeout(120))
+  result <- GET(url,  timeout(120),
+                add_headers("user-agent" =
+                              "https://github.com/diegovalle/aire.zmvm"))
   if (http_error(result))
-    stop("The request to <%s> failed [%s]",
-         url,
-         status_code(result), call. = FALSE)
+    stop(sprintf("The request to <%s> failed [%s]",
+                 url,
+                 status_code(result)
+    ), call. = FALSE)
   if (http_type(result) != "text/html")
     stop(paste0(url, " did not return text/html", call. = FALSE))
 
@@ -125,7 +98,8 @@
   # en el cual se modificó la nomenclatura de la estación Chapingo (CHA) y a
   # partir de ese año se denomina Montecillo (MON). Si deseas mas información al
   # respecto lo puedes consultar en la siguiente liga de internet:
-  # http://www.aire.cdmx.gob.mx/descargas/publicaciones/flippingbook/informe_anual_calidad_aire_2011/#p=1.
+  # http://www.aire.cdmx.gob.mx/descargas/publicaciones/flippingbook/
+  # informe_anual_calidad_aire_2011/#p=1.
   if ("CHA" %in% names(df)) {
     if (!"MON" %in% names(df)) {
       names(df)[which(names(df) == "CHA")] <- "MON"
@@ -200,6 +174,7 @@ download_horario_by_month <- function(pollutant, year){
   if (toupper(pollutant) == "WSP" || toupper(pollutant) == "TMP")
     year_no_minmax_data <- 2018
   else
+    ## Maximums and minimums go back to 2005 using the concentraciones webform
     year_no_minmax_data <- 2005
   ## Fuck, the website stopped allowing download of HORARIOS yearly data
   ## use the old archives before 2017 and use the monthly data after
@@ -238,10 +213,10 @@ download_horario_by_month <- function(pollutant, year){
 #' server at
 #' \href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones},
 #' or for earlier years use the archive files available from
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI'&opcion=Zg==}{Contaminante}, or
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBhnmI='&opcion=Zw==}{Meteorología} for
-#' meteorological data. There's a mistake in the 2016 wind speed data so for this year and
-#' only this year the alternative \href{http://www.aire.cdmx.gob.mx/default.php?opc='aKBi'}{Excel} file was used.
+#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI\%27&opcion=Zg==}{Contaminante}, or
+#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=Zw==}{Meteorología} for
+#' meteorological data. There's a mistake in the 2016 wind speed data, so for this year, and
+#' only this year, the alternative \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBi\%27}{Excel} file was used.
 #'
 #' Temperature (TMP) archive values are correct to one decimal place, but the
 #' most recent data is only available rounded to the nearest integer.
@@ -397,7 +372,7 @@ get_station_data <- function(criterion, pollutant, year,
 #' head(df_pm10)
 #'
 #' ## Download daily hourly O3 data from October 2017
-#' df_o3 <- get_station_month_data("O3", 2017, 10)
+#' df_o3 <- get_station_month_data("HORARIOS", "O3", 2018, 1)
 #' ## Convert to local Mexico City time
 #' df_o3$mxc_time <- format(as.POSIXct(paste0(df_o3$date,
 #'                                            " ",
@@ -439,8 +414,8 @@ get_station_month_data <- function(criterion, pollutant, year, month) {
             " one decimal point using the `get_station_data` function. ",
             "See the documentation for more information."), call. = FALSE)
 
-  if (2016 %in% year && pollutant == "WSP")
-    stop(paste0("There's an error in the 2016 WSP data. It seems ",
+  if (year %in% 2005:2017 && pollutant == "WSP")
+    stop(paste0("There's an error in the 2005-2017 WSP data. It seems ",
                    "someone incorrectly ",
                    "converted the data from mph to m/s. ",
                    "Try using the function `get_station_data`"), call. = FALSE)
@@ -459,7 +434,8 @@ get_station_month_data <- function(criterion, pollutant, year, month) {
        (year == 2017 && pollutant == "WDR"))
     warning(paste0("There are some missing stations in the monthly datasets. ",
                    "Please use the ",
-                   "`get_station_data` function to download the data"))
+                   "`get_station_data` function to download the data"),
+            call. = FALSE)
   if (year %in% c(2012, 2013, 2014, 2015, 2017, 2018) && pollutant == "WSP" &&
       criterion != "HORARIOS")
     stop(paste0("There's an error in the WSP data. It seems ",
