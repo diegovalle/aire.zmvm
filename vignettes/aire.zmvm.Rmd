@@ -48,7 +48,9 @@ Because of limitations with the SEDEMA website [http://www.aire.cdmx.gob.mx/](ht
 Pollution is monitored by a series of stations located throughout the Mexico City Metro Area. Since there are different pollutants to monitor, each measured in different units, and each with different specified averaging periods, a common scale called [IMECA](https://en.wikipedia.org/wiki/%C3%8Dndice_Metropolitano_de_la_Calidad_del_Aire) was created to make them comparable. If 
 pollutants reach 151 IMECA points or more the Mexico City government can declare a phase I smog alert and order cars off the streets and place limits on polluting industries.
 
-On May 20, 2017 a phase I smog alert was declared. We'll show just how easy it is to make a map of pollution levels during the alert with this package. First we load the packages we need to run this vignette and download the pollution data:
+On May 4, 2018 there was a smog alert, but there wasn no *doble hoy no circula* because metereological conditions were forecast to improve the next day. We'll show just how easy it is to make a map of pollution levels during the alert with this package. 
+
+First we load the packages we need to run this vignette and download the pollution data:
 
 ```{r, message = FALSE, warning=FALSE}
 library("aire.zmvm")
@@ -63,8 +65,8 @@ library("gstat")
 # The maximum Ozone level was reached at 18:00 PM local time,
 # 17:00 with no daylight savings time
 ldf <- lapply(c("PM10", "O3", "SO2", "NO2", "CO"), 
-              function(x) get_station_imeca(x, "2017-05-20") %>% 
-                filter(hour == 17) )
+              function(x) get_station_imeca(x, "2018-05-04") %>% 
+                filter(hour == 16) )
 ```
 
 
@@ -166,13 +168,15 @@ qmplot(x1, x2, data = data.frame(grid), geom = "blank",
        maptype = "toner-lite", source = "stamen", zoom = 10)  +
   geom_tile(data = idw_tiles_max, aes(x = lon, y = lat, fill = var1.pred), 
             alpha = .8) + 
-  scale_fill_distiller("IMECAs", limits = c(0, max(idw_tiles_max$var1.pred)), 
-                       palette = "RdYlBu",
-                       direction = -1) +
+  scale_fill_gradient2(expression(paste(mu,"g/", m^3)), 
+                       low = "#abd9e9",
+                       mid = "#ffffbf",
+                       high = "#f46d43",
+                       midpoint = 100) +
   geom_point(data = stations[stations$station_code %in% reporting_stations, ],
              aes(lon, lat), shape = 22, size = 1.6) +
   ggtitle(paste0("Pollution in Mexico City during the pollution",
-                 " emergency of May 20, 2017"))
+                 " emergency of May 4, 2018"))
 
 ```
 
