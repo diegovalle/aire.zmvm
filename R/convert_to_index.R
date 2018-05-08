@@ -46,7 +46,7 @@ single_to_index <- function(value, pollutant) {
 #' \item{EXTREMADAMENTE MALA}{Extremely Bad: > 200 serious health issues}
 #'
 #' @export
-#' @seealso \href{NADF-009-AIRE-2006}{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf}
+#' @seealso \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf}{NADF-009-AIRE-2006}
 #'
 #' @family convert functions
 #' @examples
