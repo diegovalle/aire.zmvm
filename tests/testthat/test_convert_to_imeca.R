@@ -78,6 +78,9 @@ test_that( ("convert units"), {
                  "Are you sure the O3 value is in ppb")
   expect_warning(convert_to_imeca(.2, "O3"),
                  "Are you sure the O3 value is in ppb")
+  expect_error(convert_to_imeca())
+  expect_error(convert_to_imeca(123))
+  expect_error(convert_to_imeca("ERROR", "O3"))
   expect_silent(convert_to_imeca(1, "O3"))
 
   expect_equal(convert_to_imeca(5, "PM25"), 21)
