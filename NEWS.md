@@ -1,4 +1,4 @@
-# aire.zmvm 0.7.9000
+# aire.zmvm 0.8.0
 
 ## New features
 
@@ -13,7 +13,7 @@
 
 ## Bug fixes and improvements
 
-* The get data functions now use https://github.com/diegovalle/aire.zmvm as referrer
+* The get_*_data functions now use https://github.com/diegovalle/aire.zmvm as referrer
 * Since there are errors in the wind speed data some functions show a warning or prohibit downloading if certain time ranges are requested
 
 
@@ -24,7 +24,7 @@
 * Make sure the `get_station_imeca` example is not run
 
 
-# aire.zmvm 0.6
+# aire.zmvm 0.6.0
 
 ## New features
 
