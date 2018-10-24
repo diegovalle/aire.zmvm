@@ -154,7 +154,9 @@ now we create a heatmap for each pollutant and plot the maximum value in each ce
 ```{r cache=TRUE}
 # PM10, SO2 require a 24 average, CO an 8 hour ma, others are just the latest value
 get_data_roll <- function(pollutant, mxc, ave) {
-  df <- get_station_month_data(criterion = "HORARIOS", pollutant, 2017, "05") %>% 
+  # Make sure to download data for May 2017
+  df <- get_station_month_data(criterion = "HORARIOS", pollutant, 
+                               2017, "05") %>% 
     group_by(station_code) %>%
     mutate(rollave = rollapply(value, ave,
                                function(x) {
@@ -163,6 +165,7 @@ get_data_roll <- function(pollutant, mxc, ave) {
                                  mean(x, na.rm = TRUE)},
                                fill = NA, align = "right")) %>%
     mutate(value = convert_to_imeca(rollave, pollutant)) %>%
+    # Only the last available hour
     filter(row_number() == n())
   df
 }
@@ -217,12 +220,13 @@ idw$var1.pred <- pmax(pm10$var1.pred,
                       so2$var1.pred, na.rm = TRUE)
 ```
 
+Note that you may have to install a beta version of ggmap by running: ```devtools::install_github("dkahle/ggmap", ref = "tidyup")```
 
 ```{r, warning=FALSE, message=FALSE}
 
 
 qmplot(x, y, data = geography.grd, geom = "blank", 
-       maptype = "roadmap", source = "google", zoom = 10)  +
+       maptype = "toner-lite", source = "stamen", zoom = 10)  +
   geom_tile(data = idw, aes(x = lon, y = lat, fill = var1.pred), alpha = .8) + 
   scale_fill_viridis("IMECAS", limits = c(0, max(idw$var1.pred)), option = "magma") +
   geom_point(data = left_join(get_latest_imeca(), stations, by = "station_code"), 
@@ -232,5 +236,5 @@ qmplot(x, y, data = geography.grd, geom = "blank",
   #scale_color_manual(breaks = c("BUENA", "REGULAR", "MALA", "MUY MALA",
   #                              "EXTREMADAMENTE MALA"),
   #                   values = viridis(5, option = "magma")) +
-  ggtitle("Pollution in Mexico City")
+  ggtitle("Pollution in Mexico City (Midnight May 31, 2017)")
 ```

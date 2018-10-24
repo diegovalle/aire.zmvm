@@ -161,14 +161,14 @@ idw_tiles_max <- data.frame(var1.pred = maxes,
 
 ### Plot
 
-Now we will use the package ggmap to plot the locations of the stations and the pollution grid on top of a map.
+Now we will use the package ggmap to plot the locations of the stations and the pollution grid on top of a map. Note that you may have to install a beta version of ggmap by running: ```devtools::install_github("dkahle/ggmap", ref = "tidyup")```
 
 ```{r, message=FALSE, warning=FALSE, fig.cap = "Map of Pollution in Mexico City"}
 qmplot(x1, x2, data = data.frame(grid), geom = "blank", 
        maptype = "toner-lite", source = "stamen", zoom = 10)  +
   geom_tile(data = idw_tiles_max, aes(x = lon, y = lat, fill = var1.pred), 
             alpha = .8) + 
-  scale_fill_gradient2(expression(paste(mu,"g/", m^3)), 
+  scale_fill_gradient2("IMECA", 
                        low = "#abd9e9",
                        mid = "#ffffbf",
                        high = "#f46d43",
