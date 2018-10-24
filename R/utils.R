@@ -36,13 +36,14 @@ round_away_from_zero <- function(r) {
   z * posneg
 }
 
-#' Title
+#' Recode pollutant abbreviations
 #'
 #' @param pollutant type of pollutant (O3, SO2, etc)
 #'
 #' @return data.frame
 #' @export
 #' @importFrom dplyr recode
+#' @keywords internal
 .recode_pollutant <- function(pollutant) {
   recode(pollutant,
          "pm2" = "PM25",
@@ -61,13 +62,14 @@ round_away_from_zero <- function(r) {
          "PM2.5" = "PM25")
 }
 
-#' Title
+#' Recode numeric codes to concentration units (extended)
 #'
-#' @param code numeric code for the units
+#' @param code numeric code for the the units
 #'
 #' @return data.frame
 #' @export
 #' @importFrom dplyr recode
+#' @keywords internal
 .recode_unit_code <- function(code) {
   recode(code,
          `1`  =	"ppb",
@@ -90,13 +92,14 @@ round_away_from_zero <- function(r) {
   )
 }
 
-#' Title
+#'  Recode numeric codes to concentration units
 #'
 #' @param pollutant type of pollutant (O3, SO2, etc)
 #'
 #' @return data.frame
 #' @export
 #' @importFrom dplyr recode
+#' @keywords internal
 .recode_unit <- function(pollutant) {
   recode(pollutant,
          "pm2" = "\u00B5g/m\u00B3",
@@ -125,6 +128,7 @@ round_away_from_zero <- function(r) {
 #' @importFrom readxl read_excel
 #' @importFrom tidyr gather
 #' @importFrom utils download.file unzip
+#' @keywords internal
 .get_archive_wsp <- function(syear) {
   download_loc <- paste0("http://148.243.232.112:8080/opendata/excel/",
                          "REDMET/", syear, "REDMET.zip")

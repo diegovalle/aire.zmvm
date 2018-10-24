@@ -3,7 +3,6 @@
 #' @param year year to download
 #' @param pollutant pollutant to filter by
 #'
-#'
 #' @importFrom stringr str_c  str_sub str_replace_all
 #' @importFrom readr read_csv col_character col_double col_integer
 #' @importFrom dplyr filter
@@ -259,7 +258,7 @@ download_horario_by_month <- function(pollutant, year){
 #' @export
 #' @family raw data functions
 #' @seealso \code{\link{stations}} for a data.frame with the location and names
-#' of all polution measuring stations,
+#' of all pollution measuring stations,
 #' @importFrom progress progress_bar
 #'
 #' @examples
@@ -362,7 +361,7 @@ get_station_data <- function(criterion, pollutant, year,
 #' @export
 #' @family raw data functions
 #' @seealso \code{\link{stations}} for a data.frame with the location and names
-#' of all polution measuring stations
+#' of all pollution measuring stations
 #' @importFrom stringr str_pad
 #' @examples
 #' \dontrun{
