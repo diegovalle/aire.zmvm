@@ -228,19 +228,19 @@ convert_to_imeca <- function(value, pollutant, showWarnings = TRUE) {
   # The rsinaica package returns some values in ppm, while this one uses
   # ppb. Make sure there are no surprises when converting to IMECAs
   co_values <- value[which(pollutant == "CO")]
-  if (length(co_values) && any(co_values > 50, na.rm = TRUE))
+  if (length(co_values) && all(co_values > 50, na.rm = TRUE))
     warning("Are you sure the CO value is in ppm (some are really high)",
             call. = FALSE)
   so2_values <- value[which(pollutant == "SO2")]
-  if (length(so2_values) && any(so2_values < .5, na.rm = TRUE))
+  if (length(so2_values) && all(so2_values < .5, na.rm = TRUE))
     warning("Are you sure the SO2 value is in ppb? Looks like it is in ppm",
             call. = FALSE)
   no2_values <- value[which(pollutant == "NO2")]
-  if (length(no2_values) && any(no2_values < .5, na.rm = TRUE))
+  if (length(no2_values) && all(no2_values < .5, na.rm = TRUE))
     warning("Are you sure the NO2 value is in ppb? Looks like it is in ppm",
             call. = FALSE)
   o3_values <- value[which(pollutant == "O3")]
-  if (length(o3_values) && any(o3_values < .7, na.rm = TRUE))
+  if (length(o3_values) && all(o3_values < .7, na.rm = TRUE))
     warning("Are you sure the O3 value is in ppb? Looks like it is in ppm",
             call. = FALSE)
 
