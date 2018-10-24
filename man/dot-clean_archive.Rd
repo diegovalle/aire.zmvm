@@ -17,3 +17,4 @@ data.frame
 \description{
 Clean archive files
 }
+\keyword{internal}

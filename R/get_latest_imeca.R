@@ -1,8 +1,9 @@
-#' Title
+#' Convert a the time string from the aire.cdmx website to a date
 #'
 #' @param time_div time to convert
 #'
 #' @importFrom stringr str_match str_replace str_replace_all str_detect
+#' @keywords internal
 .convert_time <- function(time_div){
   time_div <- str_replace_all(time_div, "\n|\t", "")
   time_div <- str_replace(time_div, "h,(.|\n)+?(?=[0-9])", "h")

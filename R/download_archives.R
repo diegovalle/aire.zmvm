@@ -450,6 +450,7 @@ download_pressure <- function(year, progress = interactive()) {
 #' @return data.frame
 #' @export
 #' @importFrom stringr str_replace_all str_sub
+#' @keywords internal
 .clean_archive <-  function(df, include_hour) {
   names(df) <- c("date", "station_code", "pollutant", "value", "unit")
 
