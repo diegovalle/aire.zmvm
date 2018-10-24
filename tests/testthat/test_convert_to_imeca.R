@@ -28,7 +28,7 @@ test_that( ("convert units"), {
                  "The vectors are of unequal length")
 
   expect_equal(
-    convert_to_imeca(-1, "NO2")
+    suppressWarnings(convert_to_imeca(-1, "NO2"))
     , NA)
   expect_equal(
     convert_to_imeca(NA, "NO2")
@@ -78,6 +78,7 @@ test_that( ("convert units"), {
                  "Are you sure the O3 value is in ppb")
   expect_warning(convert_to_imeca(.2, "O3"),
                  "Are you sure the O3 value is in ppb")
+
   expect_error(convert_to_imeca())
   expect_error(convert_to_imeca(123))
   expect_error(convert_to_imeca("ERROR", "O3"))
@@ -96,3 +97,4 @@ test_that( ("convert units"), {
   expect_equal(convert_to_imeca(6, "SO2"), 5)
 
 })
+

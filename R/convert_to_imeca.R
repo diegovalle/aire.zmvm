@@ -56,8 +56,6 @@ pm25_to_imeca <- function(value){
 
 # http://www.aire.cdmx.gob.mx/default.php?opc=%27ZaBhnmI=&dc=%27aQ==
 o3_to_imeca <- function(value){
-  if (value < .7)
-    warning("Are you sure the O3 value is in ppb. Looks like it is in ppm")
   value <- value / 1000
   if (value >= 0.000 & value <= 0.070){
     ret <- 714.29 * value
@@ -80,8 +78,6 @@ o3_to_imeca <- function(value){
 
 # http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
 no2_to_imeca <- function(value){
-  if (value < .5)
-    warning("Are you sure the NO2 value is in ppb. Looks like it is in ppm")
   value <- value / 1000
   if (value >= 0.000 & value <= 0.105){
     ret <- value * 50 / 0.105
@@ -99,8 +95,6 @@ no2_to_imeca <- function(value){
 
 # http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
 so2_to_imeca <- function(value){
-  if (value < .5)
-    warning("Are you sure the SO2 value is in ppb. Looks like it is in ppm")
   value <- value / 1000
   ret <- value * 100 / 0.13
   return(round_away_from_zero(ret))
@@ -108,8 +102,6 @@ so2_to_imeca <- function(value){
 
 # http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
 co_to_imeca <- function(value){
-  if (value > 50)
-    warning("Are you sure the CO value is in ppm")
   if (value >= 0.000 & value <=  5.50){
     ret <- value * 50 / 5.50
   } else if (value > 5.50  & value <= 11.00){
@@ -233,6 +225,20 @@ convert_to_imeca <- function(value, pollutant, showWarnings = TRUE) {
                    "of the shorter vector to match the longer vector."),
             call. = FALSE)
   }
+  # The rsinaica package returns some values in ppm, while this one uses
+  # ppb. Make sure there are no surprises when converting to IMECAs
+  co_values <- value[which(pollutant == "CO")]
+  if (length(co_values) && any(co_values > 50, na.rm = TRUE))
+    warning("Are you sure the CO value is in ppm (some are really high)")
+  so2_values <- value[which(pollutant == "SO2")]
+  if (length(so2_values) && any(so2_values < .5, na.rm = TRUE))
+    warning("Are you sure the SO2 value is in ppb? Looks like it is in ppm")
+  no2_values <- value[which(pollutant == "NO2")]
+  if (length(no2_values) && any(no2_values < .5, na.rm = TRUE))
+    warning("Are you sure the NO2 value is in ppb? Looks like it is in ppm")
+  o3_values <- value[which(pollutant == "O3")]
+  if (length(o3_values) && any(o3_values < .7, na.rm = TRUE))
+    warning("Are you sure the O3 value is in ppb? Looks like it is in ppm")
 
   as.vector(unname(mapply(to_imeca, contaminant = pollutant, value = value)))
 }
