@@ -1,4 +1,4 @@
-title: Download Mexico City Air Quality Data
+
 url: https://hoyodesmog.diegovalle.net/aire.zmvm
 template:
   params:
@@ -6,9 +6,11 @@ template:
       api_key: e207e1b66160419a258ba9eb03372385
       index_name: aire_zmvm
     ganalytics: UA-100264-10
+
 authors:
   Diego Valle-Jones:
     href: https://www.diegovalle.net
+
 reference:
   - title: Raw Data Functions
     desc: Functions for downloading pollution, wind, temperature, rh in the original units
