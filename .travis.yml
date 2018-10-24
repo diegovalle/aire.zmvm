@@ -2,6 +2,7 @@
 
 language: r
 #cache: packages
+cache: false
 warnings_are_errors: true
 
 env:
