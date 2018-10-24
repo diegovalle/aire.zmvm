@@ -1,7 +1,7 @@
 Mexico City Air Quality Data
 ================
 Diego Valle-Jones
-March 25, 2018
+October 24, 2018
 
 -   [What does it do?](#what-does-it-do)
 -   [Installation](#installation)
@@ -144,7 +144,7 @@ o3 <- get_station_data(criterion = "MAXIMOS", # Can be one of MAXIMOS (daily max
                                               # or HORARIOS (hourly average)
                        pollutant = "O3", # Can be one of "SO2", "CO", "NOX", "NO2", "NO", "O3", 
                                          # "PM10", "PM25", "WSP", "WDR", "TMP", "RH"
-                       year = 2009:2017) # A numeric vector, the earliest year allowed is 1986
+                       year = 2009:2018) # A numeric vector, the earliest year allowed is 1986
 knitr::kable(head(o3))
 ```
 
@@ -186,6 +186,7 @@ ggplot(max_daily_df,
                linetype = 2)  +
   xlab("date") +
   ylab("parts per billion") +
+  scale_x_continuous(breaks = c(2010, 2012, 2014, 2016, 2018)) +
   ggtitle("Maximum daily ozone concentration and 30 day rolling average", 
           subtitle = paste0("Red lines indicate the values necessary to ",
                             "activate a phase I smog alert.",
