@@ -38,7 +38,7 @@ round_away_from_zero <- function(r) {
 
 #' Title
 #'
-#' @param code
+#' @param pollutant type of pollutant (O3, SO2, etc)
 #'
 #' @return data.frame
 #' @export
@@ -63,7 +63,7 @@ round_away_from_zero <- function(r) {
 
 #' Title
 #'
-#' @param code
+#' @param code numeric code for the units
 #'
 #' @return data.frame
 #' @export
@@ -92,7 +92,7 @@ round_away_from_zero <- function(r) {
 
 #' Title
 #'
-#' @param code
+#' @param pollutant type of pollutant (O3, SO2, etc)
 #'
 #' @return data.frame
 #' @export
