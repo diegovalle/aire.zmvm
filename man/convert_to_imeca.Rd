@@ -66,3 +66,4 @@ For the formulas on how to convert O3, PM10, and PM2.5 visit:
 
 Other convert functions: \code{\link{convert_to_index}}
 }
+\concept{convert functions}

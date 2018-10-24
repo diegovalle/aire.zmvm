@@ -61,3 +61,4 @@ head(df_o3[order(-df_o3$value), ])
 Other IMECA functions: \code{\link{get_latest_imeca}},
   \code{\link{get_zone_imeca}}
 }
+\concept{IMECA functions}

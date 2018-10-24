@@ -125,3 +125,4 @@ head(df2)
 Other IMECA functions: \code{\link{get_latest_imeca}},
   \code{\link{get_station_imeca}}
 }
+\concept{IMECA functions}

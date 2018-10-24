@@ -37,3 +37,4 @@ head(df)
 Other IMECA functions: \code{\link{get_station_imeca}},
   \code{\link{get_zone_imeca}}
 }
+\concept{IMECA functions}

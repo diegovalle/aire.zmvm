@@ -38,3 +38,4 @@ convert_to_index(c(12.1, 215, 355), c("PM25", "PM10", "PM10"))
 
 Other convert functions: \code{\link{convert_to_imeca}}
 }
+\concept{convert functions}
