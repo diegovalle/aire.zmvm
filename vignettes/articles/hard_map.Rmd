@@ -154,10 +154,11 @@ now we create a heatmap for each pollutant and plot the maximum value in each ce
 ```{r cache=TRUE}
 # PM10, SO2 require a 24 average, CO an 8 hour ma, others are just the latest value
 get_data_roll <- function(pollutant, mxc, ave) {
-  # Make sure to download data for May 2017
+  # Make sure to download data for June 2018
   df <- get_station_month_data(criterion = "HORARIOS", pollutant, 
-                               2017, "05") %>% 
+                               2018, "06") %>% 
     group_by(station_code) %>%
+    arrange(date, hour) %>%
     mutate(rollave = rollapply(value, ave,
                                function(x) {
                                  if(sum(is.na(x)) > ave / 4)
@@ -165,8 +166,8 @@ get_data_roll <- function(pollutant, mxc, ave) {
                                  mean(x, na.rm = TRUE)},
                                fill = NA, align = "right")) %>%
     mutate(value = convert_to_imeca(rollave, pollutant)) %>%
-    # Only the last available hour
-    filter(row_number() == n())
+    # Only 3 PM (without daylight savings)
+    filter(date == "2018-06-06" & hour == 15)
   df
 }
 
@@ -236,5 +237,5 @@ qmplot(x, y, data = geography.grd, geom = "blank",
   #scale_color_manual(breaks = c("BUENA", "REGULAR", "MALA", "MUY MALA",
   #                              "EXTREMADAMENTE MALA"),
   #                   values = viridis(5, option = "magma")) +
-  ggtitle("Pollution in Mexico City (Midnight May 31, 2017)")
+  ggtitle("Pollution in Mexico City (June 6 16:00PM, 2018)")
 ```

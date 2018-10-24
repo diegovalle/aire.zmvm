@@ -61,9 +61,9 @@ library("ggmap")
 library("sp")
 library("gstat")
 
-# Download hourly data for all pollutants during February 20, 2018 
-# The maximum Ozone level was reached at 18:00 PM local time,
-# 17:00 with no daylight savings time
+# Download hourly data for all pollutants during May 04, 2018 
+# The maximum Ozone level was reached at 17:00 PM local time,
+# 16:00 with no daylight savings time
 ldf <- lapply(c("PM10", "O3", "SO2", "NO2", "CO"), 
               function(x) get_station_imeca(x, "2018-05-04") %>% 
                 filter(hour == 16) )
@@ -80,7 +80,7 @@ You may have noticed that the code comments mention the local time as being 1 ho
 of that returned by the function. That's because the hourly data returned by `get_station_imeca` comes in a format that is not affected by daylight savings time—i.e. 6 hours behind UTC (*Etc/GMT+6*). If, for example, you ever want to analyze pollution levels at peak commuting times, you'll want to convert the time to the local timezone of *America/Mexico_City*. You can use the following code to do the conversion:
 
 ```{r}
-format(as.POSIXct("2017-05-20 17:00", tz = "Etc/GMT+6"), 
+format(as.POSIXct("2017-05-04 16:00", tz = "Etc/GMT+6"), 
        tz = "America/Mexico_City", 
        usetz = TRUE)
 ```
