@@ -14,6 +14,7 @@
 ## Bug fixes and improvements
 
 * The get_*_data functions now use https://github.com/diegovalle/aire.zmvm as referrer
+* Show a warning when `convert_to_imeca` thinks you are using ppm instead of ppb
 * Since there are errors in the wind speed data some functions show a warning or prohibit downloading if certain time ranges are requested
 
 
@@ -45,7 +46,7 @@ maximums and daily minimums
 * `get_station_month_data` warnings when data doesn't match the archives
 
 ## Deprecated and Defunct
-* `get_latest_data` is deprecated. You should instead use `get_latest_imeca`. 
+* `get_latest_data` is deprecated. You should instead use `get_latest_imeca`.
 * `get_zone_data` is deprecated. You should instead use `get_zone_imeca`.
 * `get_station_data_monthly` is deprecated. You should instead use `get_station_month_data`.
 * `showWarnings` argument to `get_zone_imeca` was deprecated for `show_messages`.
