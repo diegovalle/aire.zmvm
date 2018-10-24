@@ -225,24 +225,6 @@ convert_to_imeca <- function(value, pollutant, showWarnings = TRUE) {
                    "of the shorter vector to match the longer vector."),
             call. = FALSE)
   }
-  # The rsinaica package returns some values in ppm, while this one uses
-  # ppb. Make sure there are no surprises when converting to IMECAs
-  co_values <- value[which(pollutant == "CO")]
-  if (length(co_values) && all(co_values > 50, na.rm = TRUE))
-    warning("Are you sure the CO value is in ppm (some are really high)",
-            call. = FALSE)
-  so2_values <- value[which(pollutant == "SO2")]
-  if (length(so2_values) && all(so2_values < .5, na.rm = TRUE))
-    warning("Are you sure the SO2 value is in ppb? Looks like it is in ppm",
-            call. = FALSE)
-  no2_values <- value[which(pollutant == "NO2")]
-  if (length(no2_values) && all(no2_values < .5, na.rm = TRUE))
-    warning("Are you sure the NO2 value is in ppb? Looks like it is in ppm",
-            call. = FALSE)
-  o3_values <- value[which(pollutant == "O3")]
-  if (length(o3_values) && all(o3_values < .7, na.rm = TRUE))
-    warning("Are you sure the O3 value is in ppb? Looks like it is in ppm",
-            call. = FALSE)
 
   as.vector(unname(mapply(to_imeca, contaminant = pollutant, value = value)))
 }
