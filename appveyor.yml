@@ -33,7 +33,7 @@ environment:
   - R_VERSION: release
     R_ARCH: x64
 
-  - R_VERSION: patched
+#  - R_VERSION: patched
 
 matrix:
   fast_finish: true

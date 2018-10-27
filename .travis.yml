@@ -1,8 +1,9 @@
 # Sample .travis.yml for R projects
 
 language: r
-#cache: packages
-cache: false
+cache: packages
+# Sometimes it's necessary to rebuild the cache
+#cache: false
 warnings_are_errors: true
 
 env:
@@ -25,9 +26,9 @@ matrix:
       dist: trusty
       sudo: false
       r: oldrel
-    - os: osx
-      osx_image: xcode8
-      r: release
+#    - os: osx
+#      osx_image: xcode8
+#      r: release
 
 
 branches:
