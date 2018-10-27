@@ -1,18 +1,7 @@
----
-output: github_document
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, echo = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  out.width = '100%'
-)
-```
-
-# aire.zmvm
+aire.zmvm
+=========
 
 [![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.svg?branch=master)](https://travis-ci.org/diegovalle/aire.zmvm) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/c7kg6o68exx0lirg?svg=true)](https://ci.appveyor.com/project/diegovalle/aire-zmvm/branch/master) [![Coverage Status](https://img.shields.io/codecov/c/github/diegovalle/aire.zmvm/master.svg)](https://codecov.io/github/diegovalle/aire.zmvm?branch=master) [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable) <a href="https://cran.r-project.org/package=aire.zmvm"><img src="https://www.r-pkg.org/badges/version/aire.zmvm" alt="Cran Status Badge"></a>
 
@@ -20,13 +9,14 @@ knitr::opts_chunk$set(
 
 <br>
 
-```aire.zmv``` is an R package for downloading air quality data from the Mexico City metro area. This package can download real-time, daily maximum, minimum, or hourly average data for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City). It also includes the locations of all the measuring stations and zones, and a function to perform inverse distance weighting modified to work with wind direction.
- 
-## Installation
+`aire.zmv` is an R package for downloading air quality data from the Mexico City metro area. This package can download real-time, daily maximum, minimum, or hourly average data for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City). It also includes the locations of all the measuring stations and zones, and a function to perform inverse distance weighting modified to work with wind direction.
+
+Installation
+------------
 
 You can always install the development version from GitHub:
 
-```r
+``` r
 if (!require(devtools)) {
     install.packages("devtools")
 }
@@ -35,18 +25,19 @@ devtools::install_github('diegovalle/aire.zmvm')
 
 To install the most recent package version from CRAN type:
 
-```r
+``` r
 install.packages("aire.zmvm")
 library(aire.zmvm)
 ```
+
 Note that the version on CRAN might not reflect the most recent changes made to this package.
 
-
-## Usage
+Usage
+-----
 
 Create a time series of ozone levels in ppb from 2009 to 2018 and highlight the phase I smog alerts.
 
-```{r load, warning=FALSE, message=FALSE}
+``` r
 ## Auto-install required R packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(aire.zmvm, dplyr, ggplot2, ggseas)
@@ -71,10 +62,10 @@ o3_max <- o3 %>%
 # source: http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/pcaa-modificaciones.pdf
 contingencia_levels <- data.frame(ppb = c(216, 210, 205, 
                                           199, 185, 155, 155),
-  start = c(2009, 2009.4973, 2010.4973, 2011.5795, 	
-            2012.6052, 	2016.291, 2016.4986),
+  start = c(2009, 2009.4973, 2010.4973, 2011.5795,  
+            2012.6052,  2016.291, 2016.4986),
   end = c(2009.4973, 2010.4945, 2011.4945, 
-          2012.6025,	2016.2883, 2016.4959, Inf))
+          2012.6025,    2016.2883, 2016.4959, Inf))
 max_daily_df <- tsdf(ts(o3_max$max, start = c(2009,1), frequency = 365.25))
 
 contingencia <- o3_max
@@ -88,11 +79,20 @@ contingencia$contingencia <- case_when(
 
 Here's what the data we just downloaded looks like:
 
-```{r}
+``` r
 knitr::kable(head(o3))
 ```
 
-```{r contingencias, fig.dim=c(11,6), warning=FALSE}
+| date       | station\_code | pollutant | unit |  value|
+|:-----------|:--------------|:----------|:-----|------:|
+| 2009-01-01 | ACO           | O3        | ppb  |     67|
+| 2009-01-02 | ACO           | O3        | ppb  |     71|
+| 2009-01-03 | ACO           | O3        | ppb  |    112|
+| 2009-01-04 | ACO           | O3        | ppb  |     91|
+| 2009-01-05 | ACO           | O3        | ppb  |     70|
+| 2009-01-06 | ACO           | O3        | ppb  |     71|
+
+``` r
 ggplot(max_daily_df,
        aes(x = x, y = y)) + 
   geom_line(colour = "grey75", alpha = .5) +
@@ -114,3 +114,5 @@ ggplot(max_daily_df,
                             "declare a pollution alert\nData source: SEDEMA")) + 
   theme_bw()
 ```
+
+<img src="index_files/figure-markdown_github/contingencias-1.png" width="100%" />
