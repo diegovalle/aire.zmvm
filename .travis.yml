@@ -1,9 +1,9 @@
 # Sample .travis.yml for R projects
 
 language: r
-cache: packages
+#cache: packages
 # Sometimes it's necessary to rebuild the cache
-#cache: false
+cache: false
 warnings_are_errors: true
 
 env:
