@@ -38,9 +38,9 @@ test_that("download_meteorological ", {
 
   expect_warning(df <- download_meteorological(2016))
   expect_equal(df$station_code[1:5], c("ACO", "ACO", "ACO", "ACO", "AJU"))
-  expect_equal(df$value[1:5], c(73, 14.1, 35.0, 0.9, 88.0))
+  expect_equal(df$value[1:5], c(73, 14.1, 35.0, 2.0, 88.0))
   expect_equal(subset(df, date == "2016-01-01" & station_code == "MON" &
-                        hour == 1 & pollutant == "WSP")$value, .4)
+                        hour == 1 & pollutant == "WSP")$value, 1)
 })
 
 test_that( ("download_lead "), {
