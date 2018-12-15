@@ -96,20 +96,20 @@ test_that("get_station_data matches website", {
                  2.2, 1.7, 2.4, 2, 2.6, 3.4, 3.7, 3, 3.7, 3.3, 2.9))
   expect_equal(unname(unlist(subset(df_max_2016,
                                     date == as.Date("2016-01-05"))$value)),
-               c(52, 30, 0, 82, 76, 242, 0, NA, 0, 84, 0, 42, 112, 86, 0, 88,
-                 32, 64, 0, 0, NA, 95, 71, NA, 0, NA, NA, 116, NA, 0, 0, 63, NA,
-                 0, 111, 110, 0, 0, 75, 108, 151))
+               c(52, 30, 0, 82, 76, 242, 0, NA, 0, 84, 0, 42, 112, 86, NA, 0,
+                 88, 32, 64, 0, 0, NA, 95, 71, NA, 0, NA, NA, NA, 116, NA, 0,
+                 0, 63, NA, 0, 111, 110, 0, 0, 75, 108, 151))
 
   expect_equal(unname(unlist(subset(df_min_2015_18,
                                     date == as.Date("2015-01-01"))$value)),
                c(17, NA, NA, 11, NA, 11, NA, NA, NA, 9, NA, NA, 38, 16, NA,
-                 12, NA, 13, NA, NA, NA, 18, 12, NA, NA, 9, NA, 9, 106, NA, 10,
-                 103, NA, NA, NA, 7, NA, NA, 15, 4, NA))
+                 NA, 12, NA, 13, NA, NA, NA, 18, 12, NA, NA, 9, NA, NA, 9, 106,
+                 NA, 10, 103, NA, NA, NA, 7, NA, NA, 15, 4, NA))
   expect_equal(unname(unlist(subset(df_max_2015,
                                     date == as.Date("2015-02-15"))$value)),
                c(79, 72, 52, 60, NA, NA, NA, 70, NA, NA, NA, NA, 71, 38, 68,
-                 NA, 61, NA, 72, NA, 83, NA, 79, 85, NA, 82, 73, NA, 76, 69, 94,
-                 67, NA, 61, NA, NA, 86, 43, 59, 72, 73, 69, 56))
+                 NA, NA, 61, NA, 72, NA, 83, NA, 79, 85, NA, 82, 73, NA, NA, 76,
+                 69, 94, 67, NA, 61, NA, NA, 86, 43, 59, 72, 73, 69, 56))
   expect_equal(unname(unlist(subset(df_max_2005,
                                     date == as.Date("2005-03-03"))$value)),
                c(NA, NA, 14, 139, 55, NA, NA, 11, NA, NA, NA, NA, NA, 202, NA,
