@@ -13,7 +13,7 @@ test_that("convert_to_index", {
   expect_equal(convert_to_index(96, "O3"), "MALA")
   expect_equal(convert_to_index(95.4, "O3"), "REGULAR")
   expect_equal(convert_to_index(95.5, "O3"), "MALA")
-  expect_equal(convert_to_index(c(12.1, 215, 355),
-                                      c("PM25", "PM10", "PM10")),
-               c("REGULAR", "MUY MALA", "EXTREMADAMENTE MALA"))
+  expect_equal(convert_to_index(c(12.1, 215, 405),
+                                      c("PM25", "PM10", "O3")),
+               c("REGULAR", "MUY MALA", "PELIGROSA"))
 })

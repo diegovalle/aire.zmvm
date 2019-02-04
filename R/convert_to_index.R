@@ -1,15 +1,13 @@
 single_to_index <- function(value, pollutant) {
   breakup <- function(value, breaks){
     cut(value,
-        c(0, 51, 101, 151, 201, Inf),
-        c("BUENO", "REGULAR", "MALA", "MUY MALA",
-          "EXTREMADAMENTE MALA"),
+        c(0, 51, 101, 151, 201, 301, Inf),
+        c("BUENA", "REGULAR", "MALA", "MUY MALA",
+          "EXTREMADAMENTE MALA", "PELIGROSA"),
         right = FALSE)
   }
   if (is.na(value))
     return(NA_character_)
-  if (pollutant == "O3" & value < .7)
-    warning("Are you sure the O3 value is in ppb. Looks like it is in ppm")
   ret <- switch(pollutant,
          PM10  = breakup(convert_to_imeca(value, pollutant)),
          PM25 = breakup(convert_to_imeca(value, pollutant)),
