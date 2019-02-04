@@ -171,7 +171,7 @@
 #' }
 #'
 get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
-                          showWarnings = TRUE, show_messages = TRUE) {
+                           showWarnings = TRUE, show_messages = TRUE) {
   if (!missing("showWarnings"))
     warning(paste0("`showWarnings` argument deprecated. Use the function ",
                    "`suppressWarnings` instead."),
@@ -213,7 +213,7 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
            call. = FALSE)
   zone <- unique(zone)
   if (!(identical("HORARIOS", criterion) || identical("MAXIMOS", criterion)))
-      stop("criterion should be 'HORARIOS' or 'MAXIMOS'", call. = FALSE)
+    stop("criterion should be 'HORARIOS' or 'MAXIMOS'", call. = FALSE)
   # the API expects lowercase letters
   criterion <- tolower(criterion)
 
@@ -228,34 +228,42 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
     message(paste0("Sometime in 2015-2017 the stations",
                    " ACO, AJU, INN, MON, and MPA were excluded from the",
                    " index"))
-  df <- .download_data_zone(criterion, pollutant, zone, start_date, end_date)
+  tryCatch({
+    df <- .download_data_zone(criterion, pollutant, zone, start_date, end_date)
 
-  names(df) <- df[1, ]
-  names(df)[1] <- "date"
-  names(df) <- str_replace_all(names(df), "\\s", "")
-  df <- df[2:nrow(df), ]
+    names(df) <- df[1, ]
+    names(df)[1] <- "date"
+    names(df) <- str_replace_all(names(df), "\\s", "")
+    df <- df[2:nrow(df), ]
 
-  # when the data is HORARIOS the second column corresponds to the hour
-  if (criterion != tolower("HORARIOS")) {
-    df <- df %>%
-      gather(zone_pollutant, value, -date) %>%
-      separate(zone_pollutant, c("zone", "pollutant"), sep = 2)
-  } else {
-    names(df)[2] <- "hour"
-    df <- df %>%
-      gather(zone_pollutant, value, -date, -hour) %>%
-      separate(zone_pollutant, c("zone", "pollutant"), sep = 2)
+    # when the data is HORARIOS the second column corresponds to the hour
+    if (criterion != tolower("HORARIOS")) {
+      df <- df %>%
+        gather(zone_pollutant, value, -date) %>%
+        separate(zone_pollutant, c("zone", "pollutant"), sep = 2)
+    } else {
+      names(df)[2] <- "hour"
+      df <- df %>%
+        gather(zone_pollutant, value, -date, -hour) %>%
+        separate(zone_pollutant, c("zone", "pollutant"), sep = 2)
+    }
+    # Some  values are invalid and to avoid warnings I correct them manually
+    df[which(df$value == ""), "value"] <- NA
+    df[which(df$value == "M"), "value"] <- NA
+    df$value <- as.numeric(df$value)
+    df$date <- as.Date(df$date)
+    df$unit <- "IMECA"
+    if (criterion != tolower("HORARIOS")) {
+      as.data.frame(df[, c("date", "zone", "pollutant", "unit", "value")])
+    } else {
+      as.data.frame(df[, c("date", "hour", "zone", "pollutant", "unit", "value")])
+    }
+  },
+  error = function(cond) {
+    message("An error occurred downloading data from www.aire.cdmx.gob.mx:")
+    message(cond)
+    return(NULL)
   }
-  # Some  values are invalid and to avoid warnings I correct them manually
-  df[which(df$value == ""), "value"] <- NA
-  df[which(df$value == "M"), "value"] <- NA
-  df$value <- as.numeric(df$value)
-  df$date <- as.Date(df$date)
-  df$unit <- "IMECA"
-  if (criterion != tolower("HORARIOS")) {
-    as.data.frame(df[, c("date", "zone", "pollutant", "unit", "value")])
-  } else {
-    as.data.frame(df[, c("date", "hour", "zone", "pollutant", "unit", "value")])
-  }
+  )
 
-}
+  }

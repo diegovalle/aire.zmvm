@@ -56,46 +56,54 @@
 #' df <- get_latest_imeca()
 #' head(df)
 get_latest_imeca <- function() {
-  url <- "http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php"
+  tryCatch({
+    url <- "http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php"
 
-  result <- GET(url, timeout(120),
-                add_headers("user-agent" =
-                              "https://github.com/diegovalle/aire.zmvm"))
-  if (http_error(result))
-    stop(sprintf("The request to <%s> failed [%s]",
-                 url,
-                 status_code(result)
-    ), call. = FALSE)
-  if (http_type(result) != "text/html")
-    stop(paste0(url, " did not return text/html", call. = FALSE))
+    result <- GET(url, timeout(120),
+                  add_headers("user-agent" =
+                                "https://github.com/diegovalle/aire.zmvm"))
+    if (http_error(result))
+      stop(sprintf("The request to <%s> failed [%s]",
+                   url,
+                   status_code(result)
+      ), call. = FALSE)
+    if (http_type(result) != "text/html")
+      stop(paste0(url, " did not return text/html", call. = FALSE))
 
-  poll_table <- read_html(result)
-  time <- .convert_time(html_text(html_nodes(poll_table, "div#textohora")))
+    poll_table <- read_html(result)
+    time <- .convert_time(html_text(html_nodes(poll_table, "div#textohora")))
 
-  df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE,
-                   fill = TRUE)
-  names(df) <- c("station_code", "municipio", "quality", "pollutant", "value")
-  df <- df[2:nrow(df), ]
-  df$value <- lapply(df$value,
-                     function(x) URLdecode(str_match(URLdecode(x),
-                                                     "'(\\d+)'")[[2]]))
+    df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE,
+                     fill = TRUE)
+    names(df) <- c("station_code", "municipio", "quality", "pollutant", "value")
+    df <- df[2:nrow(df), ]
+    df$value <- lapply(df$value,
+                       function(x) URLdecode(str_match(URLdecode(x),
+                                                       "'(\\d+)'")[[2]]))
 
-  edomex <- html_table(html_nodes(poll_table, "table")[[2]], header = TRUE,
-                       fill = TRUE)
-  names(edomex) <- c("station_code", "municipio",
-                     "quality", "pollutant", "value")
-  edomex <- edomex[2:nrow(edomex), ]
-  edomex$value <- lapply(edomex$value,
-                         function(x) URLdecode(str_match(URLdecode(x),
-                                                         "'(\\d+)'")[[2]]))
+    edomex <- html_table(html_nodes(poll_table, "table")[[2]], header = TRUE,
+                         fill = TRUE)
+    names(edomex) <- c("station_code", "municipio",
+                       "quality", "pollutant", "value")
+    edomex <- edomex[2:nrow(edomex), ]
+    edomex$value <- lapply(edomex$value,
+                           function(x) URLdecode(str_match(URLdecode(x),
+                                                           "'(\\d+)'")[[2]]))
 
-  mxc <- rbind(df, edomex)
-  mxc$value[mxc$value == "NA"] <- NA
-  mxc$value <- as.integer(mxc$value)
-  mxc$datetime <- time
-  mxc$unit <- "IMECA"
-  mxc <- mxc[, c("station_code", "municipio", "quality", "pollutant",
-                 "unit", "value", "datetime")]
+    mxc <- rbind(df, edomex)
+    mxc$value[mxc$value == "NA"] <- NA
+    mxc$value <- as.integer(mxc$value)
+    mxc$datetime <- time
+    mxc$unit <- "IMECA"
+    mxc <- mxc[, c("station_code", "municipio", "quality", "pollutant",
+                   "unit", "value", "datetime")]
 
-  mxc[!is.na(mxc$station_code), ]
+    return(mxc[!is.na(mxc$station_code), ])
+  },
+  error = function(cond) {
+    message("An error occurred downloading data from www.aire.cdmx.gob.mx:")
+    message(cond)
+    return(NULL)
+  }
+  )
 }
