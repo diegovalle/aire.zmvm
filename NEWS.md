@@ -1,3 +1,7 @@
+# aire.zmvm 0.8.1
+
+* `get_zone_imeca` and `get_latest_imeca` return NULL when aire.cdmx.gob.mx is down
+
 # aire.zmvm 0.8.0
 
 ## New features
