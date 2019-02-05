@@ -1,18 +1,5 @@
-# ASUNTO:
-#   RESPUESTA SOLICITUD DE INFORMACIÓN PÚBLICA
-#
-# FOLIO 0112000033218
 
-# El algoritmo para calcular el índice para O3, PM10 y PM2.5 de acuerdo con lo que se menciona en los dos párrafos anteriores se ubica en la siguiente liga:
-#   http://www.aire.cdmx.gob.mx/default.php?opc=%27ZaBhnmI=&dc=%27aQ==
-#
-#   Para NO2, Co y SO2, sigue utilizándose los algoritmos que se encuentran en el Anexo 4 dentro de la norma NADF-009-AIRE-2006 que establece los requisitos para elaborar el Índice Metropolitano de la Calidad del Aire y se encuentra en la siguiente liga:
-#     http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
-
-# for the pm10 conversion from 2006 see
-# http://siga.jalisco.gob.mx/assets/documentos/normatividad/nadf-009-aire-2006.pdf
-
-# http://www.aire.cdmx.gob.mx/default.php?opc=%27ZaBhnmI=&dc=%27aQ==
+# http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2017.pdf
 pm10_to_imeca_2014 <- function(value){
   if (value >= 0.000 & value <= 40){
     ret <- 1.25 * value
@@ -54,7 +41,7 @@ pm25_to_imeca <- function(value){
   return(round_away_from_zero(ret))
 }
 
-# http://www.aire.cdmx.gob.mx/default.php?opc=%27ZaBhnmI=&dc=%27aQ==
+# http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2017.pdf
 o3_to_imeca <- function(value){
   value <- value / 1000
   if (value >= 0.000 & value <= 0.070){
@@ -76,43 +63,68 @@ o3_to_imeca <- function(value){
   return(round_away_from_zero(ret))
 }
 
-# http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
+# http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2017.pdf
 no2_to_imeca <- function(value){
   value <- value / 1000
   if (value >= 0.000 & value <= 0.105){
-    ret <- value * 50 / 0.105
+    ret <- 476.1905 * (value - 0) + 0
   } else if (value > 0.105 & value <= 0.210){
-    ret <- value * 50 / 0.105
-  } else if ( value > 0.210 & value <= 0.315) {
-    ret <- value * 50 / 0.105
-  } else if (value > 0.315 & value <= 0.420) {
-    ret <- value * 50 / 0.105
-  } else if (value > 0.420) {
-    ret <- value * 200 / 0.42
-  }
+    ret <- 471.1538  * (value - 0.106) + 51
+  } else if ( value > 0.210 & value <= 0.430) {
+    ret <- 223.7443 * (value - 0.211) + 101
+  } else if (value > 0.430 & value <= 0.649) {
+    ret <- 224.7706 * (value - 0.431) + 151
+  } else if (value > 0.649 & value <= 1.249) {
+    ret <- 165.2755 * (value - 0.650) + 201
+  } else if (value > 1.249 & value <= 1.649) {
+    ret <- 248.1203 * (value - 1.250) + 301
+  } else if (value > 1.649 & value <= 2.049) {
+    ret <- 248.1203 * (value - 1.650) + 401
+  } else
+    ret <- NA
   return(round_away_from_zero(ret))
 }
 
-# http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
+# http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2017.pdf
 so2_to_imeca <- function(value){
   value <- value / 1000
-  ret <- value * 100 / 0.13
+  if (value >= 0.000 & value <= 0.025 ){
+    ret <- 2000.0000 * (value - 0) + 0
+  } else if (value > 0.025  & value <= 0.110){
+    ret <- 583.3333  * (value - 0.026 ) + 51
+  } else if ( value > 0.110 & value <= 0.207) {
+    ret <- 510.4167 * (value - 0.111 ) + 101
+  } else if (value > 0.207 & value <= 0.304) {
+    ret <- 510.4167 * (value - 0.208) + 151
+  } else if (value > 0.304  & value <= 0.604) {
+    ret <- 331.1037 * (value - 0.305 ) + 201
+  } else if (value > 0.604 & value <= 0.804) {
+    ret <- 497.4874 * (value - 0.605 ) + 301
+  } else if (value > 0.804 & value <= 1.004) {
+    ret <- 497.4874 * (value - 0.805) + 401
+  } else
+    ret <- NA
   return(round_away_from_zero(ret))
 }
 
-# http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf
+# http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2017.pdf
 co_to_imeca <- function(value){
   if (value >= 0.000 & value <=  5.50){
-    ret <- value * 50 / 5.50
+    ret <- 9.0909 * (value - 0) + 0
   } else if (value > 5.50  & value <= 11.00){
-    ret <- value * 50 / 5.50
-  } else if ( value > 11 & value <= 16.50) {
-    ret <- value * 50 / 5.50
-  } else if (value > 16.5 & value <= 22.00) {
-    ret <- value * 50 / 5.50
-  } else if (value > 22.00) {
-    ret <- value * 200 / 22
-  }
+    ret <- 9.0741 * (value - 5.6) + 51
+  } else if ( value > 11 & value <= 13.0) {
+    ret <- 25.7895 * (value - 11.1) + 101
+  } else if (value > 13.0 & value <= 15.4) {
+    ret <- 21.3043 * (value - 13.1) + 151
+  } else if (value > 15.4 & value <= 30.4) {
+    ret <- 6.6443 * (value - 15.5) + 201
+  } else if (value > 30.4 & value <= 40.4) {
+    ret <- 10.0000 * (value - 30.5) + 301
+  } else if (value > 40.4 & value <= 50.4) {
+    ret <- 10.0000 * (value - 40.5) + 401
+  } else
+    ret <- NA
   return(round_away_from_zero(ret))
 }
 
@@ -156,11 +168,8 @@ to_imeca <- function(contaminant, value) {
 #' Note that each pollutant has different averaging periods (see the arguments
 #' section). Because of rounding error results may be off by a couple of points.
 #'
-#' @seealso For the formulas on how to convert O3, PM10, and PM2.5 visit:
-#'   \href{http://www.aire.cdmx.gob.mx/default.php?opc='ZaBhnmI=&dc='aQ==}{¿Como
-#'   se calcula el Índice de Calidad del Aire?}, and for NO2, CO, and SO2:
-#'   \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf}{NADF-009-AIRE-2006}.
-#'    Also \emph{Solicitud de Información} FOLIO 0112000033218
+#' @seealso For the formulas on how to convert visit:
+#'   \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2017.pdf}{AVISO POR EL QUE SE DA A CONOCER EL PROYECTO DE NORMA AMBIENTAL PARA EL DISTRITO FEDERAL}
 #'
 #' @param pollutant type of pollutant. A vector of one or more of the following
 #'   options: \itemize{ \item{"SO2"}{ - Sulfur Dioxide - ppb (24 hour average)}

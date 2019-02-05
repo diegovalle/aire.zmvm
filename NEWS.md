@@ -1,8 +1,9 @@
-# aire.zmvm 0.8.1
+# aire.zmvm 0.9.0
 
 ## Bug fixes and improvements
 
 * `get_zone_imeca` and `get_latest_imeca` now return NULL when aire.cdmx.gob.mx is down
+* Uses NADF-009-AIRE-2017 to convert concentration units to IMECA
 
 # aire.zmvm 0.8.0
 
