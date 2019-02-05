@@ -58,11 +58,8 @@ convert_to_imeca(98, "O3")
 
 }
 \seealso{
-For the formulas on how to convert O3, PM10, and PM2.5 visit:
-  \href{http://www.aire.cdmx.gob.mx/default.php?opc='ZaBhnmI=&dc='aQ==}{¿Como
-  se calcula el Índice de Calidad del Aire?}, and for NO2, CO, and SO2:
-  \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf}{NADF-009-AIRE-2006}.
-   Also \emph{Solicitud de Información} FOLIO 0112000033218
+For the formulas on how to convert visit:
+  \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2017.pdf}{AVISO POR EL QUE SE DA A CONOCER EL PROYECTO DE NORMA AMBIENTAL PARA EL DISTRITO FEDERAL}
 
 Other convert functions: \code{\link{convert_to_index}}
 }

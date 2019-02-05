@@ -35,17 +35,17 @@ test_that( ("convert units"), {
     , NA)
   expect_equal(
     convert_to_imeca(c(450, 350, 250), rep("NO2", 3)),
-    c(214, 167, 119))
+    c(155, 132, 110))
   expect_equal(
     convert_to_imeca(c(450, 350, 48), c("NO2", "NO2", "O3")),
-    c(214, 167, 34))
+    c(155, 132, 34))
 
   expect_equal(convert_to_imeca(90, "NO2"), 43)
   expect_equal(convert_to_imeca(75, "NO2"), 36)
-  expect_equal(convert_to_imeca(150, "NO2"), 71)
-  expect_equal(convert_to_imeca(250, "NO2"), 119)
-  expect_equal(convert_to_imeca(350, "NO2"), 167)
-  expect_equal(convert_to_imeca(450, "NO2"), 214)
+  expect_equal(convert_to_imeca(150, "NO2"), 72)
+  expect_equal(convert_to_imeca(250, "NO2"), 110)
+  expect_equal(convert_to_imeca(350, "NO2"), 132)
+  expect_equal(convert_to_imeca(450, "NO2"), 155)
 
   expect_equal(convert_to_imeca(48, "O3"), 34)
   expect_equal(convert_to_imeca(67, "O3"), 48)
@@ -60,9 +60,9 @@ test_that( ("convert units"), {
 
   expect_equal(convert_to_imeca(1.5, "CO"), 14)
   expect_equal(convert_to_imeca(6, "CO"), 55)
-  expect_equal(convert_to_imeca(12, "CO"), 109)
-  expect_equal(convert_to_imeca(18, "CO"), 164)
-  expect_equal(convert_to_imeca(24, "CO"), 218)
+  expect_equal(convert_to_imeca(12, "CO"), 124)
+  expect_equal(convert_to_imeca(18, "CO"), 218)
+  expect_equal(convert_to_imeca(24, "CO"), 257)
 
   expect_equal(convert_to_imeca(80, "PM10"), 102)
   expect_equal(convert_to_imeca(30, "PM10"), 38)
@@ -89,7 +89,7 @@ test_that( ("convert units"), {
   expect_equal(convert_to_imeca(500.405, "PM25"), NA_real_)
 
 
-  expect_equal(convert_to_imeca(6, "SO2"), 5)
+  expect_equal(convert_to_imeca(6, "SO2"), 12)
 
 })
 
