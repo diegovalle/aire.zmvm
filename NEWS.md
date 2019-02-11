@@ -6,7 +6,7 @@
 * `convert_to_index` added 'PELIGROSA' category
 * `convert_to_imeca` uses NADF-009-AIRE-2017 to convert concentration units to IMECA
 
-# aire.zmvm 0.8.0
+# aire.zmvm 0.8.0.9000
 
 ## New features
 
