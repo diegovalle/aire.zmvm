@@ -1,3 +1,9 @@
+# aire.zmvm 0.8.1.9000
+
+## New features
+
+* Added new stations FAR and SAC to the `stations` data.frame
+
 # aire.zmvm 0.8.1
 
 ## Bug fixes and improvements
