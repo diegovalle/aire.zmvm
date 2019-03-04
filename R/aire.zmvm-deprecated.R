@@ -25,7 +25,7 @@
 #' }
 #'
 get_latest_data <- function(...) {
-  .Deprecated("get_latatest_imeca", package = "aire.zmvm")
+  .Deprecated("get_latest_imeca", package = "aire.zmvm")
   get_latest_imeca(...)
 }
 get_zone_data <- function(...) {
