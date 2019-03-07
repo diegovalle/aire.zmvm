@@ -105,11 +105,11 @@ get_station_imeca <- function(pollutant, date,
     stop("The website returned invalid data. Please check the date format.",
          call. = FALSE)
   pollutant2 <- names(df)[3]
-  df <- df[, !is.na( df[1, ])]
-  names(df) <- df[1, ]
-  names(df)[1] <- "date"
-  names(df)[2] <- "hour"
-  df <- df[2:nrow(df), ]
+  names(df) <- df[2, ]
+  df$date <- date
+  names(df)[1] <- "hour"
+  ## There's an empty row at the end of the data
+  df <- df[3:(nrow(df)-1), ]
   df <- gather(df, station_code, value, -date, -hour)
   df[which(df$value == ""), "value"] <- NA
   df$value <- as.numeric(as.character(df$value))
