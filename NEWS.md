@@ -3,6 +3,9 @@
 ## New features
 
 * Added new stations FAR and SAC to the `stations` data.frame
+
+## Bug fixes and improvements
+
 * Fixes `get_station_imeca` because of a change in the website
 
 # aire.zmvm 0.8.1
