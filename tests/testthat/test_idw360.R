@@ -1,3 +1,4 @@
+context("Wind maps")
 
 test_that("idw360", {
   library(sp)

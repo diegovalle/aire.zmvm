@@ -1,3 +1,5 @@
+context("Utils")
+
 test_that("is.Date works", {
   expect_false(is.Date("test"))
   expect_true(is.Date("2018-01-21"))

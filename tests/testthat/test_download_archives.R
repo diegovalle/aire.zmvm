@@ -1,3 +1,5 @@
+context("Download archives")
+
 test_that("download_pollution", {
   expect_error(download_pollution(1985))
   expect_error(download_pollution(numeric(0)))

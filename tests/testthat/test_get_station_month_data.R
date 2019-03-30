@@ -1,3 +1,5 @@
+context("Get monthly data by station")
+
 test_that("test get_station_month_data", {
   # Invalid function arguments
   expect_error(get_station_month_data("INVALID", "PM10", 2016, 1))

@@ -1,3 +1,4 @@
+context("Get IMECA values by zone")
 
 test_that("zone pollution data matches website", {
   # Invalid function arguments

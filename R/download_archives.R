@@ -338,26 +338,16 @@ download_24hr_average <- function(type, year, progress = interactive()) {
     else if (type == "SO2")
       base_url <- paste0("http://148.243.232.112:8080/opendata/",
                          "promedios_diarios/promedios_")
-    if (year >= 2008)
-      df <- read_csv(str_c(base_url, year, "_", tolower(type), ".csv"),
-                     skip = 8, progress = FALSE,
-                     col_types = list(
-                       `	date`     = col_character(),
-                       id_station   = col_character(),
-                       id_parameter = col_character(),
-                       value        = col_double(),
-                       unit         = col_integer()
-                     ))
-    else
-      df <- read_csv(str_c(base_url, year, "_", tolower(type), ".csv"),
-                     skip = 8, progress = FALSE,
-                     col_types = list(
-                       date         = col_character(),
-                       id_station   = col_character(),
-                       id_parameter = col_character(),
-                       value        = col_double(),
-                       unit         = col_integer()
-                     ))
+
+    df <- read_csv(str_c(base_url, year, "_", tolower(type), ".csv"),
+                   skip = 8, progress = FALSE,
+                   col_types = list(
+                     date         = col_character(),
+                     id_station   = col_character(),
+                     id_parameter = col_character(),
+                     value        = col_double(),
+                     unit         = col_integer()
+                   ))
     .clean_archive(df, FALSE)
   }
   ## Check the year argument is an integer or vector of integers

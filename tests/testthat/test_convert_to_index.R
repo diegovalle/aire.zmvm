@@ -1,3 +1,5 @@
+context("Convert to index")
+
 test_that("convert_to_index", {
   expect_error(convert_to_index("ERROR"))
   expect_error(convert_to_index(133, "ERROR"),

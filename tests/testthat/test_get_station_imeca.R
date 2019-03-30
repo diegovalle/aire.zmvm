@@ -1,3 +1,5 @@
+context("Get station data")
+
 test_that("get_station_imeca pollution data matches the website", {
   # Invalid function arguments
   expect_error(get_station_imeca("INVALID", "2009-01-01"))
