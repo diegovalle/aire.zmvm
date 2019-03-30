@@ -46,14 +46,15 @@ coordinates(grid) <- ~lon+lat
 res <- idw360(values, locations, grid)
 head(res)
 
+\dontrun{
 df <- cbind(res, as.data.frame(grid))
 ## The wind direction compass starts where the 90 degree mark is located
 ggplot(df, aes(lon, lat)) +
   geom_point() +
   geom_spoke(aes(angle = ((90 - pred) \%\% 360) * pi / 180),
              radius = 1,
-             arrow=arrow(length = unit(0.2,"cm")))
-\dontrun{
+             arrow=arrow(length = unit(0.2, "npc")))
+
 library("mapproj")
 ## Random values in each of the measuring stations
 locations <- stations[, c("lon", "lat")]
