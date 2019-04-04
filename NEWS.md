@@ -1,5 +1,9 @@
 # aire.zmvm 0.8.2.9000
 
+## Bugs fixes and improvements
+
+* Fixes `get_station_imeca` because the url to download the data changed
+
 # aire.zmvm 0.8.2
 
 ## New features

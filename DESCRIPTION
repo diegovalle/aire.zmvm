@@ -12,7 +12,7 @@ BugReports: https://github.com/diegovalle/aire.zmvm/issues
 License: BSD_3_clause + file LICENSE
 LazyData: TRUE
 Depends:
-    R (>= 3.0.2)
+    R (>= 3.2.3)
 Suggests:
     knitr,
     rmarkdown,

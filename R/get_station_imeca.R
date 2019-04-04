@@ -71,7 +71,7 @@ get_station_imeca <- function(pollutant, date,
                    " ACO, AJU, INN, MON, and MPA were excluded from the",
                    " index"))
 
-  url <- "http://www.aire.cdmx.gob.mx/default.php?opc=%27aqBjnmc=%27"
+  url <- "http://www.aire.cdmx.gob.mx/default.php?opc=%27aqBjnmI=%27"
   fd <- list(
     fecha       = date,
     RadioGroup1 = switch(pollutant,
@@ -96,7 +96,7 @@ get_station_imeca <- function(pollutant, date,
     ), call. = FALSE)
   if (http_type(result) != "text/html")
     stop(paste0(url, " did not return text/html", call. = FALSE))
-  poll_table <- read_html(content(result, "text"))
+  poll_table <- read_html(content(result, "text", encoding = "windows-1252"))
 
   df <- html_table(html_nodes(poll_table, "table")[[1]],
                           header = TRUE,
