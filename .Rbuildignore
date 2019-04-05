@@ -19,3 +19,4 @@ cran-comments.md
 ^README-.*\.png$
 ^codecov\.yml$
 ^data-raw$
+^revdep$
