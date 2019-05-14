@@ -97,7 +97,7 @@ get_latest_imeca <- function() {
     mxc$unit <- "IMECA"
     mxc <- mxc[, c("station_code", "municipio", "quality", "pollutant",
                    "unit", "value", "datetime")]
-
+    mxc$pollutant <- .recode_pollutant(mxc$pollutant)
     return(mxc[!is.na(mxc$station_code), ])
   },
   error = function(cond) {

@@ -14,6 +14,7 @@ get_station_imeca(pollutant, date, show_messages = TRUE)
  \item{"NO2"}{ - Nitrogen Dioxide}
  \item{"O3"}{ - Ozone}
  \item{"PM10"}{ - Particulate matter 10 micrometers or less}
+ \item{"PM25"}{ - Particulate matter 2.5 micrometers or less}
 }}
 
 \item{date}{The date for which to download data in YYYY-MM-DD format

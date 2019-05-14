@@ -21,6 +21,7 @@
 #'  \item{"NO2"}{ - Nitrogen Dioxide}
 #'  \item{"O3"}{ - Ozone}
 #'  \item{"PM10"}{ - Particulate matter 10 micrometers or less}
+#'  \item{"PM25"}{ - Particulate matter 2.5 micrometers or less}
 #' }
 #' @param date The date for which to download data in YYYY-MM-DD format
 #' (the earliest possible date is 2009-01-01).
@@ -61,9 +62,9 @@ get_station_imeca <- function(pollutant, date,
     stop("date should be a date in YYYY-MM-DD format", call. = FALSE)
   if (date < "2009-01-01")
     stop("date should be after 2009-01-01", call. = FALSE)
-  if (!(identical("O3", pollutant) || identical("NO2", pollutant) |
-      identical("SO2", pollutant) || identical("CO", pollutant) |
-      identical("PM10", pollutant)))
+  if (!(identical("O3", pollutant) || identical("NO2", pollutant) ||
+      identical("SO2", pollutant) || identical("CO", pollutant) ||
+      identical("PM10", pollutant) || identical("PM25", pollutant) ))
      stop("Invalid pollutant value", call. = FALSE)
 
   if (date >= "2017-01-01" && show_messages)
@@ -79,7 +80,8 @@ get_station_imeca <- function(pollutant, date,
                          "NO2" = 1,
                          "SO2" = 2,
                          "CO" = 3,
-                         "PM10" = 4),
+                         "PM10" = 4,
+                         "PM25" = 5),
     aceptar     = "Submit",
     consulta    = 1
   )
@@ -109,11 +111,12 @@ get_station_imeca <- function(pollutant, date,
   df$date <- date
   names(df)[1] <- "hour"
   ## There's an empty row at the end of the data
-  df <- df[3:(nrow(df)-1), ]
+  df <- df[3:(nrow(df) - 1), ]
   df <- gather(df, station_code, value, -date, -hour)
   df[which(df$value == ""), "value"] <- NA
   df$value <- as.numeric(as.character(df$value))
   df$pollutant <- pollutant2
+  df$pollutant <- .recode_pollutant(df$pollutant)
   df$unit <- "IMECA"
   df[, c("date", "hour", "station_code", "pollutant", "unit", "value" )]
 }

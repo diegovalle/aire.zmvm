@@ -202,6 +202,7 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
   for (i in seq_len(length(pollutant)))
     if (!(identical("O3", pollutant[i]) || identical("NO2", pollutant[i]) ||
           identical("SO2", pollutant[i]) || identical("CO", pollutant[i]) ||
+          identical("PM25", pollutant[i]) ||
           identical("PM10", pollutant[i]) || identical("TC", pollutant[i])))
       stop("Invalid pollutant value", call. = FALSE)
   pollutant <- unique(pollutant)
@@ -253,6 +254,8 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
     df$value <- as.numeric(df$value)
     df$date <- as.Date(df$date)
     df$unit <- "IMECA"
+    names(df)
+    df$pollutant <- .recode_pollutant(df$pollutant)
     if (criterion != tolower("HORARIOS")) {
       as.data.frame(df[, c("date", "zone", "pollutant", "unit", "value")])
     } else {

@@ -59,7 +59,8 @@ round_away_from_zero <- function(r) {
          "wdr" = "WDR",
          "tmp" = "TMP",
          "rh" = "RH",
-         "PM2.5" = "PM25")
+         "PM2.5" = "PM25",
+         "PM2" = "PM25")
 }
 
 #' Recode numeric codes to concentration units (extended)
