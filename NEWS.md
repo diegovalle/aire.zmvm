@@ -3,6 +3,8 @@
 ## Bugs fixes and improvements
 
 * Fixes `get_station_imeca` because the url to download the data changed
+* `get_station_imeca` and `get_zone_imeca` now can download PM25 data
+* Correct the pollutant code for PM25 to match other functions when using `get_latest_data`
 
 # aire.zmvm 0.8.2
 
