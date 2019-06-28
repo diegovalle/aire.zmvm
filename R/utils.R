@@ -131,7 +131,7 @@ round_away_from_zero <- function(r) {
 #' @importFrom utils download.file unzip
 #' @keywords internal
 .get_archive_wsp <- function(syear) {
-  download_loc <- paste0("http://148.243.232.112:8080/opendata/excel/",
+  download_loc <- paste0("http://datosabiertos.aire.cdmx.gob.mx:8080/opendata/excel/",
                          "REDMET/", syear, "REDMET.zip")
 
   # unzip

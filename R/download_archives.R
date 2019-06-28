@@ -20,7 +20,7 @@
 #' }
 download_pollution <- function(year, progress = interactive()) {
   get_data <- function(year) {
-    RAMA <- paste0("http://148.243.232.112:8080/",
+    RAMA <- paste0("http://datosabiertos.aire.cdmx.gob.mx:8080/",
                    "opendata/anuales_horarios_gz/contaminantes_")
     ## The files from 2012 onwards changed the name of the columns
     ## cve_station and cve_parameter to id_station and id_parameter
@@ -90,7 +90,7 @@ download_pollution <- function(year, progress = interactive()) {
 #' }
 download_meteorological <- function(year, progress = interactive()) {
   get_data <- function(year) {
-    REDMET <- paste0("http://148.243.232.112:8080/",
+    REDMET <- paste0("http://datosabiertos.aire.cdmx.gob.mx:8080/",
                      "opendata/anuales_horarios_gz/meteorolog%C3%ADa_")
     ## The files from 2012 onwards changed the name of the columns
     ## cve_station and cve_parameter to id_station and id_parameter
@@ -166,10 +166,10 @@ download_lead <- function(type) {
   if (!(identical("PbPST", type) || identical("PST, PM10, PM25", type)))
     stop("type should be 'PbPST', or 'PST, PM10, PM25'")
   if (type == "PbPST")
-    REDMA <- paste0("http://148.243.232.112:8080/opendata/red_manual/",
+    REDMA <- paste0("http://datosabiertos.aire.cdmx.gob.mx:8080/opendata/red_manual/",
                     "red_manual_plomo.csv")
   else if (type == "PST, PM10, PM25")
-    REDMA <- paste0("http://148.243.232.112:8080/opendata/red_manual/",
+    REDMA <- paste0("http://datosabiertos.aire.cdmx.gob.mx:8080/opendata/red_manual/",
                     "red_manual_particulas_susp.csv")
   df <- read_csv(str_c(REDMA),
                  skip = 8, progress = FALSE, col_types = list(
@@ -217,16 +217,16 @@ download_deposition <- function(deposition, type) {
     stop("type should be 'DEPOSITO', or 'CONCENTRACION'")
   # Deposito humedo - deposito
   if (deposition == "HUMEDO" & type == "DEPOSITO")
-    REDDA <- "http://148.243.232.112:8080/opendata/redda/deposito.csv"
+    REDDA <- "http://datosabiertos.aire.cdmx.gob.mx:8080/opendata/redda/deposito.csv"
   # Deposito humedo - concentracion
   if (deposition == "HUMEDO" & type == "CONCENTRACION")
-    REDDA <- "http://148.243.232.112:8080/opendata/redda/concentracion.csv"
+    REDDA <- "http://datosabiertos.aire.cdmx.gob.mx:8080/opendata/redda/concentracion.csv"
   # Deposito total - deposito
   if (deposition == "TOTAL" & type == "DEPOSITO")
-    REDDA <- "http://148.243.232.112:8080/opendata/redda/depositoT.csv"
+    REDDA <- "http://datosabiertos.aire.cdmx.gob.mx:8080/opendata/redda/depositoT.csv"
   # Deposito total - concentracion
   if (deposition == "TOTAL" & type == "CONCENTRACION")
-    REDDA <- "http://148.243.232.112:8080/opendata/redda/concentracionT.csv"
+    REDDA <- "http://datosabiertos.aire.cdmx.gob.mx:8080/opendata/redda/concentracionT.csv"
   df <- read_csv(REDDA,
                  skip = 8, progress = FALSE, col_types = list(
                    Date = col_character(),
@@ -268,9 +268,9 @@ download_deposition <- function(deposition, type) {
 download_radiation <- function(type, year, progress = interactive()) {
   get_data <- function(year, type) {
     if (type == "UVA")
-      RADIACION <- "http://148.243.232.112:8080/opendata/radiacion/UVA_"
+      RADIACION <- "http://datosabiertos.aire.cdmx.gob.mx:8080/opendata/radiacion/UVA_"
     else if (type == "UVB")
-      RADIACION <- "http://148.243.232.112:8080/opendata/radiacion/UVB_"
+      RADIACION <- "http://datosabiertos.aire.cdmx.gob.mx:8080/opendata/radiacion/UVB_"
     df <- read_csv(str_c(RADIACION, year, ".csv"),
                    skip = 8, progress = FALSE, col_types = list(
                      Date = col_character(),
@@ -333,10 +333,10 @@ download_radiation <- function(type, year, progress = interactive()) {
 download_24hr_average <- function(type, year, progress = interactive()) {
   get_data <- function(year, type) {
     if (type == "PS")
-      base_url <- paste0("http://148.243.232.112:8080/opendata/",
+      base_url <- paste0("http://datosabiertos.aire.cdmx.gob.mx:8080/opendata/",
                          "promedios_diarios/promedios_")
     else if (type == "SO2")
-      base_url <- paste0("http://148.243.232.112:8080/opendata/",
+      base_url <- paste0("http://datosabiertos.aire.cdmx.gob.mx:8080/opendata/",
                          "promedios_diarios/promedios_")
 
     df <- read_csv(str_c(base_url, year, "_", tolower(type), ".csv"),
@@ -397,7 +397,7 @@ download_24hr_average <- function(type, year, progress = interactive()) {
 #' }
 download_pressure <- function(year, progress = interactive()) {
   get_data <- function(year) {
-    PRESION <- "http://148.243.232.112:8080/opendata/presion/PA_"
+    PRESION <- "http://datosabiertos.aire.cdmx.gob.mx:8080/opendata/presion/PA_"
     df <- read_csv(str_c(PRESION, year, ".csv"),
                    skip = 8, progress = FALSE,
                    col_types = list(
