@@ -2,9 +2,6 @@
 url: https://hoyodesmog.diegovalle.net/aire.zmvm
 template:
   params:
-    docsearch:
-      api_key: e207e1b66160419a258ba9eb03372385
-      index_name: aire_zmvm
     ganalytics: UA-100264-10
 
 authors:

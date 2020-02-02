@@ -123,11 +123,11 @@ download_meteorological <- function(year, progress = interactive()) {
   if (min(year) < 1986)
     stop("year must be greater or equal to 1986")
   ## Errors in 2016 and 2017 data
-  if (any(year %in% 2016))
-    warning(paste0("There may be errors in the 2016 wind speed data.",
-                   " It was incorrectly converted to mph. Use the function",
-                   " `get_station_data` to download the correct values"),
-            call. = FALSE)
+  # if (any(year %in% 2016))
+  #   warning(paste0("There may be errors in the 2016 wind speed data.",
+  #                  " It was incorrectly converted to mph. Use the function",
+  #                  " `get_station_data` to download the correct values"),
+  #           call. = FALSE)
   if (identical(progress, TRUE) && length(year) > 1) {
     p <- progress_bar$new(format = "  downloading [:bar] :percent eta: :eta",
                           total = length(year))
