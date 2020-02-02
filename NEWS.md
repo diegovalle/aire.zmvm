@@ -6,6 +6,8 @@
 * `get_station_imeca` and `get_zone_imeca` can now download PM25 data
 * Correct the pollutant code for PM25 to match other functions when using `get_latest_data`
 * Change the address to download archive data in the `download_*` functions
+* The 2016 wind speed data with errors has been corrected at the source, so
+  functions that download it no longer give warnings.
 
 # aire.zmvm 0.8.2
 
