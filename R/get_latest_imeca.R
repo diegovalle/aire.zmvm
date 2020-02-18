@@ -78,8 +78,11 @@ get_latest_imeca <- function() {
     names(df) <- c("station_code", "municipio", "quality", "pollutant", "value")
     df <- df[2:nrow(df), ]
     df$value <- lapply(df$value,
-                       function(x) URLdecode(str_match(URLdecode(x),
-                                                       "'(\\d+)'")[[2]]))
+                       function(x) if (!is.na(x))
+                         URLdecode(str_match(URLdecode(x),
+                                             "'(\\d+)'")[[2]])
+                       else NA)
+
 
     edomex <- html_table(html_nodes(poll_table, "table")[[2]], header = TRUE,
                          fill = TRUE)
@@ -87,8 +90,10 @@ get_latest_imeca <- function() {
                        "quality", "pollutant", "value")
     edomex <- edomex[2:nrow(edomex), ]
     edomex$value <- lapply(edomex$value,
-                           function(x) URLdecode(str_match(URLdecode(x),
-                                                           "'(\\d+)'")[[2]]))
+                           function(x) if (!is.na(x))
+                             URLdecode(str_match(URLdecode(x),
+                                                 "'(\\d+)'")[[2]])
+                           else NA)
 
     mxc <- rbind(df, edomex)
     mxc$value[mxc$value == "NA"] <- NA
