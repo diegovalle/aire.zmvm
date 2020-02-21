@@ -2,6 +2,8 @@
 
 ## Bugs fixes and improvements
 
+* Fixed `get_latest_imeca` because values are no longer provided from the
+  report page
 * Fixes `get_station_imeca` because the url to download the data changed
 * `get_station_imeca` and `get_zone_imeca` can now download PM25 data
 * Correct the pollutant code for PM25 to match other functions when using `get_latest_data`
