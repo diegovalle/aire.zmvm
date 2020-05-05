@@ -45,4 +45,4 @@ branches:
     - v0.7.0
 
 after_success:
-  - Rscript -e 'covr::codecov()'
+  - travis_wait 40 Rscript -e 'covr::codecov()'
