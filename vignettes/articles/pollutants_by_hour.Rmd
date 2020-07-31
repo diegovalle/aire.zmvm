@@ -38,7 +38,8 @@ download_horarios <- function(pollutant) {
     summarise(max = ifelse(all(is.na(value)),
                            NA,
                            base::max(value, na.rm = TRUE))) %>%
-    na.omit()
+    na.omit() %>%
+    ungroup()
 }
 
 ll_horarios <- mapply(download_horarios, 

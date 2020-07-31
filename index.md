@@ -1,18 +1,30 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-aire.zmvm
-=========
 
-[![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.svg?branch=master)](https://travis-ci.org/diegovalle/aire.zmvm) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/c7kg6o68exx0lirg?svg=true)](https://ci.appveyor.com/project/diegovalle/aire-zmvm/branch/master) [![Coverage Status](https://img.shields.io/codecov/c/github/diegovalle/aire.zmvm/master.svg)](https://codecov.io/github/diegovalle/aire.zmvm?branch=master) [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable) <a href="https://cran.r-project.org/package=aire.zmvm"><img src="https://www.r-pkg.org/badges/version/aire.zmvm" alt="Cran Status Badge"></a>
+# aire.zmvm
+
+[![Travis-CI Build
+Status](https://travis-ci.org/diegovalle/aire.zmvm.svg?branch=master)](https://travis-ci.org/diegovalle/aire.zmvm)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/c7kg6o68exx0lirg?svg=true)](https://ci.appveyor.com/project/diegovalle/aire-zmvm/branch/master)
+[![Coverage
+Status](https://img.shields.io/codecov/c/github/diegovalle/aire.zmvm/master.svg)](https://codecov.io/github/diegovalle/aire.zmvm?branch=master)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+<a href="https://cran.r-project.org/package=aire.zmvm"><img src="https://www.r-pkg.org/badges/version/aire.zmvm" alt="Cran Status Badge"></a>
 
 ![](pano-mxc.jpg)
 
 <br>
 
-`aire.zmv` is an R package for downloading air quality data from the Mexico City metro area. This package can download real-time, daily maximum, minimum, or hourly average data for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City). It also includes the locations of all the measuring stations and zones, and a function to perform inverse distance weighting modified to work with wind direction.
+`aire.zmv` is an R package for downloading air quality data from the
+Mexico City metro area. This package can download real-time, daily
+maximum, minimum, or hourly average data for each of the pollution
+measuring stations or geographical zones in the Zona Metropolitana del
+Valle de México (greater Mexico City). It also includes the locations of
+all the measuring stations and zones, and a function to perform inverse
+distance weighting modified to work with wind direction.
 
-Installation
-------------
+## Installation
 
 You can always install the development version from GitHub:
 
@@ -30,12 +42,13 @@ install.packages("aire.zmvm")
 library(aire.zmvm)
 ```
 
-Note that the version on CRAN might not reflect the most recent changes made to this package.
+Note that the version on CRAN might not reflect the most recent changes
+made to this package.
 
-Usage
------
+## Usage
 
-Create a time series of ozone levels in ppb from 2009 to 2018 and highlight the phase I smog alerts.
+Create a time series of ozone levels in ppb from 2009 to 2018 and
+highlight the phase I smog alerts.
 
 ``` r
 ## Auto-install required R packages
@@ -77,20 +90,20 @@ contingencia$contingencia <- case_when(
 )
 ```
 
-Here's what the data we just downloaded looks like:
+Here’s what the data we just downloaded looks like:
 
 ``` r
 knitr::kable(head(o3))
 ```
 
-| date       | station\_code | pollutant | unit |  value|
-|:-----------|:--------------|:----------|:-----|------:|
-| 2009-01-01 | ACO           | O3        | ppb  |     67|
-| 2009-01-02 | ACO           | O3        | ppb  |     71|
-| 2009-01-03 | ACO           | O3        | ppb  |    112|
-| 2009-01-04 | ACO           | O3        | ppb  |     91|
-| 2009-01-05 | ACO           | O3        | ppb  |     70|
-| 2009-01-06 | ACO           | O3        | ppb  |     71|
+| date       | station\_code | pollutant | unit | value |
+| :--------- | :------------ | :-------- | :--- | ----: |
+| 2009-01-01 | ACO           | O3        | ppb  |    67 |
+| 2009-01-02 | ACO           | O3        | ppb  |    71 |
+| 2009-01-03 | ACO           | O3        | ppb  |   112 |
+| 2009-01-04 | ACO           | O3        | ppb  |    91 |
+| 2009-01-05 | ACO           | O3        | ppb  |    70 |
+| 2009-01-06 | ACO           | O3        | ppb  |    71 |
 
 ``` r
 ggplot(max_daily_df,
@@ -115,4 +128,4 @@ ggplot(max_daily_df,
   theme_bw()
 ```
 
-<img src="index_files/figure-markdown_github/contingencias-1.png" width="100%" />
+<img src="index_files/figure-gfm/contingencias-1.png" width="100%" />

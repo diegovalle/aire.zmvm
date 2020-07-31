@@ -112,6 +112,9 @@ get_station_imeca <- function(pollutant, date,
   names(df)[1] <- "hour"
   ## There's an empty row at the end of the data
   df <- df[3:(nrow(df) - 1), ]
+  ## Remove columns with NA for name
+  if (length(which(is.na(names(df)))))
+    df <- df[ , -which(is.na(names(df)))]
   df <- gather(df, station_code, value, -date, -hour)
   df[which(df$value == ""), "value"] <- NA
   df$value <- as.numeric(as.character(df$value))

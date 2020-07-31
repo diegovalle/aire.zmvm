@@ -10,6 +10,8 @@
 * Change the address to download archive data in the `download_*` functions
 * The 2016 wind speed data with errors has been corrected at the source, so
   functions that download it no longer give warnings.
+* Fixed `get_station_imeca` because when requesting pollutant that wasn't O3 
+  it returned an error.
 
 # aire.zmvm 0.8.2
 

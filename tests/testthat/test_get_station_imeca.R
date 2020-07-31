@@ -23,4 +23,8 @@ test_that("get_station_imeca pollution data matches the website", {
                c(8, 3, 2, 3, 4, 5, 4, 5, 6, 17, 36,
                  58, 77, 60, 42, 43, 38,
                  31, 15, 6, 4, 4, 2, 2))
+  df <- get_station_imeca("PM10", "2020-01-02")
+  expect_equal(df$value[which(df$station_code == "XAL")],
+               c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
+                 NA, NA, NA, 76, 76, 74, 73, 70))
 })
