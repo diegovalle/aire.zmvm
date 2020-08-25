@@ -4,8 +4,15 @@
 \alias{get_zone_imeca}
 \title{Download pollution data by zone in IMECAs}
 \usage{
-get_zone_imeca(criterion, pollutant, zone, start_date, end_date,
-  showWarnings = TRUE, show_messages = TRUE)
+get_zone_imeca(
+  criterion,
+  pollutant,
+  zone,
+  start_date,
+  end_date,
+  showWarnings = TRUE,
+  show_messages = TRUE
+)
 }
 \arguments{
 \item{criterion}{The type of data to download. One of the following options:
@@ -122,7 +129,8 @@ head(df2)
   \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aqBjnmI=\%27}{Índice de
   calidad del aire por zonas}
 
-Other IMECA functions: \code{\link{get_latest_imeca}},
-  \code{\link{get_station_imeca}}
+Other IMECA functions: 
+\code{\link{get_latest_imeca}()},
+\code{\link{get_station_imeca}()}
 }
 \concept{IMECA functions}

@@ -83,6 +83,7 @@ head(df2)
 \code{\link{stations}} for a data.frame with the location and names
 of all pollution measuring stations,
 
-Other raw data functions: \code{\link{get_station_month_data}}
+Other raw data functions: 
+\code{\link{get_station_month_data}()}
 }
 \concept{raw data functions}

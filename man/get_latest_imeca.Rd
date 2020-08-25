@@ -34,7 +34,8 @@ head(df)
 \href{http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php}{Reporte
   de calidad del aire}
 
-Other IMECA functions: \code{\link{get_station_imeca}},
-  \code{\link{get_zone_imeca}}
+Other IMECA functions: 
+\code{\link{get_station_imeca}()},
+\code{\link{get_zone_imeca}()}
 }
 \concept{IMECA functions}

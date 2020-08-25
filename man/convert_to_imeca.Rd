@@ -61,6 +61,7 @@ convert_to_imeca(98, "O3")
 For the formulas on how to convert visit:
   \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2017.pdf}{AVISO POR EL QUE SE DA A CONOCER EL PROYECTO DE NORMA AMBIENTAL PARA EL DISTRITO FEDERAL}
 
-Other convert functions: \code{\link{convert_to_index}}
+Other convert functions: 
+\code{\link{convert_to_index}()}
 }
 \concept{convert functions}

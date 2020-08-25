@@ -4,7 +4,8 @@
 \name{zones}
 \alias{zones}
 \title{Pollution zones in Mexico City}
-\format{A data frame with 36 rows and 6 variables:
+\format{
+A data frame with 36 rows and 6 variables:
 \describe{
   \item{region}{INEGI code of the region (state_code + municipio_code)}
   \item{state_code}{INEGI code of the state}
@@ -13,7 +14,8 @@
   \item{municipio_name}{name of the municipio}
   \item{zone}{zone}
 
-}}
+}
+}
 \source{
 \href{http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/Gaceta_Oficial_CDMX.pdf}{ Gaceta Oficial de la Ciudad de México}
 No. 230, 27 de Diciembre de 2016, and

@@ -59,7 +59,8 @@ head(df_o3[order(-df_o3$value), ])
 \seealso{
 \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmc='}{Índice de calidad del aire por estaciones}
 
-Other IMECA functions: \code{\link{get_latest_imeca}},
-  \code{\link{get_zone_imeca}}
+Other IMECA functions: 
+\code{\link{get_latest_imeca}()},
+\code{\link{get_zone_imeca}()}
 }
 \concept{IMECA functions}

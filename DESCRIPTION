@@ -35,5 +35,5 @@ Imports:
     sp,
     progress,
     readxl
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 Encoding: UTF-8

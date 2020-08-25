@@ -6,7 +6,6 @@
 \alias{get_latest_data}
 \alias{get_zone_data}
 \alias{get_station_single_month}
-\alias{aire.zmvm-deprecated-package}
 \title{Deprecated functions in package \pkg{aire.zmvm}.}
 \usage{
 get_zone_data(...)

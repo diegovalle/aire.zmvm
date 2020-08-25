@@ -36,6 +36,7 @@ convert_to_index(c(12.1, 215, 355), c("PM25", "PM10", "PM10"))
 \seealso{
 \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf}{NADF-009-AIRE-2006}
 
-Other convert functions: \code{\link{convert_to_imeca}}
+Other convert functions: 
+\code{\link{convert_to_imeca}()}
 }
 \concept{convert functions}

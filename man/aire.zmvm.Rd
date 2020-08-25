@@ -3,7 +3,6 @@
 \docType{package}
 \name{aire.zmvm}
 \alias{aire.zmvm}
-\alias{aire.zmvm-package}
 \title{\code{aire.zmvm} package}
 \description{
 Tools for downloading data from each of the pollution, wind and temperature
