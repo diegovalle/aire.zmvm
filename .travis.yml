@@ -15,15 +15,15 @@ r_packages:
 matrix:
   include:
     - os: linux
-      dist: trusty
+      dist: bionic
       sudo: false
       r: devel
     - os: linux
-      dist: trusty
+      dist: bionic
       sudo: false
       r: release
     - os: linux
-      dist: trusty
+      dist: bionic
       sudo: false
       r: oldrel
 #    - os: osx
