@@ -1,28 +1,38 @@
 Mexico City Air Quality Data
 ================
 Diego Valle-Jones
-October 24, 2018
+November 06, 2020
 
--   [What does it do?](#what-does-it-do)
--   [Installation](#installation)
--   [Core Functions](#core-functions)
--   [Quick Example](#quick-example)
+  - [What does it do?](#what-does-it-do)
+  - [Installation](#installation)
+  - [Core Functions](#core-functions)
+  - [Quick Example](#quick-example)
 
-[![Travis-CI Build Status](https://travis-ci.org/diegovalle/aire.zmvm.svg?branch=master)](https://travis-ci.org/diegovalle/aire.zmvm) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/c7kg6o68exx0lirg?svg=true)](https://ci.appveyor.com/project/diegovalle/aire-zmvm/branch/master) [![Coverage Status](https://img.shields.io/codecov/c/github/diegovalle/aire.zmvm/master.svg)](https://codecov.io/github/diegovalle/aire.zmvm?branch=master) ![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version-ago/aire.zmvm?color=green)
+[![R build
+status](https://github.com/diegovalle/aire.zmvm/workflows/R-CMD-check/badge.svg)](https://github.com/diegovalle/aire.zmvm/actions)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/c7kg6o68exx0lirg?svg=true)](https://ci.appveyor.com/project/diegovalle/aire-zmvm/branch/master)
+[![Coverage
+Status](https://img.shields.io/codecov/c/github/diegovalle/aire.zmvm/master.svg)](https://codecov.io/github/diegovalle/aire.zmvm?branch=master)
+![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version-ago/aire.zmvm?color=green)
 
 |              |                                                        |
-|--------------|--------------------------------------------------------|
+| ------------ | ------------------------------------------------------ |
 | **Author:**  | Diego Valle-Jones                                      |
 | **License:** | [BSD\_3](https://opensource.org/licenses/BSD-3-Clause) |
 | **Website:** | <https://hoyodesmog.diegovalle.net/aire.zmvm/>         |
 
-What does it do?
-----------------
+## What does it do?
 
-Tools for downloading airquality data for the Mexico City metro area. This package can download real-time, daily maximum, minimum, or hourly average data for each of the pollution measuring stations or geographical zones in the Zona Metropolitana del Valle de México (greater Mexico City). It also includes the locations of all the measuring stations and a function to perform inverse distance weighting modified to work with wind direction.
+Tools for downloading airquality data for the Mexico City metro area.
+This package can download real-time, daily maximum, minimum, or hourly
+average data for each of the pollution measuring stations or
+geographical zones in the Zona Metropolitana del Valle de México
+(greater Mexico City). It also includes the locations of all the
+measuring stations and a function to perform inverse distance weighting
+modified to work with wind direction.
 
-Installation
-------------
+## Installation
 
 You can always install the development version from GitHub:
 
@@ -40,98 +50,34 @@ install.packages("aire.zmvm")
 library(aire.zmvm)
 ```
 
-Note that the version on CRAN might not reflect the most recent changes made to this package.
+Note that the version on CRAN might not reflect the most recent changes
+made to this package.
 
-Core Functions
---------------
+## Core Functions
 
 The package core functions:
 
--   `get_station_data` and `get_station_month_data` download pollution, wind and temperature data for each of the measuring stations in the original units (ppb, µg/m³, etc).
--   `get_station_imeca` download pollution values for each station in IMECAs
--   `get_zone_imeca` download pollution data in IMECAs for each of the 5 geographic zones of Mexico City
--   `get_latest_imeca` download the latest pollution hourly maximums for each of the measuring stations.
--   `idw360` inverse distance weighting modified to work with degrees, useful for wind data
+  - `get_station_data` and `get_station_month_data` download pollution,
+    wind and temperature data for each of the measuring stations in the
+    original units (ppb, µg/m³, etc).
+  - `get_station_imeca` download pollution values for each station in
+    IMECAs
+  - `get_zone_imeca` download pollution data in IMECAs for each of the 5
+    geographic zones of Mexico City
+  - `get_latest_imeca` download the latest pollution hourly maximums for
+    each of the measuring stations.
+  - `idw360` inverse distance weighting modified to work with degrees,
+    useful for wind data
 
-<table style="width:100%;">
-<colgroup>
-<col width="23%" />
-<col width="14%" />
-<col width="9%" />
-<col width="16%" />
-<col width="11%" />
-<col width="11%" />
-<col width="6%" />
-<col width="6%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Function</th>
-<th>Date range</th>
-<th>Units</th>
-<th>Wind, Tmp, RH</th>
-<th>Earliest Date</th>
-<th>Pollutants</th>
-<th>Includes All Stations</th>
-<th>Criterion</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>get_station_data</td>
-<td>years</td>
-<td>Original</td>
-<td>Yes</td>
-<td>1986</td>
-<td>SO2, CO, NO2, O3, PM10, PM25, WSP, WDR, TMP, RH</td>
-<td>Yes</td>
-<td>hourly, daily maximum, daily minimum</td>
-</tr>
-<tr class="even">
-<td>get_station_month_data</td>
-<td>1 month</td>
-<td>Original</td>
-<td>Yes</td>
-<td>2005‑01</td>
-<td>SO2, CO, NO2, O3, PM10, PM25, WSP, WDR, TMP, RH</td>
-<td>Yes</td>
-<td>hourly, daily maximum, daily minimum</td>
-</tr>
-<tr class="odd">
-<td>get_station_imeca</td>
-<td>1 day</td>
-<td>IMECA</td>
-<td>No</td>
-<td>2009‑01‑01</td>
-<td>SO2, CO, NO2, O3, PM10</td>
-<td>No</td>
-<td>hourly</td>
-</tr>
-<tr class="even">
-<td>get_zone_imeca</td>
-<td>1 or more days</td>
-<td>IMECA</td>
-<td>No</td>
-<td>2008‑01‑01</td>
-<td>SO2, CO, NO2, O3, PM10</td>
-<td>Only zones</td>
-<td>hourly, daily maximum</td>
-</tr>
-<tr class="odd">
-<td>get_latest_imeca</td>
-<td>1 hour</td>
-<td>IMECA</td>
-<td>No</td>
-<td>Latest only</td>
-<td>Maximum value of SO2, CO, NO2, O3, PM10</td>
-<td>No</td>
-<td>latest hourly</td>
-</tr>
-</tbody>
-</table>
+| Function                  | Date range     | Units    | Wind, Tmp, RH | Earliest Date | Pollutants                                      | Includes All Stations | Criterion                            |
+| ------------------------- | -------------- | -------- | ------------- | ------------- | ----------------------------------------------- | --------------------- | ------------------------------------ |
+| get\_station\_data        | years          | Original | Yes           | 1986          | SO2, CO, NO2, O3, PM10, PM25, WSP, WDR, TMP, RH | Yes                   | hourly, daily maximum, daily minimum |
+| get\_station\_month\_data | 1 month        | Original | Yes           | 2005‑01       | SO2, CO, NO2, O3, PM10, PM25, WSP, WDR, TMP, RH | Yes                   | hourly, daily maximum, daily minimum |
+| get\_station\_imeca       | 1 day          | IMECA    | No            | 2009‑01‑01    | SO2, CO, NO2, O3, PM10                          | No                    | hourly                               |
+| get\_zone\_imeca          | 1 or more days | IMECA    | No            | 2008‑01‑01    | SO2, CO, NO2, O3, PM10                          | Only zones            | hourly, daily maximum                |
+| get\_latest\_imeca        | 1 hour         | IMECA    | No            | Latest only   | Maximum value of SO2, CO, NO2, O3, PM10         | No                    | latest hourly                        |
 
-Quick Example
--------------
+## Quick Example
 
 ``` r
 library("aire.zmvm")
@@ -148,14 +94,14 @@ o3 <- get_station_data(criterion = "MAXIMOS", # Can be one of MAXIMOS (daily max
 knitr::kable(head(o3))
 ```
 
-| date       | station\_code | pollutant | unit |  value|
-|:-----------|:--------------|:----------|:-----|------:|
-| 2009-01-01 | ACO           | O3        | ppb  |     67|
-| 2009-01-02 | ACO           | O3        | ppb  |     71|
-| 2009-01-03 | ACO           | O3        | ppb  |    112|
-| 2009-01-04 | ACO           | O3        | ppb  |     91|
-| 2009-01-05 | ACO           | O3        | ppb  |     70|
-| 2009-01-06 | ACO           | O3        | ppb  |     71|
+| date       | station\_code | pollutant | unit | value |
+| :--------- | :------------ | :-------- | :--- | ----: |
+| 2009-01-01 | ACO           | O3        | ppb  |    67 |
+| 2009-01-02 | ACO           | O3        | ppb  |    71 |
+| 2009-01-03 | ACO           | O3        | ppb  |   112 |
+| 2009-01-04 | ACO           | O3        | ppb  |    91 |
+| 2009-01-05 | ACO           | O3        | ppb  |    70 |
+| 2009-01-06 | ACO           | O3        | ppb  |    71 |
 
 ``` r
 
@@ -193,4 +139,4 @@ ggplot(max_daily_df,
                             "\nData source: SEDEMA"))
 ```
 
-![](man/figures/README-unnamed-chunk-2-1.png)
+![](man/figures/README-unnamed-chunk-2-1.png)<!-- -->
