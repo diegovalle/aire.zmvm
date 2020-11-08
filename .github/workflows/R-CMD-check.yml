@@ -35,6 +35,7 @@ jobs:
       COVERALLS_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
       NOT_CRAN: true
+      CRAN: ${{ matrix.config.cran }}
 
     steps:
       - uses: actions/checkout@v2
@@ -82,8 +83,7 @@ jobs:
       - name: coveralls
         if: matrix.config.r == 'release' && matrix.config.os == 'ubuntu-20.04'
         run: | 
-          R CMD INSTALL .
-          Rscript -e 'install.packages("covr");covr::coveralls()'
+          Rscript -e 'remotes::install_github("r-lib/covr@gh-actions");covr::codecov(quiet = FALSE, token = "${{secrets.CODECOV_TOKEN}}")'
 
       - name: Upload check results
         if: failure()
