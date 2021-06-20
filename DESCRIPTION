@@ -21,8 +21,7 @@ Suggests:
     ggseas,
     mapproj,
     selectr,
-    covr,
-    ggmap
+    covr
 Imports:
     lubridate,
     dplyr,
