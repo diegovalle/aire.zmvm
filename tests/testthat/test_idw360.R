@@ -2,6 +2,7 @@ context("Wind maps")
 
 test_that("idw360", {
   library(sp)
+  options("rgdal_show_exportToProj4_warnings"="none")
   df <- structure(list(date = structure(c(17472, 17472, 17472, 17472, 17472),
                                         class = "Date"),
                        hour = c(15, 15, 15, 15, 15),

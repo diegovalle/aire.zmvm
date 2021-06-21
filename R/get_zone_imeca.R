@@ -249,8 +249,10 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
         separate(zone_pollutant, c("zone", "pollutant"), sep = 2)
     }
     # Some  values are invalid and to avoid warnings I correct them manually
-    df[which(df$value == ""), "value"] <- NA
-    df[which(df$value == "M"), "value"] <- NA
+    if (nrow(df[which(df$value == ""), "value"]) > 0)
+      df[which(df$value == ""), "value"] <- NA
+    if (nrow(df[which(df$value == "M"), "value"]) > 0)
+      df[which(df$value == "M"), "value"] <- NA
     df$value <- as.numeric(df$value)
     df$date <- as.Date(df$date)
     df$unit <- "IMECA"
