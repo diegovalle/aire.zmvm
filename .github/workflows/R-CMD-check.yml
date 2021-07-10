@@ -18,6 +18,7 @@ name: R-CMD-check
 
 jobs:
   R-CMD-check:
+    timeout-minutes: 90
     runs-on: ${{ matrix.config.os }}
     if: "! contains(toJSON(github.event.commits.*.msg), '[skip-ci]')"
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
