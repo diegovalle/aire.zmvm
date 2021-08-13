@@ -37,6 +37,7 @@ jobs:
       CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
       NOT_CRAN: true
       CRAN: ${{ matrix.config.cran }}
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v2
