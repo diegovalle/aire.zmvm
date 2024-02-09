@@ -13,3 +13,16 @@ measuring stations in the Zona Metropolitana del Valle de México
 See the README on
 \href{https://github.com/diegovalle/aire.zmvm#readme}{GitHub}
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://hoyodesmog.diegovalle.net/aire.zmvm/}
+  \item \url{https://github.com/diegovalle/aire.zmvm}
+  \item Report bugs at \url{https://github.com/diegovalle/aire.zmvm/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Diego Valle-Jones \email{diego@diegovalle.net}
+
+}

@@ -17,6 +17,7 @@
 .download_data_zone <- function(criterion, pollutant, zone, start_date,
                                 end_date) {
   url <- paste0("http://www.aire.cdmx.gob.mx/",
+                "aire/",
                 "estadisticas-consultas/consultas/resultado_consulta.php")
   fd <- list(
     diai = day(start_date),
@@ -193,6 +194,7 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
   if (start_date < "2008-01-01")
     stop(paste0("start_date should be after 2008-01-01, but you can visit",
                 " http://www.aire.cdmx.gob.mx/",
+                "aire/",
                 "default.php?opc=%27aKBhnmI=%27&opcion=aw==",
                 " to download data going back to 1992"), call. = FALSE)
 

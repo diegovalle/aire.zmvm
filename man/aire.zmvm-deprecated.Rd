@@ -2,6 +2,7 @@
 % Please edit documentation in R/aire.zmvm-deprecated.R
 \docType{package}
 \name{aire.zmvm-deprecated}
+\alias{-package}
 \alias{aire.zmvm-deprecated}
 \alias{get_latest_data}
 \alias{get_zone_data}

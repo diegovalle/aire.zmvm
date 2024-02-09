@@ -60,7 +60,7 @@
                                            month = "") {
   if (pollutant == "pm25")
     pollutant <- "pm2"
-  base_url <- paste0("http://www.aire.cdmx.gob.mx/",
+  base_url <- paste0("http://www.aire.cdmx.gob.mx/aire/",
                      "estadisticas-consultas/concentraciones/respuesta.php?")
   url <- str_c(base_url, "qtipo=", criterion, "&",
                "parametro=", pollutant, "&",

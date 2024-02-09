@@ -57,7 +57,7 @@
 #' head(df)
 get_latest_imeca <- function() {
   tryCatch({
-    url <- "http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php"
+    url <- "http://www.aire.cdmx.gob.mx/aire/ultima-hora-reporte.php"
 
     result <- GET(url, timeout(120),
                   add_headers("user-agent" =
