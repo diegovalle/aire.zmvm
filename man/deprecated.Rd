@@ -22,6 +22,12 @@ get_station_single_month(...)
 }
 \value{
 A data.frame
+
+A data.frame
+
+A data.frame
+
+A data.frame
 }
 \description{
 The functions listed below are deprecated and will be defunct in

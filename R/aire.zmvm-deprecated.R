@@ -25,6 +25,7 @@
 NULL
 
 #' @rdname deprecated
+#' @return A data.frame
 #' @export
 get_latest_data <- function(...) {
   .Deprecated("get_latest_imeca", package = "aire.zmvm")
@@ -32,6 +33,7 @@ get_latest_data <- function(...) {
 }
 
 #' @rdname deprecated
+#' @return A data.frame
 #' @export
 get_zone_data <- function(...) {
   .Deprecated("get_zone_imeca", package = "aire.zmvm")
@@ -39,6 +41,7 @@ get_zone_data <- function(...) {
 }
 
 #' @rdname deprecated
+#' @return A data.frame
 #' @export
 get_station_single_month <- function (...) {
   .Deprecated('get_station_month_data(criterion = "HORARIOS", ...)',
