@@ -9,8 +9,8 @@ download_radiation(type, year, progress = interactive())
 \arguments{
 \item{type}{type of data to download.
 \itemize{
- \item{"UVA"}{ - long wave ultraviolet A}
- \item{"UVB"}{ - short wave ultraviolet B}
+ \item UVA - long wave ultraviolet A
+ \item UVB - short wave ultraviolet B
 }}
 
 \item{year}{a numeric vector containing the years for which to download data
@@ -26,9 +26,9 @@ hours correspond to the
 }
 \description{
 Download data on UVA and UVB from the pollution archives available at
-\href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=bA==}{Radiación Solar (UVA)}
+\href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=bA==}{Radiación Solar (UVA)}
 and
-\href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=bQ==}{Radiación Solar (UVB)}
+\href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=bQ==}{Radiación Solar (UVB)}
 }
 \examples{
 \dontrun{

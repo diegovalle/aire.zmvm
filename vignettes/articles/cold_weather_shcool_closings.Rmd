@@ -16,7 +16,7 @@ knitr::opts_chunk$set(fig.width = 7,
 
 Because of low temperatures education authorities decided to suspend classes in public and private schools in some parts of Mexico City on Wednesday January 31, 2018. We will download and graph the daily morning hourly temperature and compare the days of January 30 and 31 with the rest of the month.
 
-### Data Aquisition
+### Data Acquisition
 
 We use the ```get_station_month_data``` function to download hourly temperature data for the month of January.
 

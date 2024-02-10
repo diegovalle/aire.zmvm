@@ -11,7 +11,7 @@
 #' Note that in 2015 it was determined that the stations with codes ACO, AJU,
 #' INN, MON and MPA would no longer be taken into consideration when computing
 #' the pollution index because they didn't meet the
-#' \href{http://www.aire.cdmx.gob.mx/objetivos-monitoreo-calidad-aire.html}{objectives
+#' \href{http://www.aire.cdmx.gob.mx/aire/objetivos-monitoreo-calidad-aire.html}{objectives
 #' of monitoring air quality}, and are no longer included in the index, even if
 #' they are still part of the SIMAT (Sistema de Monitoreo Atmosférico de la
 #' Ciudad de México). Thus, even if they are located inside a zone, they are not
@@ -30,7 +30,7 @@
 #'   \item{zone}{zone}
 #'
 #' }
-#' @source \href{http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/Gaceta_Oficial_CDMX.pdf}{ Gaceta Oficial de la Ciudad de México}
+#' @source \href{http://www.aire.cdmx.gob.mx/aire/descargas/ultima-hora/calidad-aire/pcaa/Gaceta_Oficial_CDMX.pdf}{ Gaceta Oficial de la Ciudad de México}
 #' No. 230, 27 de Diciembre de 2016, and
 #' \emph{Solicitud de Información} FOLIO 0112000033818
 #' @examples

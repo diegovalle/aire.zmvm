@@ -3,7 +3,7 @@
 #' This dataset contains all pollution measuring stations in Mexico City. The
 #' station with code SS1 was added manually since it was missing from the
 #' official source dataset (its location was found in the
-#' \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/GDF_2015_audit_report_final_v2.pdf}{Audit
+#' \href{http://www.aire.cdmx.gob.mx/aire/descargas/monitoreo/GDF_2015_audit_report_final_v2.pdf}{Audit
 #' of Ambient Air Monitoring Stations for the Sistema de Monitoreo Atmosférico
 #' de la Ciudad de México}).
 #'
@@ -18,7 +18,7 @@
 #'   \item{station_id}{id of the station}
 #'
 #' }
-#' @source \url{http://148.243.232.112:8080/opendata/catalogos/cat_estacion.csv}
+#' @source \samp{http://148.243.232.112:8080/opendata/catalogos/cat_estacion.csv}
 #' @examples
 #' head(stations)
 "stations"

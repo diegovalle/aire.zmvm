@@ -19,7 +19,7 @@ a data.frame with pollution information for the following pollutants
 }
 \description{
 Download the pollution files available at
-\href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=Zg==}{Contaminante}
+\href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=Zg==}{Contaminante}
 }
 \examples{
 \dontrun{

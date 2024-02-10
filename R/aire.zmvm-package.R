@@ -8,12 +8,15 @@
 #' \href{https://github.com/diegovalle/aire.zmvm#readme}{GitHub}
 #'
 #' @docType package
-#' @name aire.zmvm
+#' @keywords internal
+"_PACKAGE"
+
+## usethis namespace: start
+## usethis namespace: end
 NULL
-
-
 
 ## Avoid notes of the type:
 ## `no visible binding for global variable [variable name]`
 utils::globalVariables(c("station_code", "value", "hour", "zone_pollutant",
                          "unit"))
+

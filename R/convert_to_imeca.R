@@ -169,15 +169,15 @@ to_imeca <- function(contaminant, value) {
 #' section). Because of rounding error results may be off by a couple of points.
 #'
 #' @seealso For the formulas on how to convert visit:
-#'   \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2017.pdf}{AVISO POR EL QUE SE DA A CONOCER EL PROYECTO DE NORMA AMBIENTAL PARA EL DISTRITO FEDERAL}
+#'   \href{http://www.aire.cdmx.gob.mx/aire/descargas/monitoreo/normatividad/NADF-009-AIRE-2017.pdf}{AVISO POR EL QUE SE DA A CONOCER EL PROYECTO DE NORMA AMBIENTAL PARA EL DISTRITO FEDERAL}
 #'
 #' @param pollutant type of pollutant. A vector of one or more of the following
-#'   options: \itemize{ \item{"SO2"}{ - Sulfur Dioxide - ppb (24 hour average)}
-#'   \item{"CO"}{ - Carbon Monoxide - ppm (8 hour average)} \item{"NO2"}{ - Nitrogen
-#'   Dioxide - pbb (1 hour average)} \item{"O3"}{ - Ozone ppb (1 hour average)}
-#'   \item{"PM10"}{ - Particulate matter 10 micrometers or less (24 hour
-#'   average)} \item{"PM25"}{ - Particulate matter 2.5 micrometers or less (24
-#'   hour average)} }
+#'   options: \itemize{ \item SO2 - Sulfur Dioxide - ppb (24 hour average)
+#'   \item CO - Carbon Monoxide - ppm (8 hour average) \item NO2 - Nitrogen
+#'   Dioxide - pbb (1 hour average) \item O3 - Ozone ppb (1 hour average)
+#'   \item PM10 - Particulate matter 10 micrometers or less (24 hour
+#'   average) \item PM25 - Particulate matter 2.5 micrometers or less (24
+#'   hour average) }
 #' @param value a numeric vector of values to convert to IMECAs. Note that the
 #' concentration of pollutants can be measured in different ways, for NO2, and
 #' O3 a 1 hour average is used, for CO, an 8 hour average, and for SO2, PM10
@@ -198,7 +198,7 @@ to_imeca <- function(contaminant, value) {
 #' convert_to_imeca(80, "PM10")
 #'
 #' ## warning about recycling elements in a vector
-#' convert_to_imeca(c(157, 200), "O3")
+#' convert_to_imeca(c(157, 200), c("O3", "O3"))
 #'
 #' convert_to_imeca(67, "O3")
 #' convert_to_imeca(77, "O3")

@@ -17,30 +17,30 @@ get_zone_imeca(
 \arguments{
 \item{criterion}{The type of data to download. One of the following options:
 \itemize{
- \item{"HORARIOS"}{ - Hourly data}
- \item{"MAXIMOS""}{ - Daily maximums}
+ \item HORARIOS - Hourly data
+ \item MAXIMOS" - Daily maximums
 }}
 
 \item{pollutant}{The type of pollutant to download. One or more of the
 following options:
 \itemize{
- \item{"SO2"}{ - Sulfur Dioxide}
- \item{"CO"}{ - Carbon Monoxide}
- \item{"NO2"}{ - Nitrogen Dioxide}
- \item{"O3"}{ - Ozone}
- \item{"PM10"}{ - Particulate matter 10 micrometers or less}
- \item{"TC"}{- All the pollutants}
+ \item SO2 - Sulfur Dioxide
+ \item CO - Carbon Monoxide
+ \item NO2 - Nitrogen Dioxide
+ \item O3 - Ozone
+ \item PM10 - Particulate matter 10 micrometers or less
+ \item TC - All the pollutants
 }}
 
 \item{zone}{The geographic zone for which to download data. One or more of
 the following:
 \itemize{
- \item{"NO"}{ - Noroeste}
- \item{"NE"}{ - Noreste}
- \item{"CE"}{ - Centro}
- \item{"SO"}{ - Suroeste}
- \item{"SE"}{ - Sureste}
- \item{"TZ"}{ - All zones}
+ \item NO - Noroeste
+ \item NE - Noreste
+ \item CE - Centro
+ \item SO - Suroeste
+ \item SE - Sureste
+ \item TZ - All zones
 }}
 
 \item{start_date}{The start date in YYYY-MM-DD format (earliest possible
@@ -61,20 +61,20 @@ A data.frame with pollution data measured in IMECAs, by geographic
 }
 \description{
 Retrieve pollution data in IMECAs by geographic zone from the air quality
-server at \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aqBjnmU=\%27}{Consultas}
+server at \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aqBjnmU=\%27}{Consultas}
 }
 \details{
 Note that in 2015 it was determined that the stations with codes ACO, AJU,
 INN, MON and MPA would no longer be taken into consideration when computing
 the pollution index because they didn't meet the
-\href{http://www.aire.cdmx.gob.mx/objetivos-monitoreo-calidad-aire.html}{objectives
+\href{http://www.aire.cdmx.gob.mx/aire/objetivos-monitoreo-calidad-aire.html}{objectives
 of monitoring air quality}. They are no longer included in the index, even if
 they are still part of the SIMAT (Sistema de Monitoreo Atmosférico de la
 Ciudad de México). Thus, even if they are located inside a zone, they are not
 included in the pollution values for that zone.
 
 The different geographic zones were defined in the
-\href{http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/Gaceta_Oficial_CDMX.pdf}{ Gaceta Oficial de la Ciudad de México}
+\href{http://www.aire.cdmx.gob.mx/aire/descargas/ultima-hora/calidad-aire/pcaa/Gaceta_Oficial_CDMX.pdf}{ Gaceta Oficial de la Ciudad de México}
 No. 230, 27 de Diciembre de 2016.
 
 \strong{Zona Centro}: Benito Juárez,
@@ -97,6 +97,7 @@ Alta, Tláhuac, Xochimilco, Chalco and Valle de Chalco.
 Coyoacán, Cuajimalpa, Magdalena Contreras, Tlalpan and Huixquilucan.
 }
 \examples{
+\donttest{
 ## There was a regional (NE) PM10 pollution emergency on Jan 6, 2017
 get_zone_imeca("MAXIMOS", "PM10", "NE", "2017-01-05", "2017-01-08",
                show_messages = FALSE)
@@ -105,6 +106,7 @@ get_zone_imeca("MAXIMOS", "PM10", "NE", "2017-01-05", "2017-01-08",
 get_zone_imeca("MAXIMOS", "O3", "TZ", "2017-05-15", "2017-05-15",
                show_messages = FALSE)
 
+}
 \dontrun{
 ## Download daily maximum PM10 data (particulate matter 10 micrometers or
 ## less in diameter) from 2015-01-01 to 2016-03-20 for all geographic zones
@@ -126,7 +128,7 @@ head(df2)
 \seealso{
 \code{\link{zones}} a data.frame containing the municipios
   belonging to each zone, and
-  \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aqBjnmI=\%27}{Índice de
+  \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aqBjnmI=\%27}{Índice de
   calidad del aire por zonas}
 
 Other IMECA functions: 

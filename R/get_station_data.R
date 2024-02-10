@@ -8,6 +8,7 @@
 #' @importFrom dplyr filter
 #' @importFrom lubridate fast_strptime
 #' @keywords internal
+#' @noRd
 #'
 .download_old_station_data <- function(pollutant, year) {
   # Hack to download the 2016 and 2017 WSP data
@@ -55,6 +56,7 @@
 #' @importFrom httr GET timeout
 #' @importFrom tidyr gather
 #' @keywords internal
+#' @noRd
 #'
 .download_current_station_data <- function(criterion, pollutant, year,
                                            month = "") {
@@ -165,6 +167,7 @@ download_horario_by_month <- function(pollutant, year){
 #'
 #' @importFrom dplyr %>% group_by summarise ungroup
 #' @keywords internal
+#' @noRd
 #'
 .download_data <- function(criterion, pollutant, year) {
   year_not_to_use_archives <- 2018
@@ -210,12 +213,12 @@ download_horario_by_month <- function(pollutant, year){
 #'
 #' Retrieve pollution data by station, in the original units, from the air quality
 #' server at
-#' \href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones},
+#' \href{http://www.aire.cdmx.gob.mx/aire/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones},
 #' or for earlier years use the archive files available from
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI\%27&opcion=Zg==}{Contaminante}, or
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=Zw==}{Meteorología} for
+#' \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI\%27&opcion=Zg==}{Contaminante}, or
+#' \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=Zw==}{Meteorología} for
 #' meteorological data. There's a mistake in the 2016 wind speed data, so for this year, and
-#' only this year, the alternative \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBi\%27}{Excel} file was used.
+#' only this year, the alternative \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBi\%27}{Excel} file was used.
 #'
 #' Temperature (TMP) archive values are correct to one decimal place, but the
 #' most recent data is only available rounded to the nearest integer.
@@ -225,26 +228,26 @@ download_horario_by_month <- function(pollutant, year){
 #'
 #' @param criterion Type of data to download.
 #' \itemize{
-#'  \item{"HORARIOS"}{ - Hourly data}
-#'  \item{"MAXIMOS"}{ - Daily maximums}
-#'  \item{"MINIMOS"}{ - Daily minimums}
+#'  \item HORARIOS - Hourly data
+#'  \item MAXIMOS - Daily maximums
+#'  \item MINIMOS - Daily minimums
 #' }
 #' @param pollutant The type of pollutant to download.
 #' \itemize{
-#'  \item{"SO2"}{ - Sulfur Dioxide (parts per billion)}
-#'  \item{"CO"}{ - Carbon Monoxide (parts per million)}
-#'  \item{"NOX"}{ - Nitrogen Oxides (parts per billion)}
-#'  \item{"NO2"}{ - Nitrogen Dioxide (parts per billion)}
-#'  \item{"NO"}{ - Nitric Oxide (parts per billion)}
-#'  \item{"O3"}{ - Ozone (parts per billion)}
-#'  \item{"PM10"}{ - Particulate matter 10 micrometers or less
-#'  (micrograms per cubic meter)}
-#'  \item{"PM25"}{ - Particulate matter 2.5 micrometers or less
-#'  (micrograms per cubic meter)}
-#'  \item{"WSP"}{ - Wind velocity (meters per second)}
-#'  \item{"WDR"}{ - Wind direction (degrees)}
-#'  \item{"TMP"}{ - Temperature (degrees Celsius)}
-#'  \item{"RH"}{ - Relative humidity (percentage)}
+#'  \item SO2 - Sulfur Dioxide (parts per billion)
+#'  \item CO - Carbon Monoxide (parts per million)
+#'   \item NOX - Nitrogen Oxides (parts per billion)
+#'   \item NO2 - Nitrogen Dioxide (parts per billion)
+#'   \item NO - Nitric Oxide (parts per billion)
+#'   \item O3 - Ozone (parts per billion)
+#'   \item PM10 - Particulate matter 10 micrometers or less
+#'  (micrograms per cubic meter)
+#'   \item PM25 - Particulate matter 2.5 micrometers or less
+#'  (micrograms per cubic meter)
+#'   \item WSP - Wind velocity (meters per second)
+#'   \item WDR - Wind direction (degrees)
+#'   \item TMP - Temperature (degrees Celsius)
+#'   \item RH - Relative humidity (percentage)
 #' }
 #' @param year a numeric vector containing the years for which to download data
 #' (the earliest possible value is 1986)
@@ -319,7 +322,7 @@ get_station_data <- function(criterion, pollutant, year,
 #'
 #' Retrieve hourly averages, daily maximums, or daily minimums of pollution data
 #' in the original units, by station, from the air quality server at
-#' \href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
+#' \href{http://www.aire.cdmx.gob.mx/aire/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
 #'
 #' Temperature (TMP) data was rounded to the nearest integer, but the
 #' \code{\link{get_station_data}} function allows you to download data accurate
@@ -330,26 +333,26 @@ get_station_data <- function(criterion, pollutant, year,
 #'
 #' @param criterion Type of data to download.
 #' \itemize{
-#'  \item{"HORARIOS"}{ - Hourly data}
-#'  \item{"MAXIMOS""}{ - Daily maximums}
-#'  \item{"MINIMOS"}{ - Daily minimums}
+#'   \item HORARIOS - Hourly data
+#'   \item MAXIMOS" - Daily maximums
+#'   \item MINIMOS - Daily minimums
 #' }
 #' @param pollutant The type of pollutant to download.
 #' \itemize{
-#'  \item{"SO2"}{ - Sulfur Dioxide (parts per billion)}
-#'  \item{"CO"}{ - Carbon Monoxide (parts per million)}
-#'  \item{"NOX"}{ - Nitrogen Oxides (parts per billion)}
-#'  \item{"NO2"}{ - Nitrogen Dioxide (parts per billion)}
-#'  \item{"NO"}{ - Nitric Oxide (parts per billion)}
-#'  \item{"O3"}{ - Ozone (parts per billion)}
-#'  \item{"PM10"}{ - Particulate matter 10 micrometers or less
-#'  (micrograms per cubic meter)}
-#'  \item{"PM25"}{ - Particulate matter 2.5 micrometers or less
-#'  (micrograms per cubic meter)}
-#'  \item{"WSP"}{ - Wind velocity (meters per second)}
-#'  \item{"WDR"}{ - Wind direction (degrees)}
-#'  \item{"TMP"}{ - Temperature (degrees Celsius)}
-#'  \item{"RH"}{ - Relative humidity (percentage)}
+#'   \item SO2 - Sulfur Dioxide (parts per billion)
+#'   \item CO - Carbon Monoxide (parts per million)
+#'   \item NOX - Nitrogen Oxides (parts per billion)
+#'   \item NO2 - Nitrogen Dioxide (parts per billion)
+#'   \item NO - Nitric Oxide (parts per billion)
+#'   \item O3 - Ozone (parts per billion)
+#'   \item PM10 - Particulate matter 10 micrometers or less
+#'  (micrograms per cubic meter)
+#'   \item PM25 - Particulate matter 2.5 micrometers or less
+#'  (micrograms per cubic meter)
+#'   \item WSP - Wind velocity (meters per second)
+#'   \item WDR - Wind direction (degrees)
+#'   \item TMP - Temperature (degrees Celsius)
+#'   \item RH - Relative humidity (percentage)
 #' }
 #' @param year an integer indicating the year for which to download data
 #' (the earliest possible value is 1986)

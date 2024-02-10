@@ -19,7 +19,7 @@ a data.frame with meterological information:
 }
 \description{
 Download the files available at
-\href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=Zw==}{Meteorología}
+\href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=Zw==}{Meteorología}
 }
 \examples{
 \dontrun{

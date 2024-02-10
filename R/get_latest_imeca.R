@@ -4,6 +4,7 @@
 #'
 #' @importFrom stringr str_match str_replace str_replace_all str_detect
 #' @keywords internal
+#' @noRd
 .convert_time <- function(time_div){
   time_div <- str_replace_all(time_div, "\n|\t", "")
   time_div <- str_replace(time_div, "h,(.|\n)+?(?=[0-9])", "h")
@@ -33,7 +34,7 @@
 #' Note that in 2015 it was determined that the stations with codes ACO, AJU,
 #' INN, MON and MPA would no longer be taken into consideration when computing
 #' the pollution index because they didn't meet the
-#' \href{http://www.aire.cdmx.gob.mx/objetivos-monitoreo-calidad-aire.html}{objectives
+#' \href{http://www.aire.cdmx.gob.mx/aire/objetivos-monitoreo-calidad-aire.html}{objectives
 #' of monitoring air quality}, and are no longer included in the index, even if
 #' they are still part of the SIMAT (Sistema de Monitoreo Atmosférico de la
 #' Ciudad de México). Thus, even if they are located inside a zone, they are not
@@ -43,7 +44,7 @@
 #'   the \emph{America/Mexico_City} timezone (which changes with daylight
 #'   saving time)
 #' @family IMECA functions
-#' @seealso \href{http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php}{Reporte
+#' @seealso \href{http://www.aire.cdmx.gob.mx/aire/ultima-hora-reporte.php}{Reporte
 #'   de calidad del aire}
 #' @export
 #' @importFrom utils URLdecode
@@ -53,8 +54,10 @@
 #' @importFrom httr GET timeout
 #'
 #' @examples
+#'\donttest{
 #' df <- get_latest_imeca()
 #' head(df)
+#' }
 get_latest_imeca <- function() {
   tryCatch({
     url <- "http://www.aire.cdmx.gob.mx/aire/ultima-hora-reporte.php"

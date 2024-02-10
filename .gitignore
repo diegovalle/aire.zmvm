@@ -8,3 +8,5 @@ vignettes/articles/*_cache/*
 cache*
 cran-comments.md
 ^revdep$
+dev
+revdep/

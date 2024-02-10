@@ -9,8 +9,8 @@ download_lead(type)
 \arguments{
 \item{type}{type of data to download.
 \itemize{
- \item{"PbPST"}{}
- \item{"PST, PM10, PM25"}{}
+ \item PbPST
+ \item PST, PM10, PM25
 }}
 }
 \value{
@@ -18,9 +18,9 @@ A data.frame with pollution data.
 }
 \description{
 Download data on lead pollution from the archives available at
-\href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZF9tYW51YWwvcmVkX21hbnVhbF9wbG9tby5jc3Y=}{Plomo}
+\href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZF9tYW51YWwvcmVkX21hbnVhbF9wbG9tby5jc3Y=}{Plomo}
 and
-\href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZF9tYW51YWwvcmVkX21hbnVhbF9wYXJ0aWN1bGFzX3N1c3AuY3N2}{Partículas suspendidas}
+\href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZF9tYW51YWwvcmVkX21hbnVhbF9wYXJ0aWN1bGFzX3N1c3AuY3N2}{Partículas suspendidas}
 }
 \examples{
 \dontrun{

@@ -1,7 +1,7 @@
 #' Download Pollution Archives
 #'
 #' Download the pollution files available at
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=Zg==}{Contaminante}
+#' \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=Zg==}{Contaminante}
 #'
 #' @param year a numeric vector containing the years for which to download data
 #' (the earliest possible value is 2009)
@@ -71,7 +71,7 @@ download_pollution <- function(year, progress = interactive()) {
 #' Download Meteorological Data Archives
 #'
 #' Download the files available at
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=Zw==}{Meteorología}
+#' \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=Zw==}{Meteorología}
 #'
 #' @param year a numeric vector containing the years for which to download data
 #' (the earliest possible value is 1986)
@@ -145,14 +145,14 @@ download_meteorological <- function(year, progress = interactive()) {
 #' Download Lead Pollution Archives
 #'
 #' Download data on lead pollution from the archives available at
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZF9tYW51YWwvcmVkX21hbnVhbF9wbG9tby5jc3Y=}{Plomo}
+#' \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZF9tYW51YWwvcmVkX21hbnVhbF9wbG9tby5jc3Y=}{Plomo}
 #' and
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZF9tYW51YWwvcmVkX21hbnVhbF9wYXJ0aWN1bGFzX3N1c3AuY3N2}{Partículas suspendidas}
+#' \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZF9tYW51YWwvcmVkX21hbnVhbF9wYXJ0aWN1bGFzX3N1c3AuY3N2}{Partículas suspendidas}
 #'
 #' @param type type of data to download.
 #' \itemize{
-#'  \item{"PbPST"}{}
-#'  \item{"PST, PM10, PM25"}{}
+#'  \item PbPST
+#'  \item PST, PM10, PM25
 #' }
 #'
 #' @return A data.frame with pollution data.
@@ -185,19 +185,19 @@ download_lead <- function(type) {
 #' Download Acid Rain Measurements Archives
 #'
 #' Download data on rainfall samples collected weekly during the rainy season, available at
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZGRhL2RlcG9zaXRvLmNzdg==}{Depósito}
+#' \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZGRhL2RlcG9zaXRvLmNzdg==}{Depósito}
 #' and
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZGRhL2RlcG9zaXRvVC5jc3Y=}{Depósito}
+#' \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZGRhL2RlcG9zaXRvVC5jc3Y=}{Depósito}
 #'
 #' @param type type of ion measurement
 #' \itemize{
-#'  \item{"DEPOSITO"}{ -  ion quantity deposition}
-#'  \item{"CONCENTRACION"}{ - ion concentration}
+#'  \item DEPOSITO -  ion quantity deposition
+#'  \item CONCENTRACION - ion concentration
 #' }
 #' @param deposition type of deposition to download
 #' \itemize{
-#'  \item{"TOTAL"}{ - Total deposition (1988-2000)}
-#'  \item{"HUMEDO"}{ - Wet and dry deposition (1997-)}
+#'  \item TOTAL - Total deposition (1988-2000)
+#'  \item HUMEDO - Wet and dry deposition (1997-)
 #' }
 #' @return A data.frame with deposition data.
 #' @export
@@ -241,14 +241,14 @@ download_deposition <- function(deposition, type) {
 #' Download Ultraviolet Radiation Archives
 #'
 #' Download data on UVA and UVB from the pollution archives available at
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=bA==}{Radiación Solar (UVA)}
+#' \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=bA==}{Radiación Solar (UVA)}
 #' and
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=bQ==}{Radiación Solar (UVB)}
+#' \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=bQ==}{Radiación Solar (UVB)}
 #'
 #' @param type type of data to download.
 #' \itemize{
-#'  \item{"UVA"}{ - long wave ultraviolet A}
-#'  \item{"UVB"}{ - short wave ultraviolet B}
+#'  \item UVA - long wave ultraviolet A
+#'  \item UVB - short wave ultraviolet B
 #' }
 #' @param year a numeric vector containing the years for which to download data
 #' (the earliest possible value is 2000)
@@ -308,13 +308,13 @@ download_radiation <- function(type, year, progress = interactive()) {
 #' Download archives of the 24 hour averages of pollutants
 #'
 #' Data comes from
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=ag==}{Promedios de 24 horas de partículas suspendidas(PM10 Y PM2.5)} and
-#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=aQ==}{Promedios de 24 horas de Dióxido azufre}
+#' \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=ag==}{Promedios de 24 horas de partículas suspendidas(PM10 Y PM2.5)} and
+#' \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=aQ==}{Promedios de 24 horas de Dióxido azufre}
 #'
 #' @param type  type of data to download.
 #' \itemize{
-#'  \item{"SO2"}{ - Sulfur Dioxide (parts per billion)}
-#'  \item{"PS"}{ - Suspended solids}
+#'  \item SO2 - Sulfur Dioxide (parts per billion)
+#'  \item PS - Suspended solids
 #' }
 #' @param year a numeric vector containing the years for which to download data
 #' (the earliest possible value is 1986 for SO2 and 1995 for PS)
@@ -379,7 +379,7 @@ download_24hr_average <- function(type, year, progress = interactive()) {
 
 #' Download Atmospheric Pressure Archives
 #'
-#' The data comes from \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=bg==}{Presión Atmosférica}
+#' The data comes from \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=bg==}{Presión Atmosférica}
 #'
 #' @param year a numeric vector containing the years for which to download data
 #' (the earliest possible value is 2009)

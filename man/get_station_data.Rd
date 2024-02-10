@@ -9,27 +9,27 @@ get_station_data(criterion, pollutant, year, progress = interactive())
 \arguments{
 \item{criterion}{Type of data to download.
 \itemize{
- \item{"HORARIOS"}{ - Hourly data}
- \item{"MAXIMOS"}{ - Daily maximums}
- \item{"MINIMOS"}{ - Daily minimums}
+ \item HORARIOS - Hourly data
+ \item MAXIMOS - Daily maximums
+ \item MINIMOS - Daily minimums
 }}
 
 \item{pollutant}{The type of pollutant to download.
 \itemize{
- \item{"SO2"}{ - Sulfur Dioxide (parts per billion)}
- \item{"CO"}{ - Carbon Monoxide (parts per million)}
- \item{"NOX"}{ - Nitrogen Oxides (parts per billion)}
- \item{"NO2"}{ - Nitrogen Dioxide (parts per billion)}
- \item{"NO"}{ - Nitric Oxide (parts per billion)}
- \item{"O3"}{ - Ozone (parts per billion)}
- \item{"PM10"}{ - Particulate matter 10 micrometers or less
- (micrograms per cubic meter)}
- \item{"PM25"}{ - Particulate matter 2.5 micrometers or less
- (micrograms per cubic meter)}
- \item{"WSP"}{ - Wind velocity (meters per second)}
- \item{"WDR"}{ - Wind direction (degrees)}
- \item{"TMP"}{ - Temperature (degrees Celsius)}
- \item{"RH"}{ - Relative humidity (percentage)}
+ \item SO2 - Sulfur Dioxide (parts per billion)
+ \item CO - Carbon Monoxide (parts per million)
+  \item NOX - Nitrogen Oxides (parts per billion)
+  \item NO2 - Nitrogen Dioxide (parts per billion)
+  \item NO - Nitric Oxide (parts per billion)
+  \item O3 - Ozone (parts per billion)
+  \item PM10 - Particulate matter 10 micrometers or less
+ (micrograms per cubic meter)
+  \item PM25 - Particulate matter 2.5 micrometers or less
+ (micrograms per cubic meter)
+  \item WSP - Wind velocity (meters per second)
+  \item WDR - Wind direction (degrees)
+  \item TMP - Temperature (degrees Celsius)
+  \item RH - Relative humidity (percentage)
 }}
 
 \item{year}{a numeric vector containing the years for which to download data
@@ -46,12 +46,12 @@ hours correspond to the
 \description{
 Retrieve pollution data by station, in the original units, from the air quality
 server at
-\href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones},
+\href{http://www.aire.cdmx.gob.mx/aire/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones},
 or for earlier years use the archive files available from
-\href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI\%27&opcion=Zg==}{Contaminante}, or
-\href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=Zw==}{Meteorología} for
+\href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI\%27&opcion=Zg==}{Contaminante}, or
+\href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=Zw==}{Meteorología} for
 meteorological data. There's a mistake in the 2016 wind speed data, so for this year, and
-only this year, the alternative \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBi\%27}{Excel} file was used.
+only this year, the alternative \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBi\%27}{Excel} file was used.
 }
 \details{
 Temperature (TMP) archive values are correct to one decimal place, but the

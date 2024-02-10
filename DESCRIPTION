@@ -1,38 +1,39 @@
-Package: aire.zmvm
 Type: Package
+Package: aire.zmvm
 Title: Download Mexico City Pollution, Wind, and Temperature Data
-Version: 0.8.2.9000
-Authors@R: c(person("Diego", "Valle-Jones", email = "diego@diegovalle.net", role = c("aut", "cre")))
-Description: Tools for downloading hourly averages, daily maximums and minimums from each of the 
-    pollution, wind, and temperature measuring stations or geographic zones in the Mexico City 
-    metro area. The package also includes the locations of each of the stations and zones. See 
-    <http://aire.cdmx.gob.mx/> for more information.
-URL: https://hoyodesmog.diegovalle.net/aire.zmvm/, https://github.com/diegovalle/aire.zmvm
-BugReports: https://github.com/diegovalle/aire.zmvm/issues
+Version: 0.9.0
+Authors@R: 
+    person("Diego", "Valle-Jones", , "diego@diegovalle.net", role = c("aut", "cre"))
+Description: Tools for downloading hourly averages, daily maximums and
+    minimums from each of the pollution, wind, and temperature measuring
+    stations or geographic zones in the Mexico City metro area. The
+    package also includes the locations of each of the stations and zones.
+    See <http://aire.cdmx.gob.mx/> for more information.
 License: BSD_3_clause + file LICENSE
-LazyData: TRUE
+URL: https://hoyodesmog.diegovalle.net/aire.zmvm/,
+    https://github.com/diegovalle/aire.zmvm
+BugReports: https://github.com/diegovalle/aire.zmvm/issues
 Depends:
     R (>= 3.2.3)
+Imports:
+    dplyr,
+    httr,
+    lubridate,
+    progress,
+    readr,
+    readxl,
+    rvest,
+    sp,
+    stats,
+    stringr,
+    tidyr,
+    utils,
+    xml2
 Suggests:
+    ggplot2,
     knitr,
     rmarkdown,
-    testthat,
-    ggplot2,
-    ggseas,
-    mapproj,
-    selectr,
-    covr
-Imports:
-    lubridate,
-    dplyr,
-    rvest,
-    tidyr,
-    stringr,
-    xml2,
-    httr,
-    readr,
-    sp,
-    progress,
-    readxl
-RoxygenNote: 7.3.1
+    testthat
 Encoding: UTF-8
+LazyData: TRUE
+RoxygenNote: 7.3.1

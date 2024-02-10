@@ -9,14 +9,14 @@ download_deposition(deposition, type)
 \arguments{
 \item{deposition}{type of deposition to download
 \itemize{
- \item{"TOTAL"}{ - Total deposition (1988-2000)}
- \item{"HUMEDO"}{ - Wet and dry deposition (1997-)}
+ \item TOTAL - Total deposition (1988-2000)
+ \item HUMEDO - Wet and dry deposition (1997-)
 }}
 
 \item{type}{type of ion measurement
 \itemize{
- \item{"DEPOSITO"}{ -  ion quantity deposition}
- \item{"CONCENTRACION"}{ - ion concentration}
+ \item DEPOSITO -  ion quantity deposition
+ \item CONCENTRACION - ion concentration
 }}
 }
 \value{
@@ -24,9 +24,9 @@ A data.frame with deposition data.
 }
 \description{
 Download data on rainfall samples collected weekly during the rainy season, available at
-\href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZGRhL2RlcG9zaXRvLmNzdg==}{Depósito}
+\href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZGRhL2RlcG9zaXRvLmNzdg==}{Depósito}
 and
-\href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZGRhL2RlcG9zaXRvVC5jc3Y=}{Depósito}
+\href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmE=\%27&r=aHR0cDovLzE0OC4yNDMuMjMyLjExMjo4MDgwL29wZW5kYXRhL3JlZGRhL2RlcG9zaXRvVC5jc3Y=}{Depósito}
 }
 \examples{
 \dontrun{

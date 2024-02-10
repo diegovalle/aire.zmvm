@@ -9,8 +9,8 @@ download_24hr_average(type, year, progress = interactive())
 \arguments{
 \item{type}{type of data to download.
 \itemize{
- \item{"SO2"}{ - Sulfur Dioxide (parts per billion)}
- \item{"PS"}{ - Suspended solids}
+ \item SO2 - Sulfur Dioxide (parts per billion)
+ \item PS - Suspended solids
 }}
 
 \item{year}{a numeric vector containing the years for which to download data
@@ -24,8 +24,8 @@ A data.frame with pollution data.
 }
 \description{
 Data comes from
-\href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=ag==}{Promedios de 24 horas de partículas suspendidas(PM10 Y PM2.5)} and
-\href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=aQ==}{Promedios de 24 horas de Dióxido azufre}
+\href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=ag==}{Promedios de 24 horas de partículas suspendidas(PM10 Y PM2.5)} and
+\href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=aQ==}{Promedios de 24 horas de Dióxido azufre}
 }
 \examples{
 \dontrun{

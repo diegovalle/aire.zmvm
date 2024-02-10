@@ -9,12 +9,12 @@ get_station_imeca(pollutant, date, show_messages = TRUE)
 \arguments{
 \item{pollutant}{The type of pollutant to download
 \itemize{
- \item{"SO2"}{ - Sulfur Dioxide}
- \item{"CO"}{ - Carbon Monoxide}
- \item{"NO2"}{ - Nitrogen Dioxide}
- \item{"O3"}{ - Ozone}
- \item{"PM10"}{ - Particulate matter 10 micrometers or less}
- \item{"PM25"}{ - Particulate matter 2.5 micrometers or less}
+ \item SO2 - Sulfur Dioxide
+ \item CO - Carbon Monoxide
+ \item NO2 - Nitrogen Dioxide
+ \item O3 - Ozone
+ \item PM10 - Particulate matter 10 micrometers or less
+ \item PM25 - Particulate matter 2.5 micrometers or less
 }}
 
 \item{date}{The date for which to download data in YYYY-MM-DD format
@@ -35,7 +35,7 @@ Retrieve hourly averages of pollution data, by station, measured in
 Note that in 2015 it was determined that the stations with codes ACO, AJU,
 INN, MON and MPA would no longer be taken into consideration when computing
 the pollution index because they didn't meet the
-\href{http://www.aire.cdmx.gob.mx/objetivos-monitoreo-calidad-aire.html}{objectives
+\href{http://www.aire.cdmx.gob.mx/aire/objetivos-monitoreo-calidad-aire.html}{objectives
 of monitoring air quality}, and are no longer included in the index, even if
 they are still part of the SIMAT (Sistema de Monitoreo Atmosférico de la
 Ciudad de México). Thus, even if they are located inside a zone, they are not
@@ -57,7 +57,7 @@ head(df_o3[order(-df_o3$value), ])
 }
 }
 \seealso{
-\href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmc='}{Índice de calidad del aire por estaciones}
+\href{http://www.aire.cdmx.gob.mx/aire/default.php?opc='aqBjnmc='}{Índice de calidad del aire por estaciones}
 
 Other IMECA functions: 
 \code{\link{get_latest_imeca}()},

@@ -9,27 +9,27 @@ get_station_month_data(criterion, pollutant, year, month)
 \arguments{
 \item{criterion}{Type of data to download.
 \itemize{
- \item{"HORARIOS"}{ - Hourly data}
- \item{"MAXIMOS""}{ - Daily maximums}
- \item{"MINIMOS"}{ - Daily minimums}
+  \item HORARIOS - Hourly data
+  \item MAXIMOS" - Daily maximums
+  \item MINIMOS - Daily minimums
 }}
 
 \item{pollutant}{The type of pollutant to download.
 \itemize{
- \item{"SO2"}{ - Sulfur Dioxide (parts per billion)}
- \item{"CO"}{ - Carbon Monoxide (parts per million)}
- \item{"NOX"}{ - Nitrogen Oxides (parts per billion)}
- \item{"NO2"}{ - Nitrogen Dioxide (parts per billion)}
- \item{"NO"}{ - Nitric Oxide (parts per billion)}
- \item{"O3"}{ - Ozone (parts per billion)}
- \item{"PM10"}{ - Particulate matter 10 micrometers or less
- (micrograms per cubic meter)}
- \item{"PM25"}{ - Particulate matter 2.5 micrometers or less
- (micrograms per cubic meter)}
- \item{"WSP"}{ - Wind velocity (meters per second)}
- \item{"WDR"}{ - Wind direction (degrees)}
- \item{"TMP"}{ - Temperature (degrees Celsius)}
- \item{"RH"}{ - Relative humidity (percentage)}
+  \item SO2 - Sulfur Dioxide (parts per billion)
+  \item CO - Carbon Monoxide (parts per million)
+  \item NOX - Nitrogen Oxides (parts per billion)
+  \item NO2 - Nitrogen Dioxide (parts per billion)
+  \item NO - Nitric Oxide (parts per billion)
+  \item O3 - Ozone (parts per billion)
+  \item PM10 - Particulate matter 10 micrometers or less
+ (micrograms per cubic meter)
+  \item PM25 - Particulate matter 2.5 micrometers or less
+ (micrograms per cubic meter)
+  \item WSP - Wind velocity (meters per second)
+  \item WDR - Wind direction (degrees)
+  \item TMP - Temperature (degrees Celsius)
+  \item RH - Relative humidity (percentage)
 }}
 
 \item{year}{an integer indicating the year for which to download data
@@ -44,7 +44,7 @@ A data.frame with pollution data, the hours correspond to the
 \description{
 Retrieve hourly averages, daily maximums, or daily minimums of pollution data
 in the original units, by station, from the air quality server at
-\href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
+\href{http://www.aire.cdmx.gob.mx/aire/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
 }
 \details{
 Temperature (TMP) data was rounded to the nearest integer, but the

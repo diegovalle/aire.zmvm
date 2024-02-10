@@ -51,7 +51,7 @@ df_horarios <- bind_rows(ll_horarios)
 ### Dealing with daylight savings time
 
 The data returned by ```get_station_data``` when the "HORARIOS" criterion is used, includes the date and hour of each measurement. The hour is specified as an offset from midnight and does not 
-include daylight savings time (basically GMT+6). It's probably a good idea to convert it to local Mexico City time if we want to analyse pollution patterns by hour of day.
+include daylight savings time (basically GMT+6). It's probably a good idea to convert it to local Mexico City time if we want to analyze pollution patterns by hour of day.
 
 ```{r}
 knitr::kable(head(df_horarios))

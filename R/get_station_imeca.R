@@ -8,7 +8,7 @@
 #' Note that in 2015 it was determined that the stations with codes ACO, AJU,
 #' INN, MON and MPA would no longer be taken into consideration when computing
 #' the pollution index because they didn't meet the
-#' \href{http://www.aire.cdmx.gob.mx/objetivos-monitoreo-calidad-aire.html}{objectives
+#' \href{http://www.aire.cdmx.gob.mx/aire/objetivos-monitoreo-calidad-aire.html}{objectives
 #' of monitoring air quality}, and are no longer included in the index, even if
 #' they are still part of the SIMAT (Sistema de Monitoreo Atmosférico de la
 #' Ciudad de México). Thus, even if they are located inside a zone, they are not
@@ -16,12 +16,12 @@
 #'
 #' @param pollutant The type of pollutant to download
 #' \itemize{
-#'  \item{"SO2"}{ - Sulfur Dioxide}
-#'  \item{"CO"}{ - Carbon Monoxide}
-#'  \item{"NO2"}{ - Nitrogen Dioxide}
-#'  \item{"O3"}{ - Ozone}
-#'  \item{"PM10"}{ - Particulate matter 10 micrometers or less}
-#'  \item{"PM25"}{ - Particulate matter 2.5 micrometers or less}
+#'  \item SO2 - Sulfur Dioxide
+#'  \item CO - Carbon Monoxide
+#'  \item NO2 - Nitrogen Dioxide
+#'  \item O3 - Ozone
+#'  \item PM10 - Particulate matter 10 micrometers or less
+#'  \item PM25 - Particulate matter 2.5 micrometers or less
 #' }
 #' @param date The date for which to download data in YYYY-MM-DD format
 #' (the earliest possible date is 2009-01-01).
@@ -32,7 +32,7 @@
 #' saving time
 #' @export
 #' @family IMECA functions
-#' @seealso \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmc='}{Índice de calidad del aire por estaciones}
+#' @seealso \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc='aqBjnmc='}{Índice de calidad del aire por estaciones}
 #' @importFrom rvest html_nodes html_table
 #' @importFrom xml2 read_html
 #' @importFrom tidyr gather
@@ -72,7 +72,7 @@ get_station_imeca <- function(pollutant, date,
                    " ACO, AJU, INN, MON, and MPA were excluded from the",
                    " index"))
 
-  url <- "http://www.aire.cdmx.gob.mx/default.php?opc=%27aqBjnmI=%27"
+  url <- "http://www.aire.cdmx.gob.mx/aire/default.php?opc=%27aqBjnmI=%27"
   fd <- list(
     fecha       = date,
     RadioGroup1 = switch(pollutant,
