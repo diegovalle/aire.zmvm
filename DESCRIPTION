@@ -1,7 +1,7 @@
 Type: Package
 Package: aire.zmvm
 Title: Download Mexico City Pollution, Wind, and Temperature Data
-Version: 0.9.0
+Version: 0.9.0.9000
 Authors@R: 
     person("Diego", "Valle-Jones", , "diego@diegovalle.net", role = c("aut", "cre"))
 Description: Tools for downloading hourly averages, daily maximums and
