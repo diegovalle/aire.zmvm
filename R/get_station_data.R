@@ -62,7 +62,7 @@
                                            month = "") {
   if (pollutant == "pm25")
     pollutant <- "pm2"
-  base_url <- paste0("http://www.aire.cdmx.gob.mx/aire/",
+  base_url <- paste0("http://www.aire.cdmx.gob.mx/",
                      "estadisticas-consultas/concentraciones/respuesta.php?")
   url <- str_c(base_url, "qtipo=", criterion, "&",
                "parametro=", pollutant, "&",
@@ -81,7 +81,7 @@
 
   poll_table <- read_html(result)
   df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE)
-  names(df) <- df[1, ]
+  names(df) <- as.character(df[1, ])
   names(df)[1] <- "date"
   names(df) <- iconv(names(df), from = "UTF-8", to = "ASCII", sub = "")
   names(df) <- str_replace_all(names(df), "\\s", "")
@@ -213,12 +213,12 @@ download_horario_by_month <- function(pollutant, year){
 #'
 #' Retrieve pollution data by station, in the original units, from the air quality
 #' server at
-#' \href{http://www.aire.cdmx.gob.mx/aire/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones},
+#' \href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones},
 #' or for earlier years use the archive files available from
-#' \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI\%27&opcion=Zg==}{Contaminante}, or
-#' \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=Zw==}{Meteorología} for
+#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI\%27&opcion=Zg==}{Contaminante}, or
+#' \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=Zw==}{Meteorología} for
 #' meteorological data. There's a mistake in the 2016 wind speed data, so for this year, and
-#' only this year, the alternative \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBi\%27}{Excel} file was used.
+#' only this year, the alternative \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBi\%27}{Excel} file was used.
 #'
 #' Temperature (TMP) archive values are correct to one decimal place, but the
 #' most recent data is only available rounded to the nearest integer.
@@ -322,7 +322,7 @@ get_station_data <- function(criterion, pollutant, year,
 #'
 #' Retrieve hourly averages, daily maximums, or daily minimums of pollution data
 #' in the original units, by station, from the air quality server at
-#' \href{http://www.aire.cdmx.gob.mx/aire/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
+#' \href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
 #'
 #' Temperature (TMP) data was rounded to the nearest integer, but the
 #' \code{\link{get_station_data}} function allows you to download data accurate

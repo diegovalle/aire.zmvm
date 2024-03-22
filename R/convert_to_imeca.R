@@ -169,7 +169,7 @@ to_imeca <- function(contaminant, value) {
 #' section). Because of rounding error results may be off by a couple of points.
 #'
 #' @seealso For the formulas on how to convert visit:
-#'   \href{http://www.aire.cdmx.gob.mx/aire/descargas/monitoreo/normatividad/NADF-009-AIRE-2017.pdf}{AVISO POR EL QUE SE DA A CONOCER EL PROYECTO DE NORMA AMBIENTAL PARA EL DISTRITO FEDERAL}
+#'   \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2017.pdf}{AVISO POR EL QUE SE DA A CONOCER EL PROYECTO DE NORMA AMBIENTAL PARA EL DISTRITO FEDERAL}
 #'
 #' @param pollutant type of pollutant. A vector of one or more of the following
 #'   options: \itemize{ \item SO2 - Sulfur Dioxide - ppb (24 hour average)

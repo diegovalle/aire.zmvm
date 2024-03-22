@@ -17,7 +17,7 @@ By default it will only display in an interactive session.}
 A data.frame with atmospheric pressure data.
 }
 \description{
-The data comes from \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aKBhnmI=\%27&opcion=bg==}{Presión Atmosférica}
+The data comes from \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aKBhnmI=\%27&opcion=bg==}{Presión Atmosférica}
 }
 \examples{
 \dontrun{

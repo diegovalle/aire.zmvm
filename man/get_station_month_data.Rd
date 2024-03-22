@@ -44,7 +44,7 @@ A data.frame with pollution data, the hours correspond to the
 \description{
 Retrieve hourly averages, daily maximums, or daily minimums of pollution data
 in the original units, by station, from the air quality server at
-\href{http://www.aire.cdmx.gob.mx/aire/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
+\href{http://www.aire.cdmx.gob.mx/estadisticas-consultas/concentraciones/index.php}{Consulta de Concentraciones}
 }
 \details{
 Temperature (TMP) data was rounded to the nearest integer, but the

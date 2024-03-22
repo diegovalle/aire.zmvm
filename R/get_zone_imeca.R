@@ -18,7 +18,6 @@
 .download_data_zone <- function(criterion, pollutant, zone, start_date,
                                 end_date) {
   url <- paste0("http://www.aire.cdmx.gob.mx/",
-                "aire/",
                 "estadisticas-consultas/consultas/resultado_consulta.php")
   fd <- list(
     tipo_attach = "b",
@@ -30,8 +29,8 @@
     anof = year(end_date),
     #pollutant = "on",
     #zone = "on",
-    `trip-start` = start_date,
-    `trip-end` = end_date,
+    #`trip-start` = start_date,
+    #`trip-end` = end_date,
     Q = criterion,
     inter       = "",
     consulta = "Consulta"
@@ -57,7 +56,7 @@
   if (http_type(result) != "text/html")
     stop(paste0(url, " did not return text/html", call. = FALSE))
 
-  poll_table <- read_html(content(result, "raw"))
+  poll_table <- read_html(content(result, "text"))
 
   df <- html_table(html_nodes(poll_table, "table")[[1]],
                           header = TRUE)
@@ -68,19 +67,19 @@
 #' Download pollution data by zone in IMECAs
 #'
 #' Retrieve pollution data in IMECAs by geographic zone from the air quality
-#' server at \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aqBjnmU=\%27}{Consultas}
+#' server at \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aqBjnmU=\%27}{Consultas}
 #'
 #' Note that in 2015 it was determined that the stations with codes ACO, AJU,
 #' INN, MON and MPA would no longer be taken into consideration when computing
 #' the pollution index because they didn't meet the
-#' \href{http://www.aire.cdmx.gob.mx/aire/objetivos-monitoreo-calidad-aire.html}{objectives
+#' \href{http://www.aire.cdmx.gob.mx/objetivos-monitoreo-calidad-aire.html}{objectives
 #' of monitoring air quality}. They are no longer included in the index, even if
 #' they are still part of the SIMAT (Sistema de Monitoreo Atmosférico de la
 #' Ciudad de México). Thus, even if they are located inside a zone, they are not
 #' included in the pollution values for that zone.
 #'
 #' The different geographic zones were defined in the
-#' \href{http://www.aire.cdmx.gob.mx/aire/descargas/ultima-hora/calidad-aire/pcaa/Gaceta_Oficial_CDMX.pdf}{ Gaceta Oficial de la Ciudad de México}
+#' \href{http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/Gaceta_Oficial_CDMX.pdf}{ Gaceta Oficial de la Ciudad de México}
 #' No. 230, 27 de Diciembre de 2016.
 #'
 #' \strong{Zona Centro}: Benito Juárez,
@@ -141,7 +140,7 @@
 #' @family IMECA functions
 #' @seealso \code{\link{zones}} a data.frame containing the municipios
 #'   belonging to each zone, and
-#'   \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc=\%27aqBjnmI=\%27}{Índice de
+#'   \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aqBjnmI=\%27}{Índice de
 #'   calidad del aire por zonas}
 #' @export
 #' @importFrom stringr str_c  str_replace_all
@@ -239,8 +238,7 @@ get_zone_imeca <- function(criterion, pollutant, zone, start_date, end_date,
                    " index"))
   tryCatch({
     df <- .download_data_zone(criterion, pollutant, zone, start_date, end_date)
-
-    names(df) <- df[1, ]
+    names(df) <- as.character(df[1, ])
     names(df)[1] <- "date"
     names(df) <- str_replace_all(names(df), "\\s", "")
     df <- df[2:nrow(df), ]

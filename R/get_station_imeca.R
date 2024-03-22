@@ -8,7 +8,7 @@
 #' Note that in 2015 it was determined that the stations with codes ACO, AJU,
 #' INN, MON and MPA would no longer be taken into consideration when computing
 #' the pollution index because they didn't meet the
-#' \href{http://www.aire.cdmx.gob.mx/aire/objetivos-monitoreo-calidad-aire.html}{objectives
+#' \href{http://www.aire.cdmx.gob.mx/objetivos-monitoreo-calidad-aire.html}{objectives
 #' of monitoring air quality}, and are no longer included in the index, even if
 #' they are still part of the SIMAT (Sistema de Monitoreo Atmosférico de la
 #' Ciudad de México). Thus, even if they are located inside a zone, they are not
@@ -32,7 +32,7 @@
 #' saving time
 #' @export
 #' @family IMECA functions
-#' @seealso \href{http://www.aire.cdmx.gob.mx/aire/default.php?opc='aqBjnmc='}{Índice de calidad del aire por estaciones}
+#' @seealso \href{http://www.aire.cdmx.gob.mx/default.php?opc='aqBjnmc='}{Índice de calidad del aire por estaciones}
 #' @importFrom rvest html_nodes html_table
 #' @importFrom xml2 read_html
 #' @importFrom tidyr gather
@@ -72,7 +72,7 @@ get_station_imeca <- function(pollutant, date,
                    " ACO, AJU, INN, MON, and MPA were excluded from the",
                    " index"))
 
-  url <- "http://www.aire.cdmx.gob.mx/aire/default.php?opc=%27aqBjnmI=%27"
+  url <- "http://www.aire.cdmx.gob.mx/default.php?opc=%27aqBjnmI=%27"
   fd <- list(
     fecha       = date,
     RadioGroup1 = switch(pollutant,
@@ -106,8 +106,9 @@ get_station_imeca <- function(pollutant, date,
   if (nrow(df) <= 1)
     stop("The website returned invalid data. Please check the date format.",
          call. = FALSE)
-  pollutant2 <- names(df)[3]
-  names(df) <- df[2, ]
+  pollutant2 <- as.character(names(df))[3]
+  cnames <- as.character(df[2, ])
+  names(df) <- cnames
   df$date <- date
   names(df)[1] <- "hour"
   ## There's an empty row at the end of the data

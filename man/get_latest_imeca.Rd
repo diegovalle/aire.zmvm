@@ -20,7 +20,7 @@ for each station as measured in
 Note that in 2015 it was determined that the stations with codes ACO, AJU,
 INN, MON and MPA would no longer be taken into consideration when computing
 the pollution index because they didn't meet the
-\href{http://www.aire.cdmx.gob.mx/aire/objetivos-monitoreo-calidad-aire.html}{objectives
+\href{http://www.aire.cdmx.gob.mx/objetivos-monitoreo-calidad-aire.html}{objectives
 of monitoring air quality}, and are no longer included in the index, even if
 they are still part of the SIMAT (Sistema de Monitoreo Atmosférico de la
 Ciudad de México). Thus, even if they are located inside a zone, they are not
@@ -33,7 +33,7 @@ head(df)
 }
 }
 \seealso{
-\href{http://www.aire.cdmx.gob.mx/aire/ultima-hora-reporte.php}{Reporte
+\href{http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php}{Reporte
   de calidad del aire}
 
 Other IMECA functions: 

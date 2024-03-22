@@ -1,5 +1,11 @@
 # aire.zmvm (development version)
 
+## Bugs fixes and improvements
+
+* Fixed `get_station_imeca` because the url to download the data changed
+* Fixed warning "The 'value' argument of 'names<-' must be a character vector as of
+tibble 3.0.0." in `get_station_imeca`, `get_station_data`  and `get_zone_imeca`
+
 # aire.zmvm 0.9.0
 
 ## Bugs fixes and improvements

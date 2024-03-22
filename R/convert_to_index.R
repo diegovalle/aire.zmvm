@@ -46,7 +46,7 @@ single_to_index <- function(value, pollutant) {
 #' }
 #'
 #' @export
-#' @seealso \href{http://www.aire.cdmx.gob.mx/aire/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf}{NADF-009-AIRE-2006}
+#' @seealso \href{http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NADF-009-AIRE-2006.pdf}{NADF-009-AIRE-2006}
 #'
 #' @family convert functions
 #' @examples
