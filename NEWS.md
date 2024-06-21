@@ -1,4 +1,4 @@
-# aire.zmvm (development version)
+# aire.zmvm 1.0.0
 
 ## Bugs fixes and improvements
 
