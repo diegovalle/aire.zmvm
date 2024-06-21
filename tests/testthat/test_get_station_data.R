@@ -60,10 +60,11 @@ test_that("get_station_data matches website", {
   # df_max_2016 <- get_station_data("MAXIMOS", "PM10", 2016, progress = FALSE)
   # df_min_2015_18 <- get_station_data("MINIMOS", "PM10", c(2015, 2018),
   #                                    progress = TRUE)
+  Sys.sleep(1)
   expect_silent(df_max_2015 <- get_station_data("MAXIMOS", "O3", 2015))
   # expect_silent(df_max_2005 <-  get_station_data("MAXIMOS", "SO2", 2005))
   # df_wdr_2005 <- get_station_data("MAXIMOS", "WDR", 2005)
-  # df_horarios_2010 <- get_station_data("HORARIOS", "PM10", 2010)
+  Sys.sleep(1)
   df_horarios_2018 <- get_station_data("HORARIOS", "O3", 2018)
 
   expect_equal(unname(

@@ -4,6 +4,7 @@ test_that("latest data", {
   skip_on_cran()
 
   df <- get_latest_imeca()
+  Sys.sleep(1)
   expect_gt(nrow(df), 0)
   expect_type(df$value, "integer")
   expect_type(df$datetime, "character")

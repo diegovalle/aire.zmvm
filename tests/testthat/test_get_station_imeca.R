@@ -9,9 +9,11 @@ test_that("get_station_imeca pollution data matches the website", {
 
   skip_on_cran()
 
+  Sys.sleep(1)
   df <- get_station_imeca("O3", "2017-05-15")
   expect_equal(max(df$value, na.rm = TRUE), 151)
 
+  Sys.sleep(1)
   df <- get_station_imeca("O3", "2018-01-01")
   expect_equal(df$value[which(df$station_code == "AJM")],
                c(22, 20, 21, 24, 24, 22, 12, 8, 13,

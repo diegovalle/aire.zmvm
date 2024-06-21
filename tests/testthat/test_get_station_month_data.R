@@ -24,12 +24,17 @@ test_that("test get_station_month_data", {
 
   skip_on_cran()
 
+  Sys.sleep(1)
   df_hor_2018_jan <- get_station_month_data("HORARIOS",
                                             "WSP", 2018, 1)
   expect_warning(df_tmp_2017_jan <- get_station_month_data("HORARIOS",
                                                          "TMP", 2005, 1),
                  "Temperature \\(TMP\\) was rounded to the nearest integer")
+
+  Sys.sleep(1)
   df_min_2016_april <- get_station_month_data("MINIMOS", "PM10", 2016, 4)
+
+  Sys.sleep(1)
   df_max_2016_march <- get_station_month_data("MAXIMOS", "O3", 2016, 3)
 
   # test that the data only include one month

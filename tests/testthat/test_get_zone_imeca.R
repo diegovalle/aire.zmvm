@@ -15,18 +15,27 @@ test_that("zone pollution data matches website", {
 
   skip_on_cran()
 
+  Sys.sleep(1)
   df_max_o3 <- suppressMessages(get_zone_imeca("MAXIMOS",
                                                "O3", c("NO", "NE", "CE"),
                                                "2015-12-25", "2016-01-01"))
+
+  Sys.sleep(1)
   df_max_tz <- suppressMessages(get_zone_imeca("MAXIMOS",
                                                c("O3", "PM10"), c("TZ"),
                                                "2015-12-31", "2016-01-06"))
+
+  Sys.sleep(1)
   df_horarios <- suppressMessages(get_zone_imeca("HORARIOS", c("O3", "PM10"),
                                                  c("NO", "NE", "CE"),
                                                  "2015-12-25", "2016-01-01"))
 
+
+  Sys.sleep(1)
   expect_message(get_zone_imeca("MAXIMOS", "PM10", c("NO", "NE", "CE"),
                                 "2008-01-01", "2008-01-01"))
+
+  Sys.sleep(1)
   expect_message(get_zone_imeca("MAXIMOS", "SO2", c("NO", "NE", "CE"),
                                 "2017-02-25", "2017-05-01"))
   expect_silent(get_zone_imeca("MAXIMOS", "O3", c("NO", "NE", "CE"),
