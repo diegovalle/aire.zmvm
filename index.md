@@ -16,13 +16,13 @@ Status](https://img.shields.io/codecov/c/github/diegovalle/aire.zmvm/master.svg)
 
 <br>
 
-`aire.zmv` is an R package for downloading air quality data from the
-Mexico City metro area. This package can download real-time, daily
-maximum, minimum, or hourly average data for each of the pollution
-measuring stations or geographical zones in the Zona Metropolitana del
-Valle de México (greater Mexico City). It also includes the locations of
-all the measuring stations and zones, and a function to perform inverse
-distance weighting modified to work with wind direction.
+**aire.zmvm** is an R package for downloading air quality data from the
+Mexico City metropolitan area. This package provides real-time, daily
+maximum, minimum, and hourly average data for pollution measuring
+stations and geographical zones within the *Zona Metropolitana del Valle
+de México* (Greater Mexico City). It also includes station locations and
+a specialized function for inverse distance weighting adjusted for wind
+direction.
 
 ## Installation
 
@@ -35,27 +35,27 @@ if (!require(devtools)) {
 devtools::install_github('diegovalle/aire.zmvm')
 ```
 
-To install the most recent package version from CRAN type:
+To install the stable version from CRAN, use:
 
 ``` r
 install.packages("aire.zmvm")
 library(aire.zmvm)
 ```
 
-Note that the version on CRAN might not reflect the most recent changes
-made to this package.
+*Note: The version on CRAN may not include the latest updates available
+on GitHub.*
 
 ## Usage
 
-Create a time series of ozone levels in ppb from 2009 to 2018 and
-highlight the phase I smog alerts.
+This example creates a time series of ozone levels (in ppb) from 2009 to
+2018 and highlights Phase I smog alerts.
 
 ``` r
-## Auto-install required R packages
+# Automatically install and load required packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(aire.zmvm, dplyr, ggplot2, ggseas)
 
-## download pollution data by station in ppb
+# Download pollution data by station (in ppb)
 o3 <- get_station_data(criterion = "MAXIMOS", # Can be one of MAXIMOS (maximum), 
                                               # MINIMOS (minimum), 
                                               # or HORARIOS (hourly average)
@@ -72,8 +72,7 @@ o3_max <- o3 %>%
                          base::max(value, na.rm = TRUE))) %>%
   na.omit()
 
-# ozone threshold for declaring a 'smog alert' and the dates during which they
-# were valid
+# Ozone thresholds for declaring a 'smog alert' and their periods of validity
 # source: 
 # http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/pcaa-modificaciones.pdf
 contingencia_levels <- data.frame(
@@ -94,7 +93,7 @@ contingencia$contingencia <- case_when(
 )
 ```
 
-Here’s what the data we just downloaded looks like:
+Below is a preview of the downloaded data:
 
 ``` r
 knitr::kable(head(o3))
@@ -123,12 +122,12 @@ ggplot(max_daily_df,
   xlab("date") +
   ylab("parts per billion") +
   scale_x_continuous(breaks = c(2011, 2014, 2017)) +
-  ggtitle("Maximum daily ozone concentration and 30 day rolling average", 
-          subtitle = paste0("Red lines indicate the values necessary to ",
-                            "activate a phase I smog alert. \nBlue lines are ",
-                            "the 30 day rolling average and red dots indicate ",
-                            "when the ozone value exceed the one necessary to ",
-                            "declare a pollution alert\nData source: SEDEMA")) + 
+  ggtitle("Maximum Daily Ozone Concentration and 30-Day Rolling Average", 
+          subtitle = paste0("Dashed red lines indicate thresholds for ",
+                            "Phase I smog alerts. \nThe blue line represents ",
+                            "the 30-day rolling average, and red dots mark ",
+                            "days when ozone levels triggered a pollution alert.\n",
+                            "Source: SEDEMA")) + 
   theme_bw()
 ```
 

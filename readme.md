@@ -22,13 +22,13 @@ Status](https://img.shields.io/codecov/c/github/diegovalle/aire.zmvm/master.svg)
 
 ## What does it do?
 
-Tools for downloading airquality data for the Mexico City metro area.
-This package can download real-time, daily maximum, minimum, or hourly
-average data for each of the pollution measuring stations or
-geographical zones in the Zona Metropolitana del Valle de México
-(greater Mexico City). It also includes the locations of all the
-measuring stations and a function to perform inverse distance weighting
-modified to work with wind direction.
+Tools for downloading air quality data for the Mexico City metro area.
+This package can download real-time, daily maximum, daily minimum, or
+hourly average data for each pollution monitoring station or
+geographical zone in the Zona Metropolitana del Valle de México (Greater
+Mexico City). It also includes the locations of all measuring stations
+and a function to perform inverse distance weighting modified to work
+with wind direction.
 
 ## Installation
 
@@ -48,26 +48,26 @@ install.packages("aire.zmvm")
 library(aire.zmvm)
 ```
 
-Note that the version on CRAN might not reflect the most recent changes
-made to this package.
+Note that the version on CRAN may not reflect the latest changes in this
+repository.
 
 ## Core Functions
 
 The package core functions:
 
 - `get_station_data` and `get_station_month_data` download pollution,
-  wind and temperature data for each of the measuring stations in the
-  original units (ppb, µg/m³, etc).
-- `get_station_imeca` download pollution values for each station in
-  IMECAs
-- `get_zone_imeca` download pollution data in IMECAs for each of the 5
-  geographic zones of Mexico City
-- `get_latest_imeca` download the latest pollution hourly maximums for
-  each of the measuring stations.
-- `idw360` inverse distance weighting modified to work with degrees,
-  useful for wind data
+  wind, and temperature data for each monitoring station in the original
+  units (ppb, µg/m³, etc.).
+- `get_station_imeca` downloads pollution values for each station in
+  IMECAs.
+- `get_zone_imeca` downloads pollution data in IMECAs for each of the
+  five geographic zones of Mexico City.
+- `get_latest_imeca` downloads the latest hourly pollution maximums for
+  each monitoring station.
+- `idw360` provides inverse distance weighting modified to work with
+  degrees, which is useful for wind data.
 
-| Function | Date range | Units | Wind, Tmp, RH | Earliest Date | Pollutants | Includes All Stations | Criterion |
+| Function | Date range | Units | Wind, Temp, RH | Earliest Date | Pollutants | Includes All Stations | Criterion |
 |----|----|----|----|----|----|----|----|
 | get_station_data | years | Original | Yes | 1986 | SO2, CO, NO2, O3, PM10, PM25, WSP, WDR, TMP, RH | Yes | hourly, daily maximum, daily minimum |
 | get_station_month_data | 1 month | Original | Yes | 2005‑01 | SO2, CO, NO2, O3, PM10, PM25, WSP, WDR, TMP, RH | Yes | hourly, daily maximum, daily minimum |
@@ -145,12 +145,12 @@ ggplot(max_daily_df,
   xlab("date") +
   ylab("parts per billion") +
   scale_x_continuous(breaks = c(2011, 2014, 2017)) +
-  ggtitle("Maximum daily ozone concentration and 30 day rolling average", 
+  ggtitle("Maximum daily ozone concentration and 30-day rolling average", 
           subtitle = paste0("Red lines indicate the values necessary to ",
-                            "activate a phase I smog alert. \nBlue lines are ",
-                            "the 30 day rolling average and red dots indicate ",
-                            "when the ozone value exceed the one necessary to ",
-                            "declare a pollution alert\nData source: SEDEMA")) + 
+                            "activate a Phase I smog alert. \nBlue lines represent ",
+                            "the 30-day rolling average, and red dots indicate ",
+                            "when the ozone value exceeded the one necessary to ",
+                            "declare a pollution alert.\nData source: SEDEMA")) + 
   theme_bw()
 ```
 
