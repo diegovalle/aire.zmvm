@@ -12,3 +12,4 @@ dev
 revdep/
 docs/
 man/figures/*.png
+!README-readme-contingencias-1.png
