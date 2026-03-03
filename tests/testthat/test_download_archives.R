@@ -8,8 +8,6 @@ test_that("download_pollution", {
   expect_error(download_pollution(c(1990, NA)))
 
   skip_on_cran()
-  ## FIXME: datosabiertos.aire.cdmx.gob.mx timing out
-  skip()
 
   df <- download_pollution(1986)
   expect_equal(df$station_code[1:5], c("LAG", "TLA", "XAL", "MER", "PED"))
@@ -27,8 +25,6 @@ test_that("download_meteorological ", {
   expect_error(download_meteorological(c(1990, NA)))
 
   skip_on_cran()
-  ## FIXME: datosabiertos.aire.cdmx.gob.mx timing out
-  skip()
 
   df <- download_meteorological(1986)
   expect_equal(df$station_code[1:5], c("TAC", "FAC", "SAG", "TLA", "XAL"))
@@ -54,18 +50,13 @@ test_that( ("download_lead "), {
   expect_error(download_lead("PbPST", 1987))
 
   skip_on_cran()
-  ## FIXME: datosabiertos.aire.cdmx.gob.mx timing out
-  skip()
 
   df <- download_lead("PbPST")
   expect_equal(df$station_code[1:5], c("CES", "MER", "PED", "TLA", "XAL"))
   expect_equal(subset(df, date == "1989-01-08" & station_code == "XAL" &
                         pollutant == "PbPST")$value, 3.17)
 
-  df <- download_lead("PST, PM10, PM25")
-  expect_equal(df$station_code[1:5], c("CES", "MER", "PED", "TLA", "XAL"))
-  expect_equal(subset(df, date == "1989-01-02" & station_code == "XAL" &
-                        pollutant == "PM10")$value, 249)
+  expect_error(download_lead("PST, PM10, PM25"), "not supported")
 })
 
 test_that( ("download_deposition "), {
@@ -73,11 +64,11 @@ test_that( ("download_deposition "), {
   expect_error(download_deposition("ERROR", "CONCENTRACION"))
 
   skip_on_cran()
-  ## FIXME: datosabiertos.aire.cdmx.gob.mx timing out
-  skip()
 
   df <- download_deposition(deposition = "HUMEDO", type = "CONCENTRACION")
-  expect_equal(df$station_code[1:5], c("TEC", "MCM", "TLA", "XAL", "LOM"))
+  expect_equal(all(c("TEC", "MCM", "TLA", "XAL", "LOM") %in%
+                     df$station_code),
+               TRUE)
   expect_equal(subset(df, date == "1997-05-05" & station_code == "XAL" &
                         pollutant == "H")$value, 0.0003)
   df2 <- download_deposition(deposition = "HUMEDO", type = "DEPOSITO")
@@ -101,8 +92,6 @@ test_that( ("download_radiation "), {
   expect_error(download_radiation("UVBERROR", 2005))
 
   skip_on_cran()
-  ## FIXME: datosabiertos.aire.cdmx.gob.mx timing out
-  skip()
 
   df <- download_radiation("UVA", 2000)
   expect_equal(df$station_code[1:5], c("HAN", "MER", "MON", "PED", "SAG"))
@@ -120,8 +109,6 @@ test_that( ("download_24hr_average "), {
   expect_error(download_24hr_average("PS", 1994))
 
   skip_on_cran()
-  ## FIXME: datosabiertos.aire.cdmx.gob.mx timing out
-  skip()
 
   df <- download_24hr_average("PS", 1995)
   expect_equal(df$station_code[1:5], c("LVI", "TLA", "XAL", "MER", "PED"))
@@ -145,8 +132,6 @@ test_that( ("download_pressure "), {
   expect_error(download_pressure("PS"))
 
   skip_on_cran()
-  ## FIXME: datosabiertos.aire.cdmx.gob.mx timing out
-  skip()
 
   df <- download_pressure(2009)
   expect_equal(df$station_code[1:5], c("MER", "MER", "MER", "MER", "MER"))

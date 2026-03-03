@@ -10,6 +10,8 @@ readme_files
 ^index.Rmd
 ^index.md
 ^vignettes/*
+^man/figures/*.png
+^man/figures/*.jpg
 ^docs/*
 _pkgdown.yaml
 ^cran-comments\.md$
@@ -24,3 +26,6 @@ cran-comments.md
 dev
 ^CRAN-SUBMISSION$
 ^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

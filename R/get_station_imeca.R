@@ -107,6 +107,10 @@ get_station_imeca <- function(pollutant, date,
     stop("The website returned invalid data. Please check the date format.",
          call. = FALSE)
   pollutant2 <- as.character(names(df))[3]
+  # Make sure the column names vecotr (cnames) does not include NA
+  ## Remove columns with NA for name
+  if (length(which(is.na(as.character(df[2, ])))))
+    df <- df[ , -which(is.na(as.character(df[2, ])))]
   cnames <- as.character(df[2, ])
   names(df) <- cnames
   df$date <- date

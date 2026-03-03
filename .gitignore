@@ -10,3 +10,5 @@ cran-comments.md
 ^revdep$
 dev
 revdep/
+docs/
+man/figures/*.png

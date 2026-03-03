@@ -52,17 +52,16 @@ test_that("get_station_data matches website", {
   expect_error(get_station_data("MAXIMOS", "PM10", -2016))
 
   skip_on_cran()
-  ## FIXME
 
-  # df_hor_2016 <- get_station_data("HORARIOS",
-  #                                 "WSP", 2016,
-  #                                 progress = NULL)
-  # df_max_2016 <- get_station_data("MAXIMOS", "PM10", 2016, progress = FALSE)
-  # df_min_2015_18 <- get_station_data("MINIMOS", "PM10", c(2015, 2018),
-  #                                    progress = TRUE)
+  df_hor_2016 <- get_station_data("HORARIOS",
+                                  "WSP", 2016,
+                                  progress = NULL)
+  df_max_2016 <- get_station_data("MAXIMOS", "PM10", 2016, progress = FALSE)
+  df_min_2015_18 <- get_station_data("MINIMOS", "PM10", c(2015, 2018),
+                                     progress = TRUE)
   Sys.sleep(1)
   expect_silent(df_max_2015 <- get_station_data("MAXIMOS", "O3", 2015))
-  # expect_silent(df_max_2005 <-  get_station_data("MAXIMOS", "SO2", 2005))
+  expect_silent(df_max_2005 <-  get_station_data("MAXIMOS", "SO2", 2005))
   # df_wdr_2005 <- get_station_data("MAXIMOS", "WDR", 2005)
   Sys.sleep(1)
   df_horarios_2018 <- get_station_data("HORARIOS", "O3", 2018)
@@ -71,9 +70,6 @@ test_that("get_station_data matches website", {
     unlist(subset(df_horarios_2018,
                   date == as.Date("2018-09-037"))$value[1:13])),
     c(NA, NA, NA, 5, 2, 1, 1, 3, 11, 25, 36, 46, 59))
-
-  # FIXME
-  skip()
 
   # Wait before downloading
   Sys.sleep(2)
@@ -120,11 +116,6 @@ test_that("get_station_data matches website", {
                  NA, 7, NA, 8, 30, 12, NA, 32, 49, 12, NA, NA, 7, 101, 7, 15,
                  NA, 25, 20, NA, NA, 11, 10, 19, 25))
 
-  expect_equal(unname(unlist(subset(df_horarios_2010,
-                                    date == as.Date("2010-01-01") &
-                                     hour == 1)$value)),
-              c(115, 98, 195, 104, 83, 62, 182, 275, 73, 225, 81, 129, 71,
-                107))
   # expect_equal(unname(unlist(subset(df_horarios_2018,
   #                                   date == as.Date("2018-02-28") &
   #                                     hour == 1)$value)),

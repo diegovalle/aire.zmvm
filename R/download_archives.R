@@ -158,6 +158,7 @@ download_meteorological <- function(year, progress = interactive()) {
 #' @return A data.frame with pollution data.
 #' @export
 #' @importFrom readr read_csv
+#' @importFrom stringr str_detect
 #' @examples
 #' \dontrun{
 #' head(download_lead("PbPST"))
@@ -171,14 +172,35 @@ download_lead <- function(type) {
   else if (type == "PST, PM10, PM25")
     REDMA <- paste0("http://datosabiertos.aire.cdmx.gob.mx:8080/opendata/red_manual/",
                     "red_manual_particulas_susp.csv")
-  df <- read_csv(str_c(REDMA),
-                 skip = 8, progress = FALSE, col_types = list(
+  if (str_detect(REDMA, "red_manual_particulas_susp.csv")) {
+    stop(paste0(
+      "PST, PM10, PM25 is currently not supported, but you cand download",
+      "the data from",
+      "http://datosabiertos.aire.cdmx.gob.mx:8080/opendata/red_manual/",
+      "red_manual_particulas_susp.csv"))
+  }
+  suppressWarnings(
+    df <- read_csv(str_c(REDMA),
+                 skip = 8,
+                 progress = FALSE,
+                 col_types = list(
+                   date = col_character(),
+                   id_station = col_character(),
+                   id_parameter = col_character(),
+                   value = col_double(),
+                   unit = col_integer(),
                    Date = col_character(),
                    cve_station = col_character(),
-                   cve_parameter = col_character(),
-                   value = col_double(),
-                   unit = col_integer()
+                   cve_parameter = col_character()
                  ))
+  )
+  # Order should be
+  # "date", "station_code", "pollutant", "value", "unit"
+  desired_order <- c("date", "Date", "id_station", "cve_station",
+                     "id_parameter", "cve_parameter",
+                     "value", "unit")
+  existing_cols_in_order <- intersect(desired_order, names(df))
+  df <- df[, existing_cols_in_order]
   .clean_archive(df, FALSE)
 }
 
@@ -227,14 +249,26 @@ download_deposition <- function(deposition, type) {
   # Deposito total - concentracion
   if (deposition == "TOTAL" & type == "CONCENTRACION")
     REDDA <- "http://datosabiertos.aire.cdmx.gob.mx:8080/opendata/redda/concentracionT.csv"
-  df <- read_csv(REDDA,
+  suppressWarnings(
+    df <- read_csv(str_c(REDDA),
                  skip = 8, progress = FALSE, col_types = list(
+                   date = col_character(),
+                   id_station = col_character(),
+                   id_parameter = col_character(),
+                   value = col_double(),
+                   unit = col_integer(),
                    Date = col_character(),
                    cve_station = col_character(),
-                   cve_parameter = col_character(),
-                   value = col_double(),
-                   unit = col_integer()
+                   cve_parameter = col_character()
                  ))
+  )
+  # Order should be
+  # "date", "station_code", "pollutant", "value", "unit"
+  desired_order <- c("date", "Date", "id_station", "cve_station",
+                     "id_parameter", "cve_parameter",
+                     "value", "unit")
+  existing_cols_in_order <- intersect(desired_order, names(df))
+  df <- df[, existing_cols_in_order]
   .clean_archive(df, FALSE)
 }
 
