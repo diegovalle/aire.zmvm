@@ -1,7 +1,7 @@
 Mexico City Air Quality Data
 ================
 Diego Valle-Jones
-February 09, 2024
+March 03, 2026
 
 - [What does it do?](#what-does-it-do)
 - [Installation](#installation)
@@ -67,13 +67,13 @@ The package core functions:
 - `idw360` inverse distance weighting modified to work with degrees,
   useful for wind data
 
-| Function               | Date range     | Units    | Wind, Tmp, RH | Earliest Date | Pollutants                                      | Includes All Stations | Criterion                            |
-|------------------------|----------------|----------|---------------|---------------|-------------------------------------------------|-----------------------|--------------------------------------|
-| get_station_data       | years          | Original | Yes           | 1986          | SO2, CO, NO2, O3, PM10, PM25, WSP, WDR, TMP, RH | Yes                   | hourly, daily maximum, daily minimum |
-| get_station_month_data | 1 month        | Original | Yes           | 2005‑01       | SO2, CO, NO2, O3, PM10, PM25, WSP, WDR, TMP, RH | Yes                   | hourly, daily maximum, daily minimum |
-| get_station_imeca      | 1 day          | IMECA    | No            | 2009‑01‑01    | SO2, CO, NO2, O3, PM10                          | No                    | hourly                               |
-| get_zone_imeca         | 1 or more days | IMECA    | No            | 2008‑01‑01    | SO2, CO, NO2, O3, PM10                          | Only zones            | hourly, daily maximum                |
-| get_latest_imeca       | 1 hour         | IMECA    | No            | Latest only   | Maximum value of SO2, CO, NO2, O3, PM10         | No                    | latest hourly                        |
+| Function | Date range | Units | Wind, Tmp, RH | Earliest Date | Pollutants | Includes All Stations | Criterion |
+|----|----|----|----|----|----|----|----|
+| get_station_data | years | Original | Yes | 1986 | SO2, CO, NO2, O3, PM10, PM25, WSP, WDR, TMP, RH | Yes | hourly, daily maximum, daily minimum |
+| get_station_month_data | 1 month | Original | Yes | 2005‑01 | SO2, CO, NO2, O3, PM10, PM25, WSP, WDR, TMP, RH | Yes | hourly, daily maximum, daily minimum |
+| get_station_imeca | 1 day | IMECA | No | 2009‑01‑01 | SO2, CO, NO2, O3, PM10 | No | hourly |
+| get_zone_imeca | 1 or more days | IMECA | No | 2008‑01‑01 | SO2, CO, NO2, O3, PM10 | Only zones | hourly, daily maximum |
+| get_latest_imeca | 1 hour | IMECA | No | Latest only | Maximum value of SO2, CO, NO2, O3, PM10 | No | latest hourly |
 
 ## Quick Example
 
@@ -114,27 +114,44 @@ o3_max <- o3 %>%
 # ozone values at which a contingencia ambiental was declared
 # and the dates during which they were valid
 # source: http://www.aire.cdmx.gob.mx/descargas/ultima-hora/calidad-aire/pcaa/pcaa-modificaciones.pdf
-contingencia <- data.frame(ppb = c(216, 210, 205, 199, 185, 155, 155),
-  start = c(2009, 2009.4973, 2010.4973, 2011.5795, 
-            2012.6052, 2016.291, 2016.4986),
+contingencia_levels <- data.frame(
+  ppb = c(216, 210, 205, 
+          199, 185, 155, 155),
+  start = c(2009, 2009.4973, 2010.4973, 2011.5795,  
+            2012.6052,  2016.291, 2016.4986),
   end = c(2009.4973, 2010.4945, 2011.4945, 
-          2012.6025, 2016.2883, 2016.4959, Inf))
+          2012.6025,    2016.2883, 2016.4959, Inf)
+)
+
 max_daily_df <- tsdf(ts(o3_max$max, start = c(2009,1), frequency = 365.25))
+contingencia <- o3_max
+contingencia$date <- max_daily_df$x
+contingencia$contingencia <- case_when(
+  contingencia$date > 2012.6052 & contingencia$max > 185 ~ TRUE,
+  contingencia$date > 2016.291 & contingencia$max > 155 ~ TRUE,
+  TRUE ~ FALSE
+)
+
 ggplot(max_daily_df,
        aes(x = x, y = y)) + 
   geom_line(colour = "grey75", alpha = .5) +
   stat_rollapplyr(width = 30, align = "right", color = "#01C5D2") +
-  #geom_vline(xintercept = 2015 + 183/365) +
-  geom_segment(data = contingencia, 
+  geom_segment(data = contingencia_levels, 
                aes(x=start, y=ppb, xend=end, yend=ppb), color="darkred", 
                linetype = 2)  +
+  geom_point(data=filter(contingencia, contingencia == TRUE), 
+             aes(x=date, y=max), color = "#111111",
+             size = 2.5, shape = 21, fill = "#E3735E" ) +
   xlab("date") +
   ylab("parts per billion") +
-  scale_x_continuous(breaks = c(2010, 2012, 2014, 2016, 2018)) +
+  scale_x_continuous(breaks = c(2011, 2014, 2017)) +
   ggtitle("Maximum daily ozone concentration and 30 day rolling average", 
           subtitle = paste0("Red lines indicate the values necessary to ",
-                            "activate a phase I smog alert.",
-                            "\nData source: SEDEMA"))
+                            "activate a phase I smog alert. \nBlue lines are ",
+                            "the 30 day rolling average and red dots indicate ",
+                            "when the ozone value exceed the one necessary to ",
+                            "declare a pollution alert\nData source: SEDEMA")) + 
+  theme_bw()
 ```
 
-![](man/figures/README-unnamed-chunk-2-1.png)<!-- -->
+![](man/figures/README-readme-contingencias-1.png)<!-- -->

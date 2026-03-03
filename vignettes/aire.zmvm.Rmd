@@ -6,7 +6,7 @@ output:
   rmarkdown::html_vignette:
     fig_caption: yes
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Introduction to the aire.zmvm package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -163,9 +163,17 @@ idw_tiles_max <- data.frame(var1.pred = maxes,
 
 Now we will use the package ggmap to plot the locations of the stations and the pollution grid on top of a map. Note that you may have to install a beta version of ggmap by running: ```devtools::install_github("dkahle/ggmap", ref = "tidyup")```
 
+You’ll need to define an environment variable called STADIA_KEY with your Stadia Maps API key.
+
+You can obtain a free (non-commercial) key by signing up here:
+https://client.stadiamaps.com/signup
+
+Make sure the variable is available in your R session before running any code that depends on it.
+
 ```{r, message=FALSE, warning=FALSE, fig.cap = "Map of Pollution in Mexico City"}
+register_stadiamaps(Sys.getenv("STADIA_KEY"), write = FALSE)
 qmplot(x1, x2, data = data.frame(grid), geom = "blank", 
-       maptype = "toner-lite", source = "stamen", zoom = 10)  +
+       maptype = "alidade_smooth", source = "stadia", zoom = 10)  +
   geom_tile(data = idw_tiles_max, aes(x = lon, y = lat, fill = var1.pred), 
             alpha = .8) + 
   scale_fill_gradient2("IMECA", 

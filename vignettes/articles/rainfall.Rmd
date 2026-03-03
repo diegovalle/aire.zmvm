@@ -37,7 +37,7 @@ knitr::kable(df %>%
 
 ```{r gam}
 # rainfall is measured around the begginig of may starting in May 2003
-df <- df %>% filter(year(df$date) >= 2003)
+df <- df %>% filter(year(df$date) >= 2003 & year(df$date) <= 2020)
 df$week <- week(df$date)
 df$year <- year(df$date)
 
@@ -54,6 +54,7 @@ df <- full_join(df,
           by = c("year", "week")) %>%
   arrange(year, week)
 df$value[is.na(df$value)] <- 0
+df <- df[!is.na(df$date), ]
 
 df$date <- as.Date(str_c(df$year, "-", df$week,"-",1), format = "%Y-%U-%u")
 #fit <- gam(value ~ te(as.numeric(date), week, bs = c("tp", "cc"), k = c(10, 52)),

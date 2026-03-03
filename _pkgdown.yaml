@@ -1,6 +1,7 @@
 
 url: https://hoyodesmog.diegovalle.net/aire.zmvm
 template:
+  bootstrap: 5
   params:
     ganalytics: UA-100264-10
 

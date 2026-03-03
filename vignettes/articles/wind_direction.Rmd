@@ -96,8 +96,9 @@ and finally we plot the data (Note that you may have to install a beta version o
 
 ```{r warning=FALSE, message=FALSE}
 df$group <- 1
+register_stadiamaps(Sys.getenv("STADIA_KEY"), write = FALSE)
 qmplot(lon, lat, data = df, geom = "blank", 
-       maptype = "toner-lite", source = "stamen",  zoom = 10, mapcolor = "bw") +
+       maptype = "alidade_smooth", source = "stadia", zoom = 10, mapcolor = "bw") +
   geom_point(size = .1) +
   # The wind direction compass starts where the 90 degree mark is located
   geom_spoke(aes(angle = ((270 -  pred) %% 360) * pi / 180,

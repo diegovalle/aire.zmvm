@@ -76,14 +76,14 @@ print("test2")
 # Plot the daily highest level with trendline
 ggplot(df_maximos, 
        aes(date, max, group = 1)) +
-  geom_point(color = "black", size = .2, alpha = .05) +
-  geom_line(aes(date, pred), color ="blue", size = 1.2)  +
+  geom_point(color = "black", linewidth = .2, alpha = .05) +
+  geom_line(aes(date, pred), color ="blue", linewidth = 1.2)  +
   labs(title = "Daily maximum pollutant levels",
        subtitle = "On November 1989 the 'hoy no circula' program was implemented in Mexico City. On July 2015 the supreme court overturned\na rule banning all cars more than eight years old from the 'hoy no circula' program") +
   ylab("maximum daily value") +
   xlab("date") +
-  geom_vline(xintercept = as.numeric(as.Date("1989-11-20"))) +
-  geom_vline(xintercept = as.numeric(as.Date("2015-07-01"))) +
+  geom_vline(xintercept = as.Date("1989-11-20")) +
+  geom_vline(xintercept = as.Date("2015-07-01")) +
   theme_bw() +
   facet_wrap(~pollutant, scales = "free_y", ncol = 1)
 
