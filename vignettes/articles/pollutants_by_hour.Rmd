@@ -50,8 +50,7 @@ df_horarios <- bind_rows(ll_horarios)
 
 ### Dealing with daylight savings time
 
-The data returned by ```get_station_data``` when the "HORARIOS" criterion is used, includes the date and hour of each measurement. The hour is specified as an offset from midnight and does not 
-include daylight savings time (basically GMT+6). It's probably a good idea to convert it to local Mexico City time if we want to analyze pollution patterns by hour of day.
+The data returned by `get_station_data` when using the "HORARIOS" criterion includes the date and hour of each measurement. The hour is specified as an offset from midnight and does not include daylight saving time (effectively GMT+6). It is advisable to convert this to local Mexico City time if we want to analyze pollution patterns by hour of day.
 
 ```{r}
 knitr::kable(head(df_horarios))
@@ -71,9 +70,9 @@ df_horarios$datetime_mxc <- as.POSIXct(format(df_horarios$datetime,
 df_horarios$hour_dst <- hour(df_horarios$datetime_mxc)
 ```
 
-Ozone peaks a couple of hours after midday and PM10 particles peak with commuting hours (according to the [Encuesta Origen-Desino 2017](http://internet.contenidos.inegi.org.mx/contenidos/productos/prod_serv/contenidos/espanol/bvinegi/productos/nueva_estruc/promo/resultados_eod_2017.pdf)), and also sometimes around midnight because of fireworks and trash burning. A phase I 
-contingency is declared when the __24 hour__ average PM10 concentration exceeds 150 IMECAS in at least two stations and for O3 when the
-hourly average exceeds 150 IMECAS (the data is shown in the original units of the data, not IMECAS)
+Ozone peaks a couple of hours after midday, while PM10 particles peak during commuting hours (according to the [Encuesta Origen-Destino 2017](http://internet.contenidos.inegi.org.mx/contenidos/productos/prod_serv/contenidos/espanol/bvinegi/productos/nueva_estruc/promo/resultados_eod_2017.pdf)), and also sometimes around midnight due to fireworks and trash burning. A Phase I 
+contingency is declared when the __24-hour__ average PM10 concentration exceeds 150 IMECAs in at least two stations, and for O3 when the
+hourly average exceeds 150 IMECAs (data is shown in the original units, not IMECAs).
 
 ```{r}
 df_horarios$hour_dst <- factor(df_horarios$hour_dst, 

@@ -14,7 +14,7 @@ knitr::opts_chunk$set(fig.width = 7,
                       comment = "#>")
 ```
 
-Because of low temperatures education authorities decided to suspend classes in public and private schools in some parts of Mexico City on Wednesday January 31, 2018. We will download and graph the daily morning hourly temperature and compare the days of January 30 and 31 with the rest of the month.
+Due to low temperatures, education authorities decided to suspend classes in public and private schools in parts of Mexico City on Wednesday, January 31, 2018. We will download and graph the daily morning temperature and compare the temperatures on January 30 and 31 with the rest of the month.
 
 ### Data Acquisition
 
@@ -25,7 +25,7 @@ We use the ```get_station_month_data``` function to download hourly temperature 
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(aire.zmvm, dplyr, ggplot2, lubridate)
 
-# Download hourky (HORARIOS) temperature (TMP) data for January 2018
+# Download hourly (HORARIOS) temperature (TMP) data for January 2018
 jan <- get_station_month_data("HORARIOS", "TMP", 2018, 1)
 ```
 
@@ -38,14 +38,13 @@ knitr::kable(head(jan, 10))
 
 ### Data Cleaning
 
-After acquiring the data all that's left to do is to clean the data. Note that since it is winter
-daylight saving time doesn't apply.
+After acquiring the data, the remaining task is to clean it. Note that since it is winter, daylight saving time does not apply.
 
 ```{r}
 
 temp_morning <- jan %>%
   mutate(day = day(date)) %>%
-  # Kids were on vaction until the 6th and only go to school during weekdays
+  # Kids were on vacation until the 6th and only go to school during weekdays
   filter(hour %in% c(5:11) & day > 6 & wday(date)) %>%
   mutate(hour = factor(hour, levels = c(5:11)))
 

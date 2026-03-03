@@ -12,7 +12,7 @@ knitr::opts_chunk$set(fig.width = 7,
                       echo = TRUE)
 ```
 
-We can use the ```idw360``` function to extrapolate wind direction and speed inside a grid. First we load the packages:
+We can use the `idw360` function to extrapolate wind direction and speed within a grid. First, we load the packages:
 
 ```{r warning=FALSE, message=FALSE}
 ## Auto-install required R packages
@@ -22,7 +22,7 @@ pacman::p_load(aire.zmvm, dplyr, ggplot2, lubridate, stringr, sp, mapproj,
 
 ```
 
-and then download the wind speed and direction data
+and then download the wind speed and direction data:
 
 ```{r}
 # download wind speed and direction and filter March 28, 2018 7:00 PM
@@ -38,13 +38,13 @@ wdr <- get_station_month_data(criterion = "HORARIOS",
   na.omit()
 ```
 
-This is what the data look like
+This is what the data looks like:
 
 ```{r}
 knitr::kable(head(wsp))
 knitr::kable(head(wdr))
 ```
-We can create a point grid over which to extrapolate the wind values
+We can create a point grid to extrapolate the wind values:
 
 ```{r}
 ## Location of sensors. First column x/longitude, second y/latitude
@@ -72,7 +72,7 @@ coordinates(geog) <- ~lon+lat
 points(geog, pch = 22, col = "#333333", bg = "tomato1", cex = 1.2)
 ```
 
-extrapolate using inverse distance weighting
+Extrapolate using inverse distance weighting:
 
 ```{r}
 # extrapolate wind direction
@@ -104,6 +104,6 @@ qmplot(lon, lat, data = df, geom = "blank",
   geom_spoke(aes(angle = ((270 -  pred) %% 360) * pi / 180,
                  radius = wsp * .003),
              arrow = arrow(length = unit(0.09, "cm"))) +
-  ggtitle("Wind direction and speed. March 28, 2018 7:00PM")
+  ggtitle("Wind direction and speed: March 28, 2018 at 7:00 PM")
 
 ```

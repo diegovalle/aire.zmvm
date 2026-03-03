@@ -27,7 +27,7 @@ Download the data:
 
 ```{r cache = TRUE, message=FALSE, warning=FALSE}
 # Download January TMP from 2005 to 2008
-# You could get TMP data accurate to one digit by using the get_station_data
+# You could get TMP data accurate to one digit by using get_station_data,
 # but there's no data for 2018 that way
 temp <- data.frame()
 for (year in 2005:2018) {
@@ -36,7 +36,7 @@ for (year in 2005:2018) {
 }
 ```
 
-Clean the data and only use stations that were reporting 99% percent of the time during the period under analysis.
+Clean the data and only use stations that were reporting 99% of the time during the period under analysis.
 
 ```{r message=FALSE, warning=FALSE}
 # remove stations that always report 0
@@ -62,7 +62,7 @@ temp <- filter(temp,
 print(unique(do.call(c, reporting_stations_99[[2]])))
 ```
 
-Finally we plot the data:
+Finally, we plot the data:
 
 ```{r}
 temp$month <- months(temp$date)
@@ -74,7 +74,7 @@ ggplot(temp, aes(x = value, y = month, fill = ..x..)) +
   scale_x_continuous(expand = c(0.01, 0)) +
   scale_y_discrete(expand = c(0.01, 0)) +
   scale_fill_viridis(name = "Temp. [C]", option = "C") +
-  labs(title = 'January Temperatures in Mexico city',
+  labs(title = 'January Temperatures in Mexico City',
        subtitle = paste0('Hourly January temperatures for sensors reporting ',
                          'at least 99% of the time from 2005 to ',
                          '2018\nSource: SEDEMA')) +

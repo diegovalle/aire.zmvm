@@ -20,19 +20,19 @@ knitr::opts_chunk$set(fig.dim =  c(11,9),
 )
 ```
 
-This document introduces you to tools for downloading data from each of the pollution, wind and temperature measuring stations in the Zona Metropolitana del Valle de México (greater Mexico City).
+This document introduces you to tools for downloading data from the pollution, wind, and temperature monitoring stations in the Zona Metropolitana del Valle de México (Greater Mexico City).
 
 ## Core Functions
 
 The basic set of functions provided by the package:
 
-* ```get_station_data``` and ```get_station_month_data``` download pollution, wind and temperature data for each of the measuring stations in the original units (ppb, µg/m³, etc).
-* ```get_station_imeca``` download pollution values for each station in IMECAs
-* ```get_zone_imeca``` download pollution data in IMECAs for each of the 5 geographic zones of Mexico City 
-* ```get_latest_imeca``` download the latest pollution hourly maximums for each of the measuring stations.
-* ```idw360``` inverse distance weighting modified to work with degrees, useful for wind data
+* ```get_station_data``` and ```get_station_month_data``` download pollution, wind, and temperature data for each monitoring station in the original units (ppb, µg/m³, etc.).
+* ```get_station_imeca``` downloads pollution values for each station in IMECAs.
+* ```get_zone_imeca``` downloads pollution data in IMECAs for each of the five geographic zones of Mexico City.
+* ```get_latest_imeca``` downloads the latest hourly pollution maximums for each monitoring station.
+* ```idw360``` provides inverse distance weighting modified to work with degrees, which is useful for wind data.
 
-Because of limitations with the SEDEMA website [http://www.aire.cdmx.gob.mx/](http://www.aire.cdmx.gob.mx/default.php) (where all data downloaded by the aire.zmvm comes from), options for each of the function aren't entirely consistent but hopefully the following table will make them clearer.
+Because of limitations with the SEDEMA website [http://www.aire.cdmx.gob.mx/](http://www.aire.cdmx.gob.mx/default.php) (where all data downloaded by `aire.zmvm` originates), options for each function are not entirely consistent. Hopefully, the following table will clarify them:
 
 | function                  | date range     | Units    | Wind / Tmp / RH | Earliest Date | Pollutants  | Includes All Stations | Criterion |
 |---------------------------|----------------|----------|------------------|------------|------------|-------|-------|
@@ -45,10 +45,9 @@ Because of limitations with the SEDEMA website [http://www.aire.cdmx.gob.mx/](ht
 
 ## Map of Pollution Levels
 
-Pollution is monitored by a series of stations located throughout the Mexico City Metro Area. Since there are different pollutants to monitor, each measured in different units, and each with different specified averaging periods, a common scale called [IMECA](https://en.wikipedia.org/wiki/%C3%8Dndice_Metropolitano_de_la_Calidad_del_Aire) was created to make them comparable. If 
-pollutants reach 151 IMECA points or more the Mexico City government can declare a phase I smog alert and order cars off the streets and place limits on polluting industries.
+Pollution is monitored by a series of stations located throughout the Mexico City Metro Area. Since there are various pollutants to monitor, each measured in different units and using different averaging periods, a common scale called [IMECA](https://en.wikipedia.org/wiki/%C3%8Dndice_Metropolitano_de_la_Calidad_del_Aire) was created to make them comparable. If pollutants reach 151 IMECA points or more, the Mexico City government can declare a Phase I smog alert, ordering cars off the streets and placing limits on polluting industries.
 
-On May 4, 2018 there was a smog alert, but there wasn no *doble hoy no circula* because metereological conditions were forecast to improve the next day. We'll show just how easy it is to make a map of pollution levels during the alert with this package. 
+On May 4, 2018, a smog alert was declared, but there was no *doble hoy no circula* because meteorological conditions were forecast to improve the next day. We'll show how easy it is to create a map of pollution levels during the alert with this package.
 
 First we load the packages we need to run this vignette and download the pollution data:
 
@@ -76,8 +75,7 @@ Here's what the data we just downloaded looks like:
 knitr::kable(head(ldf[[2]][order(-ldf[[2]]$value), ], 10), row.names = FALSE)
 ```
 
-You may have noticed that the code comments mention the local time as being 1 hour ahead
-of that returned by the function. That's because the hourly data returned by `get_station_imeca` comes in a format that is not affected by daylight savings time—i.e. 6 hours behind UTC (*Etc/GMT+6*). If, for example, you ever want to analyze pollution levels at peak commuting times, you'll want to convert the time to the local timezone of *America/Mexico_City*. You can use the following code to do the conversion:
+You may have noticed that the code comments mention the local time as being one hour ahead of that returned by the function. That's because the hourly data returned by `get_station_imeca` follows a format unaffected by daylight saving time—i.e., six hours behind UTC (*Etc/GMT+6*). If you want to analyze pollution levels at peak commuting times, you should convert the time to the local time zone, *America/Mexico_City*. Use the following code for the conversion:
 
 ```{r}
 format(as.POSIXct("2017-05-04 16:00", tz = "Etc/GMT+6"), 
@@ -85,7 +83,7 @@ format(as.POSIXct("2017-05-04 16:00", tz = "Etc/GMT+6"),
        usetz = TRUE)
 ```
 
-The package also includes a data.frame named ```stations``` that includes the latitude and longitude of all pollution measuring stations. 
+The package also includes a data frame named `stations`, which provides the latitude and longitude of all pollution monitoring stations.
 
 
 ```{r, echo=FALSE, results='asis'}

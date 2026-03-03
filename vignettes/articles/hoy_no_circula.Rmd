@@ -7,12 +7,11 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-In an effort to lower pollution levels the Mexico City government introduced in 1989 the *Hoy no circula* program, a ban on most cars from circulating once a week. But did it really work? 
+In an effort to lower pollution levels, the Mexico City government introduced the *Hoy No Circula* program in 1989, which bans most cars from circulating once a week. But did it really work? 
 
 ## Station data
 
-The function ```get_station_data``` can be used to download pollution and wind data going back to 1986, although not all pollutants are available that far back, and requesting a pollutant that is
-not available will result in a warning.
+The function `get_station_data` can be used to download pollution and wind data going back to 1986. However, not all pollutants are available that far back; requesting a pollutant that is unavailable will result in a warning.
 
 ```{r}
 ## Auto-install required R packages
@@ -52,7 +51,7 @@ knitr::kable(head(df_maximos))
 ```
 
 
-We can plot all pollutants going back to 1986 and add a trend line based on a GAM controlling for month of year, with lines for the start of the hoy no circula and the supreme court decision that the hoy no circula doesn't necessarily apply to older cars. A more complex model is left as an exercise to the reader.
+We can plot all pollutants going back to 1986 and add a trend line based on a GAM controlling for the month of the year. The plot includes vertical lines representing the start of *Hoy No Circula* and the Supreme Court decision that the program does not necessarily apply to older cars. A more complex model is left as an exercise for the reader.
 
 
 ```{r smallmult, fig.width=9, fig.height=20}
@@ -79,7 +78,7 @@ ggplot(df_maximos,
   geom_point(color = "black", linewidth = .2, alpha = .05) +
   geom_line(aes(date, pred), color ="blue", linewidth = 1.2)  +
   labs(title = "Daily maximum pollutant levels",
-       subtitle = "On November 1989 the 'hoy no circula' program was implemented in Mexico City. On July 2015 the supreme court overturned\na rule banning all cars more than eight years old from the 'hoy no circula' program") +
+       subtitle = "In November 1989, the *Hoy No Circula* program was implemented in Mexico City. In July 2015, the Supreme Court overturned\na rule banning all cars more than eight years old from the program.") +
   ylab("maximum daily value") +
   xlab("date") +
   geom_vline(xintercept = as.Date("1989-11-20")) +

@@ -36,7 +36,7 @@ knitr::kable(df %>%
 ### Model with a GAM
 
 ```{r gam}
-# rainfall is measured around the begginig of may starting in May 2003
+# rainfall starts being measured around the beginning of May 2003
 df <- df %>% filter(year(df$date) >= 2003 & year(df$date) <= 2020)
 df$week <- week(df$date)
 df$year <- year(df$date)
@@ -81,7 +81,7 @@ ggplot(df, aes(date, value)) +
 
 ggplot(df, aes(week, value, group = year, color = year)) +
   geom_point(alpha = .05) +
-  ggtitle("Average rainfall in Mexico city",
+  ggtitle("Average rainfall in Mexico City",
           subtitle = "Based on a GAM model\nSource: SIMAT") +
   ylab("rainfall in mm") +
   scale_x_continuous(breaks = c(1,  week("2016-06-01"),  

@@ -12,14 +12,14 @@ knitr::opts_chunk$set(fig.width = 4.5,
                       echo = TRUE)
 ```
 
-For analyzing the effect of pollution, Mexico City was divided into five zones. The function ```get_zone_imeca``` can download data for each zone as measured in IMECAs as opposed to the original units that ```get_station_data``` uses. 
+To analyze the effects of pollution, Mexico City was divided into five zones. The function `get_zone_imeca` can download data for each zone measured in IMECAs, as opposed to the original units used by `get_station_data`.
 
 
 ```{r warning=FALSE}
 ## Auto-install required R packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(aire.zmvm, dplyr, ggplot2)
-## The mxmaps packages has to be installed from GitHub
+## The mxmaps package must be installed from GitHub:
 ## if (!require("devtools")) {
 ##     install.packages("devtools")
 ## }
@@ -39,7 +39,7 @@ p <- mxmunicipio_choropleth(df, num_colors = 6,
 plot(p)
 ```
 
-Note that the standards for measuring PM10 and O3 in IMECAS changed in October 2014 and the function prints a message
+Note that the standards for measuring PM10 and O3 in IMECAs changed in October 2014, and the function prints a message.
 
 
 ```{r, fig.show='hold', message=TRUE}
@@ -56,7 +56,7 @@ knitr::kable(head(pm_10))
 ```
 
 
-Plotting the data makes the change that took place on October 2014 really obvious:
+Plotting the data makes the change that took place in October 2014 very obvious:
 
 ```{r, fig.width=7.2,fig.height=4}
 
