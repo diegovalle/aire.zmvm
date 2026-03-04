@@ -2,9 +2,9 @@
 
 ## Bugs fixes and improvements
 
-* Fixed `download_deposition` function because the header of the downloaded
-csv file changed
-* Function `download_lead` now returns an error when the type of data to download
+* Fixed `download_deposition()` to accommodate changes in the header of the
+downloaded CSV file
+* `download_lead()` now throws an error when the requested data type 
 is 'PST, PM10, PM25'
 
 # aire.zmvm 1.0.0
