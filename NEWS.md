@@ -2,10 +2,9 @@
 
 ## Bugs fixes and improvements
 
-* Fixed `download_deposition()` to accommodate changes in the header of the
-downloaded CSV file
-* `download_lead()` now throws an error when the requested data type 
-is 'PST, PM10, PM25'
+* `download_deposition()` now handles updated CSV headers — users won’t see errors when downloading deposition data.
+* `get_latest_imeca()` correctly parses *Índice aire y salud* values.
+* `download_lead()` now throws an error for the unsupported combined `'PST, PM10, PM25'` data type.
 
 # aire.zmvm 1.0.0
 
