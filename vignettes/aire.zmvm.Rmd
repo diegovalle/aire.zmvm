@@ -40,7 +40,7 @@ Because of limitations with the SEDEMA website [http://www.aire.cdmx.gob.mx/](ht
 | get_station_month_data  | 1&nbsp;month        | Original | Yes              | 2005‑01    | SO2, CO, NO2, O3, PM10, PM25,  WSP, WDR, TMP, RH | Yes | hourly, daily&nbsp;maximum, daily&nbsp;minimum |
 | get_station_imeca         | 1&nbsp;day          | IMECA    | No               | 2009‑01‑01 | SO2, CO, NO2, O3, PM10 | No | hourly |
 | get_zone_imeca            | 1 or more days | IMECA    | No               | 2008‑01‑01 | SO2, CO, NO2, O3, PM10 | Only zones | hourly, daily&nbsp;maximum |
-| get_latest_imeca          | 1&nbsp;hour         | IMECA    | No               | Latest only| Maximum value of SO2, CO, NO2, O3, PM10 | No |latest&nbsp;hourly |
+| get_latest_imeca          | 1&nbsp;hour         | Índice AIRE Y SALUD    | No               | Latest only| Maximum value of SO2, CO, NO2, O3, PM10 | No |latest&nbsp;hourly |
 
 
 ## Map of Pollution Levels
