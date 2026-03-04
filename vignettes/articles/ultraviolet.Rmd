@@ -3,6 +3,10 @@ title: "Ultraviolet Radiation"
 output: github_document
 ---
 
+This document visualizes the average hourly Ultraviolet A (UVA) radiation levels across Mexico City throughout 2017. The data, provided by the Mexico City Air Quality Monitoring Network (SIMAT), illustrates seasonal and daily variations in exposure.
+
+Notably, at the time of these measurements in 2017, Mexico City still observed Daylight Savings Time (DST). Consequently, the local time reflected in this visualization accounts for these seasonal clock shifts.
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.dim=c(7.2, 4),
                       fig.align = 'center',
