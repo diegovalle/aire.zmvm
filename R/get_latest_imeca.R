@@ -25,6 +25,7 @@
   as.character(strftime(time_div, "%Y-%m-%d %H:%M:%S"))
 }
 
+
 #' Get the latest pollution values for each station
 #'
 #' Download the latest hourly values for the pollutants with the highest values
@@ -40,9 +41,8 @@
 #' Ciudad de México). Thus, even if they are located inside a zone, they are not
 #' included in the pollution values for that zone.
 #'
-#' @return A data.frame with pollution values in IMECAs, the hour corresponds to
-#'   the \emph{America/Mexico_City} timezone (which changes with daylight
-#'   saving time)
+#' @return A data.frame with pollution air quality, the hours are in
+#'   the \emph{America/Mexico_City} timezone
 #' @family IMECA functions
 #' @seealso \href{http://www.aire.cdmx.gob.mx/ultima-hora-reporte.php}{Reporte
 #'   de calidad del aire}
@@ -52,6 +52,7 @@
 #' @importFrom xml2 read_html
 #' @importFrom stringr str_match str_replace str_replace_all
 #' @importFrom httr GET timeout
+#' @importFrom stringr str_replace_all fixed
 #'
 #' @examples
 #'\donttest{
@@ -76,6 +77,27 @@ get_latest_imeca <- function() {
     poll_table <- read_html(result)
     time <- .convert_time(html_text(html_nodes(poll_table, "div#textohora")))
 
+
+
+    svg_air_quality_map <- c(
+      '<img src="images/reportes/colores/buena.svg" alt="" width="143 px" height="10 px">' =
+        'buena',
+      '<img src="images/reportes/colores/aceptable.svg" alt="" width="143 px" height="10 px">' =
+        'aceptable',
+      '<img src="images/reportes/colores/mala.svg" alt="" width="143 px" height="10 px">' =
+        'mala',
+      '<img src="images/reportes/colores/muy.svg" alt="" width="143 px" height="10 px">' =
+        'muy mala',
+      '<img src="images/reportes/colores/extremadamente.svg" alt="" width="143 px" height="10 px">' =
+        'extremadamente mala',
+      '<img src="images/reportes/colores/sin.svg" alt="" width="143 px" height="10 px">'=
+        'sin datos')
+
+    poll_table_modfied <- str_replace_all(
+      as.character(poll_table),
+      fixed(svg_air_quality_map))
+
+    poll_table <- read_html(poll_table_modfied)
     df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE,
                      fill = TRUE)
     names(df) <- c("station_code", "municipio", "quality", "pollutant", "value")

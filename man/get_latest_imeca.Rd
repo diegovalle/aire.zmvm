@@ -7,9 +7,8 @@
 get_latest_imeca()
 }
 \value{
-A data.frame with pollution values in IMECAs, the hour corresponds to
-  the \emph{America/Mexico_City} timezone (which changes with daylight
-  saving time)
+A data.frame with pollution air quality, the hours are in
+  the \emph{America/Mexico_City} timezone
 }
 \description{
 Download the latest hourly values for the pollutants with the highest values
