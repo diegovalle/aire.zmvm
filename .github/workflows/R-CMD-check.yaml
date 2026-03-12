@@ -5,23 +5,32 @@
 on:
   schedule:
     - cron: '7 20 * * 5'
-  push:
-    branches:
-      - main
-      - master
-      - develop
+push:
+  branches:
+    - main
+    - master
+    - develop
+    - test
   pull_request:
     branches:
       - main
       - master
       - develop
+      - test
 
 name: R-CMD-check
 
 permissions: read-all
 
+# Trigger / Branch    ubuntu (all versions)	windows-latest	macos-latest
+# Push to main/master	✅ Runs               ✅ Runs         ✅ Runs
+# Push to test  	    ✅ Runs               ✅ Runs         ✅ Runs
+# Push to develop	    ✅ Runs               ❌ Skipped      ❌ Skipped
+# Weekly Schedule	    ✅ Rusn               ❌ Skipped      ❌ Skipped
+
 jobs:
   R-CMD-check:
+
     runs-on: ${{ matrix.config.os }}
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
@@ -29,16 +38,32 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config:
-          - {os: macos-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-latest,   r: 'oldrel-1'}
+        config: |
+          ${{ fromJSON(
+          (github.event_name == 'schedule')
+          && '[
+            {"os":"ubuntu-latest","r":"release"}
+          ]'
+          || ((github.ref_name == 'main' || github.ref_name == 'master' || github.ref_name == 'test')
+          && '[
+            {"os":"ubuntu-latest","r":"devel","http-user-agent":"release"},
+            {"os":"ubuntu-latest","r":"release"},
+            {"os":"ubuntu-latest","r":"oldrel-1"},
+            {"os":"windows-latest","r":"release"},
+            {"os":"macos-latest","r":"release"}
+          ]'
+          || '[
+            {"os":"ubuntu-latest","r":"devel","http-user-agent":"release"},
+            {"os":"ubuntu-latest","r":"release"},
+            {"os":"ubuntu-latest","r":"oldrel-1"}
+          ]')
+          ) }}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      BRANCH_NAME: ${{ github.ref_name }}
+      EVENT_NAME: ${{ github.event_name }}
 
     steps:
       - uses: actions/checkout@v4
