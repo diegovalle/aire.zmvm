@@ -20,7 +20,11 @@ on:
 
 name: R-CMD-check
 
-permissions: read-all
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 # Trigger / Branch    ubuntu (all versions)	windows-latest	macos-latest
 # Push to main/master	✅ Runs               ✅ Runs         ✅ Runs
@@ -30,7 +34,6 @@ permissions: read-all
 
 jobs:
   R-CMD-check:
-
     runs-on: ${{ matrix.config.os }}
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
@@ -66,7 +69,10 @@ jobs:
       EVENT_NAME: ${{ github.event_name }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Greet the user
+        run: echo branch "$BRANCH_NAME" event "$EVENT_NAME"
+
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - uses: r-lib/actions/setup-pandoc@v2
 

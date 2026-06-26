@@ -1,4 +1,9 @@
-# aire.zmvm (development version)
+# aire.zmvm 1.0.2
+
+## Bugs fixes and improvements
+
+* `get_station_data` and `get_station_month_data` correctly handle html pages 
+   with input encoding of 8859-1
 
 # aire.zmvm 1.0.1
 

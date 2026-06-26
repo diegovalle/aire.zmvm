@@ -79,7 +79,7 @@
   if (http_type(result) != "text/html")
     stop(paste0(url, " did not return text/html", call. = FALSE))
 
-  poll_table <- read_html(result)
+  poll_table <- read_html(result, encoding = "8859-1")
   df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE)
   names(df) <- as.character(df[1, ])
   names(df)[1] <- "date"

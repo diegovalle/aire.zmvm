@@ -131,8 +131,8 @@ head(df2)
   \href{http://www.aire.cdmx.gob.mx/default.php?opc=\%27aqBjnmI=\%27}{Índice de
   calidad del aire por zonas}
 
-Other IMECA functions: 
-\code{\link{get_latest_imeca}()},
-\code{\link{get_station_imeca}()}
+Other IMECA functions:
+\code{\link[=get_latest_imeca]{get_latest_imeca()}},
+\code{\link[=get_station_imeca]{get_station_imeca()}}
 }
 \concept{IMECA functions}
