@@ -11,6 +11,15 @@ on:
       - master
       - develop
       - test
+    paths-ignore:
+      - 'readme.md'
+      - 'readme.Rmd'
+      - 'index.md'
+      - 'index.Rmd'
+      - 'aire.zmvm.Rproj'
+      - 'LICENSE'
+      - 'vignettes/**'
+      - 'data-raw/**'
   pull_request:
     branches:
       - main
