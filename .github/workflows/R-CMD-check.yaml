@@ -4,7 +4,7 @@
 # https://community.rstudio.com/new-topic?category=Package%20development&tags=github-actions
 on:
   schedule:
-    - cron: '7 20 * * 5'
+    - cron: "7 20 * * 5"
   push:
     branches:
       - main
@@ -12,14 +12,14 @@ on:
       - develop
       - test
     paths-ignore:
-      - 'readme.md'
-      - 'readme.Rmd'
-      - 'index.md'
-      - 'index.Rmd'
-      - 'aire.zmvm.Rproj'
-      - 'LICENSE'
-      - 'vignettes/**'
-      - 'data-raw/**'
+      - "readme.md"
+      - "readme.Rmd"
+      - "index.md"
+      - "index.Rmd"
+      - "aire.zmvm.Rproj"
+      - "LICENSE"
+      - "vignettes/**"
+      - "data-raw/**"
   pull_request:
     branches:
       - main
@@ -50,26 +50,27 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config: |
-          ${{ fromJSON(
-          (github.event_name == 'schedule')
-          && '[
-            {"os":"ubuntu-latest","r":"release"}
-          ]'
-          || ((github.ref_name == 'main' || github.ref_name == 'master' || github.ref_name == 'test')
-          && '[
-            {"os":"ubuntu-latest","r":"devel","http-user-agent":"release"},
-            {"os":"ubuntu-latest","r":"release"},
-            {"os":"ubuntu-latest","r":"oldrel-1"},
-            {"os":"windows-latest","r":"release"},
-            {"os":"macos-latest","r":"release"}
-          ]'
-          || '[
-            {"os":"ubuntu-latest","r":"devel","http-user-agent":"release"},
-            {"os":"ubuntu-latest","r":"release"},
-            {"os":"ubuntu-latest","r":"oldrel-1"}
-          ]')
-          ) }}
+        config:
+          - |
+            ${{ fromJSON(
+            (github.event_name == 'schedule')
+            && '[
+              {"os":"ubuntu-latest","r":"release"}
+            ]'
+            || ((github.ref_name == 'main' || github.ref_name == 'master' || github.ref_name == 'test')
+            && '[
+              {"os":"ubuntu-latest","r":"devel","http-user-agent":"release"},
+              {"os":"ubuntu-latest","r":"release"},
+              {"os":"ubuntu-latest","r":"oldrel-1"},
+              {"os":"windows-latest","r":"release"},
+              {"os":"macos-latest","r":"release"}
+            ]'
+            || '[
+              {"os":"ubuntu-latest","r":"devel","http-user-agent":"release"},
+              {"os":"ubuntu-latest","r":"release"},
+              {"os":"ubuntu-latest","r":"oldrel-1"}
+            ]')
+            ) }}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -82,21 +83,23 @@ jobs:
         run: echo branch "$BRANCH_NAME" event "$EVENT_NAME"
 
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
-      - uses: r-lib/actions/setup-pandoc@v2
+      - uses: r-lib/actions/setup-pandoc@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
 
-      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-r@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
         with:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
+      - uses: r-lib/actions/setup-r-dependencies@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
         with:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - uses: r-lib/actions/check-r-package@v2
+      - uses: r-lib/actions/check-r-package@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
         with:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
