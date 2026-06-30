@@ -26,5 +26,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Diego Valle-Jones \email{diego@diegovalle.net}
 
+Authors:
+\itemize{
+  \item Diego Valle-Jones \email{diego@diegovalle.net}
+}
+
 }
 \keyword{internal}

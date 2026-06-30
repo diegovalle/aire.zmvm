@@ -30,7 +30,7 @@ Download the data:
 # You could get TMP data accurate to one digit by using get_station_data,
 # but there's no data for 2018 that way
 temp <- data.frame()
-for (year in 2005:2018) {
+for (year in 2005:2025) {
   df2 <- get_station_month_data("HORARIOS", "TMP", year, 1)
   temp <- rbind(temp, df2)
 }

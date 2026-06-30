@@ -21,7 +21,7 @@ A data frame with 63 rows and 7 variables:
 \samp{http://148.243.232.112:8080/opendata/catalogos/cat_estacion.csv}
 }
 \usage{
-stations
+data(stations)
 }
 \description{
 This dataset contains all pollution measuring stations in Mexico City. The

@@ -22,7 +22,7 @@ No. 230, 27 de Diciembre de 2016, and
 \emph{Solicitud de Información} FOLIO 0112000033818
 }
 \usage{
-zones
+data(zones)
 }
 \description{
 This data set contains the municipios (counties) that make up the 5
