@@ -50,26 +50,27 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config: |
-          ${{ fromJSON(
-          (github.event_name == 'schedule')
-          && '[
-            {"os":"ubuntu-latest","r":"release"}
-          ]'
-          || ((github.ref_name == 'main' || github.ref_name == 'master' || github.ref_name == 'test')
-          && '[
-            {"os":"ubuntu-latest","r":"devel","http-user-agent":"release"},
-            {"os":"ubuntu-latest","r":"release"},
-            {"os":"ubuntu-latest","r":"oldrel-1"},
-            {"os":"windows-latest","r":"release"},
-            {"os":"macos-latest","r":"release"}
-          ]'
-          || '[
-            {"os":"ubuntu-latest","r":"devel","http-user-agent":"release"},
-            {"os":"ubuntu-latest","r":"release"},
-            {"os":"ubuntu-latest","r":"oldrel-1"}
-          ]')
-          ) }}
+        config:
+          - |
+            ${{ fromJSON(
+            (github.event_name == 'schedule')
+            && '[
+              {"os":"ubuntu-latest","r":"release"}
+            ]'
+            || ((github.ref_name == 'main' || github.ref_name == 'master' || github.ref_name == 'test')
+            && '[
+              {"os":"ubuntu-latest","r":"devel","http-user-agent":"release"},
+              {"os":"ubuntu-latest","r":"release"},
+              {"os":"ubuntu-latest","r":"oldrel-1"},
+              {"os":"windows-latest","r":"release"},
+              {"os":"macos-latest","r":"release"}
+            ]'
+            || '[
+              {"os":"ubuntu-latest","r":"devel","http-user-agent":"release"},
+              {"os":"ubuntu-latest","r":"release"},
+              {"os":"ubuntu-latest","r":"oldrel-1"}
+            ]')
+            ) }}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
