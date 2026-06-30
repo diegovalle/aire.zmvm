@@ -17,7 +17,6 @@ on:
       - "index.md"
       - "index.Rmd"
       - "aire.zmvm.Rproj"
-      - "LICENSE"
       - "vignettes/**"
       - "data-raw/**"
   pull_request:
