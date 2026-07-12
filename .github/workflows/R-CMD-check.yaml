@@ -78,6 +78,11 @@ jobs:
       EVENT_NAME: ${{ github.event_name }}
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
       - name: Greet the user
         run: echo branch "$BRANCH_NAME" event "$EVENT_NAME"
 
@@ -102,3 +107,4 @@ jobs:
         with:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
+
