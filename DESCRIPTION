@@ -22,7 +22,7 @@ Imports:
     progress,
     readr,
     readxl,
-    rvest,
+    rvest (>= 1.0.0),
     sp,
     stats,
     stringr,

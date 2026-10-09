@@ -98,8 +98,7 @@ get_latest_imeca <- function() {
       fixed(svg_air_quality_map))
 
     poll_table <- read_html(poll_table_modfied)
-    df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE,
-                     fill = TRUE)
+    df <- html_table(html_nodes(poll_table, "table")[[1]], header = TRUE)
     names(df) <- c("station_code", "municipio", "quality", "pollutant", "value")
     df <- df[2:nrow(df), ]
     df$value <- lapply(df$value,
@@ -109,8 +108,7 @@ get_latest_imeca <- function() {
                        else NA)
 
 
-    edomex <- html_table(html_nodes(poll_table, "table")[[2]], header = TRUE,
-                         fill = TRUE)
+    edomex <- html_table(html_nodes(poll_table, "table")[[2]], header = TRUE)
     names(edomex) <- c("station_code", "municipio",
                        "quality", "pollutant", "value")
     edomex <- edomex[2:nrow(edomex), ]

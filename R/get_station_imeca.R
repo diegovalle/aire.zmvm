@@ -101,8 +101,7 @@ get_station_imeca <- function(pollutant, date,
   poll_table <- read_html(content(result, "text", encoding = "windows-1252"))
 
   df <- html_table(html_nodes(poll_table, "table")[[1]],
-                          header = TRUE,
-                          fill = TRUE)
+                          header = TRUE)
   if (nrow(df) <= 1)
     stop("The website returned invalid data. Please check the date format.",
          call. = FALSE)
